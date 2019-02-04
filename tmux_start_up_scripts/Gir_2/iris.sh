@@ -1,0 +1,1 @@
+/bin/bash -i -c 'rm -rf /home/redm/Dropbox/iris/twistd.pid;cd /home/redm/Dropbox/iris; ./run.py -p 8080';/bin/bash -i

@@ -1,0 +1,1 @@
+/bin/bash -i -c '/home/redm/znc5/zncrestart';/bin/bash -i
