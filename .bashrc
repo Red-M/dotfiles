@@ -35,6 +35,8 @@
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 
+export PATH=$PATH:$HOME/.local/bin
+
 export SciTE_USERHOME=~
 export SciTE_HOME=~/.scite
 
@@ -380,7 +382,7 @@ fblo=$(echo -e '¦')
 PROMPT_COMMAND="history -a"
 case ${TERM} in
   *term | rxvt | linux | ${TERM})
-    
+
         #PS1="\[\$(load_color)\]#\[${NC}\][\A\[${NC}\] "
         # Time of day (with load info):
         PS1="\[\$(load_color)\]C\[${NC}\]\[${CNX}\]S\[${NC}\]"
