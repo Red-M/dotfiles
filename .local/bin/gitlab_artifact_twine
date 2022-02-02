@@ -1,0 +1,27 @@
+#!/bin/bash
+PROJECT_NAME="${1}"
+FILENAME_ZIP="$(date +%s).zip"
+TMP_FOLDER="$(mktemp -p /tmp -d ${PROJECT_NAME}.XXXXX)"
+CUR_PWD="$(pwd)"
+ZIP_TARGET="${TMP_FOLDER}/${FILENAME_ZIP}"
+WHEELHOUSE="${TMP_FOLDER}/wheelhouse"
+
+# JOB_IDS="${@:2}"
+
+PIPELINE_ID="${2}"
+STAGE_NAME="${3}"
+JOB_IDS=$(curl "http://gitlab.bubble-berry/Red_M/${PROJECT_NAME}/-/pipelines/${PIPELINE_ID}.json" | jq '.details.stages[] | select( .name == "'"${STAGE_NAME}"'" ) | .groups[].jobs[0].id')
+
+
+cd "${TMP_FOLDER}"
+for JOB_ID in ${JOB_IDS[@]}; do
+    wget -O "${ZIP_TARGET}" http://gitlab.bubble-berry/Red_M/"${PROJECT_NAME}"/-/jobs/"${JOB_ID}"/artifacts/download
+    unzip "${FILENAME_ZIP}"
+    \rm "${ZIP_TARGET}"
+done
+cd "${CUR_PWD}"
+mv "${WHEELHOUSE}"/*.{whl,gz} "${TMP_FOLDER}/"
+\rm -r "${WHEELHOUSE}"
+ls -alh "${TMP_FOLDER}"
+twine upload "${TMP_FOLDER}"/*
+\rm -rf "${TMP_FOLDER}"
