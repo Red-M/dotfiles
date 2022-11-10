@@ -186,7 +186,7 @@ return {
 	'base16/woodland.yaml',
 	'base16/xcode-dusk.yaml',
 	'base16/zenburn.yaml',
-	'custom/midnight-monokai.yaml',
+	'custom/midnightokai.yaml',
 	'daylerees/artstotzka.json',
 	'daylerees/azure.json',
 	'daylerees/bold.json',
