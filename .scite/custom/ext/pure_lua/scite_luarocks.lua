@@ -1,11 +1,12 @@
 local scite_lr = {}
 package.loaded["scite_luarocks"] = scite_lr
 local luarocks_site_config = {}
-package.loaded["luarocks.luarocks.core.hardcoded"] = luarocks_site_config
+package.loaded["luarocks.core.hardcoded"] = luarocks_site_config
 luarocks_site_config.LUAROCKS_FORCE_CONFIG = true
 luarocks_site_config.FORCE_CONFIG = true
 luarocks_site_config.LUAROCKS_SYSCONFDIR = props['custom.scite.extdir'] .. "/.luarocks"
 luarocks_site_config.LUAROCKS_ROCKS_TREE = props['custom.scite.extdir'] .. "/luarocks"
+luarocks_site_config.PREFIX = luarocks_site_config.LUAROCKS_ROCKS_TREE
 luarocks_site_config.LUAROCKS_ROCKS_SUBDIR = "rocks"
 luarocks_site_config.link_lua_explicitly = true
 luarocks_site_config.local_by_default = true

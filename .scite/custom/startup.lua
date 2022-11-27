@@ -8,5 +8,6 @@ package.loaded['scite_luarocks'] = nil
 local scite_luarocks = require 'scite_luarocks'
 --~ local yaml = scite_luarocks.install_and_require('yaml','lua-yaml')
 --~ local json = scite_luarocks.install_and_require('lunajson')
+--~ print(package.path)
 
 dofile(props['SciteUserHome'] .. '/.scite/scite_themes/scite_themes.lua')
