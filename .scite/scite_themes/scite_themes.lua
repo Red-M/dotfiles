@@ -3,10 +3,33 @@ local _mf = math.floor
 local _printf = function(...) print(_sf(...)) end
 
 local scite_luarocks = require 'scite_luarocks'
---~ local yaml = scite_luarocks.install_and_require('yaml','lua-yaml')
-local yaml = scite_luarocks.install_and_require('lyaml')
-local json = scite_luarocks.install_and_require('lunajson')
-local lfs = scite_luarocks.install_and_require('lfs','luafilesystem')
+
+
+local sysdetect = scite_luarocks.install_and_require('sysdetect','rocks-sysdetect')
+local os_response = not(sysdetect.detect() == 'windows') -- Assume we're on an intelligent planet if true
+--~ _printf(sysdetect.detect()))
+local packages_lookup = {}
+packages_lookup[true] = {
+    yaml = { 'lyaml' },
+    json = { 'lunajson' },
+}
+packages_lookup[false] = {
+    yaml = { 'yaml', 'lua-yaml' },
+    json = { 'lunajson' },
+}
+
+local yaml = scite_luarocks.install_and_require(table.unpack(packages_lookup[os_response]['yaml']))
+local json = scite_luarocks.install_and_require(table.unpack(packages_lookup[os_response]['json']))
+
+
+--~ if os_response == true then
+--~     yaml = scite_luarocks.install_and_require('lyaml')
+--~     json = scite_luarocks.install_and_require('lunajson')
+--~     local lfs = scite_luarocks.install_and_require('lfs','luafilesystem')
+--~ else
+--~     yaml = scite_luarocks.install_and_require('yaml','lua-yaml')
+--~     json = scite_luarocks.install_and_require('lunajson')
+--~ end
 
 
 local function starts_with(str, start)
@@ -450,7 +473,9 @@ function load_themes()
         f:write(yaml.dump({themes}))
         f:close()
     end
-    gen_scheme_list_lua()
+    if os_response == true then
+        gen_scheme_list_lua()
+    end
     change_theme()
 end
 
