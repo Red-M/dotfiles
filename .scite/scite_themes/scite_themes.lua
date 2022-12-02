@@ -12,14 +12,17 @@ local packages_lookup = {}
 packages_lookup[true] = {
     yaml = { 'lyaml' },
     json = { 'lunajson' },
+    lfs = { 'lfs','luafilesystem' },
 }
 packages_lookup[false] = {
     yaml = { 'yaml', 'lua-yaml' },
     json = { 'lunajson' },
+    lfs = { 'lfs','luafilesystem' },
 }
 
 local yaml = scite_luarocks.install_and_require(table.unpack(packages_lookup[os_response]['yaml']))
 local json = scite_luarocks.install_and_require(table.unpack(packages_lookup[os_response]['json']))
+local lfs = scite_luarocks.install_and_require(table.unpack(packages_lookup[os_response]['lfs']))
 
 
 --~ if os_response == true then
@@ -462,7 +465,6 @@ end
 function load_themes()
     local theme_dir = props['ext.lua.theme_dir']
     local gen_scheme_list_lua = function()
-        local f = io.open(theme_dir..'/scheme_list.yaml', 'w')
         local theme_files = find_theme_files(theme_dir..'/schemes')
         local themes = {}
         for i,filename in pairs(theme_files) do
@@ -470,6 +472,7 @@ function load_themes()
             table.insert(themes, filename)
         end
         table.sort(themes)
+        local f = io.open(theme_dir..'/scheme_list.yaml', 'w')
         f:write(yaml.dump({themes}))
         f:close()
     end
