@@ -1,0 +1,37 @@
+#!/bin/bash
+version_number="${1}"
+preflight_checks="true"
+
+if [ -z $version_number ]; then
+    echo "Please provide a version number to release as. The version numbers are as follows:"
+    PAGER= \git tag | sort -h | tail -n 10
+    preflight_checks="false"
+fi
+
+git branch | grep -E 'm(ain|aster)' > /dev/null
+if [ ! $? == 0 ];then
+    echo "You need to be on the primary development branch!"
+    preflight_checks="false"
+fi
+
+git status > /dev/null
+if [ ! $? == 0 ];then
+    echo "You also need to be in a repository!"
+    preflight_checks="false"
+    exit 1
+fi
+
+if [ ! "$(git status | wc -l)" == "4" ]; then
+    echo "Commit your changes first!"
+    preflight_checks="false"
+fi
+
+if [ ! "${preflight_checks}" == "true" ]; then
+    exit 1
+fi
+
+
+main_branch="$(git branch | cut -b 3-)"
+git checkout -b "release/${version_number}"
+git tag -am '' "${version_number}"
+git push --tags -u origin "release/${version_number}"
