@@ -1,0 +1,15 @@
+[submodule ".tmux/plugins/tpm"]
+	path = .tmux/plugins/tpm
+	url = https://github.com/tmux-plugins/tpm.git
+[submodule ".tmux/plugins/tmux-mode-indicator"]
+	path = .tmux/plugins/tmux-mode-indicator
+	url = https://github.com/MunifTanjim/tmux-mode-indicator.git
+[submodule ".tmux/plugins/tmux-named-snapshot"]
+	path = .tmux/plugins/tmux-named-snapshot
+	url = https://git::@github.com/spywhere/tmux-named-snapshot
+[submodule ".tmux/plugins/tmux-open"]
+	path = .tmux/plugins/tmux-open
+	url = https://git::@github.com/tmux-plugins/tmux-open
+[submodule ".tmux/plugins/tmux-suspend"]
+	path = .tmux/plugins/tmux-suspend
+	url = https://git::@github.com/MunifTanjim/tmux-suspend
