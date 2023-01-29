@@ -8,7 +8,7 @@ if [ -z $version_number ]; then
     preflight_checks="false"
 fi
 
-git branch | grep -E 'm(ain|aster)' > /dev/null
+git branch | grep -E '\* m(ain|aster)' > /dev/null
 if [ ! $? == 0 ];then
     echo "You need to be on the primary development branch!"
     preflight_checks="false"
@@ -31,8 +31,9 @@ if [ ! "${preflight_checks}" == "true" ]; then
 fi
 
 
-main_branch="$(git branch | cut -b 3-)"
+main_branch="$(git branch | grep -E '\* ' | cut -b 3-)"
 git checkout -b "release/${version_number}"
 git tag -am '' "${version_number}"
+git tag -am '' "release/${version_number}"
 git push --tags -u origin "release/${version_number}"
 git checkout "${main_branch}"
