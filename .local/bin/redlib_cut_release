@@ -21,7 +21,7 @@ if [ ! $? == 0 ];then
     exit 1
 fi
 
-if [ ! "$(git status | wc -l)" == "4" ]; then
+if [ ! "$(git status -s | wc -l)" == "0" ]; then
     echo "Commit your changes first!"
     preflight_checks="false"
 fi
