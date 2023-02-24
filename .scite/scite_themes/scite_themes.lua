@@ -160,7 +160,7 @@ remapper['.yaml'] = {
     entry = '^%s*([%w]+)%s*:%s*"([^"]-)"',
 --~ 	loader = yaml.eval,
     loader = yaml.load,
-    map   = {
+    map = {
         scheme = 'name',
         author = 'author',
         base00 = 'back',
@@ -182,28 +182,28 @@ remapper['.yaml'] = {
     },
 }
 
-remapper['.json']  = {
+remapper['.json'] = {
     entry = '^%s*"([%w_]+)"%s*:%s*"#?([^"]-)"',
     loader = json.decode,
-    map   = {
-        name           = 'name',
-        author         = 'author',
-        background     = 'back',
+    map = {
+        name = 'name',
+        author = 'author',
+        background = 'back',
         line_highlight = 'lnback',
-        invisibles     = 'whitespace',
-        comment        = 'comment',
-        docblock       = 'lnfore',
-        foreground     = 'fore',
-        caret          = 'operator',
+        invisibles = 'whitespace',
+        comment = 'comment',
+        docblock = 'lnfore',
+        foreground = 'fore',
+        caret = 'operator',
         selection_foreground = 'highlight',
-        fifth          = 'variable',
-        number         = 'number',
-        second         = 'class',
-        ['string']     = 'string',
-        first          = 'support',
-        third          = 'function',
-        fourth         = 'keyword',
-        brackets       = 'embed',
+        fifth = 'variable',
+        number = 'number',
+        second = 'class',
+        ['string'] = 'string',
+        first = 'support',
+        third = 'function',
+        fourth = 'keyword',
+        brackets = 'embed',
     },
 }
 
@@ -318,6 +318,8 @@ local apply_scheme = function(name)
 
     local sdim = tonumber(props['ext.lua.theme_sdim']) or 0.5
     local ldim = tonumber(props['ext.lua.theme_ldim']) or 0.5
+    local sbright = tonumber(props['ext.lua.theme_sbright']) or 1.5
+    local lbright = tonumber(props['ext.lua.theme_lbright']) or 1.5
     local sadj = tonumber(props['ext.lua.theme_sadj']) or 1.0
     local ladj = tonumber(props['ext.lua.theme_ladj']) or 1.0
     local wsadj = tonumber(props['ext.lua.theme_wsadj']) or 0.5
@@ -361,6 +363,14 @@ local apply_scheme = function(name)
             if vk ~= nil then
                 vk = {vk[1], adj(sdim, vk[2]), adjmix(ldim, vk[3], vars.back[3], vars.fore[3])}
                 vars[args[2]..'-dim'] = vk
+                return hsl_to_rgbstr(vk[1], vk[2], vk[3])
+            end
+        end
+        if args[1] == 'bright' and #args == 2 then
+            vk = vars[args[2]]
+            if vk ~= nil then
+                vk = {vk[1], adj(sbright, vk[2]), adjmix(lbright, vk[3], vars.back[3], vars.fore[3])}
+                vars[args[2]..'-bright'] = vk
                 return hsl_to_rgbstr(vk[1], vk[2], vk[3])
             end
         end
