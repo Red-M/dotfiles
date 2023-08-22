@@ -32,16 +32,30 @@
 
 # --> Comments added by HOWTO author.
 
+export PATH=~/.local/bin:${PATH}
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
-
-export PATH=$PATH:$HOME/.local/bin
 
 export SciTE_USERHOME=~
 export SciTE_HOME=~/.scite
 
+if [ -f ~/ssh_keys.sh ]; then
+    export SSH_AUTH_SOCK=/run/user/1000/keyring/ssh
+fi
+
+if [ -d "$HOME/.pyenv" ]; then
+    export PYENV_ROOT="$HOME/.pyenv"
+    command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+    eval "$(pyenv init -)"
+    if [ -d "$(pyenv root)/plugins/pyenv-virtualenv" ]; then
+        eval "$(pyenv virtualenv-init -)"
+    fi
+fi
+
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
+
+
 
 
 #-------------------------------------------------------------

@@ -201,9 +201,7 @@ aliases = {
   office = "me sits in Office";
   em = "me";
   behind = "me taps $0's shoulder from behind";
-  uber = "say gooby gUber pls";
   highfive = "me highfives $0";
-  wesley = "say wesleygopls";
 };
 
 statusbar = {
