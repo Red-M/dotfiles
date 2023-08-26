@@ -1,36 +1,3 @@
-# =============================================================== #
-#
-# PERSONAL $HOME/.bashrc FILE for bash-3.0 (or later)
-# By Emmanuel Rouat [no-email]
-#
-# Last modified: Tue Nov 20 22:04:47 CET 2012
-
-#  This file is normally read by interactive shells only.
-#+ Here is the place to define your aliases, functions and
-#+ other interactive features like your prompt.
-#
-#  The majority of the code here assumes you are on a GNU
-#+ system (most likely a Linux box) and is often based on code
-#+ found on Usenet or Internet.
-#
-#  See for instance:
-#  http://tldp.org/LDP/abs/html/index.html
-#  http://www.caliban.org/bash
-#  http://www.shelldorado.com/scripts/categories.html
-#  http://www.dotfiles.org
-#
-#  The choice of colors was done for a shell with a dark background
-#+ (white on black), and this is usually also suited for pure text-mode
-#+ consoles (no X server available). If you use a white background,
-#+ you'll have to do some other choices for readability.
-#
-#  This bashrc file is a bit overcrowded.
-#  Remember, it is just just an example.
-#  Tailor it to your needs.
-#
-# =============================================================== #
-
-# --> Comments added by HOWTO author.
 
 export PATH=~/.local/bin:${PATH}
 export LC_ALL=en_US.UTF-8
@@ -38,6 +5,10 @@ export LANG=en_US.UTF-8
 
 export SciTE_USERHOME=~
 export SciTE_HOME=~/.scite
+
+if [[ -e "${KREW_ROOT:-$HOME/.krew}" && ! -f "${KREW_ROOT:-$HOME/.krew}" ]]; then
+    export PATH="${KREW_ROOT:-$HOME/.krew}/bin:${PATH}"
+fi
 
 if [ -f ~/ssh_keys.sh ]; then
     export SSH_AUTH_SOCK=/run/user/1000/keyring/ssh
@@ -116,7 +87,7 @@ alias debug="set -o nounset; set -o xtrace"
 
 ulimit -S -c 0      # Don't want coredumps.
 set -o notify
-set -o noclobber
+#set -o noclobber
 set -o ignoreeof
 
 
@@ -487,8 +458,7 @@ export PAGER=less
 export LESSCHARSET='latin1'
 export LESSOPEN='|/usr/bin/lesspipe.sh %s 2>&-'
                 # Use this if lesspipe.sh exists.
-export LESS='-i -N -w  -z-4 -g -e -M -X -F -R -P%t?f%f \
-:stdin .?pb%pb\%:?lbLine %lb:?bbByte %bb:-...'
+export LESS='-i -N -w  -z-4 -g -e -M -X -F -R -P%t?f%f :stdin .?pb%pb\%:?lbLine %lb:?bbByte %bb:-...'
 
 # LESS man page colors (makes Man pages more readable).
 export LESS_TERMCAP_mb=$'\E[01;31m'

@@ -45,7 +45,7 @@ function maintain_path() {
                     echo "Made directory: ${home_target_up_one}"
                 fi
             fi
-            if [[ -e "${home_target}" && ! -L "${home_target}" ]]; then
+            if [[ -e "${home_target}" && -e "${script_target}" && ! -L "${home_target}" ]]; then
                 # \cp -r "${script_target}" "${home_target}"
                 # \rm -rf "${home_target}"
                 echo "Want to delete: ${home_target}"
@@ -77,7 +77,7 @@ maintain_path .local/share/fonts/*.ttf
 
 maintain_path .config/{font*,htop,kdedefaults,mpv,pipewire,wireplumber,xsettingsd}
 maintain_path .config/gtk-*/*
-maintain_path .config/{breezerc,kdeglobals,khotkeysrc,konsolerc,kscreenlockerrc,kwinrulesrc,touchpad*}
+maintain_path .config/{breezerc,kdeglobals,khotkeysrc,konsolerc,kscreenlockerrc,kwinrulesrc,kwinrc,touchpad*}
 
 maintain_path .fonts/*/*.{ttf,ttc}
 
