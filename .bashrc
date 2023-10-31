@@ -4,7 +4,7 @@ export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 
 export SciTE_USERHOME=~
-export SciTE_HOME=~/.scite
+export SciTE_HOME=$(readlink -f ~/.scite || echo ~/.scite)
 
 if [[ -e "${KREW_ROOT:-$HOME/.krew}" && ! -f "${KREW_ROOT:-$HOME/.krew}" ]]; then
     export PATH="${KREW_ROOT:-$HOME/.krew}/bin:${PATH}"
@@ -12,6 +12,11 @@ fi
 
 if [ -f ~/ssh_keys.sh ]; then
     export SSH_AUTH_SOCK=/run/user/1000/keyring/ssh
+fi
+
+if [ -d "$HOME/.asdf" ]; then
+    . "$HOME/.asdf/asdf.sh"
+    . "$HOME/.asdf/completions/asdf.bash"
 fi
 
 if [ -d "$HOME/.pyenv" ]; then
@@ -36,6 +41,10 @@ fi
 
 if [ -f /etc/bashrc ]; then
       . /etc/bashrc   # --> Read /etc/bashrc, if present.
+fi
+
+if [ -f "$HOME/.local/override_path" ]; then
+    export PATH=~/.local/bin:${PATH}
 fi
 
 
