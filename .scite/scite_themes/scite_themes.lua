@@ -310,11 +310,37 @@ local function setCallTipHighlight(hsl)
     table.insert(OnOpenEvents, 1, setCallTipHlt_OnOpen)
 end
 
+local function writeThemeSwitch(switch_prop,theme_prop)
+    f_theme_props = io.open(switch_prop, 'w')
+    f_theme_props:write('import '..theme_prop..'\n')
+    f_theme_props:close()
+end
+
 local apply_scheme = function(name)
     local requested_name = name
+    local disable_theme_translation = props['ext.lua.theme_disable_theme_translation']=='1'
+    local generate_theme_translations = props['ext.lua.theme_generate_theme_translations']=='1'
     local theme_dir = props['ext.lua.theme_dir']
     local schemes_dir = theme_dir .. '/schemes/'
     local props_dir = theme_dir .. '/props/'
+    local generated_props_dir = props_dir .. 'generated/'
+    local generated_props_path = generated_props_dir..string.gsub(requested_name,"^.*%/(.*)%..*$",'%1')
+
+    if disable_theme_translation == true then
+        writeThemeSwitch(theme_dir..'/theming.properties',generated_props_path)
+        for line in io.lines(generated_props_path..'.properties') do
+            if (line:match('%S') ~= nil) and (line:match('^%s*#') == nil) then
+                key, value = string.match(line, '^%s*([%w_.%-*]+)%s*=%s*(.-)%s*$')
+                if key then
+                    props[key] = value
+                end
+            end
+        end
+        -- scite.ReloadProperties()
+        -- setCallTipHighlight(vars["variable"])
+        props['ext.lua.theme_now'] = name
+        return
+    end
 
     local sdim = tonumber(props['ext.lua.theme_sdim']) or 0.5
     local ldim = tonumber(props['ext.lua.theme_ldim']) or 0.5
@@ -379,11 +405,11 @@ local apply_scheme = function(name)
 
     local key, value
     local configured_theme = props['ext.lua.theme']:lower():gsub(' ','-'):gsub('[,]','')
-    local write_theme_file = requested_name == configured_theme
+    local write_theme_file = requested_name == configured_theme or generate_theme_translations == true
     local props_list = dofile(theme_dir .. '/prop_list.lua')
     local f = ''
     if write_theme_file == true then
-        f = io.open(theme_dir..'/theming.properties', 'w')
+        f = io.open(generated_props_path..'.properties', 'w')
     end
     for i, v in ipairs(props_list) do
         curfile = v
@@ -416,6 +442,7 @@ local apply_scheme = function(name)
     if write_theme_file == true then
         f:write('\n')
         f:close()
+        writeThemeSwitch(theme_dir..'/theming.properties',generated_props_path)
     end
 
     setCallTipHighlight(vars["variable"])
@@ -434,6 +461,7 @@ end
 function cycle_theme(forward,step)
     local dir = props['ext.lua.theme_dir']
     local name = props['ext.lua.theme_now']
+    local print_theme_name = props['ext.lua.theme_print_theme_name']=='1'
     local f = io.open(dir..'/scheme_list.yaml','r')
     local list = yaml.load(f:read('*all'))
     f:close()
@@ -461,7 +489,9 @@ function cycle_theme(forward,step)
         end
     end
     apply_scheme(name)
-    _printf('Using "%s" %i/%i', props['ext.lua.theme_now'], list_cur, list_len)
+    if print_theme_name == true then
+        _printf('Using "%s" %i/%i', props['ext.lua.theme_now'], list_cur, list_len)
+    end
 end
 
 function next_theme()
