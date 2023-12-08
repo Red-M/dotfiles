@@ -8,3 +8,6 @@ UseFontLineChararacters=true
 [General]
 Name=Profile 6
 Parent=FALLBACK/
+
+[Keyboard]
+KeyBindings=default

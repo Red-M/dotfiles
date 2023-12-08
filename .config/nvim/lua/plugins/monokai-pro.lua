@@ -1,5 +1,6 @@
 return {
   "loctvl842/monokai-pro.nvim",
+  enabled = true,
   lazy = false,
   priority = 2000,
   config = function()
@@ -15,6 +16,9 @@ return {
         annotation = { italic = false },
         tag_attribute = { italic = false }, -- attribute of tag in reactjs
       },
+      override = function(colors)
+        
+      end,
     })
     vim.cmd([[colorscheme monokai-pro]])
   end,
