@@ -9,4 +9,4 @@ if [ -d "$HOME/.asdf" ]; then
 fi
 
 asdf plugin add neovim
-asdf install neovim 0.9.4
+asdf install neovim

@@ -1,6 +1,7 @@
 return {
   "loctvl842/monokai-pro.nvim",
-  priority = 1000,
+  lazy = false,
+  priority = 2000,
   config = function()
     require("monokai-pro").setup({
       filter = "classic",
