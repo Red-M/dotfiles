@@ -67,7 +67,6 @@ function maintain_path() {
 cd "${script_dir_path}" # We do this to allow for shell globbing the paths
 
 maintain_path .bashrc
-maintain_path .quiltrc-dpkg
 maintain_path .ssh
 
 maintain_path .icons
@@ -94,6 +93,9 @@ maintain_path .tmux.conf
 
 maintain_path .scite
 maintain_path .SciTEUser.properties
+
+maintain_path .quiltrc-dpkg
+maintain_path .tool-versions
 
 maintain_path tmux_start_up_scripts
 maintain_path Pictures/*

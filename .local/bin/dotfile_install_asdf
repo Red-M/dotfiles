@@ -1,0 +1,12 @@
+#!/bin/bash
+if [ ! -d ~/.asdf ]; then
+    git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.13.1
+fi
+
+if [ -d "$HOME/.asdf" ]; then
+    . "$HOME/.asdf/asdf.sh"
+    . "$HOME/.asdf/completions/asdf.bash"
+fi
+
+asdf plugin add neovim
+asdf install neovim 0.9.4
