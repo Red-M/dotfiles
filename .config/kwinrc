@@ -71,7 +71,7 @@ desktopchangeosdEnabled=false
 flipswitchEnabled=true
 highlightwindowEnabled=true
 kwin4_effect_fadedesktopEnabled=false
-slideEnabled=true
+slideEnabled=false
 slidingpopupsEnabled=false
 windowgeometryEnabled=false
 
@@ -109,6 +109,9 @@ SwitchingMode=0
 padding=4
 
 [Tiling][4656e9c7-29d2-5198-aef7-e64495a298e9]
+tiles={"layoutDirection":"horizontal","tiles":[{"width":0.25},{"width":0.5},{"width":0.25}]}
+
+[Tiling][867458d5-5ae7-5a0a-8da6-1a54d255864a]
 tiles={"layoutDirection":"horizontal","tiles":[{"width":0.25},{"width":0.5},{"width":0.25}]}
 
 [Windows]

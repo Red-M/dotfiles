@@ -3,6 +3,8 @@ export PATH=~/.local/bin:${PATH}
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 
+export SCRCPY_SERVER_PATH=~/.local/bin/scrcpy-server
+
 export SciTE_USERHOME=~
 export SciTE_HOME=$(readlink -f ~/.scite || echo ~/.scite)
 
@@ -27,6 +29,9 @@ if [ -d "$HOME/.pyenv" ]; then
         eval "$(pyenv virtualenv-init -)"
     fi
 fi
+
+function mkdircd() { mkdir -p "${1}" && cd "${1}"; }
+function prepend() { while read line; do echo "${1}${line}"; done; }
 
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
