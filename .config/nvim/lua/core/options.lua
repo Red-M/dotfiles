@@ -18,6 +18,7 @@ vim.o.updatetime = 250
 vim.o.termguicolors = true
 vim.o.signcolumn = 'yes'
 vim.o.wrap = false
+-- vim.o.whichwrap = 'lh'
 vim.o.scrolloff = 8
 vim.g.netrw_banner = 0
 vim.o.foldenable = true
@@ -25,6 +26,10 @@ vim.o.foldcolumn = '1' -- '0' is not bad
 vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
 vim.o.foldlevelstart = 99
 
+vim.cmd([[
+set whichwrap=<,>,[,]
+
+]])
 
 vim.cmd([[
 " for command mode
@@ -33,12 +38,18 @@ nnoremap <S-Tab> <<
 inoremap <S-Tab> <C-d>
 inoremap <Tab> <C-i>
 
+" del line
+nnoremap <C-k> dd
+inoremap <C-k> <C-O>dd
+
 " comment toggle
-nnoremap <C-q> gcc
-"inoremap <C-q> gc
+nnoremap <Q> gcc
+inoremap <Q> <C-O>gcc
 
 " save file
 "nnoremap <C-s> w
 "inoremap <C-s> w
+
+
 
 ]])
