@@ -94,6 +94,7 @@ maintain_path .tmux.conf
 maintain_path .scite
 maintain_path .SciTEUser.properties
 
+maintain_path .config/nvim
 maintain_path .quiltrc-dpkg
 maintain_path .tool-versions
 
@@ -107,3 +108,4 @@ maintain_path *.sh
 # ls -alh "${home_path}"
 # echo "${!permissions_paths_visited[*]}"
 echo 'Done!'
+
