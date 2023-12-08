@@ -33,6 +33,14 @@ fi
 function mkdircd() { mkdir -p "${1}" && cd "${1}"; }
 function prepend() { while read line; do echo "${1}${line}"; done; }
 
+alias dquilt="quilt --quiltrc=${HOME}/.quiltrc-dpkg"
+. /usr/share/bash-completion/completions/quilt
+complete -F _quilt_completion $_quilt_complete_opt dquilt
+
+export DEBUILD_DPKG_BUILDPACKAGE_OPTS="-i -I -us -uc"
+export DEBUILD_LINTIAN_OPTS="-i -I --show-overrides"
+#export DEBSIGN_KEYID="Your_GPG_keyID"
+
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 

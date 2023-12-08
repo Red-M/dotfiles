@@ -67,6 +67,7 @@ function maintain_path() {
 cd "${script_dir_path}" # We do this to allow for shell globbing the paths
 
 maintain_path .bashrc
+maintain_path .quiltrc-dpkg
 maintain_path .ssh
 
 maintain_path .icons
