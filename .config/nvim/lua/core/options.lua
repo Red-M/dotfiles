@@ -26,6 +26,10 @@ vim.o.foldcolumn = '1' -- '0' is not bad
 vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
 vim.o.foldlevelstart = 99
 
+
+vim.keymap.set("n", ";", "<Nop>", { silent = true, remap = false })
+vim.g.mapleader = ";"
+
 vim.cmd([[
 set whichwrap=<,>,[,]
 
@@ -73,3 +77,4 @@ inoremap <C-d> <C-O>Y<C-O>p
 -- map("n", "<A-k>", ":m .-2<CR>==") -- move line down(n)
 -- map("v", "<A-j>", ":m '>+1<CR>gv=gv") -- move line up(v)
 -- map("v", "<A-k>", ":m '<-2<CR>gv=gv") -- move line down(v)
+

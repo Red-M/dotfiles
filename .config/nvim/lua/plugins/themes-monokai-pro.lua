@@ -36,7 +36,7 @@ return {
         }
     end,
     --override = function(colors)
-        
+
     --end,
     })
     vim.cmd([[colorscheme monokai-pro]])
