@@ -1,9 +1,16 @@
 return {
   {
     "kevinhwang91/nvim-ufo",
+    lazy = false,
     event = { "BufReadPost", "BufNewFile" },
-    dependencies = { "kevinhwang91/promise-async", event = "BufReadPost" },
+    dependencies = {
+      { "kevinhwang91/promise-async", event = "BufReadPost" },
+      'nvim-treesitter/nvim-treesitter',
+    },
     opts = {
+      provider_selector = function(bufnr, filetype, buftype)
+        return {'treesitter', 'indent'}
+      end,
       fold_virt_text_handler = function(virtText, lnum, endLnum, width, truncate)
         local newVirtText = {}
         local suffix = ("  … %d "):format(endLnum - lnum)

@@ -1,20 +1,21 @@
 return {
   "luukvbaal/statuscol.nvim",
+  lazy = false,
   event = { "BufReadPost", "BufNewFile" },
   config = function()
     local builtin = require("statuscol.builtin")
     require("statuscol").setup({
-      relculright = false,
+      relculright = true,
       ft_ignore = { "neo-tree" },
       segments = {
+        {text = { "%s" }, click = "v:lua.ScSa"}, -- Sign
+        {text = { "%C" }, click = "v:lua.ScFa"}, -- Fold
         {
           -- line number
-          text = { " ", builtin.lnumfunc },
+          text = { builtin.lnumfunc, " " },
           condition = { true, builtin.not_empty },
           click = "v:lua.ScLa",
         },
-        { text = { "%s" }, click = "v:lua.ScSa" }, -- Sign
-        { text = { builtin.foldfunc, " " }, click = "v:lua.ScFa" }, -- Fold
       },
     })
     vim.api.nvim_create_autocmd({ "BufEnter" }, {
@@ -26,3 +27,4 @@ return {
     })
   end,
 }
+

@@ -1,27 +1,28 @@
 return {
   "nvim-neo-tree/neo-tree.nvim",
-    branch = "v3.x",
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
-      "MunifTanjim/nui.nvim",
-      -- "3rd/image.nvim", -- Optional image support in preview window: See `# Preview Mode` for more information
-      {
-        's1n7ax/nvim-window-picker',
-        version = '2.*',
-        config = function()
-            require 'window-picker'.setup({
-                filter_rules = {
-                    include_current_win = false,
-                    autoselect_one = true,
-                    -- filter using buffer options
-                    bo = {
-                        -- if the file type is one of following, the window will be ignored
-                        filetype = { 'neo-tree', "neo-tree-popup", "notify" },
-                        -- if the buffer type is one of following, the window will be ignored
-                        buftype = { 'terminal', "quickfix" },
-                    },
+  lazy = false,
+  branch = "v3.x",
+  dependencies = {
+    "nvim-lua/plenary.nvim",
+    "nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
+    "MunifTanjim/nui.nvim",
+    -- "3rd/image.nvim", -- Optional image support in preview window: See `# Preview Mode` for more information
+    {
+      's1n7ax/nvim-window-picker',
+      version = '2.*',
+      config = function()
+        require 'window-picker'.setup({
+          filter_rules = {
+            include_current_win = false,
+            autoselect_one = true,
+            -- filter using buffer options
+            bo = {
+              -- if the file type is one of following, the window will be ignored
+              filetype = { 'neo-tree', "neo-tree-popup", "notify" },
+              -- if the buffer type is one of following, the window will be ignored
+              buftype = { 'terminal', "quickfix" },
             },
+          },
         })
         end,
       },
@@ -81,7 +82,7 @@ return {
             highlight = "NeoTreeFileIcon"
           },
           modified = {
-            symbol = "[+]",
+            symbol = "⊞",
             highlight = "NeoTreeModified",
           },
           name = {
@@ -138,8 +139,8 @@ return {
           },
           mappings = {
             ["<space>"] = {
-                "toggle_node",
-                nowait = false, -- disable `nowait` if you have existing combos starting with this char that you want to use
+              "toggle_node",
+              nowait = false, -- disable `nowait` if you have existing combos starting with this char that you want to use
             },
             ["<2-LeftMouse>"] = "open",
             ["<cr>"] = "open",
@@ -226,13 +227,13 @@ return {
                                 -- "open_current",  -- netrw disabled, opening a directory opens within the
                                                   -- window like netrw would, regardless of window.position
                                 -- "disabled",    -- netrw left alone, neo-tree does not handle opening dirs
-          use_libuv_file_watcher = false, -- This will use the OS level file watchers to detect changes
+          use_libuv_file_watcher = true, -- This will use the OS level file watchers to detect changes
                                           -- instead of relying on nvim autocmd events.
           window = {
             mappings = {
               ["<bs>"] = "navigate_up",
               ["."] = "set_root",
-              ["H"] = "toggle_hidden",
+              -- ["H"] = "toggle_hidden",
               ["/"] = "fuzzy_finder",
               ["D"] = "fuzzy_finder_directory",
               ["#"] = "fuzzy_sorter", -- fuzzy sorting using the fzy algorithm

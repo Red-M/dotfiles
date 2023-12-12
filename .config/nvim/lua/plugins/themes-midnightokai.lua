@@ -1,5 +1,6 @@
 return {
-  "loctvl842/monokai-pro.nvim",
+  "Red_M/midnightokai.nvim",
+  dev = true,
   enabled = true,
   lazy = false,
   priority = 2000,
@@ -16,7 +17,7 @@ return {
         annotation = { italic = false },
         tag_attribute = { italic = false }, -- attribute of tag in reactjs
       },
-      overridePalette = function()
+      overridePalette = function(name)
         return {
           dark2 = "#272822",
           dark1 = "#383830",
@@ -34,10 +35,20 @@ return {
           dimmed4 = "#57584f",
           dimmed5 = "#3b3c35",
         }
-    end,
-    --override = function(colors)
-
-    --end,
+      end,
+      override = function(c)
+        return {
+          LocalHighlight = { bg = c.editor.findMatchHighlightBackground },
+          Bold = { bold = false },
+          -- Ignore = { }, -- (preferred) left blank, hidden  |hl-Ignore|
+          Italic = { italic = false },
+          Todo = {
+            bg = c.editor.background,
+            fg = c.base.magenta,
+            bold = false,
+          },
+        }
+      end,
     })
     vim.cmd([[colorscheme monokai-pro]])
   end,

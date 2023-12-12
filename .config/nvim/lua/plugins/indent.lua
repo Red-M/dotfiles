@@ -1,18 +1,20 @@
 return {
   {
     'nmac427/guess-indent.nvim',
+    lazy = false,
     config = function() require('guess-indent').setup({}) end,
   },
   -- indent guides for Neovim
   {
     "lukas-reineke/indent-blankline.nvim",
+    lazy = false,
     -- event = "LazyFile",
     opts = {
       indent = {
         char = "│",
         tab_char = "│",
       },
-      scope = { enabled = false },
+      scope = { enabled = true },
       exclude = {
         filetypes = {
           "help",
@@ -37,15 +39,16 @@ return {
   -- the highlighting.
   {
     "echasnovski/mini.indentscope",
-    enabled = false,
+    enabled = true,
+    lazy = false,
     version = false, -- wait till new 0.7.0 release to put it back on semver
     -- event = "LazyFile",
     opts = {
-      -- symbol = "▏",
       symbol = "│",
       options = { try_as_border = true },
     },
     init = function()
+      require('mini.indentscope').gen_animation.none()
       vim.api.nvim_create_autocmd("FileType", {
         pattern = {
           "help",

@@ -1,12 +1,13 @@
 return {
   {
     "akinsho/bufferline.nvim",
+    lazy = false,
     config = function()
       require('bufferline').setup({
         options = {
           themable = true,
           always_show_bufferline = true,
-          separator_style = "thin",
+          -- separator_style = "thin",
           show_duplicate_prefix = true,
           move_wraps_at_ends = false,
         }
@@ -30,6 +31,7 @@ return {
     },
   },{
     "nvim-lualine/lualine.nvim",
+    lazy = false,
     event = { "BufReadPost", "BufNewFile" },
     opts = {
       sections = {

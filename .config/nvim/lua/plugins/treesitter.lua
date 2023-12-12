@@ -1,5 +1,6 @@
 return {
   "nvim-treesitter/nvim-treesitter",
+  lazy = false,
   build = ":TSUpdate",
   config = function ()
     local configs = require("nvim-treesitter.configs")
@@ -17,6 +18,7 @@ return {
         "regex",
         "vim",
         "vimdoc",
+        "terraform",
         "hcl",
         "javascript",
         "html"
@@ -27,4 +29,4 @@ return {
       context_commentstring = { enable = true },
     })
   end
- }
+}

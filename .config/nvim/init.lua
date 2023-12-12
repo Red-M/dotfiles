@@ -21,6 +21,7 @@ require("lazy").setup(
     root=vim.fn.stdpath("config") .. "/lazy/plugins",
     state=vim.fn.stdpath("config") .. "/lazy/state.json",
     install={colorscheme={colorscheme = { "monokai-pro", "habamax" }},},
+    dev = { path = vim.fn.stdpath("config") .. "/local_plugins", },
   }
 )
 
