@@ -1,3 +1,10 @@
+local nv_statusline = require("nvim-treesitter.statusline")
+local treesitter_status_line = function()
+  return nv_statusline.statusline({
+    -- type_patterns = {".*",},
+  })
+end
+
 return {
   {
     "akinsho/bufferline.nvim",
@@ -32,15 +39,19 @@ return {
   },{
     "nvim-lualine/lualine.nvim",
     lazy = false,
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+    },
     event = { "BufReadPost", "BufNewFile" },
     opts = {
       sections = {
         lualine_a = {'mode'},
         lualine_b = {'location'},
         lualine_c = {'filename'},
+        -- lualine_x = { treesitter_status_line, 'filetype', 'encoding', 'fileformat'},
+        lualine_x = { 'filetype', 'encoding', 'fileformat'},
+        lualine_y = {'diff', 'diagnostics'},
         lualine_z = {'progress'},
-        lualine_x = {'encoding', 'fileformat', 'filetype'},
-        lualine_y = {'diff', 'diagnostics'}
       },
     },
   },
