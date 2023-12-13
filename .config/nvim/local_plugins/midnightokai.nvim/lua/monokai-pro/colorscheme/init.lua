@@ -77,7 +77,7 @@ M.setup = function(filter)
   }
 
   cs.sideBar = {
-    background = p.dark1, -- "#221f22",
+    background = p.dark2, -- "#221f22",
     foreground = p.dimmed2, -- "#939293",
   }
 

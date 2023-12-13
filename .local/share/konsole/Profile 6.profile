@@ -2,7 +2,7 @@
 AntiAliasFonts=false
 BoldIntense=false
 ColorScheme=Linux
-Font=CozetteVector NF,9,-1,5,50,0,0,0,0,0
+Font=CozetteVector NFM,9,-1,5,50,0,0,0,0,0
 UseFontLineChararacters=true
 
 [General]
@@ -11,3 +11,4 @@ Parent=FALLBACK/
 
 [Keyboard]
 KeyBindings=default
+

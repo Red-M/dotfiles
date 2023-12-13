@@ -1,9 +1,9 @@
-local nv_statusline = require("nvim-treesitter.statusline")
-local treesitter_status_line = function()
-  return nv_statusline.statusline({
-    -- type_patterns = {".*",},
-  })
-end
+--local nv_statusline = require("nvim-treesitter.statusline")
+-- local treesitter_status_line = function()
+--   return nv_statusline.statusline({
+--     -- type_patterns = {".*",},
+--   })
+-- end
 
 return {
   {
@@ -39,10 +39,10 @@ return {
   },{
     "nvim-lualine/lualine.nvim",
     lazy = false,
-    dependencies = {
-      "nvim-treesitter/nvim-treesitter",
-    },
-    event = { "BufReadPost", "BufNewFile" },
+    -- dependencies = {
+    --   "nvim-treesitter/nvim-treesitter",
+    -- },
+    -- event = { "BufReadPost", "BufNewFile" },
     opts = {
       sections = {
         lualine_a = {'mode'},

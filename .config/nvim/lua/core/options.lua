@@ -27,11 +27,16 @@ vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decr
 vim.o.foldlevelstart = 99
 
 
+
 vim.keymap.set("n", ";", "<Nop>", { silent = true, remap = false })
 vim.g.mapleader = ";"
 
+vim.keymap.set({"i","n","v"}, [[<C-S-:>]], "<C-O><cmd>", { remap = false }) -- Allow command from any mode
+vim.keymap.set("i", "<C-;>", "<leader>", { remap = false })
+
 vim.cmd([[
 set whichwrap=<,>,[,]
+command! WipeReg for i in range(34,122) | silent! call setreg(nr2char(i), []) | endfor
 
 ]])
 
@@ -45,6 +50,14 @@ vim.api.nvim_create_autocmd({ "BufWritePre" }, {
 })
 
 vim.cmd([[
+" Allow command from anywhere
+"nnoremap <C-S-:> :
+"inoremap <C-S-:> <C-O>:
+"vnoremap <C-S-:> :
+
+" Search from insert
+inoremap <C-S-?> <C-O>?
+
 " indent
 " for command mode
 nnoremap <Tab> >>
@@ -53,13 +66,15 @@ nnoremap <S-Tab> <<
 inoremap <S-Tab> <C-d>
 inoremap <Tab> <C-i>
 
-" del line
-nnoremap <C-k> dd
-inoremap <C-k> <C-O>dd
+" del line after cursor and the entire line
+nnoremap <C-k> c$
+inoremap <C-k> <C-O>d$
+nnoremap <C-S-k> "Kdd
+inoremap <C-S-k> <C-O>"Kdd
 
 " comment toggle
 nnoremap <C-q> gcc
-inoremap <C-q> <C-O>gc<C-O>c
+inoremap <C-q> <C-O>gcc
 
 " duplicate line
 nnoremap <C-d> Yp
@@ -69,14 +84,15 @@ inoremap <C-d> <C-O>Y<C-O>p
 "nnoremap <C-s> w
 "inoremap <C-s> w
 
+" Telescope
+nnoremap <C-T> <cmd>Telescope<CR>
+inoremap <C-T> <cmd>Telescope<CR>
 
 
 ]])
 
---vim.keymap.set("i", "<A-j>", ":m .+1<CR>i") -- move line up(n)
---vim.keymap.set("i", "<A-k>", ":m .-2<CR>i") -- move line down(n)
-vim.keymap.set("n", "<A-j>", ":m .+1<CR>==") -- move line up(n)
-vim.keymap.set("n", "<A-k>", ":m .-2<CR>==") -- move line down(n)
-vim.keymap.set("v", "<A-j>", ":m '>+1<CR>gv=gv") -- move line up(v)
-vim.keymap.set("v", "<A-k>", ":m '<-2<CR>gv=gv") -- move line down(v)
+vim.keymap.set({"i","n"}, "<A-j>", "<cmd>m .+1<CR>") -- move line up(n)
+vim.keymap.set({"i","n"}, "<A-k>", "<cmd>m .-2<CR>") -- move line down(n)
+vim.keymap.set("v", "<A-j>", "<cmd>m '>+1<CR>gv=gv") -- move line up(v)
+vim.keymap.set("v", "<A-k>", "<cmd>m '<-2<CR>gv=gv") -- move line down(v)
 

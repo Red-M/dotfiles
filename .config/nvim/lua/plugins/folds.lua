@@ -1,11 +1,11 @@
 return {
   {
     "kevinhwang91/nvim-ufo",
-    lazy = false,
+    priority = 200,
     event = { "BufReadPost", "BufNewFile" },
     dependencies = {
       { "kevinhwang91/promise-async", event = "BufReadPost" },
-      'nvim-treesitter/nvim-treesitter',
+      --'nvim-treesitter/nvim-treesitter',
     },
     opts = {
       provider_selector = function(bufnr, filetype, buftype)

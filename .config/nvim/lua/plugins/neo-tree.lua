@@ -1,9 +1,9 @@
 return {
   "nvim-neo-tree/neo-tree.nvim",
-  lazy = false,
   branch = "v3.x",
   dependencies = {
     "nvim-lua/plenary.nvim",
+    "lewis6991/gitsigns.nvim",
     "nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
     "MunifTanjim/nui.nvim",
     -- "3rd/image.nvim", -- Optional image support in preview window: See `# Preview Mode` for more information
@@ -54,6 +54,10 @@ return {
         --           return a.type > b.type
         --       end
         --   end , -- this sorts files and directories descendantly
+        source_selector = {
+          winbar = true,
+          statusline = false
+        },
         default_component_configs = {
           container = {
             enable_character_fade = true
@@ -312,6 +316,15 @@ return {
         }
       })
 
-      vim.cmd([[nnoremap \ :Neotree reveal<cr>]])
+
+      -- vim.api.nvim_create_autocmd("VimEnter", {
+      --   group = vim.api.nvim_create_augroup("neotree",{clear = false}),
+      --   callback = function()
+      --     vim.cmd([[:Neotree reveal]])
+      --   end,
+      -- })
+
+      vim.keymap.set("n", [[\]], "<cmd>Neotree reveal<cr>")
+      vim.keymap.set({"i","n"}, [[<C-\>]], "<cmd>Neotree reveal<cr>")
     end
 }
