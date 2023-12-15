@@ -44,44 +44,22 @@ return {
     "echasnovski/mini.indentscope",
     -- enabled = true,
     --lazy = false,
-    version = "*", -- wait till new 0.7.0 release to put it back on semver
-    event = "LazyFile",
+    --version = "*", -- wait till new 0.7.0 release to put it back on semver
+    --event = "LazyFile",
     -- opts = {
     --   symbol = "│",
     --   options = { try_as_border = true },
     -- },
-    config = function()
+    opts = function()
       local mini_indentscope = require('mini.indentscope')
-      mini_indentscope.setup({
+      return {
         --symbol = "│",
         symbol = "┊",
         draw = {
           animation = mini_indentscope.gen_animation.none()
         },
         options = { try_as_border = true },
-      })
-    end,
-    init = function()
-      --require('mini.indentscope').gen_animation.none()
-      vim.api.nvim_create_autocmd("FileType", {
-        group = vim.api.nvim_create_augroup("plugin_mini.indentscope",{clear = false}),
-        pattern = {
-          "help",
-          "alpha",
-          "dashboard",
-          "neo-tree",
-          "Trouble",
-          "trouble",
-          "lazy",
-          "mason",
-          "notify",
-          "toggleterm",
-          "lazyterm",
-        },
-        callback = function()
-          vim.b.miniindentscope_disable = true
-        end,
-      })
+      }
     end,
   },
 }

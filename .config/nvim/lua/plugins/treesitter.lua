@@ -3,10 +3,7 @@ return {
   --lazy = false,
   --priority = 500,
   build = ":TSUpdate",
-  config = function ()
-    local configs = require("nvim-treesitter.configs")
-
-    configs.setup({
+  opts = {
       ensure_installed = {
         "python",
         "bash",
@@ -45,7 +42,5 @@ return {
       indent = { enable = true },
       context_commentstring = { enable = true },
       --parser_install_dir = vim.fn.stdpath("config") .. "/treesitter_parsers",
-    })
-    require("nvim-treesitter.install").prefer_git = true
-  end
+  },
 }
