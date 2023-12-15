@@ -64,15 +64,15 @@ M.setup = function(c, config, hp)
       bg = c.editor.foldBackground,
     }, -- line used for closed folds
     FoldColumn = {
-      bg = c.editor.background,
+      bg = c.editor.statuscolBackground,
       fg = c.editorLineNumber.activeForeground,
     }, -- 'foldcolumn'
     SignColumn = {
-      bg = c.editor.background,
+      bg = c.editor.statuscolBackground,
     }, -- column where |signs| are displayed
     -- Substitute = { bg = C.yellow, fg = C.bg }, -- |:substitute| replacement text highlighting
     LineNr = {
-      bg = c.editor.background,
+      bg = c.editor.statuscolBackground,
       fg = c.editorLineNumber.foreground,
     }, -- Line number for ":number" and ":#" commands, and when 'number' or 'relativenumber' option is set.
     MatchParen = {

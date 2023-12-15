@@ -9,10 +9,13 @@ return {
     "lukas-reineke/indent-blankline.nvim",
     lazy = false,
     -- event = "LazyFile",
+    --event = "User FileOpened",
     opts = {
       indent = {
-        char = "│",
-        tab_char = "│",
+        --char = "│",
+        char = "┊",
+        --tab_char = "│",
+        tab_char = "┊",
       },
       scope = { enabled = true },
       exclude = {
@@ -39,17 +42,29 @@ return {
   -- the highlighting.
   {
     "echasnovski/mini.indentscope",
-    enabled = true,
-    lazy = false,
-    version = false, -- wait till new 0.7.0 release to put it back on semver
-    -- event = "LazyFile",
-    opts = {
-      symbol = "│",
-      options = { try_as_border = true },
-    },
+    -- enabled = true,
+    --lazy = false,
+    version = "*", -- wait till new 0.7.0 release to put it back on semver
+    event = "LazyFile",
+    -- opts = {
+    --   symbol = "│",
+    --   options = { try_as_border = true },
+    -- },
+    config = function()
+      local mini_indentscope = require('mini.indentscope')
+      mini_indentscope.setup({
+        --symbol = "│",
+        symbol = "┊",
+        draw = {
+          animation = mini_indentscope.gen_animation.none()
+        },
+        options = { try_as_border = true },
+      })
+    end,
     init = function()
-      require('mini.indentscope').gen_animation.none()
+      --require('mini.indentscope').gen_animation.none()
       vim.api.nvim_create_autocmd("FileType", {
+        group = vim.api.nvim_create_augroup("plugin_mini.indentscope",{clear = false}),
         pattern = {
           "help",
           "alpha",

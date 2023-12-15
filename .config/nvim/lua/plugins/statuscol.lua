@@ -7,7 +7,7 @@ return {
     local builtin = require("statuscol.builtin")
     require("statuscol").setup({
       relculright = true,
-      ft_ignore = { "neo-tree" },
+      --ft_ignore = { "neo-tree" },
       segments = {
         {text = { "%C " }, click = "v:lua.ScFa"}, -- Fold
         {
@@ -23,7 +23,12 @@ return {
       group = vim.api.nvim_create_augroup("statuscol",{clear = false}),
       callback = function()
         if vim.bo.filetype == "neo-tree" then
-          vim.opt_local.statuscolumn = ""
+          vim.opt_local.relativenumber = true
+          --vim.opt_local.statuscolumn = true
+          --{
+          --  relculright = true,
+          --  {text = { builtin.lnumfunc }, click = "v:lua.ScLa"}, -- Fold
+          --}
         end
       end,
     })

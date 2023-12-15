@@ -1,6 +1,7 @@
 return {
   "nvim-neo-tree/neo-tree.nvim",
   branch = "v3.x",
+  --event = { "VeryLazy", },
   dependencies = {
     "nvim-lua/plenary.nvim",
     "lewis6991/gitsigns.nvim",
@@ -86,7 +87,7 @@ return {
             highlight = "NeoTreeFileIcon"
           },
           modified = {
-            symbol = "⊞",
+            symbol = "~",
             highlight = "NeoTreeModified",
           },
           name = {
@@ -97,15 +98,15 @@ return {
           git_status = {
             symbols = {
               -- Change type
-              added     = "", -- or "✚", but this is redundant info if you use git_status_colors on the name
-              modified  = "", -- or "", but this is redundant info if you use git_status_colors on the name
+              added     = "+", -- or "✚", but this is redundant info if you use git_status_colors on the name
+              modified  = "~", -- or "", but this is redundant info if you use git_status_colors on the name
               deleted   = "✖",-- this can only be used in the git_status source
               renamed   = "󰁕",-- this can only be used in the git_status source
               -- Status type
               untracked = "",
-              ignored   = "",
-              unstaged  = "󰄱",
-              staged    = "",
+              ignored   = " ",
+              unstaged  = " ",
+              staged    = " ",
               conflict  = "",
             }
           },
@@ -127,7 +128,7 @@ return {
             required_width = 110, -- min width of window required to show this column
           },
           symlink_target = {
-            enabled = false,
+            enabled = true,
           },
         },
         -- A list of functions, each representing a global custom command
@@ -136,7 +137,7 @@ return {
         commands = {},
         window = {
           position = "left",
-          width = 40,
+          width = 42,
           mapping_options = {
             noremap = true,
             nowait = true,
@@ -324,7 +325,9 @@ return {
       --   end,
       -- })
 
-      vim.keymap.set("n", [[\]], "<cmd>Neotree reveal<cr>")
-      vim.keymap.set({"i","n"}, [[<C-\>]], "<cmd>Neotree reveal<cr>")
+      --vim.cmd([[nnoremap \ <cmd>Neotree reveal<cr>]])
+      --vim.cmd([[inoremap <C-\> <cmd>Neotree reveal<cr>]])
+      --vim.keymap.set("n", [[\]], "<cmd>Neotree reveal<cr>")
+      --vim.keymap.set({"i","n"}, [[<C-\>]], "<cmd>Neotree reveal<cr>")
     end
 }

@@ -4,23 +4,57 @@
 --     -- type_patterns = {".*",},
 --   })
 -- end
+local Util = require("lazyvim.util")
 
 return {
   {
     "akinsho/bufferline.nvim",
-    lazy = false,
-    config = function()
-      require('bufferline').setup({
-        options = {
-          themable = true,
-          always_show_bufferline = true,
-          -- separator_style = "thin",
-          show_duplicate_prefix = true,
-          move_wraps_at_ends = false,
-        }
+--    lazy = false,
+    event = { "BufReadPost", "BufNewFile", "User FileOpened", "VeryLazy" },
+    --event = { "VeryLazy", },
+    opts = {
+      options = {
+        themable = true,
+        theme = "auto",
+        always_show_bufferline = true,
+        -- separator_style = "thin",
+        numbers = "both",
+        separator_style = "slant",
+        --separator_style = "padded_slant",
+        sort_by = 'id',
+        show_tab_indicators = true,
+        show_duplicate_prefix = true,
+        move_wraps_at_ends = true,
+        buffer_close_icon = "☒",
+        close_icon = "☒",
+        modified_icon = "‼",
+        -- stylua: ignore
+        close_command = function(n) require("mini.bufremove").delete(n, false) end,
+        -- stylua: ignore
+        right_mouse_command = function(n) require("mini.bufremove").delete(n, false) end,
+        --diagnostics = "nvim_lsp",
+        --always_show_bufferline = false,
+        offsets = {
+          {
+            filetype = "neo-tree",
+            text = "Neo-tree",
+            highlight = "Directory",
+            text_align = "left",
+          },
+        },
+      },
+    },
+    config = function(_,opts)
+      require('bufferline').setup(opts)
+      -- Fix bufferline when restoring a session
+      vim.api.nvim_create_autocmd("BufAdd", {
+        callback = function()
+          vim.schedule(function()
+            pcall(nvim_bufferline)
+          end)
+        end,
       })
     end,
-    event = { "BufReadPost", "BufNewFile" },
     keys = {
       { "<C-1>", "<Cmd>BufferLineGoToBuffer 1<CR>", desc = "Go to buffer 1" },
       { "<C-2>", "<Cmd>BufferLineGoToBuffer 2<CR>", desc = "Go to buffer 2" },
@@ -38,16 +72,41 @@ return {
     },
   },{
     "nvim-lualine/lualine.nvim",
-    lazy = false,
+    --lazy = false,
     -- dependencies = {
     --   "nvim-treesitter/nvim-treesitter",
     -- },
     -- event = { "BufReadPost", "BufNewFile" },
+    --event = { "VeryLazy", },
+    -- init = function()
+    --   vim.g.lualine_laststatus = vim.o.laststatus
+    --   if vim.fn.argc(-1) > 0 then
+    --     -- set an empty statusline till lualine loads
+    --     vim.o.statusline = " "
+    --   else
+    --     -- hide the statusline on the starter page
+    --     vim.o.laststatus = 0
+    --   end
+    -- end,
     opts = {
+      options = {
+        globalstatus = false,
+      },
       sections = {
         lualine_a = {'mode'},
         lualine_b = {'location'},
-        lualine_c = {'filename'},
+        --lualine_c = {Util.lualine.root_dir(),'filename',Util.lualine.pretty_path({relative="root",})},
+        lualine_c = {Util.lualine.pretty_path({relative="root",})},
+        -- lualine_x = { treesitter_status_line, 'filetype', 'encoding', 'fileformat'},
+        lualine_x = { 'filetype', 'encoding', 'fileformat'},
+        lualine_y = {'diff', 'diagnostics'},
+        lualine_z = {'progress'},
+      },
+     inactive_sections = {
+        lualine_a = {'mode'},
+        lualine_b = {'location'},
+        --lualine_c = {Util.lualine.root_dir(),'filename',Util.lualine.pretty_path({relative="root",})},
+        lualine_c = {Util.lualine.pretty_path({relative="root",})},
         -- lualine_x = { treesitter_status_line, 'filetype', 'encoding', 'fileformat'},
         lualine_x = { 'filetype', 'encoding', 'fileformat'},
         lualine_y = {'diff', 'diagnostics'},

@@ -8,14 +8,14 @@ local default = {
   terminal_colors = true,
   devicons = false,
   styles = {
-    comment = { italic = true },
-    keyword = { italic = true }, -- any other keyword
-    type = { italic = true }, -- (preferred) int, long, char, etc
-    storageclass = { italic = true }, -- static, register, volatile, etc
-    structure = { italic = true }, -- struct, union, enum, etc
-    parameter = { italic = true }, -- parameter pass in function
-    annotation = { italic = true },
-    tag_attribute = { italic = true }, -- attribute of tag in reactjs
+    comment = { italitc = false },
+    keyword = { italitc = false }, -- any other keyword
+    type = { italitc = false }, -- (preferred) int, long, char, etc
+    storageclass = { italitc = false }, -- static, register, volatile, etc
+    structure = { italitc = false }, -- struct, union, enum, etc
+    parameter = { italitc = false }, -- parameter pass in function
+    annotation = { italitc = false },
+    tag_attribute = { italitc = false }, -- attribute of tag in reactjs
   },
   filter = vim.o.background == "light" and "classic" or "pro", -- classic | octagon | pro | machine | ristretto | spectrum
   day_night = {
@@ -40,7 +40,7 @@ local default = {
       underline_selected = false,
       underline_visible = false,
       underline_fill = false,
-      bold = true,
+      bold = false,
     },
     indent_blankline = {
       context_highlight = "default", -- default | pro

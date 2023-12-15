@@ -1,8 +1,9 @@
 return {
   {
     "kevinhwang91/nvim-ufo",
-    priority = 200,
-    event = { "BufReadPost", "BufNewFile" },
+    --priority = 200,
+    --event = { "BufReadPost", "BufNewFile" },
+    --event = { "VeryLazy", },
     dependencies = {
       { "kevinhwang91/promise-async", event = "BufReadPost" },
       --'nvim-treesitter/nvim-treesitter',

@@ -57,9 +57,8 @@ return {
       extensions = { scope = {} }, -- add scope.nvim extension
       })
 
-      vim.api.nvim_create_augroup("startup",{clear = false})
       vim.api.nvim_create_autocmd("VimEnter", {
-        group = "startup",
+        group = vim.api.nvim_create_augroup("plugin_resession",{clear = false}),
         callback = function()
           -- Only load the session if nvim was started with no args
           if vim.fn.argc(-1) == 0 then
@@ -68,11 +67,12 @@ return {
           end
         end,
       })
-      vim.api.nvim_create_augroup("exit",{clear = false})
       vim.api.nvim_create_autocmd("VimLeavePre", {
-        group = "exit",
+        group = vim.api.nvim_create_augroup("plugin_resession",{clear = false}),
         callback = function()
-          resession.save(vim.fn.getcwd(), { dir = "dirsession", notify = false })
+          if vim.fn.argc(-1) == 0 then
+            resession.save(vim.fn.getcwd(), { dir = "dirsession", notify = false })
+          end
         end,
       })
 

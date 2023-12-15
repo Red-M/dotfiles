@@ -40,11 +40,12 @@ M.setup = function(filter)
     wordHighlightBackground = hp.blend(p.accent2, 0.35, p.background), -- "#fcfcfa26", -- illuminateRead
     selectionHighlightBackground = hp.blend(p.accent2, 0.35, p.background), -- "#fcfcfa26", -- illuminateText
     wordHighlightStrongBackground = hp.blend(p.accent2, 0.35, p.background), -- "#fcfcfa26", -- illuminateWrite
+    statuscolBackground = hp.blend(p.dimmed4, 0.55, p.background),
   }
 
   cs.editorLineNumber = {
-    foreground = p.dimmed4,
-    activeForeground = p.dimmed1,
+    foreground = hp.blend(p.dimmed1, 0.75, p.dimmed2),
+    activeForeground = hp.blend(p.text, 0.95, p.dimmed1),
   }
 
   cs.editorHoverWidget = {
@@ -61,7 +62,7 @@ M.setup = function(filter)
   }
 
   cs.editorIndentGuide = {
-    background = p.dimmed5, -- "#403e41",
+    background = p.background, -- "#403e41",
     activeBackground = p.dimmed3, -- "#5b595c",
   }
 
