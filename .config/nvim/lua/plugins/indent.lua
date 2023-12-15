@@ -2,7 +2,9 @@ return {
   {
     'nmac427/guess-indent.nvim',
     lazy = false,
-    config = function() require('guess-indent').setup({}) end,
+    opts = {
+      auto_cmd = true,
+    },
   },
   -- indent guides for Neovim
   {
@@ -43,7 +45,7 @@ return {
   {
     "echasnovski/mini.indentscope",
     -- enabled = true,
-    --lazy = false,
+    lazy = false,
     --version = "*", -- wait till new 0.7.0 release to put it back on semver
     --event = "LazyFile",
     -- opts = {

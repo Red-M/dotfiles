@@ -162,10 +162,10 @@ M.setup = function(filter)
   cs.tab = {
     activeBackground = config.transparent_background and "NONE" or p.background, -- "#272822",
     activeBorder = p.accent3, -- "#ffd866",
-    activeForeground = p.accent3, -- "#ffd866",
-    inactiveBackground = hp.lighten(p.background, 15),
-    inactiveForeground = p.dimmed2, -- "#939293",
-    unfocusedActiveBackground = p.background, -- "#272822",
+    activeForeground = p.accent1, -- "#ffd866",
+    inactiveBackground = hp.blend(p.background, 0.75, '#000000'), --hp.lighten(p.background, 15),
+    inactiveForeground = p.dimmed3, -- "#939293",
+    unfocusedActiveBackground = p.dark2, -- "#272822",
     unfocusedActiveBorder = p.dimmed2, -- "#939293",
     unfocusedActiveForeground = p.dimmed1, -- "#c1c0c0",
   }

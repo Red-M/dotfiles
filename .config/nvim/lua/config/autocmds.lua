@@ -29,6 +29,7 @@ vim.api.nvim_create_autocmd("BufAdd", {
 })
 
 vim.api.nvim_create_autocmd({ "BufWritePre" }, {
+  group = vim.api.nvim_create_augroup("plugin_whitespace-nvim",{clear = false}),
   pattern = {"*"},
   callback = function(ev)
     local save_cursor = vim.fn.getpos(".")
