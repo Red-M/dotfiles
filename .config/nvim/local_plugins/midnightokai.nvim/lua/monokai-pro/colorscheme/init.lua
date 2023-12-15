@@ -28,19 +28,20 @@ M.setup = function(filter)
   --- @class Colorscheme
   local cs = {}
 
+  local calc_bg = hp.blend(p.background, 0.65, '#000000')
   cs.editor = {
-    background = config.transparent_background and "NONE" or p.background,
+    background = config.transparent_background and "NONE" or calc_bg,
     foreground = p.text,
-    lineHighlightBackground = hp.blend(p.accent2, 0.15, p.background), -- "#fcfcfa0c", -- background: background
-    selectionBackground = hp.blend(p.dimmed1, 0.35, p.background), --"#c1c0c027", -- background: background
-    findMatchBackground = hp.blend(p.accent2, 0.35, p.background), -- "#fcfcfa26", -- background: background
+    lineHighlightBackground = hp.blend(p.accent2, 0.15, calc_bg), -- "#fcfcfa0c", -- background: background
+    selectionBackground = hp.blend(p.dimmed1, 0.35, calc_bg), --"#c1c0c027", -- background: background
+    findMatchBackground = hp.blend(p.accent2, 0.35, calc_bg), -- "#fcfcfa26", -- background: background
     findMatchBorder = p.accent3,
-    findMatchHighlightBackground = hp.blend(p.accent2, 0.35, p.background), -- "#fcfcfa26", -- background: background
-    foldBackground = hp.blend(p.text, 0.35, p.background), -- "#fcfcfa0c", -- background: background
-    wordHighlightBackground = hp.blend(p.accent2, 0.35, p.background), -- "#fcfcfa26", -- illuminateRead
-    selectionHighlightBackground = hp.blend(p.accent2, 0.35, p.background), -- "#fcfcfa26", -- illuminateText
-    wordHighlightStrongBackground = hp.blend(p.accent2, 0.35, p.background), -- "#fcfcfa26", -- illuminateWrite
-    statuscolBackground = hp.blend(p.dimmed4, 0.55, p.background),
+    findMatchHighlightBackground = hp.blend(p.accent2, 0.35, calc_bg), -- "#fcfcfa26", -- background: background
+    foldBackground = hp.blend(p.text, 0.35, calc_bg), -- "#fcfcfa0c", -- background: background
+    wordHighlightBackground = hp.blend(p.accent2, 0.35, calc_bg), -- "#fcfcfa26", -- illuminateRead
+    selectionHighlightBackground = hp.blend(p.accent2, 0.35, calc_bg), -- "#fcfcfa26", -- illuminateText
+    wordHighlightStrongBackground = hp.blend(p.accent2, 0.35, calc_bg), -- "#fcfcfa26", -- illuminateWrite
+    statuscolBackground = hp.blend(p.dimmed4, 0.55, calc_bg),
   }
 
   cs.editorLineNumber = {
@@ -50,7 +51,7 @@ M.setup = function(filter)
 
   cs.editorHoverWidget = {
     background = p.dimmed5,
-    border = p.background,
+    border = calc_bg,
   }
 
   cs.editorSuggestWidget = {
@@ -62,12 +63,12 @@ M.setup = function(filter)
   }
 
   cs.editorIndentGuide = {
-    background = p.background, -- "#403e41",
+    background = calc_bg, -- "#403e41",
     activeBackground = p.dimmed3, -- "#5b595c",
   }
 
   cs.editorInlayHint = {
-    background = hp.blend(p.accent2, 0.3, p.background),
+    background = hp.blend(p.accent2, 0.3, calc_bg),
     foreground = hp.lighten(p.dimmed2, 3),
   }
 
@@ -103,11 +104,11 @@ M.setup = function(filter)
     background = p.dimmed5, -- "#403e41",
     foreground = p.dimmed1, -- "#c1c0c0",
     hoverBackground = p.dimmed4, -- "#5b595c",
-    separator = p.background, -- "#272822",
+    separator = calc_bg, -- "#272822",
   }
 
   cs.scrollbarSlider = {
-    hoverBackground = hp.blend(p.dimmed1, 0.15, p.background), -- "#c1c0c026", -- background: background
+    hoverBackground = hp.blend(p.dimmed1, 0.15, calc_bg), -- "#c1c0c026", -- background: background
   }
 
   cs.gitDecoration = {
@@ -160,10 +161,10 @@ M.setup = function(filter)
   }
 
   cs.tab = {
-    activeBackground = config.transparent_background and "NONE" or p.background, -- "#272822",
+    activeBackground = config.transparent_background and "NONE" or calc_bg, -- "#272822",
     activeBorder = p.accent3, -- "#ffd866",
     activeForeground = p.accent1, -- "#ffd866",
-    inactiveBackground = hp.blend(p.background, 0.75, '#000000'), --hp.lighten(p.background, 15),
+    inactiveBackground = hp.blend(calc_bg, 0.75, '#000000'), --hp.lighten(calc_bg, 15),
     inactiveForeground = p.dimmed3, -- "#939293",
     unfocusedActiveBackground = p.dark2, -- "#272822",
     unfocusedActiveBorder = p.dimmed2, -- "#939293",
