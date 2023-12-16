@@ -28,7 +28,7 @@ M.setup = function(filter)
   --- @class Colorscheme
   local cs = {}
 
-  local calc_bg = hp.blend(p.background, 0.65, '#000000')
+  local calc_bg = hp.blend(p.background, 0.75, '#000000')
   cs.editor = {
     background = config.transparent_background and "NONE" or calc_bg,
     foreground = p.text,
@@ -41,7 +41,7 @@ M.setup = function(filter)
     wordHighlightBackground = hp.blend(p.accent2, 0.35, calc_bg), -- "#fcfcfa26", -- illuminateRead
     selectionHighlightBackground = hp.blend(p.accent2, 0.35, calc_bg), -- "#fcfcfa26", -- illuminateText
     wordHighlightStrongBackground = hp.blend(p.accent2, 0.35, calc_bg), -- "#fcfcfa26", -- illuminateWrite
-    statuscolBackground = hp.blend(p.dimmed4, 0.55, calc_bg),
+    statuscolBackground = hp.blend(p.dimmed5, 0.75, calc_bg),
   }
 
   cs.editorLineNumber = {
@@ -164,7 +164,7 @@ M.setup = function(filter)
     activeBackground = config.transparent_background and "NONE" or calc_bg, -- "#272822",
     activeBorder = p.accent3, -- "#ffd866",
     activeForeground = p.accent1, -- "#ffd866",
-    inactiveBackground = hp.blend(calc_bg, 0.75, '#000000'), --hp.lighten(calc_bg, 15),
+    inactiveBackground = hp.blend(calc_bg, 0.65, '#000000'), --hp.lighten(calc_bg, 15),
     inactiveForeground = p.dimmed3, -- "#939293",
     unfocusedActiveBackground = p.dark2, -- "#272822",
     unfocusedActiveBorder = p.dimmed2, -- "#939293",
