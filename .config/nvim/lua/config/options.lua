@@ -28,6 +28,7 @@ vim.o.foldlevelstart = 99
 vim.o.endoffile = true
 vim.o.fixendofline = true
 vim.o.clipboard = ""
+vim.o.conceallevel = 0
 
 vim.keymap.set("n", ";", "<Nop>", { silent = true, remap = false })
 vim.g.mapleader = ";"
