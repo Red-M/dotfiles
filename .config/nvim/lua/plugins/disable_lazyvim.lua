@@ -21,7 +21,7 @@ return {
   { "neovim/nvim-lspconfig", enabled = false, event = {}, opts = nil, config = nil },
   { "folke/todo-comments.nvim", enabled = false },
   { "folke/tokyonight.nvim", enabled = false },
-  { "RRethy/vim-illuminate", enabled = false },
+  --{ "RRethy/vim-illuminate", enabled = false },
   { "catppuccin/nvim", enabled = false },
   { "JoosepAlviste/nvim-ts-context-commentstring", enabled = false },
   { "nvim-treesitter/nvim-treesitter-context", enabled = false },

@@ -51,6 +51,21 @@ require("lazy").setup({
 	state = vim.fn.stdpath("config") .. "/lazy/state.json",
 	install = { colorscheme = { colorscheme = { "monokai-pro", "habamax" } } },
 	dev = { path = vim.fn.stdpath("config") .. "/local_plugins" },
+  performance = {
+    rtp = {
+      -- disable some rtp plugins
+      disabled_plugins = {
+        "gzip",
+        -- "matchit",
+        -- "matchparen",
+        -- "netrwPlugin",
+        "tarPlugin",
+        "tohtml",
+        "tutor",
+        "zipPlugin",
+      },
+    },
+  },
 })
 
 --require("config.options")
