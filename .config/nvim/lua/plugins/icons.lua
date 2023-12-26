@@ -4,7 +4,7 @@ return {
     lazy = true,
     opts = {
       default = true,
-      strict = false,
+      strict = true,
     },
   },
 }
