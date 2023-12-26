@@ -62,3 +62,5 @@ vim.keymap.set({"i","n"}, [[<C-\>]], "<cmd>Neotree reveal<cr>", {desc = "Neotree
 vim.keymap.set("n", [[<leader>Gi]], "<cmd>GuessIndent<cr>", {desc = "Guess Indent",})
 vim.keymap.set("n", [[<leader>Ga]], "<cmd>IndentAuto<cr>", {desc = "Guess Indent and then reindent entire file",})
 
+vim.keymap.set("n", ',', [[<cmd>lua require("buffer_manager.ui").toggle_quick_menu()<CR>]], {desc='Toggle buffer manager UI'})
+
