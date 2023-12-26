@@ -47,24 +47,33 @@ vim.api.nvim_create_autocmd('BufRead', {
     end
 })
 
-vim.api.nvim_create_autocmd("BufEnter", { -- Changed from BufReadPre
-  desc = "Open neo-tree on enter",
-  group = vim.api.nvim_create_augroup("always_show_neotree", { clear = true }),
-  once = true,
-  callback = function()
-    if not vim.g.neotree_opened then
-      require('neo-tree')
-      vim.cmd('Neotree')
-      vim.g.neotree_opened = true
-    end
-  end,
-})
--- vim.api.nvim_create_autocmd({'BufEnter','UIEnter','TabEnter','VimEnter'}, {
---     group = vim.api.nvim_create_augroup("always_show_neotree",{clear = true}),
---     pattern = {'*.*'},
---     callback = function(data)
---         require('neo-tree.command').execute({action='show'})
+-- vim.api.nvim_create_autocmd("UiEnter", { -- Changed from BufReadPre
+--   desc = "Open neo-tree on enter",
+--   group = vim.api.nvim_create_augroup("always_show_neotree", { clear = true }),
+--   once = true,
+--   callback = function()
+--     if not vim.g.neotree_opened then
+--       require('neo-tree')
+--       vim.cmd('Neotree show')
+--       vim.g.neotree_opened = true
 --     end
+--   end,
 -- })
+vim.api.nvim_create_autocmd({'BufEnter','UIEnter','TabEnter','VimEnter'}, {
+    group = vim.api.nvim_create_augroup("always_show_neotree",{clear = true}),
+    -- pattern = {'*.*'},
+    once = true,
+    callback = function(data)
+        if not vim.g.neotree_opened then
+            require('neo-tree.command').execute({action='show'})
+            vim.g.neotree_opened = true
+        end
+    end
+})
+
+
+
+
+
 
 

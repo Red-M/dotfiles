@@ -205,7 +205,7 @@ return {
       nesting_rules = {},
       filesystem = {
         filtered_items = {
-          visible = false, -- when true, they will just be displayed differently than normal items
+          visible = true, -- when true, they will just be displayed differently than normal items
           hide_dotfiles = false,
           hide_gitignored = false,
           hide_hidden = false, -- only works on Windows for hidden files/directories
@@ -233,9 +233,9 @@ return {
           leave_dirs_open = true, -- `false` closes auto expanded dirs, such as with `:Neotree reveal`
         },
         group_empty_dirs = false, -- when true, empty folders will be grouped together
-        hijack_netrw_behavior = "open_default", -- netrw disabled, opening a directory opens neo-tree
+        hijack_netrw_behavior = --"open_default", -- netrw disabled, opening a directory opens neo-tree
                                                 -- in whatever position is specified in window.position
-                              -- "open_current",  -- netrw disabled, opening a directory opens within the
+                              "open_current",  -- netrw disabled, opening a directory opens within the
                                                 -- window like netrw would, regardless of window.position
                               -- "disabled",    -- netrw left alone, neo-tree does not handle opening dirs
         use_libuv_file_watcher = true, -- This will use the OS level file watchers to detect changes

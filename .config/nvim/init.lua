@@ -18,22 +18,45 @@ vim.opt.rtp:prepend(lazypath)
 
 --package.loaded["lazyvim.config.options"] = true
 
+vim.api.nvim_create_autocmd({'UIEnter',}, {
+    group = vim.api.nvim_create_augroup("always_show_neotree",{clear = true}),
+    once = true,
+    callback = function(data)
+        if not vim.g.neotree_opened then
+            require('neo-tree.command').execute({action='show'})
+            vim.g.neotree_opened = true
+        end
+    end
+})
+
+vim.api.nvim_create_autocmd({'TabEnter',}, {
+    group = vim.api.nvim_create_augroup("always_show_neotree2",{clear = true}),
+    -- once = true,
+    callback = function(data)
+        -- if not vim.g.neotree_opened then
+            require('neo-tree.command').execute({action='show'})
+            -- vim.g.neotree_opened = true
+        -- end
+    end
+})
+
+
 -- Plugins configured at ./lua/plugins/
 require("lazy").setup({
 	spec = {
 		{
-      "LazyVim/LazyVim", import = "lazyvim.plugins",
-      opts = {
-        colorscheme = "monokai-pro",
-        news = {
-          -- When enabled, NEWS.md will be shown when changed.
-          -- This only contains big new features and breaking changes.
-          lazyvim = true,
-          -- Same but for Neovim's news.txt
-          neovim = true,
-        },
-      },
-    },
+			"LazyVim/LazyVim", import = "lazyvim.plugins",
+			opts = {
+				colorscheme = "monokai-pro",
+				news = {
+					-- When enabled, NEWS.md will be shown when changed.
+					-- This only contains big new features and breaking changes.
+					lazyvim = true,
+					-- Same but for Neovim's news.txt
+					neovim = true,
+				},
+			},
+		},
 		{ import = "plugins" },
 	},
 	defaults = {
@@ -51,21 +74,21 @@ require("lazy").setup({
 	state = vim.fn.stdpath("config") .. "/lazy/state.json",
 	install = { colorscheme = { colorscheme = { "monokai-pro", "habamax" } } },
 	dev = { path = vim.fn.stdpath("config") .. "/local_plugins" },
-  performance = {
-    rtp = {
-      -- disable some rtp plugins
-      disabled_plugins = {
-        "gzip",
-        -- "matchit",
-        -- "matchparen",
-        -- "netrwPlugin",
-        "tarPlugin",
-        "tohtml",
-        "tutor",
-        "zipPlugin",
-      },
-    },
-  },
+	performance = {
+		rtp = {
+			-- disable some rtp plugins
+			disabled_plugins = {
+				"gzip",
+				-- "matchit",
+				-- "matchparen",
+				-- "netrwPlugin",
+				"tarPlugin",
+				"tohtml",
+				"tutor",
+				"zipPlugin",
+			},
+		},
+	},
 })
 
 --require("config.options")
