@@ -51,8 +51,9 @@ return {
       { "<S-h>", "<Cmd>BufferLineCyclePrev<CR>", desc = "Previous buffer" },
       { "<A-S-l>", "<Cmd>BufferLineMoveNext<CR>", desc = "Move buffer right" },
       { "<A-S-h>", "<Cmd>BufferLineMovePrev<CR>", desc = "Move buffer left" },
-      --{ "<S-k>", "<Cmd>BufferLineMoveNext<CR>", desc = "Move buffer right" },
-      --{ "<S-j>", "<Cmd>BufferLineMovePrev<CR>", desc = "Move buffer left" },
+      { "<S-k>", "<Cmd>BufferLineMoveNext<CR>", desc = "Move buffer right" },
+      { "<S-j>", "<Cmd>BufferLineMovePrev<CR>", desc = "Move buffer left" },
     },
   },
 }
+

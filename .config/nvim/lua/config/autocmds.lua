@@ -20,18 +20,6 @@ vim.api.nvim_create_autocmd("FileType", {
     end,
 })
 
--- vim.api.nvim_create_autocmd("FileType", {
---     group = vim.api.nvim_create_augroup("plugin_buffer_manager",{clear = false}),
---     pattern = {
---       "buffer_manager"
---     },
---     callback = function()
---       vim.keymap.set('v','J',":m '>+1<CR>gv=gv",{noremap = true})
---       vim.keymap.set('v','K',":m '<-2<CR>gv=gv",{noremap = true})
---     end,
--- })
-
-
 vim.api.nvim_create_autocmd("BufAdd", {
     group = vim.api.nvim_create_augroup("plugin_bufferline",{clear = false}),
     callback = function()
@@ -59,7 +47,18 @@ vim.api.nvim_create_autocmd('BufRead', {
     end
 })
 
-
+vim.api.nvim_create_autocmd("BufEnter", { -- Changed from BufReadPre
+  desc = "Open neo-tree on enter",
+  group = vim.api.nvim_create_augroup("always_show_neotree", { clear = true }),
+  once = true,
+  callback = function()
+    if not vim.g.neotree_opened then
+      require('neo-tree')
+      vim.cmd('Neotree')
+      vim.g.neotree_opened = true
+    end
+  end,
+})
 -- vim.api.nvim_create_autocmd({'BufEnter','UIEnter','TabEnter','VimEnter'}, {
 --     group = vim.api.nvim_create_augroup("always_show_neotree",{clear = true}),
 --     pattern = {'*.*'},
