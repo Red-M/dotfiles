@@ -54,18 +54,10 @@ return {
       vim.cmd([[colorscheme monokai-pro]])
     end,
   },{
-    "NvChad/base46",
-    branch = "v3.0",
-    dev = true,
+    "tjdevries/colorbuddy.nvim",
+    priority = 2001,
     lazy = false,
-    init = function()
-      vim.opt.rtp:prepend(vim.fn.stdpath("config") .. "/local_plugins/base46")
-      vim.g.base46_cache = vim.fn.stdpath("config") .. "/lazy/base46/"
-      require("base46").compile()
-    end,
-    build = function()
-      require("base46").load_all_highlights()
-    end,
   },
+
 }
 
