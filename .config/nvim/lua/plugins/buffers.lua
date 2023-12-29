@@ -3,7 +3,7 @@ return {
     'j-morano/buffer_manager.nvim',
   },{
     "akinsho/bufferline.nvim",
---    lazy = false,
+    --  lazy = false,
     event = { "BufReadPost", "BufNewFile", "User FileOpened", "VeryLazy" },
     --event = { "VeryLazy", },
     opts = {
@@ -28,12 +28,12 @@ return {
         right_mouse_command = function(n) require("mini.bufremove").delete(n, false) end,
         --diagnostics = "nvim_lsp",
         offsets = {
-        --   {
-        --     filetype = "neo-tree",
-        --     text = "Neo-tree",
-        --     highlight = "Directory",
-        --     text_align = "left",
-        --   },
+          --   {
+          --   filetype = "neo-tree",
+          --   text = "Neo-tree",
+          --   highlight = "Directory",
+          --   text_align = "left",
+          --   },
         },
       },
     },
