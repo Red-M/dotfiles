@@ -10,7 +10,7 @@ return {
       { "gb", mode = "x", desc = "Comment toggle blockwise (visual)" },
     },
     opts = {
-       -- add any options here
+      -- add any options here
     },
   },
 }

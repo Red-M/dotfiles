@@ -18,7 +18,7 @@ return {
       -- Available modes: foreground, background
       -- Available modes for `mode`: foreground, background,  virtualtext
       mode = "background", -- Set the display mode.
---~       virtualtext = "■",
+      -- virtualtext = "■",
     },
   },
 }
