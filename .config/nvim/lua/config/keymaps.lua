@@ -4,37 +4,37 @@ vim.keymap.set({"i","n","v"}, [[<C-S-:>]], "<cmd>", { remap = false }) -- Allow 
 vim.cmd([[
 " Allow command from anywhere
 "nnoremap <C-S-:> :
-"inoremap <C-S-:> <C-O>:
+"inoremap <C-S-:> <C-o>:
 "vnoremap <C-S-:> :
 
 " gqap -- reformat paragraph
 
 " Search from insert
-inoremap <C-S-?> <C-O>?
+inoremap <C-S-?> <C-o>?
 
 " indent
 " for command mode
 nnoremap <Tab> _i<tab><C-c>_
 nnoremap <S-Tab> _<<_
 " for insert mode
-inoremap <S-Tab> <C-O>_<C-O><<<C-O>_
-inoremap <Tab> <C-O>_<tab><C-O>_
+inoremap <S-Tab> <C-o>_<C-o><<<C-o>_
+inoremap <Tab> <C-o>_<tab><C-o>_
 
 " del line after cursor and the entire line
 "nnoremap <C-k> c$
-"inoremap <C-k> <C-O>d$
+"inoremap <C-k> <C-o>d$
 "nnoremap <C-S-k> "Kdd
-"inoremap <C-S-k> <C-O>"Kdd
+"inoremap <C-S-k> <C-o>"Kdd
 nnoremap <C-k> "Kdd
-inoremap <C-k> <C-O>"K<C-O>dd
+inoremap <C-k> <C-o>"K<C-o>dd
 
 " comment toggle
-nnoremap <C-q> gcc
-inoremap <C-q> <C-O>gcc
+" nnoremap <C-a> _gcc
+" inoremap <C-a> <C-o>_<C-o>gcc
 
 " duplicate line
 "nnoremap <C-d> "_yyp
-"inoremap <C-d> <C-O>"_<C-O>Y<C-O>p
+"inoremap <C-d> <C-o>"_<C-o>Y<C-o>p
 
 " save file
 "nnoremap <C-s> w
@@ -42,14 +42,14 @@ inoremap <C-q> <C-O>gcc
 "inoremap <C-s> w
 
 " Telescope
-nnoremap <C-T> <cmd>Telescope<CR>
-inoremap <C-T> <cmd>Telescope<CR>
+nnoremap <C-t> <cmd>Telescope<CR>
+inoremap <C-t> <cmd>Telescope<CR>
 
 
 ]])
 
 vim.keymap.set("n", "<C-d>", [["dYp]], {desc = "Duplicate line",}) -- duplicate line
-vim.keymap.set("i", "<C-d>", [[<C-O>"d<C-O>yy<C-O>p]], {desc = "Duplicate line",}) -- duplicate line
+vim.keymap.set("i", "<C-d>", [[<C-o>"d<C-o>yy<C-o>p]], {desc = "Duplicate line",}) -- duplicate line
 
 vim.keymap.set({"i","n"}, "<A-j>", "<cmd>m .+1<CR>", {desc = "Move line down",}) -- move line up(n)
 vim.keymap.set({"i","n"}, "<A-k>", "<cmd>m .-2<CR>", {desc = "Move line up",}) -- move line down(n)
