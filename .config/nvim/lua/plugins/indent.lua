@@ -19,7 +19,7 @@ return {
         --tab_char = "│",
         tab_char = "┊",
       },
-      scope = { enabled = true },
+      -- scope = { enabled = true },
       exclude = {
         filetypes = {
           "help",

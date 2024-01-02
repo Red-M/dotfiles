@@ -13,7 +13,7 @@ return {
   { "echasnovski/mini.comment", enabled = false },
   { "echasnovski/mini.base16", enabled = false },
   { "echasnovski/mini.pairs", enabled = false },
-  { "echasnovski/mini.surround", enabled = false },
+  -- { "echasnovski/mini.surround", enabled = false },
   { "folke/neoconf.nvim", enabled = false },
   { "folke/neodev.nvim", enabled = false },
   { "hrsh7th/nvim-cmp", enabled = false },

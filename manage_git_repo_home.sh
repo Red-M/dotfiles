@@ -101,6 +101,8 @@ maintain_path .tool-versions
 maintain_path tmux_start_up_scripts
 maintain_path Pictures/*
 maintain_path *.sh
+maintain_path .Xresources
+maintain_path .inputrc
 
 
 

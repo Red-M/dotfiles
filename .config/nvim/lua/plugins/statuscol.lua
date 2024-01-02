@@ -16,7 +16,7 @@ return {
           condition = { true, builtin.not_empty },
           click = "v:lua.ScLa",
         },
-        {text = { "%s" }, click = "v:lua.ScSa"}, -- Sign
+        {text = { "%s" }, click = "v:lua.ScSa", condition= {true,}, }, -- Sign
       },
     })
     vim.api.nvim_create_autocmd({ "BufEnter" }, {
