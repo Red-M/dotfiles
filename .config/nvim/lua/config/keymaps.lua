@@ -1,5 +1,7 @@
 
-vim.keymap.set({"i","n","v"}, [[<C-S-:>]], "<cmd>", { remap = false }) -- Allow command from any mode
+local keymap = vim.keymap
+
+keymap.set({"i","n","v"}, [[<A-:>]], "<cmd>", { remap = false }) -- Allow command from any mode
 
 vim.cmd([[
 " Allow command from anywhere
@@ -29,7 +31,7 @@ nnoremap <C-k> "Kdd
 inoremap <C-k> <C-o>"K<C-o>dd
 
 " comment toggle
-" nnoremap <C-a> _gcc
+" nnoremap <C-q> _gcc
 " inoremap <C-a> <C-o>_<C-o>gcc
 
 " duplicate line
@@ -42,25 +44,51 @@ inoremap <C-k> <C-o>"K<C-o>dd
 "inoremap <C-s> w
 
 " Telescope
-nnoremap <C-t> <cmd>Telescope<CR>
-inoremap <C-t> <cmd>Telescope<CR>
+" nnoremap <C-t> <cmd>Telescope<CR>
+" inoremap <C-t> <cmd>Telescope<CR>
 
 
 ]])
 
-vim.keymap.set("n", "<C-d>", [["dYp]], {desc = "Duplicate line",}) -- duplicate line
-vim.keymap.set("i", "<C-d>", [[<C-o>"d<C-o>yy<C-o>p]], {desc = "Duplicate line",}) -- duplicate line
+-- {"i", "<C-q>", [[<C-o>_<C-o>gcc]], {desc = "Toggle commenting the current line",}},
 
-vim.keymap.set({"i","n"}, "<A-j>", "<cmd>m .+1<CR>", {desc = "Move line down",}) -- move line up(n)
-vim.keymap.set({"i","n"}, "<A-k>", "<cmd>m .-2<CR>", {desc = "Move line up",}) -- move line down(n)
-vim.keymap.set("v", "<A-j>", "<cmd>m '>+1<CR>gv=gv", {desc = "Move line down",}) -- move line up(v)
-vim.keymap.set("v", "<A-k>", "<cmd>m '<-2<CR>gv=gv", {desc = "Move line up",}) -- move line down(v)
+local config_keymap = {
 
-vim.keymap.set("n", [[\]], "<cmd>Neotree reveal<cr>", {desc = "Neotree reveal",})
-vim.keymap.set({"i","n"}, [[<C-\>]], "<cmd>Neotree reveal<cr>", {desc = "Neotree reveal",})
+  -- duplicate line
+  {"n", "<C-d>", [["dY"dp]], {desc = "Duplicate current line",}},
+  {"i", "<C-d>", [[<C-o>"dY<C-o>"dp]], {desc = "Duplicate current line",}},
 
-vim.keymap.set("n", [[<leader>Gi]], "<cmd>GuessIndent<cr>", {desc = "Guess Indent",})
-vim.keymap.set("n", [[<leader>Ga]], "<cmd>IndentAuto<cr>", {desc = "Guess Indent and then reindent entire file",})
+  -- Fake refresh of the current window
+  {"n", [[<leader>r]], "<C-Left><C-Right>", {desc = [["Refresh" the window]],}},
 
-vim.keymap.set("n", ',', [[<cmd>lua require("buffer_manager.ui").toggle_quick_menu()<CR>]], {desc='Toggle buffer manager UI'})
+  -- Line movement
+  {{"i","n"}, "<A-k>", "<cmd>m .-2<CR>", {desc = "Move line up",}},
+  {{"i","n"}, "<A-Up>", "<cmd>m .-2<CR>", {desc = "Move line up",}},
+  {{"i","n"}, "<A-j>", "<cmd>m .+1<CR>", {desc = "Move line down",}},
+  {{"i","n"}, "<A-Down>", "<cmd>m .+1<CR>", {desc = "Move line down",}},
+  {"v", "<A-k>", "<cmd>m '<-2<CR>gv=gv", {desc = "Move line up",}},
+  {"v", "<A-Up>", "<cmd>m '<-2<CR>gv=gv", {desc = "Move line up",}},
+  {"v", "<A-j>", "<cmd>m '>+1<CR>gv=gv", {desc = "Move line down",}},
+  {"v", "<A-Down>", "<cmd>m '>+1<CR>gv=gv", {desc = "Move line down",}},
+
+  -- Neotree
+  {"n", [[\]], "<cmd>Neotree reveal<cr>", {desc = "Neotree reveal",}},
+  {{"i","n"}, [[<C-\>]], "<cmd>Neotree reveal<cr>", {desc = "Neotree reveal",}},
+
+  -- Guess Indent
+  {"n", [[<leader>Gi]], "<cmd>GuessIndent<cr>", {desc = "Guess Indent",}},
+  {"n", [[<leader>Ga]], "<cmd>IndentAuto<cr>", {desc = "Guess Indent and then reindent entire file",}},
+
+  -- Buffer manager UI
+  {"n", ',', [[<cmd>lua require("buffer_manager.ui").toggle_quick_menu()<CR>]], {desc='Toggle buffer manager UI'}},
+
+  {{"i","n"}, "<C-t>", "<cmd>Telescope<CR>", {desc = "Telescope",}},
+
+
+
+}
+
+for i,v in ipairs(config_keymap) do
+  keymap.set(unpack(v))
+end
 
