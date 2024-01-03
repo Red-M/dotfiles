@@ -50,9 +50,12 @@ inoremap <C-k> <C-o>"K<C-o>dd
 
 ]])
 
--- {"i", "<C-q>", [[<C-o>_<C-o>gcc]], {desc = "Toggle commenting the current line",}},
 
 local config_keymap = {
+
+  -- Comments (Still not working)
+  {"i", "<A-q>", [[<C-o>_<C-o>gcc]], {desc = "Toggle commenting the current line",}},
+  {"n", "<A-q>", [[_gcc]], {desc = "Toggle commenting the current line",}},
 
   -- duplicate line
   {"n", "<C-d>", [["dY"dp]], {desc = "Duplicate current line",}},
