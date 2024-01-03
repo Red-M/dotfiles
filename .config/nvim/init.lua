@@ -1,3 +1,11 @@
+
+vim.cmd([[
+call plug#begin(has('nvim') ? stdpath('data') . '/plugged' : '~/.vim/plugged')
+Plug 'tpope/vim-scriptease'
+
+call plug#end()
+]])
+
 vim.opt.rtp:prepend(vim.fn.stdpath("config") .. "/lazy/base46")
 
 local lazypath = vim.fn.stdpath("config") .. "/lazy/lazy.nvim"

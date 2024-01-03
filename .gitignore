@@ -3,5 +3,6 @@
 .scite/custom/ext/pure_lua/luarocks/*
 .ssh/known_host*
 .config/nvim/lazy/*
+.local/share/nvim/**
 .config/nvim/sessions/*
 

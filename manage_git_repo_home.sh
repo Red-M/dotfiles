@@ -73,6 +73,7 @@ maintain_path .icons
 
 maintain_path .local/{bin/*,etc}
 maintain_path .local/share/{bash-completion,color-schemes,konsole,plasma*}
+maintain_path .local/share/nvim
 maintain_path .local/share/fonts/*.ttf
 
 maintain_path .config/{font*,htop,kdedefaults,mpv,pipewire,wireplumber,xsettingsd}
