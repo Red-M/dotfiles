@@ -24,7 +24,7 @@ return {
   --{ "RRethy/vim-illuminate", enabled = false },
   { "catppuccin/nvim", enabled = false },
   { "JoosepAlviste/nvim-ts-context-commentstring", enabled = false },
-  -- { "nvim-treesitter/nvim-treesitter-context", enabled = false },
+  { "nvim-treesitter/nvim-treesitter-context", enabled = false },
   { "windwp/nvim-ts-autotag", enabled = false },
   { "nvim-treesitter/nvim-treesitter-textobjects", enabled = false },
   { "mason.nvim", enabled = false },
