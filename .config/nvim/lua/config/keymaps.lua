@@ -85,6 +85,10 @@ local config_keymap = {
   -- Buffer manager UI
   {"n", ',', [[<cmd>lua require("buffer_manager.ui").toggle_quick_menu()<CR>]], {desc='Toggle buffer manager UI'}},
 
+  -- Img-clip
+  {"n", [[<leader>P]], [[<cmd>lua require("img-clip").pasteImage({ embed_image_as_base64 = true })<CR>]], {desc="Paste image in clipboard as base64"},},
+
+  -- Telescope
   {{"i","n"}, "<C-t>", "<cmd>Telescope<CR>", {desc = "Telescope",}},
 
 
