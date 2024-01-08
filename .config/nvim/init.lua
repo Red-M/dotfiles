@@ -65,6 +65,7 @@ require("lazy").setup({
         },
       },
     },
+    { import = "languages" },
     { import = "plugins" },
   },
   defaults = {
