@@ -8,6 +8,8 @@ if [ -f /etc/bashrc ]; then
       . /etc/bashrc   # --> Read /etc/bashrc, if present.
 fi
 
+export EDITOR=nvim
+
 export PATH=~/.local/bin:${PATH}
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
