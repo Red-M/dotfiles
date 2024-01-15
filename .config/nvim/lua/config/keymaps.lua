@@ -1,7 +1,8 @@
 
 local keymap = vim.keymap
 
-keymap.set({"i","n","v"}, [[<A-:>]], "<cmd>", { remap = false }) -- Allow command from any mode
+keymap.set({"n","v"}, [[<A-:>]], ":", { remap = false }) -- Allow command from any mode
+keymap.set({"i"}, [[<A-:>]], "<C-o>:", { remap = false }) -- Allow command from any mode
 
 vim.cmd([[
 " Allow command from anywhere
@@ -12,15 +13,16 @@ vim.cmd([[
 " gqap -- reformat paragraph
 
 " Search from insert
-inoremap <C-S-?> <C-o>?
+" inoremap <C-?> <C-o>?
+" inoremap <C-S-?> <C-o>?
 
 " indent
 " for command mode
-nnoremap <Tab> _i<tab><C-c>_
-nnoremap <S-Tab> _<<_
+" nnoremap <Tab> _i<tab><C-c>_
+" nnoremap <S-Tab> _<<_
 " for insert mode
-inoremap <S-Tab> <C-o>_<C-o><<<C-o>_
-inoremap <Tab> <C-o>_<tab><C-o>_
+" inoremap <S-Tab> <C-o>_<C-o><<<C-o>_
+" inoremap <Tab> <C-o>_<tab><C-o>_
 
 " del line after cursor and the entire line
 "nnoremap <C-k> c$
@@ -56,6 +58,16 @@ local config_keymap = {
   -- Comments (Still not working)
   {"i", "<C-q>", [[<C-o>_<C-o>gcc]], {desc = "Toggle commenting the current line",}},
   {"n", "<C-q>", [[_gcc]], {desc = "Toggle commenting the current line",}},
+
+  -- Search
+  -- {"i", "<C-S-?>", [[<C-o>?]], {desc = "Search",}},
+
+  -- Indent
+  {"n", "<S-Tab>", [[_i<tab><C-c>_]], {desc = "De-indent current line",}},
+  {"n", "<Tab>", [[_<<_]], {desc = "Indent current line",}},
+  {"i", "<S-Tab>", [[<C-o>_<C-o><<<C-o>_]], {desc = "De-indent current line",}},
+  {"i", "<Tab>", [[<C-o>_<tab><C-o>_]], {desc = "Indent current line",}},
+
 
   -- duplicate line
   {"n", "<C-d>", [["dY"dp]], {desc = "Duplicate current line",}},
