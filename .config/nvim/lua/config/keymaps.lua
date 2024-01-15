@@ -54,8 +54,8 @@ inoremap <C-k> <C-o>"K<C-o>dd
 local config_keymap = {
 
   -- Comments (Still not working)
-  {"i", "<A-q>", [[<C-o>_<C-o>gcc]], {desc = "Toggle commenting the current line",}},
-  {"n", "<A-q>", [[_gcc]], {desc = "Toggle commenting the current line",}},
+  {"i", "<C-q>", [[<C-o>_<C-o>gcc]], {desc = "Toggle commenting the current line",}},
+  {"n", "<C-q>", [[_gcc]], {desc = "Toggle commenting the current line",}},
 
   -- duplicate line
   {"n", "<C-d>", [["dY"dp]], {desc = "Duplicate current line",}},
@@ -73,6 +73,10 @@ local config_keymap = {
   {"v", "<A-Up>", "<cmd>m '<-2<CR>gv=gv", {desc = "Move line up",}},
   {"v", "<A-j>", "<cmd>m '>+1<CR>gv=gv", {desc = "Move line down",}},
   {"v", "<A-Down>", "<cmd>m '>+1<CR>gv=gv", {desc = "Move line down",}},
+
+  -- Base64
+  {"v", [[<leader>Fb]], [[c<c-r>=system("base64 -w 0", @")<cr><esc>]], {desc = "Base64 encode"}},
+  {"v", [[<leader>FB]], [[c<c-r>=system("base64 -d", @")<cr>]], {desc = "Base64 decode"}},
 
   -- Neotree
   {"n", [[\]], "<cmd>Neotree reveal<cr>", {desc = "Neotree reveal",}},
