@@ -63,10 +63,10 @@ local config_keymap = {
   -- {"i", "<C-S-?>", [[<C-o>?]], {desc = "Search",}},
 
   -- Indent
-  {"n", "<S-Tab>", [[_i<tab><C-c>_]], {desc = "De-indent current line",}},
-  {"n", "<Tab>", [[_<<_]], {desc = "Indent current line",}},
-  {"i", "<S-Tab>", [[<C-o>_<C-o><<<C-o>_]], {desc = "De-indent current line",}},
+  {"n", "<Tab>", [[_i<tab><C-c>_]], {desc = "Indent current line",}},
+  {"n", "<S-Tab>", [[_<<_]], {desc = "De-indent current line",}},
   {"i", "<Tab>", [[<C-o>_<tab><C-o>_]], {desc = "Indent current line",}},
+  {"i", "<S-Tab>", [[<C-o>_<C-o><<<C-o>_]], {desc = "De-indent current line",}},
 
 
   -- duplicate line

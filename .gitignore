@@ -5,4 +5,5 @@
 .config/nvim/lazy/*
 .local/share/nvim/**
 .config/nvim/sessions/*
+**/lazy-lock.json
 
