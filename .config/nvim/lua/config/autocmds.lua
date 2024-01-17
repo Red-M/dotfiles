@@ -66,7 +66,20 @@ vim.api.nvim_create_autocmd({'BufEnter','UIEnter','TabEnter','VimEnter'}, {
   callback = function(data)
     if not vim.g.neotree_opened then
       require('neo-tree.command').execute({action='show'})
+      -- vim.api.nvim_exec([[silent setlocal rnu]], false)
       vim.g.neotree_opened = true
+    end
+  end
+})
+
+vim.api.nvim_create_autocmd({'BufEnter','UIEnter','TabEnter','VimEnter'}, {
+  group = vim.api.nvim_create_augroup("always_set_neotree_options",{clear = true}),
+  pattern = {'neo-tree*'},
+  callback = function(data)
+    if vim.bo.filetype == "neo-tree" then
+      vim.wo.statuscolumn = [[%!v:lua.StatusCol()." "]]
+      vim.wo.relativenumber = true
+      -- vim.api.nvim_exec([[silent setlocal rnu]], false)
     end
   end
 })
