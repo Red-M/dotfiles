@@ -14,6 +14,7 @@ M.create_filter_command = function()
       "machine",
       "ristretto",
       "spectrum",
+      "midnightokai",
     }, function(item)
       local filter = item.value
       config.extend({ filter = filter })

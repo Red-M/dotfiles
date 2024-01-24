@@ -8,9 +8,9 @@ local M = {
 
 local hp = require("monokai-pro.color_helper")
 
---- @param filter "classic" | "machine" | "octagon" | "pro" | "ristretto" | "spectrum"
+--- @param filter "classic" | "machine" | "octagon" | "pro" | "ristretto" | "spectrum" | "midnightokai"
 M.setup = function(filter)
-  local filters = { "classic", "machine", "octagon", "pro", "ristretto", "spectrum" }
+  local filters = { "classic", "machine", "octagon", "pro", "ristretto", "spectrum", "midnightokai" }
 
   if not vim.tbl_contains(filters, filter) then
     local msg = 'Invalid filter, expected "classic", "machine", "octagon", "pro", "ristretto" or "spectrum"'

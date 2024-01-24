@@ -9,14 +9,15 @@ return {
       relculright = true,
       -- ft_ignore = { "neo-tree" },
       segments = {
-        {text = { "%C " }, click = "v:lua.ScFa"}, -- Fold
+        {text = { "%C" }, click = "v:lua.ScFa"}, -- Fold
         {
           -- line number
           text = { builtin.lnumfunc },
-          condition = { true, },
+          -- condition = { true, },
           click = "v:lua.ScLa",
         },
-        {text = { "%s" }, click = "v:lua.ScSa", condition={true,}, }, -- Sign
+        -- {text = { "%s" }, click = "v:lua.ScSa", condition={true,}, }, -- Sign
+        {text = { "%s" }, click = "v:lua.ScSa", }, -- Sign
       },
     })
     -- vim.api.nvim_create_autocmd({ "BufEnter" }, {

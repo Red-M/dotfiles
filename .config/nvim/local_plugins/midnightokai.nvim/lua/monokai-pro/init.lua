@@ -9,7 +9,7 @@ M.load = function()
   util.load(theme.setup())
 end
 
---- @param filter "classic" | "machine" | "octagon" | "pro" | "ristretto" | "spectrum"
+--- @param filter "classic" | "machine" | "octagon" | "pro" | "ristretto" | "spectrum" | "midnightokai"
 M._load = function(filter)
   config.extend({ filter = filter })
   M.load()
