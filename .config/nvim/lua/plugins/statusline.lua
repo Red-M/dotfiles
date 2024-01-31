@@ -7,9 +7,14 @@ return {
     opts = {
       options = {
         globalstatus = false,
+        component_separators = { left = '', right = '' },
+        section_separators = { left = '', right = '' },
       },
       sections = {
-        lualine_a = {'mode'},
+        lualine_a = {
+          {'mode',separator = { right = '', left = '' }},
+          { require("noice").api.status.mode.get, cond = require("noice").api.status.mode.has, color = { bg = "#c40000" },separator = { right = '', left = '' },},
+        },
         lualine_b = {'location'},
         --lualine_c = {Util.lualine.root_dir(),'filename',Util.lualine.pretty_path({relative="root",})},
         -- lualine_c = {Util.lualine.pretty_path({relative="root",})},
