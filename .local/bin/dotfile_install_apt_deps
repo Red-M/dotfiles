@@ -1,3 +1,4 @@
 #!/bin/bash
 
-apt install dirmngr gpg curl gawk git -y
+apt install dirmngr gpg curl gawk git bc -y
+
