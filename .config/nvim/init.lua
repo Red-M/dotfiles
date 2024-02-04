@@ -55,7 +55,7 @@ require("lazy").setup({
     {
       "LazyVim/LazyVim", import = "lazyvim.plugins",
       opts = {
-        colorscheme = "midnightokai",
+        colorscheme = "monokai-pro",
         news = {
           -- When enabled, NEWS.md will be shown when changed.
           -- This only contains big new features and breaking changes.
@@ -77,11 +77,11 @@ require("lazy").setup({
     version = false, -- always use the latest git commit
     -- version = "*", -- try installing the latest stable version for plugins that support semver
   },
-  install = { colorscheme = { "midnightokai", "habamax" } },
+  install = { colorscheme = { "monokai-pro", "habamax" } },
   checker = { enabled = true }, -- automatically check for plugin updates
   root = vim.fn.stdpath("config") .. "/lazy/plugins",
   state = vim.fn.stdpath("config") .. "/lazy/state.json",
-  install = { colorscheme = { colorscheme = { "midnightokai", "habamax" } } },
+  install = { colorscheme = { colorscheme = { "monokai-pro", "habamax" } } },
   dev = { path = vim.fn.stdpath("config") .. "/local_plugins" },
   performance = {
     rtp = {

@@ -2,6 +2,7 @@ return {
   {
     -- "~/git/midnightokai.nvim",
     -- dev = true,
+    -- branch = "chore/backup_master",
     "Red-M/monokai-pro.nvim",
     enabled = true,
     lazy = false,
@@ -339,6 +340,11 @@ return {
             Bold = { bold = false },
             Italic = { italic = false },
             Todo = { bold = false },
+            ["@keyword"] = { fg = c.base.red, italic = false},
+            ["@keyword.function"] = { fg = c.base.cyan, bold = true, italic = false},
+            ["@type.builtin"] = { fg = c.base.cyan, italic = false},
+            ["@variable.builtin"] = { fg = c.base.dimmed1, italic = false},
+            ["@variable.parameter"] = { fg = c.base.blue, italic = false},
           }
         end,
       })
