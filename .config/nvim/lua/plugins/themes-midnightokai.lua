@@ -1,6 +1,6 @@
 return {
   {
-    -- "Red_M/midnightokai.nvim",
+    -- "~/git/midnightokai.nvim",
     -- dev = true,
     "Red-M/monokai-pro.nvim",
     enabled = true,
@@ -253,10 +253,19 @@ return {
             FoldColumn = {
               bg = c.editor.statuscolBackground,
             }, -- 'foldcolumn'
+            SignColumn = {
+              bg = c.editor.statuscolBackground,
+            },
             LineNr = {
               bg = c.editor.statuscolBackground,
             }, -- Line number for ":number" and ":#" commands, and when 'number' or 'relativenumber' option is set.
             MatchParen = {
+              bold = false,
+            }, -- The character under the cursor or just before it, if it is a paired bracket, and its match. |pi_paren.txt|
+            SignColumn = {
+              bold = false,
+            }, -- The character under the cursor or just before it, if it is a paired bracket, and its match. |pi_paren.txt|
+            PmenuSbar = {
               bold = false,
             }, -- The character under the cursor or just before it, if it is a paired bracket, and its match. |pi_paren.txt|
             FloatTitle = { bold = false },
@@ -265,11 +274,76 @@ return {
             Title = { bold = false },
             CmpItemAbbrMatch = { bold = false }, -- text match in order
             CmpItemAbbrDeprecated = { strikethrough = false }, -- text not match of deprecated
+            BufferLineErrorDiagnosticSelected = { bold = false },
+            BufferLineErrorDiagnostic = { bold = false },
+            BufferLineErrorDiagnosticVisible = { bold = false },
+            BufferLineInfoDiagnosticSelected = { bold = false },
+            BufferLineInfoDiagnostic = { bold = false },
+            BufferLineInfoDiagnosticVisible = { bold = false },
+            LazyH1 = { bold = false },
+            LazyH2 = { bold = false },
+            LazyButtonActive = { bold = false },
+            LazySpecial = { bold = false },
+            MasonHeaderSecondary = { bold = false },
+            MasonHighlightBlockBoldSecondary = { bold = false },
+            MasonMutedBlockBold = { bold = false },
+            NeoTreeCursorLine = { bold = false },
+            NeoTreeRootName = { bold = false },
+            NeoTreeTitleBar = { bold = false },
+            NeoTreeFloatTitle = { bold = false },
+            NeoTreeTabActive = { bold = false },
+            NoiceFormatProgressDone = { bold = false },
+            NoiceFormatProgressTodo = { bold = false },
+            NvimTreeOpenedFolderName = { bold = false },
+            NvimTreeEmptyFolderName = { bold = false },
+            NvimTreeRootFolder = { bold = false },
+            ["@punctuation.delimiter"] = { fg = c.base.white },
+            ["@punctuation.bracket"] = { fg = c.base.white }, -- `(`
+            ["@tag.delimiter"] = { fg = c.base.white }, -- `<`, `>` in `<div>`
+            ["@parameters"] = { fg = c.base.cyan, italic = false },
+            ["@property"] = { fg = c.base.green },
+            ["@function"] = { fg = c.base.blue },
+            ["@function.attribute"] = { fg = c.base.green },
+            ["@keyword.function"] = { fg = c.base.red, bold = false, italic = false },
+            ["@string.scss"] = { fg = c.base.blue, italic = false },
+            ["@keyword.cpp"] = { fg = c.base.red, italic = false },
+            ["@type.cpp"] = { fg = c.base.cyan, italic = false },
+            ["@punctuation.delimiter.cpp"] = { fg = c.base.white },
+            ["@type.python"] = { fg = c.base.blue },
+            ["@keyword.python"] = { fg = c.base.red, italic = false },
+            ["@variable.builtin.python"] = { fg = c.base.cyan, italic = false, },
+            ["@variable.python"] = { fg = c.base.white },
+            ["@constructor.python"] = { fg = c.base.blue },
+            ["@method.python"] = { fg = c.base.blue },
+            ["@function.builtin.python"] = { fg = c.base.cyan, italic = false },
+            ["@exception.python"] = { fg = c.base.red, italic = false },
+            ["@keyword.function.python"] = { fg = c.base.red, italic = false },
+            ["@variable.builtin.python"] = { fg = c.base.cyan, italic = false },
+            ["@parameters.python"] = { fg = c.base.cyan, italic = false },
+            ["@function.builtin.lua"] = { fg = c.base.cyan },
+            ["@parameter.lua"] = { fg = c.base.blue, italic = false },
+            ["@text.environment.name.latex"] = { fg = c.base.blue, italic = false },
+            ["@text.strong.latex"] = { bold = false },
+            ["@text.emphasis.latex"] = { italic = false },
+            ["@text.strong.markdown_inline"] = { fg = c.base.white, bold = false },
+            ["@text.emphasis.markdown_inline"] = { fg = c.base.white, italic = false },
+            RenamerTitle = { bold = false },
+            TelescopeSelection = { bold = false },
+            TelescopeSelectionCaret = { bold = false },
+            TelescopePromptCounter = { bold = false },
+            TelescopeMatching = { bold = false },
+            TelescopePromptTitle = { bold = false },
+            TelescopePreviewTitle = { bold = false },
+            TelescopeResultsTitle = { bold = false },
+            WildMenu = { bold = false },
+            Bold = { bold = false },
+            Italic = { italic = false },
+            Todo = { bold = false },
           }
         end,
       })
-      -- vim.cmd([[colorscheme monokai-pro]])
-      vim.cmd([[colorscheme midnightokai]])
+      vim.cmd([[colorscheme monokai-pro]])
+      -- vim.cmd([[colorscheme midnightokai]])
     end,
   -- },{
   --   "tjdevries/colorbuddy.nvim",
