@@ -304,7 +304,7 @@ return {
             ["@tag.delimiter"] = { fg = c.base.white }, -- `<`, `>` in `<div>`
             ["@parameters"] = { fg = c.base.cyan, italic = false },
             ["@property"] = { fg = c.base.green },
-            ["@function"] = { fg = c.base.orange },
+            ["@function"] = { fg = c.base.green },
             ["@function.attribute"] = { fg = c.base.green },
             ["@keyword.function"] = { fg = c.base.red, bold = false, italic = false },
             ["@string.scss"] = { fg = c.base.orange, italic = false },
@@ -346,6 +346,7 @@ return {
             ["@type.builtin"] = { fg = c.base.cyan, italic = false},
             ["@variable.builtin"] = { fg = c.base.dimmed1, italic = false},
             ["@variable.parameter"] = { fg = c.base.orange, italic = false},
+            ["@variable.member"] = { fg = c.base.white }, -- class members
           }
         end,
       })
