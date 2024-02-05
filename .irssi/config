@@ -2,13 +2,13 @@ servers = (
   { address = "eu.irc6.net"; chatnet = "IRCnet"; port = "6667"; },
   { address = "open.ircnet.net"; chatnet = "IRCnet"; port = "6667"; },
   { address = "irc.efnet.org"; chatnet = "EFNet"; port = "6667"; },
-  {
+  { 
     address = "irc.undernet.org";
     chatnet = "Undernet";
     port = "6667";
   },
   { address = "irc.dal.net"; chatnet = "DALnet"; port = "6667"; },
-  {
+  { 
     address = "irc.quakenet.org";
     chatnet = "QuakeNet";
     port = "6667";
@@ -71,7 +71,7 @@ chatnets = {
     max_whois = "4";
     max_query_chans = "5";
   };
-  EFNet = {
+  EFNet = { 
     type = "IRC";
     max_kicks = "4";
     max_msgs = "3";
@@ -95,7 +95,7 @@ chatnets = {
     max_msgs = "3";
     max_whois = "30";
   };
-  OFTC = {
+  OFTC = { 
     type = "IRC";
     max_kicks = "1";
     max_msgs = "3";
@@ -113,7 +113,7 @@ chatnets = {
     max_msgs = "3";
     max_whois = "30";
   };
-  Rizon = {
+  Rizon = { 
     type = "IRC";
     max_kicks = "1";
     max_msgs = "3";
@@ -134,6 +134,7 @@ chatnets = {
   ZNCppony = { type = "IRC"; };
   ZNClocal = { type = "IRC"; };
   ZNCrizon = { type = "IRC"; };
+  ZNCsnoo = { type = "IRC"; };
 };
 
 channels = (
@@ -314,13 +315,10 @@ settings = {
   "perl/core/scripts" = { show_binary_too = "yes"; };
 };
 logs = { };
-ignores = (
-);
+ignores = ( );
 bell_beeps = "yes";
 beep_msg_level = "MSGS NOTICES INVITES DCC DCCMSGS HILIGHT";
-keyboard = (
+keyboard = ( 
   { key = "meta-[M"; id = "command"; data = "mouse_xterm "; }
 );
-hilights = (
-  { text = "Red_M"; nick = "yes"; word = "yes"; }
-);
+hilights = ( { text = "Red_M"; nick = "yes"; word = "yes"; } );
