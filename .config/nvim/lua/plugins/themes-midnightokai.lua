@@ -68,7 +68,8 @@ return {
 
           local calc_bg = hp.blend(p.background, 0.75, '#000000')
           cs_override.editor = {
-            background = config.transparent_background and "NONE" or calc_bg,
+            -- background = config.transparent_background and "NONE" or calc_bg,
+            background = calc_bg,
             foreground = p.text,
             lineHighlightBackground = hp.blend(p.accent2, 0.15, calc_bg), -- "#fcfcfa0c", -- background: background
             selectionBackground = hp.blend(p.dimmed1, 0.35, calc_bg), --"#c1c0c027", -- background: background
@@ -264,14 +265,12 @@ return {
             }, -- 'foldcolumn'
             SignColumn = {
               bg = c.editor.statuscolBackground,
+              bold = false,
             },
             LineNr = {
               bg = c.editor.statuscolBackground,
             }, -- Line number for ":number" and ":#" commands, and when 'number' or 'relativenumber' option is set.
             MatchParen = {
-              bold = false,
-            }, -- The character under the cursor or just before it, if it is a paired bracket, and its match. |pi_paren.txt|
-            SignColumn = {
               bold = false,
             }, -- The character under the cursor or just before it, if it is a paired bracket, and its match. |pi_paren.txt|
             PmenuSbar = {
