@@ -8,6 +8,7 @@ GLCore=true
 GLPlatformInterface=glx
 GLTextureFilter=0
 HiddenPreviews=5
+LatencyPolicy=Medium
 OpenGLIsUnsafe=false
 WindowsBlockCompositing=true
 XRenderSmoothScale=false
