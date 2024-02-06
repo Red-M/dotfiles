@@ -96,6 +96,7 @@ maintain_path .scite
 maintain_path .SciTEUser.properties
 
 maintain_path .config/nvim
+maintain_path .config/alacritty
 maintain_path .quiltrc-dpkg
 maintain_path .tool-versions
 
