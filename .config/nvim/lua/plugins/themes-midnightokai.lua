@@ -20,6 +20,9 @@ return {
           annotation = { italic = false },
           tag_attribute = { italic = false }, -- attribute of tag in reactjs
         },
+        plugins = {
+          indent_blankline = { context_highlight = "pro" },
+        },
         overridePalette = function(name)
           -- local monokai_palette = require("monokai-pro.colorscheme.palette." .. name)
           return {
@@ -33,6 +36,8 @@ return {
             accent4 = "#a6e22e",
             accent5 = "#9effff",
             accent6 = "#ae81ff",
+            accent7 = "#66d9ef",
+            accent8 = "#c40000",
             dimmed1 = "#c0c1b5",
             dimmed2 = "#919288",
             dimmed3 = "#6e7066",
@@ -41,9 +46,28 @@ return {
           }
         end,
         overrideColorscheme = function(cs, p, config, hp)
-          -- local cs = {}
+          local cs_override = {}
+          cs_override.base = {
+            dark = p.dark2,
+            black = p.dark1,
+            red = p.accent1,
+            orange = p.accent2,
+            yellow = p.accent3,
+            green = p.accent4,
+            cyan = p.accent5,
+            magenta = p.accent6,
+            blue = p.accent7,
+            red_accent = p.accent8,
+            white = p.text,
+            dimmed1 = p.dimmed1,
+            dimmed2 = p.dimmed2,
+            dimmed3 = p.dimmed3,
+            dimmed4 = p.dimmed4,
+            dimmed5 = p.dimmed5,
+          }
+
           local calc_bg = hp.blend(p.background, 0.75, '#000000')
-          cs.editor = {
+          cs_override.editor = {
             background = config.transparent_background and "NONE" or calc_bg,
             foreground = p.text,
             lineHighlightBackground = hp.blend(p.accent2, 0.15, calc_bg), -- "#fcfcfa0c", -- background: background
@@ -58,17 +82,17 @@ return {
             statuscolBackground = hp.blend(p.dimmed5, 0.75, calc_bg),
           }
 
-          cs.editorLineNumber = {
+          cs_override.editorLineNumber = {
             foreground = hp.blend(p.dimmed1, 0.75, p.dimmed2),
             activeForeground = hp.blend(p.text, 0.95, p.dimmed1),
           }
 
-          cs.editorHoverWidget = {
+          cs_override.editorHoverWidget = {
             background = p.dimmed5,
             border = calc_bg,
           }
 
-          cs.editorSuggestWidget = {
+          cs_override.editorSuggestWidget = {
             background = p.dimmed5, -- "#403e41",
             border = p.dimmed5, -- "#403e41",
             foreground = p.dimmed1, -- "#c1c0c0",
@@ -76,56 +100,56 @@ return {
             selectedBackground = p.dimmed3, -- "#727072",
           }
 
-          cs.editorIndentGuide = {
+          cs_override.editorIndentGuide = {
             background = calc_bg, -- "#403e41",
-            activeBackground = p.dimmed3, -- "#5b595c",
+            activeBackground = p.dimmed4, -- "#5b595c",
           }
 
-          cs.editorInlayHint = {
+          cs_override.editorInlayHint = {
             background = hp.blend(p.accent2, 0.3, calc_bg),
             foreground = hp.lighten(p.dimmed2, 3),
           }
 
-          cs.editorGutter = {
+          cs_override.editorGutter = {
             addedBackground = p.accent4, -- "#a9dc76",
             deletedBackground = p.accent1, -- "#ff6188",
             modifiedBackground = p.accent2, -- "#fc9867",
           }
 
-          cs.sideBar = {
+          cs_override.sideBar = {
             background = p.dark2, -- "#221f22",
             foreground = p.dimmed2, -- "#939293",
           }
 
-          cs.sideBarTitle = {
+          cs_override.sideBarTitle = {
             foreground = p.dimmed4, -- "#5b595c",
           }
 
-          cs.list = {
-            activeSelectionBackground = hp.blend(p.text, 0.11, cs.sideBar.background), -- "#fcfcfa1c", -- background: sideBarBackground,
+          cs_override.list = {
+            activeSelectionBackground = hp.blend(p.text, 0.11, cs_override.sideBar.background), -- "#fcfcfa1c", -- background: sideBarBackground,
           }
 
-          cs.sideBarSectionHeader = {
+          cs_override.sideBarSectionHeader = {
             background = p.dark1, -- "#221f22",
             foreground = p.dimmed1, -- "#c1c0c0",
           }
 
-          cs.breadcrumb = {
+          cs_override.breadcrumb = {
             foreground = p.dimmed2, -- "#939293",
           }
 
-          cs.button = {
+          cs_override.button = {
             background = p.dimmed5, -- "#403e41",
             foreground = p.dimmed1, -- "#c1c0c0",
             hoverBackground = p.dimmed4, -- "#5b595c",
             separator = calc_bg, -- "#272822",
           }
 
-          cs.scrollbarSlider = {
+          cs_override.scrollbarSlider = {
             hoverBackground = hp.blend(p.dimmed1, 0.15, calc_bg), -- "#c1c0c026", -- background: background
           }
 
-          cs.gitDecoration = {
+          cs_override.gitDecoration = {
             addedResourceForeground = p.accent4, -- "#a9dc76",
             conflictingResourceForeground = p.accent2, -- "#fc9867",
             deletedResourceForeground = p.accent1, -- "#ff6188",
@@ -136,7 +160,7 @@ return {
             untrackedResourceForeground = p.dimmed2, -- "#c1c0c0",
           }
 
-          cs.inputValidation = {
+          cs_override.inputValidation = {
             errorBackground = p.dimmed5, -- "#403e41",
             errorBorder = p.accent1, -- "#ff6188",
             errorForeground = p.accent1, --"#ff6188",
@@ -148,7 +172,7 @@ return {
             warningForeground = p.accent2, --"#fc9867",
           }
 
-          cs.errorLens = {
+          cs_override.errorLens = {
             errorBackground = hp.blend(p.accent1, 0.1),
             errorForeground = p.accent1,
             warningBackground = hp.blend(p.accent2, 0.1),
@@ -159,22 +183,22 @@ return {
             hintForeground = p.accent5,
           }
 
-          cs.terminal = {
+          cs_override.terminal = {
             background = p.dimmed5, -- "#403e41",
             foreground = p.text, -- "#fcfcfa",
           }
 
-          cs.terminalCursor = {
+          cs_override.terminalCursor = {
             background = "#ffffff", -- "#00000000",
             foreground = p.text, -- "#fcfcfa",
           }
 
-          cs.editorGroupHeader = {
+          cs_override.editorGroupHeader = {
             tabsBackground = p.dark1, -- "#221f22",
             tabsBorder = p.dark1, -- "#221f22",
           }
 
-          cs.tab = {
+          cs_override.tab = {
             activeBackground = config.transparent_background and "NONE" or calc_bg, -- "#272822",
             activeBorder = p.accent3, -- "#ffd866",
             activeForeground = p.accent1, -- "#ffd866",
@@ -185,58 +209,41 @@ return {
             unfocusedActiveForeground = p.dimmed1, -- "#c1c0c0",
           }
 
-          cs.statusBar = {
+          cs_override.statusBar = {
             -- background = p.dark1,
             background = p.dark2,
             foreground = p.dimmed3,
             activeForeground = p.dimmed1,
           }
 
-          cs.diffEditor = {
+          cs_override.diffEditor = {
             insertedLineBackground = hp.blend(p.accent4, 0.1, p.dark1), -- #a9dc7619
             removedLineBackground = hp.blend(p.accent1, 0.1, p.dark1), -- #ff618819
             modifiedLineBackground = hp.blend(p.accent2, 0.1, p.dark1), -- #fc986719
           }
 
-          cs.diffEditorOverview = {
-            insertedForeground = hp.blend(p.accent4, 0.65, cs.diffEditor.insertedLineBackground), -- #a9dc76a5
-            removedForeground = hp.blend(p.accent1, 0.65, cs.diffEditor.removedLineBackground), -- #ff6188a5
-            modifiedForeground = hp.blend(p.accent2, 0.65, cs.diffEditor.modifiedLineBackground), -- #fc9867a5
+          cs_override.diffEditorOverview = {
+            insertedForeground = hp.blend(p.accent4, 0.65, cs_override.diffEditor.insertedLineBackground), -- #a9dc76a5
+            removedForeground = hp.blend(p.accent1, 0.65, cs_override.diffEditor.removedLineBackground), -- #ff6188a5
+            modifiedForeground = hp.blend(p.accent2, 0.65, cs_override.diffEditor.modifiedLineBackground), -- #fc9867a5
           }
 
-          cs.notifications = {
+          cs_override.notifications = {
             background = p.dimmed5,
             border = p.dimmed5,
             foreground = p.dimmed1,
           }
-          cs.notificationsErrorIcon = {
+          cs_override.notificationsErrorIcon = {
             foreground = p.accent1,
           }
-          cs.notificationsInfoIcon = {
+          cs_override.notificationsInfoIcon = {
             foreground = p.accent5,
           }
-          cs.notificationsWarningIcon = {
+          cs_override.notificationsWarningIcon = {
             foreground = p.accent2,
           }
 
-          cs.base = {
-            dark = p.dark2, -- "#19181a"
-            black = p.dark1, --"#221f22",
-            red = p.accent1, -- "#ff6188",
-            orange = p.accent2, -- "#fc9867",
-            blue = p.accent2, -- "#fc9867",
-            yellow = p.accent3, -- "#ffd866",
-            green = p.accent4, -- "#a9dc76",
-            cyan = p.accent5, -- "#78dce8",
-            magenta = p.accent6, -- "#ab9df2",
-            white = p.text, -- "#fcfcfa",
-            dimmed1 = p.dimmed1, -- "#c1c0c0",
-            dimmed2 = p.dimmed2, -- "#939293",
-            dimmed3 = p.dimmed3, -- "#727072",
-            dimmed4 = p.dimmed4, -- "#5b595c",
-            dimmed5 = p.dimmed5, -- "#403e41",
-          }
-          return cs
+          return cs_override
         end,
         override = function(c)
           return {
@@ -274,31 +281,15 @@ return {
             PmenuSel = { bold = false },
             IncSearch = { bold = false },
             Title = { bold = false },
-            CmpItemAbbrMatch = { bold = false }, -- text match in order
-            CmpItemAbbrDeprecated = { strikethrough = false }, -- text not match of deprecated
-            BufferLineErrorDiagnosticSelected = { bold = false },
-            BufferLineErrorDiagnostic = { bold = false },
-            BufferLineErrorDiagnosticVisible = { bold = false },
-            BufferLineInfoDiagnosticSelected = { bold = false },
-            BufferLineInfoDiagnostic = { bold = false },
-            BufferLineInfoDiagnosticVisible = { bold = false },
-            LazyH1 = { bold = false },
-            LazyH2 = { bold = false },
-            LazyButtonActive = { bold = false },
-            LazySpecial = { bold = false },
-            MasonHeaderSecondary = { bold = false },
-            MasonHighlightBlockBoldSecondary = { bold = false },
-            MasonMutedBlockBold = { bold = false },
-            NeoTreeCursorLine = { bold = false },
-            NeoTreeRootName = { bold = false },
-            NeoTreeTitleBar = { bold = false },
-            NeoTreeFloatTitle = { bold = false },
-            NeoTreeTabActive = { bold = false },
-            NoiceFormatProgressDone = { bold = false },
-            NoiceFormatProgressTodo = { bold = false },
-            NvimTreeOpenedFolderName = { bold = false },
-            NvimTreeEmptyFolderName = { bold = false },
-            NvimTreeRootFolder = { bold = false },
+            Special = { fg = c.base.red },
+            SpecialChar = { fg = c.base.red },
+            ["@keyword"] = { fg = c.base.red, italic = false},
+            ["@keyword.function"] = { fg = c.base.cyan, bold = false, italic = false},
+            ["@type.builtin"] = { fg = c.base.cyan, italic = false},
+            ["@variable.builtin"] = { fg = c.base.blue, italic = false},
+            ["@variable.parameter"] = { fg = c.base.orange, italic = false},
+            ["@variable.member"] = { fg = c.base.white }, -- class members
+            ["@punctuation.bracket"] = { fg = c.base.text }, -- `(`
             ["@punctuation.delimiter"] = { fg = c.base.white },
             ["@punctuation.bracket"] = { fg = c.base.white }, -- `(`
             ["@tag.delimiter"] = { fg = c.base.white }, -- `<`, `>` in `<div>`
@@ -329,6 +320,31 @@ return {
             ["@text.emphasis.latex"] = { italic = false },
             ["@text.strong.markdown_inline"] = { fg = c.base.white, bold = false },
             ["@text.emphasis.markdown_inline"] = { fg = c.base.white, italic = false },
+            CmpItemAbbrMatch = { bold = false }, -- text match in order
+            CmpItemAbbrDeprecated = { strikethrough = false }, -- text not match of deprecated
+            BufferLineErrorDiagnosticSelected = { bold = false },
+            BufferLineErrorDiagnostic = { bold = false },
+            BufferLineErrorDiagnosticVisible = { bold = false },
+            BufferLineInfoDiagnosticSelected = { bold = false },
+            BufferLineInfoDiagnostic = { bold = false },
+            BufferLineInfoDiagnosticVisible = { bold = false },
+            LazyH1 = { bold = false },
+            LazyH2 = { bold = false },
+            LazyButtonActive = { bold = false },
+            LazySpecial = { bold = false },
+            MasonHeaderSecondary = { bold = false },
+            MasonHighlightBlockBoldSecondary = { bold = false },
+            MasonMutedBlockBold = { bold = false },
+            NeoTreeCursorLine = { bold = false },
+            NeoTreeRootName = { bold = false },
+            NeoTreeTitleBar = { bold = false },
+            NeoTreeFloatTitle = { bold = false },
+            NeoTreeTabActive = { bold = false },
+            NoiceFormatProgressDone = { bold = false },
+            NoiceFormatProgressTodo = { bold = false },
+            NvimTreeOpenedFolderName = { bold = false },
+            NvimTreeEmptyFolderName = { bold = false },
+            NvimTreeRootFolder = { bold = false },
             RenamerTitle = { bold = false },
             TelescopeSelection = { bold = false },
             TelescopeSelectionCaret = { bold = false },
@@ -338,15 +354,10 @@ return {
             TelescopePreviewTitle = { bold = false },
             TelescopeResultsTitle = { bold = false },
             WildMenu = { bold = false },
-            Bold = { bold = false },
-            Italic = { italic = false },
-            Todo = { bold = false },
-            ["@keyword"] = { fg = c.base.red, italic = false},
-            ["@keyword.function"] = { fg = c.base.cyan, bold = false, italic = false},
-            ["@type.builtin"] = { fg = c.base.cyan, italic = false},
-            ["@variable.builtin"] = { fg = c.base.dimmed1, italic = false},
-            ["@variable.parameter"] = { fg = c.base.orange, italic = false},
-            ["@variable.member"] = { fg = c.base.white }, -- class members
+            IndentBlanklineContextChar = { fg = c.base.orange, },
+            IndentBlanklineContextStart = { sp = c.base.orange, underline = true, }, -- indent_blankline
+            IndentBlankLineIndent2 = { fg = c.base.orange },
+            MiniIndentscopeSymbol = { fg = c.base.orange },
           }
         end,
       })
