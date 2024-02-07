@@ -2,6 +2,7 @@
 vim.cmd([[
 call plug#begin(has('nvim') ? stdpath('data') . '/plugged' : '~/.vim/plugged')
 Plug 'tpope/vim-scriptease'
+" Plug 'tpope/vim-repeat'
 
 call plug#end()
 ]])
