@@ -68,6 +68,8 @@ local config_keymap = {
   {"i", "<Tab>", [[<C-o>_<tab><C-o>_]], {desc = "Indent current line",}},
   {"i", "<S-Tab>", [[<C-o>_<C-o><<<C-o>_]], {desc = "De-indent current line",}},
 
+  -- Delete line into the void
+  {"n", "<S-d>", [["_dd]], {desc = "Void-delete the current line",}},
 
   -- duplicate line
   {"n", "<C-d>", [["dY"dp]], {desc = "Duplicate current line",}},
