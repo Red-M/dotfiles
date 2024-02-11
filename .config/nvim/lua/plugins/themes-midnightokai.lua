@@ -3,7 +3,8 @@ return {
     -- "~/git/midnightokai.nvim",
     -- dev = true,
     -- branch = "chore/backup_master",
-    "Red-M/monokai-pro.nvim",
+    -- "Red-M/monokai-pro.nvim",
+    "loctvl842/monokai-pro.nvim",
     enabled = true,
     lazy = false,
     priority = 2000,
@@ -24,7 +25,6 @@ return {
           indent_blankline = { context_highlight = "pro" },
         },
         overridePalette = function(name)
-          -- local monokai_palette = require("monokai-pro.colorscheme.palette." .. name)
           return {
             dark2 = "#272822",
             dark1 = "#383830",
@@ -45,7 +45,7 @@ return {
             dimmed5 = "#3b3c35",
           }
         end,
-        overrideColorscheme = function(cs, p, config, hp)
+        overrideScheme = function(cs, p, config, hp)
           local cs_override = {}
           cs_override.base = {
             dark = p.dark2,
