@@ -69,9 +69,6 @@ local config_keymap = {
   {"i", "<S-Tab>", [[<C-o>_<C-o><<<C-o>_]], {desc = "De-indent current line",}},
 
   -- Delete line into the void
-  -- {"n", "DD", [["_dd]], {desc = "Void-delete the current line",}},
-  -- {"n", "Dd", [["_dd]], {desc = "Void-delete the current line",}},
-  -- {"n", "D", [["_d]], {desc = "+Void-delete rather than cut",}},
   {"n", "DD", [["_dd]], {desc = "Void-Delete the current line",}},
   {"n", "Dd", [["_dd]], {desc = "Void-Delete the current line",}},
   {"n", "D", [["_d]], {desc = "+Void-Delete",}},
