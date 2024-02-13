@@ -17,9 +17,9 @@ return {
         ignore_terminal = true,
       })
 
-      -- remove trailing whitespace with a keybinding
-      vim.keymap.set('n', '<Leader>t', require('whitespace-nvim').trim)
-    end
+    end,
+    -- remove trailing whitespace with a keybinding
+    keys = {{'<Leader>t', function() require('whitespace-nvim').trim() end, desc = 'Trim whitespace in current file',},},
   },{
     "cappyzawa/trim.nvim",
     opts = {

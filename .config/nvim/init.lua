@@ -31,7 +31,7 @@ vim.api.nvim_create_autocmd({'UIEnter',}, {
   group = vim.api.nvim_create_augroup("always_show_neotree",{clear = true}),
   once = true,
   callback = function(data)
-    if not vim.g.neotree_opened then
+    if ((not (vim.g.neotree_opened)) and (not (vim.bo.filetype == "checkhealth"))) then
       require('neo-tree.command').execute({action='show'})
       vim.g.neotree_opened = true
     end
@@ -42,10 +42,11 @@ vim.api.nvim_create_autocmd({'TabEnter',}, {
   group = vim.api.nvim_create_augroup("always_show_neotree2",{clear = true}),
   -- once = true,
   callback = function(data)
-    -- if not vim.g.neotree_opened then
-    require('neo-tree.command').execute({action='show'})
-    -- vim.g.neotree_opened = true
-    -- end
+    -- vim.print(data)
+    -- This needs to ignore checkhealth tab changes, otherwise checkhealth will crash
+    if (not (vim.bo.filetype == "checkhealth")) then
+      require('neo-tree.command').execute({action='show'})
+    end
   end
 })
 
@@ -53,6 +54,7 @@ vim.api.nvim_create_autocmd({'TabEnter',}, {
 -- Plugins configured at ./lua/plugins/
 require("lazy").setup({
   spec = {
+    { import = "themes" },
     {
       "LazyVim/LazyVim", import = "lazyvim.plugins",
       opts = {

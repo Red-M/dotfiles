@@ -64,7 +64,7 @@ vim.api.nvim_create_autocmd({'BufEnter','UIEnter','TabEnter','VimEnter'}, {
   -- pattern = {'*.*'},
   once = true,
   callback = function(data)
-    if not vim.g.neotree_opened then
+    if ((not (vim.g.neotree_opened)) and (not (vim.bo.filetype == "checkhealth"))) then
       require('neo-tree.command').execute({action='show'})
       -- vim.api.nvim_exec([[silent setlocal rnu]], false)
       vim.g.neotree_opened = true

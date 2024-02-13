@@ -56,8 +56,8 @@ inoremap <C-k> <C-o>"K<C-o>dd
 local config_keymap = {
 
   -- Comments (Still not working)
-  {"i", "<C-q>", [[<C-o>_<C-o>gcc]], {desc = "Toggle commenting the current line",}},
-  {"n", "<C-q>", [[_gcc]], {desc = "Toggle commenting the current line",}},
+  -- {"i", "<C-q>", [[<C-o>_<C-o>gcc]], {desc = "Toggle commenting the current line",}},
+  -- {"n", "<C-q>", [[_gcc]], {desc = "Toggle commenting the current line",}},
 
   -- Search
   -- {"i", "<C-S-?>", [[<C-o>?]], {desc = "Search",}},
@@ -69,9 +69,12 @@ local config_keymap = {
   {"i", "<S-Tab>", [[<C-o>_<C-o><<<C-o>_]], {desc = "De-indent current line",}},
 
   -- Delete line into the void
-  {"n", "<S-d><S-d>", [["_dd]], {desc = "Void-delete the current line",}},
-  {"n", "<S-d>d", [["_dd]], {desc = "Void-delete the current line",}},
-  {"n", "<S-d>", [["_d]], {desc = "Void-delete rather than cut",}},
+  -- {"n", "DD", [["_dd]], {desc = "Void-delete the current line",}},
+  -- {"n", "Dd", [["_dd]], {desc = "Void-delete the current line",}},
+  -- {"n", "D", [["_d]], {desc = "+Void-delete rather than cut",}},
+  {"n", "DD", [["_dd]], {desc = "Void-Delete the current line",}},
+  {"n", "Dd", [["_dd]], {desc = "Void-Delete the current line",}},
+  {"n", "D", [["_d]], {desc = "+Void-Delete",}},
 
   -- duplicate line
   {"n", "<C-d>", [["dY"dp]], {desc = "Duplicate current line",}},
