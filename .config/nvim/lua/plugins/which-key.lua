@@ -1,7 +1,12 @@
 return {
   {
     "folke/which-key.nvim",
-    priority = 1000,
+    -- enabled = false,
+  -- },
+  -- {
+    -- "njhoffman/which-key.nvim",
+    -- branch = "master",
+    priority = 500,
     -- event = "VeryLazy",
     init = function()
       vim.o.timeout = true
