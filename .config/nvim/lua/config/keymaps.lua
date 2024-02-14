@@ -46,8 +46,8 @@ inoremap <C-k> <C-o>"K<C-o>dd
 "inoremap <C-s> w
 
 " Telescope
-" nnoremap <C-t> <cmd>Telescope<CR>
-" inoremap <C-t> <cmd>Telescope<CR>
+" nnoremap <C-t> <cmd>Telescope<cr>
+" inoremap <C-t> <cmd>Telescope<cr>
 
 
 ]])
@@ -63,31 +63,31 @@ local config_keymap = {
   -- {"i", "<C-S-?>", [[<C-o>?]], {desc = "Search",}},
 
   -- Indent
-  {"n", "<Tab>", [[_i<tab><C-c>_]], {desc = "Indent current line",}},
-  {"n", "<S-Tab>", [[_<<_]], {desc = "De-indent current line",}},
-  {"i", "<Tab>", [[<C-o>_<tab><C-o>_]], {desc = "Indent current line",}},
-  {"i", "<S-Tab>", [[<C-o>_<C-o><<<C-o>_]], {desc = "De-indent current line",}},
+  {"n", [[<Tab>]], [[_i<tab><C-c>_]], {desc = "Indent current line",}},
+  {"n", [[<S-Tab>]], [[_<<_]], {desc = "De-indent current line",}},
+  {"i", [[<Tab>]], [[<C-o>_<tab><C-o>_]], {desc = "Indent current line",}},
+  {"i", [[<S-Tab>]], [[<C-o>_<C-o><<<C-o>_]], {desc = "De-indent current line",}},
 
   -- Delete line into the void
-  {"n", "<S-d><S-d>", [["_dd]], {desc = "Void-Delete the current line",}},
-  {"n", "<S-d>", [["_d]], {desc = "+Void-Delete",}},
+  {"n", [[<S-d><S-d>]], [["_dd]], {desc = "Void-Delete the current line",}},
+  {"n", [[<S-d>]], [["_d]], {desc = "+Void-Delete",}},
 
   -- duplicate line
-  {"n", "<C-d>", [["dY"dp]], {desc = "Duplicate current line",}},
-  {"i", "<C-d>", [[<C-o>"dY<C-o>"dp]], {desc = "Duplicate current line",}},
+  {"n", [[<C-d>]], [["dY"dp]], {desc = "Duplicate current line",}},
+  {"i", [[<C-d>]], [[<C-o>"dY<C-o>"dp]], {desc = "Duplicate current line",}},
 
   -- Fake refresh of the current window
   {"n", [[<leader>r]], "<C-Left><C-Right>", {desc = [["Refresh" the window]],}},
 
   -- Line movement
-  {{"i","n"}, "<A-k>", "<cmd>m .-2<CR>", {desc = "Move line up",}},
-  {{"i","n"}, "<A-Up>", "<cmd>m .-2<CR>", {desc = "Move line up",}},
-  {{"i","n"}, "<A-j>", "<cmd>m .+1<CR>", {desc = "Move line down",}},
-  {{"i","n"}, "<A-Down>", "<cmd>m .+1<CR>", {desc = "Move line down",}},
-  {"v", "<A-k>", "<cmd>m '<-2<CR>gv=gv", {desc = "Move line up",}},
-  {"v", "<A-Up>", "<cmd>m '<-2<CR>gv=gv", {desc = "Move line up",}},
-  {"v", "<A-j>", "<cmd>m '>+1<CR>gv=gv", {desc = "Move line down",}},
-  {"v", "<A-Down>", "<cmd>m '>+1<CR>gv=gv", {desc = "Move line down",}},
+  {{"i","n"}, [[<A-k>]], "<cmd>m .-2<cr>", {desc = "Move line up",}},
+  {{"i","n"}, [[<A-Up>]], "<cmd>m .-2<cr>", {desc = "Move line up",}},
+  {{"i","n"}, [[<A-j>]], "<cmd>m .+1<cr>", {desc = "Move line down",}},
+  {{"i","n"}, [[<A-Down>]], "<cmd>m .+1<cr>", {desc = "Move line down",}},
+  {"v", [[<A-k>]], "<cmd>m '<-2<cr>gv=gv", {desc = "Move line up",}},
+  {"v", [[<A-Up>]], "<cmd>m '<-2<cr>gv=gv", {desc = "Move line up",}},
+  {"v", [[<A-j>]], "<cmd>m '>+1<cr>gv=gv", {desc = "Move line down",}},
+  {"v", [[<A-Down>]], "<cmd>m '>+1<cr>gv=gv", {desc = "Move line down",}},
 
   -- Base64
   {"v", [[<leader>Fb]], [[c<c-r>=system("base64 -w 0", @")<cr><esc>]], {desc = "Base64 encode"}},
@@ -102,13 +102,13 @@ local config_keymap = {
   {"n", [[<leader>Ga]], "<cmd>IndentAuto<cr>", {desc = "Guess Indent and then reindent entire file",}},
 
   -- Buffer manager UI
-  {"n", ',', [[<cmd>lua require("buffer_manager.ui").toggle_quick_menu()<CR>]], {desc='Toggle buffer manager UI'}},
+  {"n", [[,]], [[<cmd>lua require("buffer_manager.ui").toggle_quick_menu()<cr>]], {desc='Toggle buffer manager UI'}},
 
   -- Img-clip
-  {"n", [[<leader>P]], [[<cmd>lua require("img-clip").pasteImage({ embed_image_as_base64 = true })<CR>]], {desc="Paste image in clipboard as base64"},},
+  {"n", [[<leader>P]], [[<cmd>lua require("img-clip").pasteImage({ embed_image_as_base64 = true })<cr>]], {desc="Paste image in clipboard as base64"},},
 
   -- Telescope
-  {{"i","n"}, "<C-t>", "<cmd>Telescope<CR>", {desc = "Telescope",}},
+  {{"i","n"}, [[<C-t>]], "<cmd>Telescope<cr>", {desc = "Telescope",}},
 
 
 
