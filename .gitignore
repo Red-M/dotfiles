@@ -6,4 +6,7 @@
 .local/share/nvim/**
 .config/nvim/sessions/*
 **/lazy-lock.json
+.ssh/id_*
+.ssh/*.key
+.ssh/*.pem
 
