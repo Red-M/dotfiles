@@ -1,0 +1,4 @@
+#!/bin/bash
+
+su -c 'dotfile_install_apt_basic;dotfile_install_apt_deps;apt install -y keepass2 mono-complete kde-full rclone gnome-keyring'
+

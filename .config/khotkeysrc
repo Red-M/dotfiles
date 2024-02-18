@@ -976,6 +976,7 @@ Size[$d]
 
 [DirSelect Dialog]
 DirSelectDialog Size[$d]
+History Items[$d]
 
 [Emoticons]
 emoticonsTheme[$d]

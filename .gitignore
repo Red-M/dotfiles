@@ -9,4 +9,5 @@
 .ssh/id_*
 .ssh/*.key
 .ssh/*.pem
+.local/share/plasma/containmentpreviews/*
 
