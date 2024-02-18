@@ -1,0 +1,155 @@
+#!/bin/bash
+: <<=cut
+=pod
+
+=head1 NAME
+
+drac - Connect to iDRAC6 virtual console
+
+
+=head1 SYNOPSIS
+
+B<drac> [[I<user>[:I<password>]@]I<host>]
+
+
+=head1 DESCRIPTION
+
+iDRAC6 uses a Java program to show the virtual console.
+
+From the iDRAC6 B<drac> downloads the .jar file that is used to
+connect to the virtual console of iDRAC6. Then it runs it with Java.
+
+
+=head1 OPTIONS
+
+=over 12
+
+=item I<host>
+
+I<host> defaults to $DRAC_HOST, which defaults to 'drac'.
+
+
+=item I<user>
+
+I<user> defaults to $DRAC_USER, which defaults to 'root'.
+
+=item I<passwd>
+
+I<passwd> defaults to $DRAC_PASSWD, which defaults to 'calvin'.
+
+
+=back
+
+
+=head1 EXAMPLES
+
+Connect to the drac server 'drac' using 'root/calvin':
+
+drac
+
+Connect to the drac server 'mydrac' using 'myroot/joe':
+
+drac myroot:joe@mydrac
+
+Connect to the drac server 'mydrac' using 'myroot/joe':
+
+DRAC_HOST=mydrac
+DRAC_USER=myroot
+DRAC_PASSWD=joe
+drac
+
+
+=head1 AUTHOR
+
+Copyright (C) 2020 Ole Tange,
+http://ole.tange.dk and Free Software Foundation, Inc.
+
+
+=head1 LICENSE
+
+Copyright (C) 2012 Free Software Foundation, Inc.
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 3 of the License, or
+at your option any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+
+=head1 DEPENDENCIES
+
+B<drac> uses B<java>.
+
+
+=head1 SEE ALSO
+
+B<java>
+
+=cut
+
+read host user passwd < <(echo "$1" |
+  # parse [[user[:pass]@]host]
+  perl -pe 's/^(?:(.*?)(?::(.*?))?@)?(.*?)$/$3 $1 $2/')
+  # Set default values
+  if [ "$user" = "" ] ; then
+    DRAC_USER=${DRAC_USER:-root}
+  else
+    DRAC_USER="$user"
+  fi
+  if [ "$passwd" = "" ] ; then
+    DRAC_PASSWD=${DRAC_PASSWD:-calvin}
+  else
+    DRAC_PASSWD="$passwd"
+  fi
+  if [ "$host" = "" ] ; then
+    DRAC_HOST=${DRAC_HOST:-drac}
+  else
+    DRAC_HOST="$host"
+  fi
+
+  w4it-for-port-open "$DRAC_HOST" 80
+  docker_container=$(
+    docker run -d \
+      -p 5800:5800 \
+      -p 5900:5900 \
+      -e IDRAC_HOST="$DRAC_HOST" \
+      -e IDRAC_USER="$DRAC_USER" \
+      -e IDRAC_PASSWORD="$DRAC_PASSWD" \
+      -e DARK_MODE=1 \
+      -e SECURE_CONNECTION=1 \
+      domistyle/idrac6
+  )
+docker exec -it "${docker_container}" '/bin/bash' '-ic' 'echo "open https://localhost:5800";bash -i'
+docker kill "${docker_container}"
+
+# tmp=$(mktemp)
+#
+# # Find a command line tool to download with
+# get=$(
+#     (lynx -source /dev/null && echo lynx -source) ||
+# 	(fetch -o /dev/null file:///bin/sh && echo fetch -o -) ||
+# 	(curl -h >/dev/null && echo curl -L) ||
+# 	(wget -h >/dev/null && echo wget -qO -) ||
+# 	echo 'No lynx, wget, curl, fetch: Please file a bug report with which tool you use for downloading URLs' >&2
+#    )
+#
+# w4it-for-port-open "$DRAC_HOST" 80
+#
+# # Use http instead of https to avoid dealing with self signed cert
+# $get http://"$DRAC_HOST"/software/avctKVM.jar > "$tmp"
+#
+# (
+#     rm "$tmp"
+#     java -cp /dev/stdin com.avocent.idrac.kvm.Main \
+# 	 user="$DRAC_USER" passwd="$DRAC_PASSWD" ip="$DRAC_HOST" \
+# 	 kmport=5900 vport=5900 apcp=1 version=2 vmprivilege=true \
+# 	 "helpurl=https://$DRAC_HOST:443/help/contents.html"
+# ) < "$tmp"
+#
