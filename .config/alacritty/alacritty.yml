@@ -956,9 +956,9 @@ ipc_socket: true
   #- { key: F,              mods: Command, mode: ~Search,     action: SearchForward         }
   #- { key: B,              mods: Command, mode: ~Search,     action: SearchBackward        }
 
-debug:
+# debug:
   # Display the time it takes to redraw each frame.
-  render_timer: true
+  # render_timer: true
 
   # Keep the log file after quitting Alacritty.
   #persistent_logging: false
