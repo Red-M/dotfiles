@@ -2,73 +2,30 @@
 update_info=kwinrules.upd:replace-placement-string-to-enum,kwinrules.upd:use-virtual-desktop-ids
 
 [1]
-Description=Application settings for kodi
-clientmachine=redm
-clientmachinematch=0
+Description=Application settings for teamspeak 3
+clientmachine=POTATO
+clientmachinematch=1
 desktop=7
 desktoprule=2
+desktops=\\0
+desktopsrule=2
 fullscreen=false
-fullscreenrule=2
-wmclass=kodi
-wmclasscomplete=false
+wmclass=ts3client_linux_amd64 teamspeak 3
+wmclasscomplete=true
 wmclassmatch=1
 
 [2]
-Description=Window settings for spotify
-clientmachine=redm
-clientmachinematch=0
+Description=Application settings for discord
+clientmachine=POTATO
+clientmachinematch=1
 desktop=8
 desktoprule=2
+desktops=\\0
+desktopsrule=2
 title=Spotify
-titlematch=1
-types=1
-wmclass=spotify
-wmclasscomplete=false
-wmclassmatch=1
-
-[3]
-Description=Application settings for seahorse
-clientmachine=redm
-clientmachinematch=0
-desktop=1
-desktoprule=2
-wmclass=seahorse
-wmclasscomplete=false
-wmclassmatch=1
-
-[4]
-Description=Application settings for chromium-browser
-clientmachine=redm
-clientmachinematch=0
-desktop=3
-desktoprule=2
-wmclass=chromium-browser
-wmclassmatch=1
-
-[5]
-Description=Settings for Spotify
-clientmachine=redm
-clientmachinematch=0
-desktop=2
-desktoprule=2
-wmclass=spotify
-wmclassmatch=1
-
-[6]
-Description=Settings for Discord
-desktop=3
-desktoprule=2
 wmclass=discord
 wmclasscomplete=false
-wmclassmatch=2
-
-[7]
-Description=Settings for Konsole
-desktop=1
-desktoprule=2
-wmclass=konsole
-wmclasscomplete=false
-wmclassmatch=2
+wmclassmatch=1
 
 [8]
 Description=Settings for Spotify
@@ -79,5 +36,32 @@ wmclasscomplete=false
 wmclassmatch=1
 
 [General]
-count=5
-rules=1,2,3,4,5
+count=3
+rules=1,d9580593-0cb4-4b20-aecb-a79dec953ff9,2
+
+[a24e96a6-4f59-4f7c-b2f0-aa95c51ac9f6]
+Description=Application settings for teamspeak 3
+clientmachine=localhost
+desktops=\\0
+desktopsrule=3
+wmclass=ts3client_linux_amd64 teamspeak 3
+wmclasscomplete=true
+wmclassmatch=1
+
+[d9580593-0cb4-4b20-aecb-a79dec953ff9]
+Description=Application settings for steam
+clientmachine=POTATO
+clientmachinematch=1
+desktops=0a61b858-ae1a-478a-99c9-4d329111f65f
+desktopsrule=2
+wmclass=steam
+wmclasscomplete=true
+wmclassmatch=1
+
+[f0340420-5663-4d33-8467-54398a40a236]
+Description=Application settings for discord
+clientmachine=localhost
+desktops=\\0
+desktopsrule=2
+wmclass=discord
+wmclassmatch=1
