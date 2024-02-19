@@ -100,6 +100,7 @@ maintain_path .config/alacritty
 maintain_path .quiltrc-dpkg
 maintain_path .tool-versions
 maintain_path .config/MangoHud
+maintain_path .config/OpenRGB
 
 maintain_path tmux_start_up_scripts
 maintain_path Pictures/*

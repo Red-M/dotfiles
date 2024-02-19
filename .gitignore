@@ -10,4 +10,5 @@
 .ssh/*.key
 .ssh/*.pem
 .local/share/plasma/containmentpreviews/*
+.config/OpenRGB/logs/*
 
