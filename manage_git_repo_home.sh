@@ -33,7 +33,7 @@ function maintain_permissions() {
     done
 }
 
-function maintain_path() {
+function maintain_path_optional() {
     for target in $@; do
         script_target="${script_dir_path}/${target}"
         home_target="${home_path}/${target}"
@@ -64,10 +64,41 @@ function maintain_path() {
     done
 }
 
+function maintain_path() {
+    for target in $@; do
+        script_target="${script_dir_path}/${target}"
+        home_target="${home_path}/${target}"
+        home_target_up_one=$(readlink -m "${home_target}/..")
+        if [ -e "${script_target}" ]; then
+            if [ "${home_target_up_one}" != "${home_path}" ]; then
+                if [ ! -e "${home_target_up_one}" ]; then
+                    mkdir -p "${home_target_up_one}"
+                    echo "Made directory: ${home_target_up_one}"
+                fi
+            fi
+            if [[ -e "${home_target}" && -e "${script_target}" && ! -L "${home_target}" ]]; then
+                # \cp -r "${script_target}" "${home_target}"
+                \rm -rf "${home_target}"
+                echo "Deleted: ${home_target}"
+            fi
+            maintain_permissions "${script_target}"
+            if [[ -L "${home_target}" && $(readlink -f -- "${home_target}") != "${script_target}" ]]; then
+                \rm "${home_target}"
+                echo "Updating symblink: ${home_target}"
+            fi
+            if [ ! -e "${home_target}" ]; then
+                # \cp -r "${script_target}" "${home_target}"
+                ln -s "${script_target}" "${home_target}"
+                echo "Created symblink: ${target}"
+            fi
+        fi
+    done
+}
+
 cd "${script_dir_path}" # We do this to allow for shell globbing the paths
 
 maintain_path .bashrc
-maintain_path .ssh
+maintain_path_optional .ssh
 
 maintain_path .icons
 
@@ -77,14 +108,14 @@ maintain_path .local/share/nvim
 maintain_path .local/share/fonts/*.ttf
 
 maintain_path .config/{font*,htop,kdedefaults,mpv,pipewire,wireplumber,xsettingsd}
-maintain_path .config/gtk-*/*
+maintain_path_optional .config/gtk-*/*
 maintain_path .config/{breezerc,kdeglobals,khotkeysrc,konsolerc,kscreenlockerrc,kwinrulesrc,kwinrc,touchpad*}
 
 maintain_path .fonts/*/*.{ttf,ttc}
 
 maintain_path .kde/share/config/breezerc
 maintain_path .kde/share/apps/color-schemes
-maintain_path .config/plasma-org.kde.plasma.desktop-appletsrc # This is somewhat optional as it is for widgets on plasma
+maintain_path_optional .config/plasma-org.kde.plasma.desktop-appletsrc # This is somewhat optional as it is for widgets on plasma
 
 maintain_path .irssi
 
@@ -105,6 +136,7 @@ maintain_path .config/OpenRGB
 
 maintain_path tmux_start_up_scripts
 maintain_path Pictures/*
+maintain_path .face .face.icon
 maintain_path *.sh
 maintain_path .Xresources
 maintain_path .inputrc
