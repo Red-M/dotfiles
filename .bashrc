@@ -63,6 +63,7 @@ export DEBUILD_LINTIAN_OPTS="-i -I --show-overrides"
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
+export MANGOHUD=1
 
 #--------------------------------------------------------------
 #  Automatic setting of $DISPLAY (if not set already).
