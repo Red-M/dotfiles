@@ -4,6 +4,13 @@ script_dir_path=$(dirname -- "$(readlink -f -- "$BASH_SOURCE")")
 home_path=~
 # home_path=~/test
 
+if [ "${1}" == "delete" ]; then
+    delete_mode=true
+else
+    delete_mode=false
+fi
+# echo ${delete_mode}
+
 if [ ! -d "${home_path}" ]; then
     mkdir -p "${home_path}"
     chmod 700 "${home_path}"
@@ -33,8 +40,13 @@ function maintain_permissions() {
     done
 }
 
-function maintain_path_optional() {
-    for target in $@; do
+function _maintain_path() {
+    path_is_optional=${1}
+    if [[ ${path_is_optional} != true && ${path_is_optional} != false ]]; then
+        # echo "${path_is_optional}"
+        path_is_optional=true
+    fi
+    for target in "${@:2}"; do
         script_target="${script_dir_path}/${target}"
         home_target="${home_path}/${target}"
         home_target_up_one=$(readlink -m "${home_target}/..")
@@ -48,7 +60,16 @@ function maintain_path_optional() {
             if [[ -e "${home_target}" && -e "${script_target}" && ! -L "${home_target}" ]]; then
                 # \cp -r "${script_target}" "${home_target}"
                 # \rm -rf "${home_target}"
-                echo "Want to delete: ${home_target}"
+                if [ ${path_is_optional} == true ]; then
+                    echo "Want to delete: ${home_target}"
+                else
+                    if [ ${delete_mode} == true ]; then
+                        \rm -rf "${home_target}"
+                        echo "Deleted: ${home_target}"
+                    else
+                        echo "Would have deleted: ${home_target}"
+                    fi
+                fi
             fi
             maintain_permissions "${script_target}"
             if [[ -L "${home_target}" && $(readlink -f -- "${home_target}") != "${script_target}" ]]; then
@@ -64,41 +85,17 @@ function maintain_path_optional() {
     done
 }
 
+function maintain_path_optional() {
+    _maintain_path false $@
+}
+
 function maintain_path() {
-    for target in $@; do
-        script_target="${script_dir_path}/${target}"
-        home_target="${home_path}/${target}"
-        home_target_up_one=$(readlink -m "${home_target}/..")
-        if [ -e "${script_target}" ]; then
-            if [ "${home_target_up_one}" != "${home_path}" ]; then
-                if [ ! -e "${home_target_up_one}" ]; then
-                    mkdir -p "${home_target_up_one}"
-                    echo "Made directory: ${home_target_up_one}"
-                fi
-            fi
-            if [[ -e "${home_target}" && -e "${script_target}" && ! -L "${home_target}" ]]; then
-                # \cp -r "${script_target}" "${home_target}"
-                \rm -rf "${home_target}"
-                echo "Deleted: ${home_target}"
-            fi
-            maintain_permissions "${script_target}"
-            if [[ -L "${home_target}" && $(readlink -f -- "${home_target}") != "${script_target}" ]]; then
-                \rm "${home_target}"
-                echo "Updating symblink: ${home_target}"
-            fi
-            if [ ! -e "${home_target}" ]; then
-                # \cp -r "${script_target}" "${home_target}"
-                ln -s "${script_target}" "${home_target}"
-                echo "Created symblink: ${target}"
-            fi
-        fi
-    done
+    _maintain_path true $@
 }
 
 cd "${script_dir_path}" # We do this to allow for shell globbing the paths
 
 maintain_path .bashrc
-maintain_path_optional .ssh
 
 maintain_path .icons
 
@@ -108,20 +105,17 @@ maintain_path .local/share/nvim
 maintain_path .local/share/fonts/*.ttf
 
 maintain_path .config/{font*,htop,kdedefaults,mpv,pipewire,wireplumber,xsettingsd}
-maintain_path_optional .config/gtk-*/*
 maintain_path .config/{breezerc,kdeglobals,khotkeysrc,konsolerc,kscreenlockerrc,kwinrulesrc,kwinrc,touchpad*}
 
 maintain_path .fonts/*/*.{ttf,ttc}
 
 maintain_path .kde/share/config/breezerc
 maintain_path .kde/share/apps/color-schemes
-maintain_path_optional .config/plasma-org.kde.plasma.desktop-appletsrc # This is somewhat optional as it is for widgets on plasma
 
 maintain_path .irssi
 
 maintain_path .proxychains
 
-maintain_path .tmux
 maintain_path .tmux.conf
 
 maintain_path .scite
@@ -141,6 +135,10 @@ maintain_path *.sh
 maintain_path .Xresources
 maintain_path .inputrc
 
+maintain_path_optional .ssh
+maintain_path_optional .tmux
+maintain_path_optional .config/gtk-*/*
+maintain_path_optional .config/plasma-org.kde.plasma.desktop-appletsrc # This is somewhat optional as it is for widgets on plasma
 
 
 
