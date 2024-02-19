@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+cardNumbers=$(aplay -l|grep 'Sound BlasterX G6'|cut -d' ' -f 2 |tr -d ':')
+for cardNumber in $cardNumbers; do
+  amixer -c "$cardNumber" -q set "PCM Capture Source" "External Mic"
+
+  if [ $? -eq 0 ]; then
+    echo "PCM Capture Source successfully changed to 'External Mic'"
+  else
+    echo "Failed to configure PCM Capture source for Sound BlasterX G6"
+  fi
+
+  amixer -c "$cardNumber" -q sset 'Input Gain Control' 3
+
+  if [ $? -eq 0 ]; then
+    echo "Input Gain Control set to 3"
+  else
+    echo "Failed to activate mic Boost for Sound BlasterX G6"
+  fi
+done
+
+
+pw-metadata -n settings 0 clock.force-rate 384000
+
+
+
