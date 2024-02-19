@@ -84,6 +84,7 @@ maintain_path .fonts/*/*.{ttf,ttc}
 
 maintain_path .kde/share/config/breezerc
 maintain_path .kde/share/apps/color-schemes
+maintain_path .config/plasma-org.kde.plasma.desktop-appletsrc # This is somewhat optional as it is for widgets on plasma
 
 maintain_path .irssi
 
