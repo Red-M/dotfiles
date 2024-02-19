@@ -1,0 +1,64 @@
+#!/bin/bash
+
+quiet=false
+
+while getopts ":q" opt; do
+    case $opt in
+	q)
+	    quiet=true
+	    shift
+	    ;;
+	\?)
+	    echo "Invalid option: -$OPTARG" >&2
+	    ;;
+    esac
+done
+
+host=$1
+port=$2
+
+nc=$( which nc )
+
+SECONDS=0
+next=10
+
+usage () {
+    (
+	echo "Usage:"
+	echo "  $0 host [port]"
+	echo "  port defaults to 22 (ssh)"
+    ) >&2
+    exit 1
+}
+
+print_not_reachable () {
+    if [ $SECONDS -ge $next ] ; then
+	$quiet || echo -n $SECONDS >&2
+	next=$((next + 10))
+    else
+	$quiet || echo -n . >&2
+    fi
+}
+
+is_port_open () {
+    $nc -z -w 2 $host $port >&2
+    return $?
+}
+
+if [ -z "$host" ] ; then
+  usage
+fi
+if [ -z "$port" ] ; then
+  port=22
+fi
+if [ -z "$nc" ] ; then
+  echo "Error, 'nc' not installed."
+  exit 2
+fi
+
+while ! is_port_open ; do
+  sleep 1
+  print_not_reachable
+done
+echo >&2
+
