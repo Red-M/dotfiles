@@ -1,5 +1,6 @@
-jq 1.7.1
+jq latest
 kubectl 1.28.7
-neovim 0.9.5
-sops 3.8.1
-yq 4.41.1
+neovim latest
+sops latest
+yq latest
+

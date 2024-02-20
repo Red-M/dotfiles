@@ -9,8 +9,6 @@ if [ -f /etc/bashrc ]; then
 fi
 
 export EDITOR=nvim
-
-export PATH=~/.local/bin:${PATH}
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 
@@ -19,17 +17,22 @@ export SCRCPY_SERVER_PATH=~/.local/bin/scrcpy-server
 export SciTE_USERHOME=~
 export SciTE_HOME=$(readlink -f ~/.scite || echo ~/.scite)
 
-if [[ -e "${KREW_ROOT:-$HOME/.krew}" && ! -f "${KREW_ROOT:-$HOME/.krew}" ]]; then
-    export PATH="${KREW_ROOT:-$HOME/.krew}/bin:${PATH}"
-fi
-
 if [ -f ~/ssh_keys.sh ]; then
     export SSH_AUTH_SOCK=/run/user/1000/keyring/ssh
+fi
+
+
+if [[ -e "${KREW_ROOT:-$HOME/.krew}" && ! -f "${KREW_ROOT:-$HOME/.krew}" ]]; then
+    export PATH="${KREW_ROOT:-$HOME/.krew}/bin:${PATH}"
 fi
 
 if [ -d "$HOME/.asdf" ]; then
     . "$HOME/.asdf/asdf.sh"
     . "$HOME/.asdf/completions/asdf.bash"
+fi
+
+if [ -d "$HOME/.local/share/mise" ]; then
+    export PATH="$HOME/.local/share/mise/shims:$PATH"
 fi
 
 if [ -d "$HOME/.pyenv" ]; then
@@ -54,6 +57,8 @@ export DEBUILD_DPKG_BUILDPACKAGE_OPTS="-i -I -us -uc"
 export DEBUILD_LINTIAN_OPTS="-i -I --show-overrides"
 #export DEBSIGN_KEYID="Your_GPG_keyID"
 
+
+export PATH=~/.local/bin:${PATH}
 
 
 
