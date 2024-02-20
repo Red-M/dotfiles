@@ -8,6 +8,7 @@ if [ -f /etc/bashrc ]; then
       . /etc/bashrc   # --> Read /etc/bashrc, if present.
 fi
 
+export PATH="~/.local/bin:${PATH}"
 export EDITOR=nvim
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
@@ -33,6 +34,7 @@ fi
 
 if [ -d "$HOME/.local/share/mise" ]; then
     export PATH="$HOME/.local/share/mise/shims:$PATH"
+    . <(mise completion bash)
 fi
 
 if [ -d "$HOME/.pyenv" ]; then
@@ -49,16 +51,18 @@ function prepend() { while read line; do echo "${1}${line}"; done; }
 
 
 
-alias dquilt="quilt --quiltrc=${HOME}/.quiltrc-dpkg"
-. /usr/share/bash-completion/completions/quilt
-complete -F _quilt_completion $_quilt_complete_opt dquilt
+if [ -f /usr/share/bash-completion/completions/quilt ]; then
+    alias dquilt="quilt --quiltrc=${HOME}/.quiltrc-dpkg"
+    . /usr/share/bash-completion/completions/quilt
+    complete -F _quilt_completion $_quilt_complete_opt dquilt
 
-export DEBUILD_DPKG_BUILDPACKAGE_OPTS="-i -I -us -uc"
-export DEBUILD_LINTIAN_OPTS="-i -I --show-overrides"
-#export DEBSIGN_KEYID="Your_GPG_keyID"
+    export DEBUILD_DPKG_BUILDPACKAGE_OPTS="-i -I -us -uc"
+    export DEBUILD_LINTIAN_OPTS="-i -I --show-overrides"
+    #export DEBSIGN_KEYID="Your_GPG_keyID"
+fi
 
-
-export PATH=~/.local/bin:${PATH}
+export PATH="~/.local/bin:${PATH}"
+export MANGOHUD=1
 
 
 
@@ -67,8 +71,6 @@ export PATH=~/.local/bin:${PATH}
 
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
-
-export MANGOHUD=1
 
 #--------------------------------------------------------------
 #  Automatic setting of $DISPLAY (if not set already).

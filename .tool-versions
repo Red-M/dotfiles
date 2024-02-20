@@ -3,4 +3,5 @@ kubectl 1.28.7
 neovim latest
 sops latest
 yq latest
+usage latest
 
