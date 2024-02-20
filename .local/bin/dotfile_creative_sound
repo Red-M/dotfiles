@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-cardNumbers=$(aplay -l|grep 'Sound BlasterX G6'|cut -d' ' -f 2 |tr -d ':')
+cardNumbers=$(aplay -l | grep 'Sound BlasterX G6' | sed -E 's#^card ([0-9]+).*#\1#g')
 for cardNumber in $cardNumbers; do
   amixer -c "$cardNumber" -q set "PCM Capture Source" "External Mic"
 
