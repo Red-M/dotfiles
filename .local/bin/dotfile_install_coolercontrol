@@ -1,0 +1,7 @@
+#!/bin/bash
+
+coolercontrold --help 2>&1 > /dev/null
+if [ ! $? == 0 ]; then
+    su -l -c "curl -1sLf 'https://dl.cloudsmith.io/public/coolercontrol/coolercontrol/setup.deb.sh' | bash"
+fi
+
