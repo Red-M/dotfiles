@@ -79,6 +79,7 @@ vim.api.nvim_create_autocmd({'BufEnter','UIEnter','TabEnter','VimEnter'}, {
     if vim.bo.filetype == "neo-tree" then
       vim.wo.statuscolumn = [[%!v:lua.StatusCol()." "]]
       vim.wo.relativenumber = false
+      vim.wo.number = true
       -- vim.api.nvim_exec([[silent setlocal rnu]], false)
     end
   end
