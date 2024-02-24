@@ -12,7 +12,7 @@ return {
       "diff",
       "dockerfile",
       "go",
-      "gotmpl",
+      -- "gotmpl",
       "hcl",
       "html",
       "javascript",

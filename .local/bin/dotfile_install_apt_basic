@@ -1,4 +1,4 @@
 #!/bin/bash
 
-apt install -y build-essential tmux nano htop iotop ethtool dnsutils python3 python3-dev python3 daemon make cmake sudo curl git gcc irssi automake shtool pkg-config libevent-dev ntp libssl-dev libffi-dev libicu-dev ffmpeg needrestart bc libargon2-dev swig dirmngr gpg curl gawk git bc
+apt install -y automake bc build-essential cmake curl daemon devscripts dirmngr dnsutils ethtool fakeroot ffmpeg gawk gcc git gpg htop iotop irssi libargon2-dev libevent-dev libffi-dev libicu-dev libssl-dev make nano needrestart ntp pkg-config python3 python3-dev shtool sudo swig tmux
 
