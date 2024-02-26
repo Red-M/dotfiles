@@ -117,7 +117,7 @@ Size=48
 Size=32
 
 [DirSelect Dialog]
-DirSelectDialog Size=640,480
+DirSelectDialog Size=1025,669
 
 [Emoticons]
 emoticonsTheme=Konqi

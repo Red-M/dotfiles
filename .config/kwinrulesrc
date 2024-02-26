@@ -1,31 +1,93 @@
 [$Version]
 update_info=kwinrules.upd:replace-placement-string-to-enum,kwinrules.upd:use-virtual-desktop-ids
 
-[1]
-Description=Application settings for teamspeak 3
-clientmachine=POTATO
+[2]
+Description=Window settings for virt-manager
+clientmachine=potato
 clientmachinematch=1
-desktop=7
 desktoprule=2
+desktops=eabe6957-0be4-438c-8775-e064f005dbc8
+desktopsrule=2
+title=Virtual Machine Manager
+types=1
+wmclass=virt-manager
+wmclassmatch=2
+
+[3]
+Description=Window settings for qpwgraph
+clientmachine=potato
+clientmachinematch=1
+desktops=00bd404f-c995-4b72-8db1-06526e67adf2
+desktopsrule=2
+title=Spotify
+types=1
+wmclass=qpwgraph
+wmclassmatch=1
+
+[3bd57ec1-b9f1-4d21-9231-2918c8f548e0]
+Description=Window settings for org.telegram.desktop
+clientmachine=potato
+clientmachinematch=1
 desktops=\\0
 desktopsrule=2
-fullscreen=false
+types=1
+wmclass=telegram-desktop
+wmclasscomplete=true
+wmclassmatch=2
+
+[5]
+Description=Application settings for teamspeak 3
+clientmachine=potato
+clientmachinematch=1
+desktops=\\0
+desktopsrule=2
+title=Spotify
 wmclass=ts3client_linux_amd64 teamspeak 3
 wmclasscomplete=true
 wmclassmatch=1
 
-[2]
-Description=Application settings for discord
-clientmachine=POTATO
+[5d3b5daf-46a5-4cc1-a45d-334cd3cede50]
+Description=Window settings for org.telegram.desktop
+clientmachine=potato
 clientmachinematch=1
-desktop=8
-desktoprule=2
+desktops=\\0
+desktopsrule=2
+types=1
+wmclass=telegram-desktop org.telegram.desktop
+wmclasscomplete=true
+wmclassmatch=1
+
+[6]
+Description=Application settings for steam
+clientmachine=potato
+clientmachinematch=1
+desktops=0a61b858-ae1a-478a-99c9-4d329111f65f
+desktopsrule=2
+title=Spotify
+wmclass=steam
+wmclasscomplete=true
+wmclassmatch=2
+
+[6ae5746d-4f12-4945-8df4-a4482bb8b010]
+Description=Window settings for qpwgraph
+clientmachine=potato
+clientmachinematch=1
+desktops=00bd404f-c995-4b72-8db1-06526e67adf2
+desktopsrule=2
+types=1
+wmclass=qpwgraph
+wmclassmatch=1
+
+[7]
+Description=Application settings for Discord
+clientmachine=potato
+clientmachinematch=1
 desktops=\\0
 desktopsrule=2
 title=Spotify
-wmclass=discord
-wmclasscomplete=false
-wmclassmatch=1
+wmclass=Discord
+wmclasscomplete=true
+wmclassmatch=2
 
 [8]
 Description=Settings for Spotify
@@ -36,15 +98,37 @@ wmclasscomplete=false
 wmclassmatch=1
 
 [General]
-count=3
-rules=1,d9580593-0cb4-4b20-aecb-a79dec953ff9,2
+count=6
+rules=3bd57ec1-b9f1-4d21-9231-2918c8f548e0,2,3,5,6,7
 
 [a24e96a6-4f59-4f7c-b2f0-aa95c51ac9f6]
 Description=Application settings for teamspeak 3
-clientmachine=localhost
+clientmachine=POTATO
 desktops=\\0
 desktopsrule=3
 wmclass=ts3client_linux_amd64 teamspeak 3
+wmclasscomplete=true
+wmclassmatch=1
+
+[a8145527-520b-45fd-9e7d-7c7eb7a8c13b]
+Description=Window settings for virt-manager
+clientmachine=potato
+clientmachinematch=1
+desktops=eabe6957-0be4-438c-8775-e064f005dbc8
+desktopsrule=2
+title=Virtual Machine Manager
+types=1
+wmclass=virt-manager
+wmclassmatch=2
+
+[c387c17c-24f8-40ae-b2f1-af07cfde3599]
+Description=Window settings for org.telegram.desktop
+clientmachine=POTATO
+clientmachinematch=1
+desktops=\\0
+desktopsrule=2
+types=1
+wmclass=telegram-desktop org.telegram.desktop
 wmclasscomplete=true
 wmclassmatch=1
 
@@ -60,7 +144,7 @@ wmclassmatch=1
 
 [f0340420-5663-4d33-8467-54398a40a236]
 Description=Application settings for discord
-clientmachine=localhost
+clientmachine=POTATO
 desktops=\\0
 desktopsrule=2
 wmclass=discord
