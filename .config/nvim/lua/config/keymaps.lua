@@ -110,7 +110,7 @@ local config_keymap = {
   -- Telescope
   {{"i","n"}, [[<C-t>]], "<cmd>Telescope<cr>", {desc = "Telescope",}},
 
-
+  {"n", "-", "<cmd>Oil<cr>", { desc = "Open parent directory in Oil.nvim" }},
 
 }
 

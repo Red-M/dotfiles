@@ -166,8 +166,8 @@ extraItems=org.kde.plasma.clipboard,org.kde.plasma.volume,org.kde.plasma.printma
 knownItems=org.kde.plasma.clipboard,org.kde.plasma.volume,org.kde.plasma.printmanager,org.kde.plasma.networkmanagement,org.kde.plasma.keyboardindicator,org.kde.plasma.bluetooth,org.kde.plasma.battery,org.kde.plasma.keyboardlayout,org.kde.kdeconnect,org.kde.plasma.vault,org.kde.kupapplet,org.kde.plasma.devicenotifier,org.kde.kscreen,org.kde.plasma.nightcolorcontrol,org.kde.plasma.notifications,org.kde.plasma.manage-inputmethod,org.kde.plasma.mediacontroller
 
 [Containments][2]
-ItemGeometries-2560x1440=Applet-86:2064,0,192,352,0;Applet-87:2256,0,192,976,0;
-ItemGeometriesHorizontal=Applet-86:2064,0,192,352,0;Applet-87:2256,0,192,976,0;
+ItemGeometries-2560x1440=Applet-86:2176,0,192,352,0;Applet-87:2368,0,192,976,0;
+ItemGeometriesHorizontal=Applet-86:2176,0,192,352,0;Applet-87:2368,0,192,976,0;
 activityId=031bb120-ac14-4e7c-9c3f-232ac77202f1
 formfactor=0
 immutability=1
@@ -759,7 +759,7 @@ immutability=1
 plugin=org.kde.plasma.notifications
 
 [Containments][33][Applets][43][Configuration]
-PreloadWeight=65
+PreloadWeight=70
 
 [Containments][33][Applets][44]
 immutability=1
@@ -788,7 +788,7 @@ immutability=1
 plugin=org.kde.plasma.bluetooth
 
 [Containments][33][Applets][48][Configuration]
-PreloadWeight=44
+PreloadWeight=49
 
 [Containments][33][Applets][55]
 immutability=1
@@ -1003,7 +1003,6 @@ plugin=org.kde.plasma.volume
 PreloadWeight=100
 
 [Containments][63][Applets][65][Configuration][General]
-currentTab=streams
 migrated=true
 
 [Containments][63][Applets][66]

@@ -2,7 +2,7 @@ return {
   "luukvbaal/statuscol.nvim",
   lazy = false,
   priority = 700,
-  event = { "BufReadPost", "BufNewFile" },
+  event = { "BufReadPost", "BufNewFile", "LazyFile" },
   config = function()
     local builtin = require("statuscol.builtin")
     require("statuscol").setup({
