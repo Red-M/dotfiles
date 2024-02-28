@@ -34,7 +34,7 @@ for cardNumber in $cardNumbers; do
 done
 
 
-pw-metadata -n settings 0 clock.force-rate 384000
+# pw-metadata -n settings 0 clock.force-rate 384000
 
 
 
