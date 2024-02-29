@@ -8,3 +8,4 @@ table.insert (bluez_monitor.rules, {
         ["bluez5.default.rate"] = 48000
     }
 })
+

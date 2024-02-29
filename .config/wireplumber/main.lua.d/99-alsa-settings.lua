@@ -1,3 +1,6 @@
+
+alsa_monitor.enabled = true
+
 table.insert (alsa_monitor.rules, {
   matches = {
     {
@@ -14,65 +17,53 @@ table.insert (alsa_monitor.rules, {
   },
 })
 
-table.insert(alsa_monitor.rules, {
+table.insert (alsa_monitor.rules, {
+  -- Rules for matching a device or node. It is an array of
+  -- properties that all need to match the regexp. If any of the
+  -- matches work, the actions are executed for the object.
   matches = {
     {
-      { "node.name", "equals", "alsa_output.pci-0000_07_00.6.HiFi__hw_Generic_1__sink" },
+      -- This matches all cards.
+      { "device.name", "matches", "alsa_card.*" },
     },
   },
+  -- Apply properties on the matched object.
   apply_properties = {
-    ["audio.rate"] = 192000,
-    ["alsa.rate"] = 192000,
-    ["alsa.resolution_bits"] = 32,
-    ["node.max-latency"] = "16384/192000",
-  }
-})
-table.insert(alsa_monitor.rules, {
-  matches = {
-    {
-      { "node.name", "matches", "alsa_output.usb-Creative_Technology_Ltd_Sound_BlasterX_G6*" },
-    },
-  },
-  apply_properties = {
-    ["audio.rate"] = 384000,
-    ["alsa.rate"] = 384000,
-    ["alsa.resolution_bits"] = 32,
-    ["node.max-latency"] = "16384/384000",
+    -- Use ALSA-Card-Profile devices. They use UCM or the profile
+    -- configuration to configure the device and mixer settings.
+    ["api.alsa.use-acp"] = true,
+
+    -- Use UCM instead of profile when available. Can be
+    -- disabled to skip trying to use the UCM profile.
+    ["api.alsa.use-ucm"] = true,
   }
 })
 
-table.insert(alsa_monitor.rules, {
+table.insert (alsa_monitor.rules, {
   matches = {
     {
-      { "node.name", "matches", "*usb-Creative_Technology_Ltd_Sound_BlasterX_G6_2C005443621-00*" },
+      { "node.name", "matches", "alsa_*.usb-*" },
     },
   },
   apply_properties = {
-    ["node.description"] = "Music SoundBlasterX G6",
+    -- USB audio interfaces can take a while to wake up from suspending
+    ["session.suspend-timeout-seconds"] = 0,
   }
 })
-table.insert(alsa_monitor.rules, {
+
+table.insert (alsa_monitor.rules, {
   matches = {
     {
-      { "node.name", "matches", "*usb-Creative_Technology_Ltd_Sound_BlasterX_G6_6B00664368X-00*" },
+      { "application.process.binary", "equals", "Discord" },
     },
   },
   apply_properties = {
-    ["node.description"] = "Game SoundBlasterX G6",
+    -- USB audio interfaces can take a while to wake up from suspending
+    ["pulse.min.quantum"] = "1024/48000",
   }
 })
 
 
-table.insert(alsa_monitor.rules, {
-  matches = {
-    {
-      { "node.name", "matches", "*pci-0000_13_00.4.*" },
-    },
-  },
-  apply_properties = {
-    ["node.description"] = "Voice Gigabyte Motherboard Onboard",
-  }
-})
 
 
 

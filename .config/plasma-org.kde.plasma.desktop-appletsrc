@@ -737,7 +737,7 @@ immutability=1
 plugin=org.kde.kdeconnect
 
 [Containments][33][Applets][39][Configuration]
-PreloadWeight=70
+PreloadWeight=75
 
 [Containments][33][Applets][40]
 immutability=1
@@ -759,7 +759,7 @@ immutability=1
 plugin=org.kde.plasma.notifications
 
 [Containments][33][Applets][43][Configuration]
-PreloadWeight=70
+PreloadWeight=75
 
 [Containments][33][Applets][44]
 immutability=1
