@@ -128,7 +128,7 @@ immutability=1
 plugin=org.kde.plasma.nightcolorcontrol
 
 [Containments][10][Applets][24][Configuration]
-PreloadWeight=10
+PreloadWeight=0
 
 [Containments][10][Applets][25]
 immutability=1
@@ -156,7 +156,7 @@ immutability=1
 plugin=org.kde.plasma.mediacontroller
 
 [Containments][10][Applets][56][Configuration]
-PreloadWeight=42
+PreloadWeight=34
 
 [Containments][10][Configuration]
 PreloadWeight=42
@@ -166,6 +166,7 @@ extraItems=org.kde.plasma.clipboard,org.kde.plasma.volume,org.kde.plasma.printma
 knownItems=org.kde.plasma.clipboard,org.kde.plasma.volume,org.kde.plasma.printmanager,org.kde.plasma.networkmanagement,org.kde.plasma.keyboardindicator,org.kde.plasma.bluetooth,org.kde.plasma.battery,org.kde.plasma.keyboardlayout,org.kde.kdeconnect,org.kde.plasma.vault,org.kde.kupapplet,org.kde.plasma.devicenotifier,org.kde.kscreen,org.kde.plasma.nightcolorcontrol,org.kde.plasma.notifications,org.kde.plasma.manage-inputmethod,org.kde.plasma.mediacontroller
 
 [Containments][2]
+ItemGeometries-0x0=Applet-86:2176,0,192,352,0;Applet-87:2368,0,192,976,0;
 ItemGeometries-2560x1440=Applet-86:2176,0,192,352,0;Applet-87:2368,0,192,976,0;
 ItemGeometriesHorizontal=Applet-86:2176,0,192,352,0;Applet-87:2368,0,192,976,0;
 activityId=031bb120-ac14-4e7c-9c3f-232ac77202f1
@@ -195,6 +196,7 @@ DialogWidth=720
 
 [Containments][2][Applets][86][Configuration][SensorColors]
 gpu/gpu0/name=237,66,0
+gpu/gpu0/temp2=237,235,0
 gpu/gpu0/temp3=82,237,0
 gpu/gpu0/temperature=57,0,237
 gpu/gpu0/usage=237,154,0
@@ -203,6 +205,7 @@ gpu/gpu0/usedVram=13,0,237
 [Containments][2][Applets][86][Configuration][SensorLabels]
 gpu/gpu0/coreFrequency=GPU Freq
 gpu/gpu0/memoryFrequency=VRAM Freq
+gpu/gpu0/temp2=GPU Junct Temp
 gpu/gpu0/temp3=VRAM Temp
 gpu/gpu0/temperature=GPUCore Temp
 gpu/gpu0/totalVram=Total VRAM
@@ -210,7 +213,7 @@ gpu/gpu0/usage=GPUCore Usage
 gpu/gpu0/usedVram=VRAM Used
 
 [Containments][2][Applets][86][Configuration][Sensors]
-highPrioritySensorIds=["gpu/gpu0/name","gpu/gpu0/usage","gpu/gpu0/temperature","gpu/gpu0/temp3"]
+highPrioritySensorIds=["gpu/gpu0/name","gpu/gpu0/usage","gpu/gpu0/temp2","gpu/gpu0/temperature","gpu/gpu0/temp3"]
 lowPrioritySensorIds=["gpu/gpu0/coreFrequency","gpu/gpu0/memoryFrequency","gpu/gpu0/usedVram","gpu/gpu0/totalVram"]
 
 [Containments][2][Applets][86][Configuration][org.kde.ksysguard.barchart][General]
@@ -658,6 +661,11 @@ useCustomButtonImage=true
 immutability=1
 plugin=org.kde.plasma.digitalclock
 
+[Containments][28][Applets][53][Configuration]
+PreloadWeight=55
+popupHeight=450
+popupWidth=810
+
 [Containments][28][Applets][53][Configuration][Appearance]
 dateDisplayFormat=BelowTime
 dateFormat=isoDate
@@ -773,7 +781,7 @@ immutability=1
 plugin=org.kde.plasma.nightcolorcontrol
 
 [Containments][33][Applets][45][Configuration]
-PreloadWeight=2
+PreloadWeight=0
 
 [Containments][33][Applets][46]
 immutability=1
@@ -786,19 +794,22 @@ PreloadWeight=34
 immutability=1
 plugin=org.kde.plasma.networkmanagement
 
+[Containments][33][Applets][47][Configuration]
+PreloadWeight=55
+
 [Containments][33][Applets][48]
 immutability=1
 plugin=org.kde.plasma.bluetooth
 
 [Containments][33][Applets][48][Configuration]
-PreloadWeight=49
+PreloadWeight=0
 
 [Containments][33][Applets][55]
 immutability=1
 plugin=org.kde.plasma.mediacontroller
 
 [Containments][33][Applets][55][Configuration]
-PreloadWeight=34
+PreloadWeight=26
 
 [Containments][33][General]
 extraItems=org.kde.plasma.clipboard,org.kde.plasma.volume,org.kde.plasma.printmanager,org.kde.plasma.networkmanagement,org.kde.plasma.keyboardindicator,org.kde.plasma.bluetooth,org.kde.plasma.battery,org.kde.plasma.keyboardlayout,org.kde.kdeconnect,org.kde.plasma.vault,org.kde.kupapplet,org.kde.plasma.devicenotifier,org.kde.kscreen,org.kde.plasma.nightcolorcontrol,org.kde.plasma.notifications,org.kde.plasma.manage-inputmethod,org.kde.plasma.mediacontroller
@@ -1064,21 +1075,21 @@ immutability=1
 plugin=org.kde.plasma.bluetooth
 
 [Containments][63][Applets][76][Configuration]
-PreloadWeight=34
+PreloadWeight=0
 
 [Containments][63][Applets][77]
 immutability=1
 plugin=org.kde.plasma.mediacontroller
 
 [Containments][63][Applets][77][Configuration]
-PreloadWeight=34
+PreloadWeight=26
 
 [Containments][63][Applets][78]
 immutability=1
 plugin=org.kde.plasma.nightcolorcontrol
 
 [Containments][63][Applets][78][Configuration]
-PreloadWeight=10
+PreloadWeight=0
 
 [Containments][63][Applets][79]
 immutability=1
@@ -1090,37 +1101,6 @@ PreloadWeight=34
 [Containments][63][General]
 extraItems=org.kde.plasma.clipboard,org.kde.plasma.volume,org.kde.plasma.printmanager,org.kde.plasma.networkmanagement,org.kde.plasma.keyboardindicator,org.kde.plasma.bluetooth,org.kde.plasma.battery,org.kde.plasma.keyboardlayout,org.kde.kdeconnect,org.kde.plasma.vault,org.kde.kupapplet,org.kde.plasma.devicenotifier,org.kde.kscreen,org.kde.plasma.nightcolorcontrol,org.kde.plasma.notifications,org.kde.plasma.manage-inputmethod,org.kde.plasma.mediacontroller
 knownItems=org.kde.plasma.clipboard,org.kde.plasma.volume,org.kde.plasma.printmanager,org.kde.plasma.networkmanagement,org.kde.plasma.keyboardindicator,org.kde.plasma.bluetooth,org.kde.plasma.battery,org.kde.plasma.keyboardlayout,org.kde.kdeconnect,org.kde.plasma.vault,org.kde.kupapplet,org.kde.plasma.devicenotifier,org.kde.kscreen,org.kde.plasma.nightcolorcontrol,org.kde.plasma.notifications,org.kde.plasma.manage-inputmethod,org.kde.plasma.mediacontroller
-
-[Containments][88]
-ItemGeometries-0x0=
-ItemGeometriesHorizontal=
-activityId=00000000-0000-0000-0000-000000000000
-formfactor=0
-immutability=1
-lastScreen=0
-location=0
-plugin=org.kde.plasma.folder
-wallpaperplugin=org.kde.image
-
-[Containments][89]
-ItemGeometries-0x0=
-ItemGeometriesHorizontal=
-activityId=00000000-0000-0000-0000-000000000000
-formfactor=0
-immutability=1
-lastScreen=1
-location=0
-plugin=org.kde.plasma.folder
-wallpaperplugin=org.kde.image
-
-[Containments][90]
-activityId=00000000-0000-0000-0000-000000000000
-formfactor=0
-immutability=1
-lastScreen=2
-location=0
-plugin=org.kde.plasma.folder
-wallpaperplugin=org.kde.image
 
 [ScreenMapping]
 itemsOnDisabledScreens=

@@ -282,12 +282,14 @@ return {
             Title = { bold = false },
             Special = { fg = c.base.red },
             SpecialChar = { fg = c.base.red },
+            ["@attribute"] = { fg = c.base.green },
             ["@constructor.python"] = { fg = c.base.orange },
             ["@exception.python"] = { fg = c.base.red, italic = false },
             ["@function"] = { fg = c.base.orange },
             ["@function.attribute"] = { fg = c.base.green },
             ["@function.builtin.lua"] = { fg = c.base.orange },
             ["@function.builtin.python"] = { fg = c.base.cyan, italic = false },
+            ["@function.call"] = { fg = c.base.green, },
             ["@function.call.python"] = { fg = c.base.green, },
             ["@keyword"] = { fg = c.base.red, italic = false},
             ["@keyword.cpp"] = { fg = c.base.red, italic = false },
@@ -364,23 +366,23 @@ return {
       vim.cmd([[colorscheme monokai-pro]])
       -- vim.cmd([[colorscheme midnightokai]])
     end,
-  -- },{
-  --   "tjdevries/colorbuddy.nvim",
-  --   priority = 2002,
-  --   lazy = false,
-  -- },{
-  --   "Red_M/midnightokai",
-  --   dev = true,
-  --   enabled = true,
-  --   lazy = false,
-  --   priority = 2001,
-  --   dependencies = {
-  --     "tjdevries/colorbuddy.nvim",
-  --   },
-  --   config = function(opts)
-  --     require('midnightokai').setup(opts)
-  --     vim.cmd([[colorscheme midnightokai]])
-  --   end,
+    -- },{
+    --   "tjdevries/colorbuddy.nvim",
+    --   priority = 2002,
+    --   lazy = false,
+    -- },{
+    --   "Red_M/midnightokai",
+    --   dev = true,
+    --   enabled = true,
+    --   lazy = false,
+    --   priority = 2001,
+    --   dependencies = {
+    --     "tjdevries/colorbuddy.nvim",
+    --   },
+    --   config = function(opts)
+    --     require('midnightokai').setup(opts)
+    --     vim.cmd([[colorscheme midnightokai]])
+    --   end,
   },
 }
 
