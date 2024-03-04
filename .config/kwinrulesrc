@@ -1,28 +1,42 @@
 [$Version]
 update_info=kwinrules.upd:replace-placement-string-to-enum,kwinrules.upd:use-virtual-desktop-ids
 
+[1]
+Description=Window settings for UltiMaker Cura
+clientmachine=potato
+clientmachinematch=1
+desktops=eabe6957-0be4-438c-8775-e064f005dbc8
+desktopsrule=2
+title=UltiMaker Cura
+titlematch=2
+types=1
+wmclass=UltiMaker-Cura
+wmclasscomplete=true
+wmclassmatch=2
+
 [2]
-Description=Window settings for virt-manager
+Description=Window settings for org.telegram.desktop
 clientmachine=potato
 clientmachinematch=1
 desktoprule=2
+desktops=\\0
+desktopsrule=2
+title=Virtual Machine Manager
+types=1
+wmclass=telegram-desktop
+wmclasscomplete=true
+wmclassmatch=2
+
+[3]
+Description=Window settings for virt-manager
+clientmachine=potato
+clientmachinematch=1
 desktops=eabe6957-0be4-438c-8775-e064f005dbc8
 desktopsrule=2
 title=Virtual Machine Manager
 types=1
 wmclass=virt-manager
 wmclassmatch=2
-
-[3]
-Description=Window settings for qpwgraph
-clientmachine=potato
-clientmachinematch=1
-desktops=00bd404f-c995-4b72-8db1-06526e67adf2
-desktopsrule=2
-title=Spotify
-types=1
-wmclass=qpwgraph
-wmclassmatch=1
 
 [3bd57ec1-b9f1-4d21-9231-2918c8f548e0]
 Description=Window settings for org.telegram.desktop
@@ -34,6 +48,17 @@ types=1
 wmclass=telegram-desktop
 wmclasscomplete=true
 wmclassmatch=2
+
+[4]
+Description=Window settings for qpwgraph
+clientmachine=potato
+clientmachinematch=1
+desktops=00bd404f-c995-4b72-8db1-06526e67adf2
+desktopsrule=2
+title=Spotify
+types=1
+wmclass=qpwgraph
+wmclassmatch=1
 
 [5]
 Description=Application settings for teamspeak 3
@@ -89,6 +114,18 @@ wmclass=Discord
 wmclasscomplete=true
 wmclassmatch=2
 
+[79ac6370-030c-49db-9692-157639049425]
+Description=Window settings for com/.https://ultimaker.UltiMaker-Cura
+clientmachine=potato
+clientmachinematch=1
+desktops=eabe6957-0be4-438c-8775-e064f005dbc8
+desktopsrule=2
+title=UltiMaker Cura
+types=1
+wmclass=UltiMaker-Cura com/.https://ultimaker.UltiMaker-Cura
+wmclasscomplete=true
+wmclassmatch=1
+
 [8]
 Description=Settings for Spotify
 desktop=8
@@ -98,8 +135,8 @@ wmclasscomplete=false
 wmclassmatch=1
 
 [General]
-count=6
-rules=3bd57ec1-b9f1-4d21-9231-2918c8f548e0,2,3,5,6,7
+count=7
+rules=1,2,3,4,5,6,7
 
 [a24e96a6-4f59-4f7c-b2f0-aa95c51ac9f6]
 Description=Application settings for teamspeak 3

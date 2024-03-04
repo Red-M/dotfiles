@@ -25,7 +25,7 @@ table.insert(alsa_monitor.rules, {
 table.insert(alsa_monitor.rules, {
   matches = {
     {
-      { "node.name", "matches", "*usb-Creative_Technology_Ltd_Sound_BlasterX_G6_2C00544362X*" },
+      { "node.name", "matches", "*usb-Creative_Technology_Ltd_Sound_BlasterX_G6_2C00*" },
     },
   },
   apply_properties = {
@@ -35,7 +35,7 @@ table.insert(alsa_monitor.rules, {
 table.insert(alsa_monitor.rules, {
   matches = {
     {
-      { "node.name", "matches", "*usb-Creative_Technology_Ltd_Sound_BlasterX_G6_6B00664368X-00*" },
+      { "node.name", "matches", "*usb-Creative_Technology_Ltd_Sound_BlasterX_G6_6B00*" },
     },
   },
   apply_properties = {
