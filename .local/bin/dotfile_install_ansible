@@ -1,0 +1,7 @@
+#!/bin/bash
+
+which ansible &> /dev/null
+if [ ! $? == 0 ]; then
+    pipx install --include-deps ansible --force
+fi
+

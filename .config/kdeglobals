@@ -185,6 +185,32 @@ Size=22
 [PanelIcons]
 Size=32
 
+[Shortcuts]
+AboutApp=
+AboutKDE=
+Clear=
+ConfigureNotifications=
+ConfigureToolbars=
+Donate=
+EditBookmarks=
+FitToHeight=
+FitToPage=
+FitToWidth=
+Goto=
+GotoPage=
+Mail=
+OpenRecent=
+PrintPreview=
+ReportBug=
+Revert=
+SaveOptions=
+ShowStatusbar=
+ShowToolbar=
+Spelling=
+SwitchApplicationLanguage=
+TipofDay=
+Zoom=
+
 [SmallIcons]
 Size=16
 

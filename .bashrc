@@ -62,7 +62,7 @@ if [ -f /usr/share/bash-completion/completions/quilt ]; then
 fi
 
 export PATH="~/.local/bin:${PATH}"
-export MANGOHUD=1
+# export MANGOHUD=1
 
 
 

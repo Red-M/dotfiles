@@ -105,7 +105,7 @@ maintain_path .local/share/nvim
 maintain_path .local/share/fonts/*.ttf
 
 maintain_path .config/{font*,htop,kdedefaults,mpv,pipewire,wireplumber,xsettingsd}
-maintain_path .config/{breezerc,kdeglobals,khotkeysrc,konsolerc,kscreenlockerrc,kwinrulesrc,kwinrc,touchpad*}
+maintain_path .config/{breezerc,kdeglobals,kglobalshortcutsrc,khotkeysrc,konsolerc,kscreenlockerrc,kwinrulesrc,kwinrc,touchpad*}
 
 maintain_path .fonts/*/*.{ttf,ttc}
 
@@ -121,14 +121,17 @@ maintain_path .tmux.conf
 maintain_path .scite
 maintain_path .SciTEUser.properties
 
+maintain_path .config/mise
 maintain_path .config/nvim
 maintain_path .config/alacritty
 maintain_path .quiltrc-dpkg
 maintain_path .tool-versions
 maintain_path .config/MangoHud
+maintain_path .config/gamemode.ini
 maintain_path .config/OpenRGB
 
 maintain_path tmux_start_up_scripts
+maintain_path .ansible
 maintain_path Pictures/*
 maintain_path .face{,.icon}
 maintain_path *.sh

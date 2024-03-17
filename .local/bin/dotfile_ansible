@@ -1,0 +1,18 @@
+#!/bin/bash
+
+which ansible &> /dev/null
+if [ $? == 0 ]; then
+    export ANSIBLE_HOME=~/.ansible/dotfiles
+    export ANSIBLE_CONFIG="${ANSIBLE_HOME}/.ansible.cfg"
+    ansible ${@}
+else
+    echo "Ansible is not available"
+    exit 1
+fi
+
+
+
+
+
+
+

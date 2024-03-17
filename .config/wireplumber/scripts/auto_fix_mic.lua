@@ -20,7 +20,7 @@ config.properties = config.properties or {}
 local om = ObjectManager {
   Interest {
     type = "device",
-    Constraint { "node.name", "matches", "*usb-Creative_Technology_Ltd_Sound_BlasterX_G6_2C00544362X*" },
+    Constraint { "node.name", "matches", "*usb-Creative_Technology_Ltd_Sound_BlasterX_G6_2C00*" },
   }
 }
 -- Debug.dump_table(Core.get_info())

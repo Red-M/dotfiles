@@ -36,6 +36,7 @@ table.insert (alsa_monitor.rules, {
     -- Use UCM instead of profile when available. Can be
     -- disabled to skip trying to use the UCM profile.
     ["api.alsa.use-ucm"] = true,
+    ["session.suspend-timeout-seconds"] = 0,  -- 0 disables suspend
   }
 })
 

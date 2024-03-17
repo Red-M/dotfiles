@@ -1,5 +1,12 @@
 #!/bin/bash
-if [ ! -f ~/.local/bin/mise ]; then
+
+if [ "${1}" == "force" ]; then
+    force_mode=true
+else
+    force_mode=false
+fi
+
+if [[ ! -f ~/.local/bin/mise || ${force_mode} == true ]]; then
     curl https://mise.jdx.dev/mise-latest-linux-x64 > ~/.local/bin/mise
     chmod +x ~/.local/bin/mise
 fi
@@ -12,5 +19,5 @@ if [ -d "$HOME/.local/share/mise" ]; then
     export PATH="$HOME/.local/share/mise/shims:$PATH"
 fi
 
-mise install -y neovim@latest jq@latest yq@latest kubectl@1.28.7 sops@latest usage@latest
+mise install -y neovim@latest jq@latest yq@latest kubectl@1.28.7 sops@latest usage@latest pipx@latest
 

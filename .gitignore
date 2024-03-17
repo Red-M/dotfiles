@@ -11,4 +11,6 @@
 .ssh/*.pem
 .local/share/plasma/containmentpreviews/*
 .config/OpenRGB/logs/*
+.ansible/*
+!.ansible/dotfiles
 

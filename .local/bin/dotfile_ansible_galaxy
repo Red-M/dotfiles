@@ -1,0 +1,22 @@
+#!/bin/bash
+
+which ansible &> /dev/null
+if [ $? == 0 ]; then
+    # This is because I want to be able to override roles if I need to
+    # So that ansible-galaxy installs into the normal roles directory
+    # But my playbooks for my dotfile runs, will override them if the names conflict
+
+    # export ANSIBLE_HOME=~/.ansible/dotfiles
+    # export ANSIBLE_CONFIG="${ANSIBLE_HOME}/.ansible.cfg"
+    ansible-galaxy ${@}
+else
+    echo "Ansible is not available"
+    exit 1
+fi
+
+
+
+
+
+
+
