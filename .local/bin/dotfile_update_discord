@@ -1,0 +1,21 @@
+#!/bin/bash
+
+declare -a deb_files=()
+
+for update_channel in '' 'ptb' 'canary'; do
+    if [ ! ${update_channel} == '' ]; then
+        update_channel=${update_channel}'-'
+    fi
+    target_deb_file=$(ls -a ~/Downloads/discord-"${update_channel}"0*.deb 2>/dev/null | sort -h | tail -n 1)
+    # echo "${target_deb_file}"
+    if [ ! ${target_deb_file} == '' ]; then
+        deb_files+=("${target_deb_file}")
+    fi
+done
+
+read -r -d '' su_script <<EOF
+dpkg -i ${deb_files[@]}
+EOF
+
+su -l -c "${su_script}"
+
