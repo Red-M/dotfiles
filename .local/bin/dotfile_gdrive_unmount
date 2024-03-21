@@ -1,0 +1,25 @@
+#!/bin/bash
+
+gdrive_root_name="gdrive"
+gdrive_root_shared_drives_name="gdrive_shared_drives"
+gdrive_root_dir=$(echo ~/mnt/"${gdrive_root_name}/")
+gdrive_my_drive_name="My Drive"
+gdrive_shared_drives_name="Shared Drives"
+gdrive_my_drive_dir="${gdrive_root_dir}${gdrive_my_drive_name}"
+gdrive_shared_drives_dir="${gdrive_root_dir}${gdrive_shared_drives_name}"
+
+if [ -d "${gdrive_my_drive_dir}" ]; then
+    echo "Unmounting ${gdrive_my_drive_dir}"
+    # ls -alh "${gdrive_my_drive_dir}"
+    fusermount -u "${gdrive_my_drive_dir}"
+    echo '========='
+fi
+if [ -d "${gdrive_shared_drives_dir}" ]; then
+    echo "Unmounting ${gdrive_shared_drives_dir}"
+    # ls -alh "${gdrive_shared_drives_dir}"
+    fusermount -u "${gdrive_shared_drives_dir}"
+    echo '========='
+fi
+
+
+

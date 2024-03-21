@@ -1,14 +1,13 @@
 .scite/custom/ext/luarocks/lib/*
 .scite/custom/ext/luarocks/share/*
 .scite/custom/ext/pure_lua/luarocks/*
-.ssh/known_host*
+.ssh/
+!.ssh/authorized_keys
+!.ssh/config
 .config/nvim/lazy/*
 .local/share/nvim/**
 .config/nvim/sessions/*
 **/lazy-lock.json
-.ssh/id_*
-.ssh/*.key
-.ssh/*.pem
 .local/share/plasma/containmentpreviews/*
 .config/OpenRGB/logs/*
 .ansible/*

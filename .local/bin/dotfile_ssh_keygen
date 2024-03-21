@@ -1,0 +1,35 @@
+#!/bin/bash
+
+output_root_dir=$(echo ~/keys/)
+output_gen_time=$(date +%Y%m%d%H)
+
+if [ ! -d "${output_root_dir}" ]; then
+    mkdir -p "${output_root_dir}"
+fi
+
+if [ "${1}" == "gen" ]; then
+    generate_mode=true
+else
+    generate_mode=false
+fi
+
+key_types=( 'ed25519' 'rsa' 'rsa' 'ecdsa' 'ssh-rsa' )
+key_bits=(  '256' '16384' '8192' '521' '16384' )
+for idx in "${!key_types[@]}"; do
+  key_type=${key_types[$idx]}
+  key_bit=${key_bits[$idx]}
+  output_file="${output_root_dir}${output_gen_time}_${idx}_${key_type}_${key_bit}.key"
+  echo "Generating key file: ${output_file}"
+  if [ $generate_mode == true ]; then
+    ssh-keygen -a 32 -t "${key_type}" -b "${key_bit}" -f "${output_file}"
+  fi
+done
+
+# ssh-keygen -a 32 -t ecdsa -b 4096 -f "${output_dir}_ecdsa_4096.key"
+# ssh-keygen -a 32 -t ed25519 -b 2048 -f "${output_dir}_ed25519_2048.key"
+# ssh-keygen -a 32 -t rsa -b 4096 -f "${output_dir}_rsa_4096.key"
+# ssh-keygen -a 32 -t rsa -b 8192 -f "${output_dir}_rsa_8192.key"
+# ssh-keygen -a 32 -t rsa -b 16384 -f "${output_dir}_rsa_16384.key"
+# ssh-keygen -a 32 -t ssh-rsa -b 16384 -f "${output_dir}_rsa-sha1_16384.key"
+
+

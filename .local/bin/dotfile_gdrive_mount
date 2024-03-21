@@ -1,0 +1,25 @@
+#!/bin/bash
+
+gdrive_root_name="gdrive"
+gdrive_root_shared_drives_name="gdrive_shared_drives"
+gdrive_root_dir=$(echo ~/mnt/"${gdrive_root_name}/")
+gdrive_my_drive_name="My Drive"
+gdrive_shared_drives_name="Shared Drives"
+gdrive_my_drive_dir="${gdrive_root_dir}${gdrive_my_drive_name}"
+gdrive_shared_drives_dir="${gdrive_root_dir}${gdrive_shared_drives_name}"
+
+if [ ! -d "${gdrive_my_drive_dir}" ]; then
+    mkdir -p "${gdrive_my_drive_dir}"
+fi
+if [ ! -d "${gdrive_shared_drives_dir}" ]; then
+    mkdir -p "${gdrive_shared_drives_dir}"
+fi
+
+echo "Mounting ${gdrive_my_drive_dir}"
+# ls -alh "${gdrive_my_drive_dir}"
+rclone mount --daemon "${gdrive_root_name}":/ "${gdrive_my_drive_dir}" --cache-dir ~/.cache/rclone/"${gdrive_root_name}" --vfs-cache-mode full --dir-cache-time 1000h --vfs-cache-max-age 1000h --poll-interval 15s --vfs-cache-poll-interval 15s --write-back-cache
+echo "Mounting ${gdrive_shared_drives_dir}"
+# ls -alh "${gdrive_shared_drives_dir}"
+rclone mount --daemon "${gdrive_root_shared_drives_name}":/ "${gdrive_shared_drives_dir}" --cache-dir ~/.cache/rclone/"${gdrive_root_name}_shared_drives" --vfs-cache-mode full --dir-cache-time 1000h --vfs-cache-max-age 1000h --poll-interval 15s --vfs-cache-poll-interval 15s --write-back-cache
+
+
