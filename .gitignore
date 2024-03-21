@@ -1,9 +1,8 @@
 .scite/custom/ext/luarocks/lib/*
 .scite/custom/ext/luarocks/share/*
 .scite/custom/ext/pure_lua/luarocks/*
-.ssh/
-!.ssh/authorized_keys
-!.ssh/config
+.ssh/*
+.ssh/controlmasters/*
 .config/nvim/lazy/*
 .local/share/nvim/**
 .config/nvim/sessions/*
@@ -11,5 +10,14 @@
 .local/share/plasma/containmentpreviews/*
 .config/OpenRGB/logs/*
 .ansible/*
+
+!**/.keep_me
+
+
 !.ansible/dotfiles
+
+!.ssh/authorized_keys
+!.ssh/config
+!.ssh/controlmasters
+
 
