@@ -666,7 +666,7 @@ immutability=1
 plugin=org.kde.plasma.digitalclock
 
 [Containments][28][Applets][53][Configuration]
-PreloadWeight=70
+PreloadWeight=85
 popupHeight=450
 popupWidth=810
 
@@ -717,8 +717,8 @@ immutability=1
 lastScreen=0
 location=3
 plugin=org.kde.plasma.private.systemtray
-popupHeight=432
-popupWidth=432
+popupHeight=720
+popupWidth=713
 wallpaperplugin=org.kde.image
 
 [Containments][33][Applets][34]
@@ -736,7 +736,6 @@ plugin=org.kde.plasma.volume
 PreloadWeight=100
 
 [Containments][33][Applets][35][Configuration][General]
-currentTab=streams
 migrated=true
 showVirtualDevices=true
 
@@ -811,7 +810,7 @@ immutability=1
 plugin=org.kde.plasma.bluetooth
 
 [Containments][33][Applets][48][Configuration]
-PreloadWeight=0
+PreloadWeight=12
 
 [Containments][33][Applets][55]
 immutability=1
@@ -849,6 +848,7 @@ DialogHeight=540
 DialogWidth=720
 
 [Containments][50][Applets][54][Configuration][General]
+groupPopups=false
 launchers=preferred://filemanager,preferred://browser
 showOnlyCurrentScreen=true
 
@@ -877,7 +877,7 @@ DialogHeight=540
 DialogWidth=720
 
 [Containments][57][Applets][58][Configuration][General]
-launchers=preferred://filemanager,preferred://browser
+launchers=preferred://filemanager,preferred://browser,applications:discord.desktop,applications:steam.desktop,applications:org.telegram.desktop.desktop,applications:discord-canary.desktop
 showOnlyCurrentScreen=true
 
 [Containments][57][ConfigDialog]
@@ -901,8 +901,9 @@ immutability=1
 plugin=org.kde.plasma.digitalclock
 
 [Containments][59][Applets][60][Configuration]
+PreloadWeight=55
 popupHeight=450
-popupWidth=350
+popupWidth=396
 
 [Containments][59][Applets][60][Configuration][Appearance]
 showSeconds=true
@@ -1026,8 +1027,8 @@ immutability=1
 lastScreen=1
 location=3
 plugin=org.kde.plasma.private.systemtray
-popupHeight=0
-popupWidth=0
+popupHeight=432
+popupWidth=432
 wallpaperplugin=org.kde.image
 
 [Containments][63][Applets][64]
@@ -1105,7 +1106,7 @@ immutability=1
 plugin=org.kde.plasma.mediacontroller
 
 [Containments][63][Applets][77][Configuration]
-PreloadWeight=10
+PreloadWeight=15
 
 [Containments][63][Applets][78]
 immutability=1
