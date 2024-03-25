@@ -9,7 +9,7 @@ return {
       relculright = true,
       -- ft_ignore = { "neo-tree" },
       segments = {
-        {text = { "%C" }, click = "v:lua.ScFa"}, -- Fold
+        {text = { "%C " }, click = "v:lua.ScFa"}, -- Fold
         {
           -- line number
           text = { builtin.lnumfunc },

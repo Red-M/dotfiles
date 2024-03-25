@@ -8,6 +8,9 @@ if [ -f /etc/bashrc ]; then
       . /etc/bashrc   # --> Read /etc/bashrc, if present.
 fi
 
+export HISTSIZE=4096
+export HISTFILESIZE=32768
+
 export PATH="~/.local/bin:${PATH}"
 export EDITOR=nvim
 export LC_ALL=en_US.UTF-8
@@ -46,6 +49,8 @@ if [ -d "$HOME/.pyenv" ]; then
     fi
 fi
 
+function dotfile_xcopy() { xclip -sel clip; }
+function dotfile_xpaste() { xclip -sel clip -o; }
 function mkdircd() { mkdir -p "${1}" && cd "${1}"; }
 function prepend() { while read line; do echo "${1}${line}"; done; }
 

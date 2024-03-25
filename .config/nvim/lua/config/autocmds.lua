@@ -80,6 +80,7 @@ vim.api.nvim_create_autocmd({'BufEnter','UIEnter','TabEnter','VimEnter'}, {
       vim.wo.statuscolumn = [[%!v:lua.StatusCol()." "]]
       vim.wo.relativenumber = false
       vim.wo.number = true
+      vim.wo.foldenable = false
       -- vim.api.nvim_exec([[silent setlocal rnu]], false)
     end
   end
