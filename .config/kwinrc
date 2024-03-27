@@ -74,6 +74,7 @@ highlightwindowEnabled=true
 kwin4_effect_fadedesktopEnabled=false
 slideEnabled=false
 slidingpopupsEnabled=false
+trackmouseEnabled=true
 windowgeometryEnabled=false
 
 [Script-desktopchangeosd]
@@ -147,6 +148,9 @@ tiles={"layoutDirection":"horizontal","tiles":[{"width":0.25},{"width":0.5},{"wi
 
 [Tiling][dd09f0df-a9e6-5b8e-858d-e80176b31414]
 tiles={"layoutDirection":"horizontal","tiles":[{"width":0.25},{"width":0.5},{"width":0.25}]}
+
+[Wayland]
+EnablePrimarySelection=false
 
 [Windows]
 ActiveMouseScreen=false

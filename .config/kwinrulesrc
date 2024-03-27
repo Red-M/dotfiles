@@ -110,7 +110,7 @@ clientmachinematch=1
 desktops=\\0
 desktopsrule=2
 title=Spotify
-wmclass=Discord
+wmclass=discord
 wmclasscomplete=true
 wmclassmatch=2
 

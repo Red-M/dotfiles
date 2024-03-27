@@ -6,4 +6,6 @@ pipx = "1.4.3"
 sops = "latest"
 usage = "latest"
 yq = "latest"
+pnpm = "latest"
+node = "latest"
 

@@ -1,0 +1,12 @@
+#!/bin/bash
+
+which distrobox &> /dev/null
+if [ ! $? == 0 ]; then
+    # curl -s https://raw.githubusercontent.com/89luca89/distrobox/main/install | sh -s -- --prefix ~/.local
+
+    # git clone https://github.com/89luca89/distrobox.git ~/git/GitHub/89luca89/distrobox
+    # cd ~/git/GitHub/89luca89/distrobox
+    # ./install
+    su -l -c 'apt update && apt install distrobox'
+fi
+
