@@ -1,0 +1,22 @@
+#!/bin/bash
+
+ssh_root_name="ssh"
+ssh_root_dir=$(echo ~/mnt/"${ssh_root_name}/")
+
+if [ -z "${1}" ]; then
+    echo "Need 1 arg"
+    exit 1
+fi
+
+target="${1}"
+ssh_mount_dir="${ssh_root_dir}/${target}"
+
+if [ ! -d "${ssh_mount_dir}" ]; then
+    mkdir -p "${ssh_mount_dir}"
+fi
+
+echo "Mounting ${ssh_mount_dir}"
+sshfs -o direct_io,follow_symlinks,auto_cache,kernel_cache "${target}:/" "${ssh_mount_dir}"
+exit "${?}"
+
+

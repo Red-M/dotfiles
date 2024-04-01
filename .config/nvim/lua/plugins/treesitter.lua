@@ -15,6 +15,7 @@ return {
       -- "gotmpl",
       "hcl",
       "html",
+      "ini",
       "javascript",
       "jq",
       "json",

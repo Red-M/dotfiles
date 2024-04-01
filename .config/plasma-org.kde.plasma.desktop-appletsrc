@@ -666,7 +666,7 @@ immutability=1
 plugin=org.kde.plasma.digitalclock
 
 [Containments][28][Applets][53][Configuration]
-PreloadWeight=95
+PreloadWeight=100
 popupHeight=450
 popupWidth=810
 
@@ -736,6 +736,7 @@ plugin=org.kde.plasma.volume
 PreloadWeight=100
 
 [Containments][33][Applets][35][Configuration][General]
+currentTab=streams
 migrated=true
 showVirtualDevices=true
 
@@ -824,7 +825,7 @@ immutability=1
 plugin=org.kde.plasma.gamemode
 
 [Containments][33][Applets][88][Configuration]
-PreloadWeight=60
+PreloadWeight=65
 
 [Containments][33][General]
 extraItems=org.kde.plasma.clipboard,org.kde.plasma.volume,org.kde.plasma.printmanager,org.kde.plasma.networkmanagement,org.kde.plasma.keyboardindicator,org.kde.plasma.bluetooth,org.kde.plasma.battery,org.kde.plasma.keyboardlayout,org.kde.kdeconnect,org.kde.plasma.vault,org.kde.kupapplet,org.kde.plasma.devicenotifier,org.kde.kscreen,org.kde.plasma.nightcolorcontrol,org.kde.plasma.notifications,org.kde.plasma.manage-inputmethod,org.kde.plasma.mediacontroller,org.kde.plasma.gamemode
@@ -901,7 +902,7 @@ immutability=1
 plugin=org.kde.plasma.digitalclock
 
 [Containments][59][Applets][60][Configuration]
-PreloadWeight=55
+PreloadWeight=60
 popupHeight=450
 popupWidth=396
 
