@@ -16,7 +16,7 @@ if [ ! -d "${ssh_mount_dir}" ]; then
 fi
 
 echo "Mounting ${ssh_mount_dir}"
-sshfs -o direct_io,follow_symlinks,auto_cache,kernel_cache "${target}:/" "${ssh_mount_dir}"
+sshfs -o direct_io,follow_symlinks,auto_cache,kernel_cache,reconnect "${target}:/" "${ssh_mount_dir}"
 exit "${?}"
 
 
