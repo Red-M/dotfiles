@@ -11,7 +11,7 @@ ItemGeometriesHorizontal=
 activityId=031bb120-ac14-4e7c-9c3f-232ac77202f1
 formfactor=0
 immutability=1
-lastScreen=1
+lastScreen=0
 location=0
 plugin=org.kde.plasma.folder
 wallpaperplugin=org.kde.image
@@ -23,7 +23,7 @@ DialogWidth=720
 [Containments][1][General]
 ToolBoxButtonState=topcenter
 ToolBoxButtonX=775
-ToolBoxButtonY=36
+ToolBoxButtonY=40
 positions={"2560x1440":[]\\,"1920x1200":[""]\\,"1024x768":[""]}
 sortMode=-1
 
@@ -176,7 +176,7 @@ ItemGeometriesHorizontal=Applet-86:2176,0,192,352,0;Applet-87:2368,0,192,976,0;
 activityId=031bb120-ac14-4e7c-9c3f-232ac77202f1
 formfactor=0
 immutability=1
-lastScreen=0
+lastScreen=1
 location=0
 plugin=org.kde.plasma.folder
 wallpaperplugin=org.kde.image
@@ -615,7 +615,7 @@ SlidePaths=/usr/share/wallpapers/
 activityId=
 formfactor=2
 immutability=1
-lastScreen=1
+lastScreen=0
 location=3
 plugin=org.kde.panel
 wallpaperplugin=org.kde.image
@@ -714,7 +714,7 @@ SlidePaths=/usr/share/wallpapers/
 activityId=
 formfactor=2
 immutability=1
-lastScreen=1
+lastScreen=0
 location=3
 plugin=org.kde.plasma.private.systemtray
 popupHeight=720
@@ -736,7 +736,6 @@ plugin=org.kde.plasma.volume
 PreloadWeight=100
 
 [Containments][33][Applets][35][Configuration][General]
-currentTab=streams
 migrated=true
 showVirtualDevices=true
 
@@ -779,7 +778,7 @@ immutability=1
 plugin=org.kde.plasma.notifications
 
 [Containments][33][Applets][43][Configuration]
-PreloadWeight=80
+PreloadWeight=85
 
 [Containments][33][Applets][44]
 immutability=1
@@ -811,7 +810,7 @@ immutability=1
 plugin=org.kde.plasma.bluetooth
 
 [Containments][33][Applets][48][Configuration]
-PreloadWeight=12
+PreloadWeight=17
 
 [Containments][33][Applets][55]
 immutability=1
@@ -835,7 +834,7 @@ knownItems=org.kde.plasma.clipboard,org.kde.plasma.volume,org.kde.plasma.printma
 activityId=
 formfactor=2
 immutability=1
-lastScreen=1
+lastScreen=0
 location=4
 plugin=org.kde.panel
 wallpaperplugin=org.kde.image
@@ -850,7 +849,7 @@ DialogWidth=720
 
 [Containments][50][Applets][54][Configuration][General]
 groupPopups=false
-launchers=preferred://filemanager,preferred://browser
+launchers=preferred://filemanager,preferred://browser,applications:Alacritty.desktop
 showOnlyCurrentScreen=true
 
 [Containments][50][ConfigDialog]
@@ -864,7 +863,7 @@ AppletOrder=54
 activityId=
 formfactor=2
 immutability=1
-lastScreen=0
+lastScreen=1
 location=4
 plugin=org.kde.panel
 wallpaperplugin=org.kde.image
@@ -892,7 +891,7 @@ AppletOrder=58
 activityId=
 formfactor=2
 immutability=1
-lastScreen=0
+lastScreen=1
 location=3
 plugin=org.kde.panel
 wallpaperplugin=org.kde.image
@@ -1025,7 +1024,7 @@ AppletOrder=80;83;61;82;62;60
 activityId=
 formfactor=2
 immutability=1
-lastScreen=0
+lastScreen=1
 location=3
 plugin=org.kde.plasma.private.systemtray
 popupHeight=432

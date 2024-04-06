@@ -1,7 +1,7 @@
 table.insert(alsa_monitor.rules, {
   matches = {
     {
-      { "device.name", "matches", "*usb-Creative_Technology_Ltd_Sound_BlasterX_G6*" },
+      { "node.name", "matches", "*output.usb-Creative_Technology_Ltd_Sound_BlasterX_G6*" },
     },
   },
   apply_properties = {
@@ -9,6 +9,23 @@ table.insert(alsa_monitor.rules, {
     ["alsa.rate"] = 384000,
     ["alsa.resolution_bits"] = 32,
     ["node.max-latency"] = "32768/384000",
+    -- ["audio.allowed-rates"] = "48000,384000",
+    ["audio.format"] = "S32LE",
+  }
+})
+table.insert(alsa_monitor.rules, {
+  matches = {
+    {
+      { "node.name", "matches", "*input.usb-Creative_Technology_Ltd_Sound_BlasterX_G6*" },
+    },
+  },
+  apply_properties = {
+    ["audio.rate"] = 192000,
+    ["alsa.rate"] = 192000,
+    ["alsa.resolution_bits"] = 32,
+    ["node.max-latency"] = "16384/192000",
+    -- ["audio.allowed-rates"] = "48000,192000,384000",
+    ["audio.format"] = "S32LE",
   }
 })
 -- table.insert(alsa_monitor.rules, {
