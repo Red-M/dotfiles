@@ -1,11 +1,10 @@
 
-vim.cmd([[
-call plug#begin(has('nvim') ? stdpath('data') . '/plugged' : '~/.vim/plugged')
-Plug 'tpope/vim-scriptease'
-" Plug 'tpope/vim-repeat'
-
-call plug#end()
-]])
+-- vim.cmd([[
+-- call plug#begin(has('nvim') ? stdpath('data') . '/plugged' : '~/.vim/plugged')
+-- " Plug 'tpope/vim-scriptease'
+-- " Plug 'tpope/vim-repeat'
+-- call plug#end()
+-- ]])
 
 vim.opt.rtp:prepend(vim.fn.stdpath("config") .. "/lazy/base46")
 
@@ -70,6 +69,7 @@ require("lazy").setup({
     },
     { import = "languages" },
     { import = "plugins" },
+    { import = "plugs" },
     { import = "games" },
   },
   defaults = {

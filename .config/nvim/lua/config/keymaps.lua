@@ -69,12 +69,12 @@ local config_keymap = {
   {"i", [[<S-Tab>]], [[<C-o>_<C-o><<<C-o>_]], {desc = "De-indent current line",}},
 
   -- Delete line into the void
-  {"n", [[<S-d><S-d>]], [["_dd]], {desc = "Void-Delete the current line",}},
+  {"n", [[<S-d><S-d>]], [["_dd:let @"=@0<cr>]], {desc = "Void-Delete the current line",}},
   {"n", [[<S-d>]], [["_d]], {desc = "Void-Delete",}},
 
   -- duplicate line
-  {"n", [[<C-d>]], [["dY"dp]], {desc = "Duplicate current line",}},
-  {"i", [[<C-d>]], [[<C-o>"dY<C-o>"dp]], {desc = "Duplicate current line",}},
+  {"n", [[<C-d>]], [["dY"dp:let @"=@0<cr>]], {desc = "Duplicate current line",}},
+  {"i", [[<C-d>]], [[<C-o>"dY<C-o>"dp<C-o>:let @"=@0<cr>]], {desc = "Duplicate current line",}},
 
   -- Fake refresh of the current window
   {"n", [[<leader>r]], "<C-Left><C-Right>", {desc = [["Refresh" the window]],}},
