@@ -129,6 +129,7 @@ maintain_path .tool-versions
 maintain_path .config/MangoHud
 maintain_path .config/gamemode.ini
 maintain_path .config/OpenRGB
+maintain_path .local/share/cura
 
 maintain_path tmux_start_up_scripts
 maintain_path .ansible

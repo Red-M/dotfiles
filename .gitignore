@@ -11,6 +11,13 @@
 .config/OpenRGB/logs/*
 .ansible/*
 
+.local/share/cura/.sentry-native
+.local/share/cura/*/plugins
+.local/share/cura/*/images
+.local/share/cura/*.log
+.local/share/cura/**/*.log
+
+
 !**/.keep_me
 
 

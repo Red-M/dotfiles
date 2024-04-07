@@ -1,0 +1,118 @@
+{
+    "dismissed": [],
+    "installed": {
+        "BananaSplit": {
+            "filename": "/home/redm/.cache/cura/5.6/cura_packages/BananaSplit.curapackage",
+            "package_info": {
+                "author": {
+                    "author_id": "jarrrgh",
+                    "display_name": "jarrrgh",
+                    "email": "jarrrgh+ultimaker@gmail.com",
+                    "website": "https://github.com/jarrrgh"
+                },
+                "description": "Split model with one easy action along the build plate. Position your model so that part of it goes below the build plate and press Split button. The tool will reflect anything below the surface on top of it. You may then move the original model along the Z axis to fine tune the \"cut\" real-time.",
+                "display_name": "Banana Split",
+                "is_active": true,
+                "is_bundled": false,
+                "is_installed": true,
+                "package_id": "BananaSplit",
+                "package_type": "plugin",
+                "package_version": "1.0.1",
+                "sdk_version": 8,
+                "sdk_version_semver": "8.5.0",
+                "website": "https://github.com/jarrrgh/banana-split"
+            }
+        },
+        "CustomSupportEraserPlus": {
+            "filename": "/home/redm/.cache/cura/5.6/cura_packages/CustomSupportEraserPlus.curapackage",
+            "package_info": {
+                "author": {
+                    "author_id": "5axes",
+                    "display_name": "5axes",
+                    "email": "cuq@free.fr",
+                    "website": "https://github.com/5axes"
+                },
+                "description": "Cura plugin which enables you to add different custom support blocker.",
+                "display_name": "Custom Supports Eraser Plus",
+                "is_active": true,
+                "is_bundled": false,
+                "is_installed": true,
+                "package_id": "CustomSupportEraserPlus",
+                "package_type": "plugin",
+                "package_version": "1.1.0",
+                "sdk_version": 8,
+                "sdk_version_semver": "8.2.0",
+                "website": "https://github.com/5axes/CustomSupportEraserPlus"
+            }
+        },
+        "MeshTools": {
+            "filename": "/home/redm/.cache/cura/5.6/cura_packages/MeshTools.curapackage",
+            "package_info": {
+                "author": {
+                    "author_id": "fieldofview",
+                    "display_name": "fieldOfView",
+                    "email": "aldo@fieldofview.com",
+                    "website": "http://fieldofview.com"
+                },
+                "description": "Adds several mesh analysis and manipulation tools.\n\nThe development of this plugin can be sponsored via Github Sponsors (https://github.com/sponsors/fieldofview) or Paypal (https://www.paypal.me/fieldofview)",
+                "display_name": "Mesh Tools",
+                "is_active": true,
+                "is_bundled": false,
+                "is_installed": true,
+                "package_id": "MeshTools",
+                "package_type": "plugin",
+                "package_version": "3.7.2",
+                "sdk_version": 8,
+                "sdk_version_semver": "8.0.0",
+                "website": "https://github.com/fieldOfView/Cura-MeshTools"
+            }
+        },
+        "OctoPrintPlugin": {
+            "filename": "/home/redm/.cache/cura/5.6/cura_packages/OctoPrintPlugin.curapackage",
+            "package_info": {
+                "author": {
+                    "author_id": "fieldofview",
+                    "display_name": "fieldOfView",
+                    "email": "aldo@fieldofview.com",
+                    "website": "http://fieldofview.com"
+                },
+                "description": "Enables networked printing and monitoring with OctoPrint.\n\nOctoPrint is a registered trademark. For more information about OctoPrint, see octoprint.org\n\nThe development of this plugin can be sponsored via Github Sponsors (https://github.com/sponsors/fieldofview) or Paypal (https://www.paypal.me/fieldofview)",
+                "display_name": "OctoPrint Connection",
+                "is_active": true,
+                "is_bundled": false,
+                "is_installed": true,
+                "package_id": "OctoPrintPlugin",
+                "package_type": "plugin",
+                "package_version": "3.7.3",
+                "sdk_version": 8,
+                "sdk_version_semver": "8.0.0",
+                "website": "https://github.com/fieldOfView/Cura-OctoPrintPlugin"
+            }
+        },
+        "SidebarGUIPlugin": {
+            "filename": "/home/redm/.cache/cura/5.6/cura_packages/SidebarGUIPlugin.curapackage",
+            "package_info": {
+                "author": {
+                    "author_id": "fieldofview",
+                    "display_name": "fieldOfView",
+                    "email": "aldo@fieldofview.com",
+                    "website": "http://fieldofview.com"
+                },
+                "description": "Provides an alternative interface which restores the sidebar.\n\nThe development of this plugin can be sponsored via Github Sponsors (https://github.com/sponsors/fieldofview) or Paypal (https://www.paypal.me/fieldofview)",
+                "display_name": "Sidebar GUI",
+                "is_active": true,
+                "is_bundled": false,
+                "is_installed": true,
+                "package_id": "SidebarGUIPlugin",
+                "package_type": "plugin",
+                "package_version": "4.6.4",
+                "sdk_version": 8,
+                "sdk_version_semver": "8.6.0",
+                "website": "https://github.com/fieldOfView/Cura-SidebarGUIPlugin"
+            }
+        }
+    },
+    "to_install": {},
+    "to_remove": [],
+    "version": 1
+}
