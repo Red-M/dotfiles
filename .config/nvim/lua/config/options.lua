@@ -37,7 +37,7 @@ vim.keymap.set("n", ";", "<Nop>", { silent = true, remap = false })
 vim.g.mapleader = ";"
 
 vim.cmd([[
-set tw=150
+" set tw=150
 command! WipeReg for i in range(34,122) | silent! call setreg(nr2char(i), []) | endfor
 
 function! Preserve(command)
