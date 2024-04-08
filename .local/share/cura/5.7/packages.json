@@ -110,6 +110,28 @@
                 "sdk_version_semver": "8.6.0",
                 "website": "https://github.com/fieldOfView/Cura-SidebarGUIPlugin"
             }
+        },
+        "TabbedSettingsPlugin": {
+            "filename": "/home/redm/.cache/cura/5.7/cura_packages/TabbedSettingsPlugin.curapackage",
+            "package_info": {
+                "author": {
+                    "author_id": "fieldofview",
+                    "display_name": "fieldOfView",
+                    "email": "aldo@fieldofview.com",
+                    "website": "http://fieldofview.com"
+                },
+                "description": "Adds tabs for categories to the custom print settings. Each settings-category has its own tab, and each tab shows all settings in that category.\n\nThere are two additional tabs: \"Favorites\" and \"Changed settings\". The \"Favorites\" tab behaves much like the original settings view. Instead of making all settings visible here, it is recommended to create a concise set of often-used settings. Start with the \"Basic\" set of favorites, and add other settings as you go. You can use the \"Settings Visibility Set Creator\" plugin to create multiple custom sets.\n\nThe \"Changed settings\" tab shows a list of settings that have been changed compared to the profile you have loaded. It is a handy view to check before you start a print.\n\nThis plugin can be used in tandem with the \"Sidebar GUI\" plugin, but also works fine without it.\n\nThe development of this plugin can be sponsored via Github Sponsors (https://github.com/sponsors/fieldofview) or Paypal (https://www.paypal.me/fieldofview)",
+                "display_name": "Tabbed Settings",
+                "is_active": true,
+                "is_bundled": false,
+                "is_installed": true,
+                "package_id": "TabbedSettingsPlugin",
+                "package_type": "plugin",
+                "package_version": "1.0.4",
+                "sdk_version": 8,
+                "sdk_version_semver": "8.6.0",
+                "website": "https://github.com/fieldOfView/Cura-TabbedSettingsPlugin"
+            }
         }
     },
     "to_install": {},

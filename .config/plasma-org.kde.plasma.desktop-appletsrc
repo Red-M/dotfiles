@@ -767,7 +767,7 @@ immutability=1
 plugin=org.kde.plasma.devicenotifier
 
 [Containments][33][Applets][41][Configuration]
-PreloadWeight=90
+PreloadWeight=100
 
 [Containments][33][Applets][42]
 immutability=1
@@ -778,7 +778,7 @@ immutability=1
 plugin=org.kde.plasma.notifications
 
 [Containments][33][Applets][43][Configuration]
-PreloadWeight=85
+PreloadWeight=90
 
 [Containments][33][Applets][44]
 immutability=1
@@ -810,7 +810,7 @@ immutability=1
 plugin=org.kde.plasma.bluetooth
 
 [Containments][33][Applets][48][Configuration]
-PreloadWeight=17
+PreloadWeight=9
 
 [Containments][33][Applets][55]
 immutability=1
@@ -877,7 +877,7 @@ DialogHeight=540
 DialogWidth=720
 
 [Containments][57][Applets][58][Configuration][General]
-launchers=applications:discord.desktop,applications:discord-ptb.desktop,applications:discord-canary.desktop,applications:org.telegram.desktop.desktop,preferred://browser,preferred://filemanager,applications:steam.desktop
+launchers=applications:net.lutris.Lutris.desktop,applications:discord.desktop,applications:discord-ptb.desktop,applications:discord-canary.desktop,applications:org.telegram.desktop.desktop,applications:steam.desktop,preferred://browser,preferred://filemanager
 showOnlyCurrentScreen=true
 
 [Containments][57][ConfigDialog]
@@ -1027,8 +1027,8 @@ immutability=1
 lastScreen=1
 location=3
 plugin=org.kde.plasma.private.systemtray
-popupHeight=432
-popupWidth=432
+popupHeight=720
+popupWidth=583
 wallpaperplugin=org.kde.image
 
 [Containments][63][Applets][64]
@@ -1047,6 +1047,7 @@ PreloadWeight=100
 
 [Containments][63][Applets][65][Configuration][General]
 migrated=true
+showVirtualDevices=true
 
 [Containments][63][Applets][66]
 immutability=1
@@ -1075,6 +1076,10 @@ plugin=org.kde.plasma.devicenotifier
 [Containments][63][Applets][71][Configuration]
 PreloadWeight=100
 
+[Containments][63][Applets][71][Configuration][General]
+allDevices=true
+removableDevices=false
+
 [Containments][63][Applets][72]
 immutability=1
 plugin=org.kde.kscreen
@@ -1084,7 +1089,7 @@ immutability=1
 plugin=org.kde.plasma.notifications
 
 [Containments][63][Applets][73][Configuration]
-PreloadWeight=55
+PreloadWeight=60
 
 [Containments][63][Applets][74]
 immutability=1
