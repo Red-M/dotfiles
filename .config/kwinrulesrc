@@ -2,23 +2,39 @@
 update_info=kwinrules.upd:replace-placement-string-to-enum,kwinrules.upd:use-virtual-desktop-ids
 
 [1]
-Description=Window settings for UltiMaker Cura
+Description=Application settings for FreeCAD
 clientmachine=potato
-clientmachinematch=1
+desktops=a197a8ba-ff32-4640-b3e9-ac360fb2a20e
+desktopsrule=2
+title=UltiMaker Cura
+wmclass=freecad-python3 org.freecadweb.FreeCAD
+wmclasscomplete=true
+wmclassmatch=1
+
+[2]
+Description=Application settings for Cura
+clientmachine=potato
+desktoprule=2
 desktops=eabe6957-0be4-438c-8775-e064f005dbc8
 desktopsrule=2
 title=UltiMaker Cura
-titlematch=2
-types=1
-wmclass=UltiMaker-Cura
+wmclass=UltiMaker-Cura com/.https://ultimaker.UltiMaker-Cura
 wmclasscomplete=true
-wmclassmatch=2
+wmclassmatch=1
 
-[2]
+[2249bb87-09c4-48f7-811b-33605c19b300]
+Description=Application settings for qpwgraph
+clientmachine=potato
+desktops=00bd404f-c995-4b72-8db1-06526e67adf2
+desktopsrule=2
+wmclass=qpwgraph org.rncbc.qpwgraph
+wmclasscomplete=true
+wmclassmatch=1
+
+[3]
 Description=Window settings for org.telegram.desktop
 clientmachine=potato
 clientmachinematch=1
-desktoprule=2
 desktops=\\0
 desktopsrule=2
 title=Virtual Machine Manager
@@ -27,16 +43,15 @@ wmclass=telegram-desktop
 wmclasscomplete=true
 wmclassmatch=2
 
-[3]
-Description=Window settings for virt-manager
+[34c2a259-8621-46fb-ac6d-271d6d1f2c95]
+Description=Application settings for FreeCAD
 clientmachine=potato
 clientmachinematch=1
-desktops=eabe6957-0be4-438c-8775-e064f005dbc8
+desktops=a197a8ba-ff32-4640-b3e9-ac360fb2a20e
 desktopsrule=2
-title=Virtual Machine Manager
-types=1
-wmclass=virt-manager
-wmclassmatch=2
+wmclass=freecad-python3 org.freecadweb.FreeCAD
+wmclasscomplete=true
+wmclassmatch=1
 
 [3bd57ec1-b9f1-4d21-9231-2918c8f548e0]
 Description=Window settings for org.telegram.desktop
@@ -50,15 +65,15 @@ wmclasscomplete=true
 wmclassmatch=2
 
 [4]
-Description=Window settings for qpwgraph
+Description=Window settings for virt-manager
 clientmachine=potato
 clientmachinematch=1
-desktops=00bd404f-c995-4b72-8db1-06526e67adf2
+desktops=eabe6957-0be4-438c-8775-e064f005dbc8
 desktopsrule=2
-title=Spotify
+title=Virtual Machine Manager
 types=1
-wmclass=qpwgraph
-wmclassmatch=1
+wmclass=virt-manager
+wmclassmatch=2
 
 [5]
 Description=Application settings for teamspeak 3
@@ -127,16 +142,32 @@ wmclasscomplete=true
 wmclassmatch=1
 
 [8]
-Description=Settings for Spotify
+Description=Application settings for steam
+clientmachine=potato
+clientmachinematch=1
 desktop=8
 desktoprule=2
-wmclass=spotify
-wmclasscomplete=false
-wmclassmatch=1
+desktops=0a61b858-ae1a-478a-99c9-4d329111f65f
+desktopsrule=2
+title=Spotify
+wmclass=steam
+wmclasscomplete=true
+wmclassmatch=2
+
+[9]
+Description=Application settings for Discord
+clientmachine=potato
+clientmachinematch=1
+desktops=\\0
+desktopsrule=2
+title=Spotify
+wmclass=discord
+wmclasscomplete=true
+wmclassmatch=2
 
 [General]
-count=7
-rules=1,2,3,4,5,6,7
+count=8
+rules=2249bb87-09c4-48f7-811b-33605c19b300,1,2,3,4,5,6,7
 
 [a24e96a6-4f59-4f7c-b2f0-aa95c51ac9f6]
 Description=Application settings for teamspeak 3
@@ -166,6 +197,14 @@ desktops=\\0
 desktopsrule=2
 types=1
 wmclass=telegram-desktop org.telegram.desktop
+wmclasscomplete=true
+wmclassmatch=1
+
+[cdef5557-fc8d-418a-8aff-37674cc366ac]
+Description=Application settings for Cura
+desktops=eabe6957-0be4-438c-8775-e064f005dbc8
+desktopsrule=2
+wmclass=UltiMaker-Cura com/.https://ultimaker.UltiMaker-Cura
 wmclasscomplete=true
 wmclassmatch=1
 

@@ -14,7 +14,7 @@ if [ ! -z $container_dir ]; then
     systemctl stop docker
     systemctl mask docker
     \cp hostconfig.json{,.bak}
-    cat hostconfig.json.bak | jq '.Privileged=true' | jq '.SecurityOpt=["label=disable"]' > hostconfig.json
+    cat hostconfig.json.bak | \jq '.Privileged=true' | \jq '.SecurityOpt=["label=disable"]' > hostconfig.json
     systemctl unmask docker
     systemctl enable docker
     systemctl start docker

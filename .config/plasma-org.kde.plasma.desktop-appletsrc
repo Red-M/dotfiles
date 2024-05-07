@@ -160,7 +160,7 @@ immutability=1
 plugin=org.kde.plasma.mediacontroller
 
 [Containments][10][Applets][56][Configuration]
-PreloadWeight=18
+PreloadWeight=10
 
 [Containments][10][Configuration]
 PreloadWeight=42
@@ -726,7 +726,7 @@ immutability=1
 plugin=org.kde.plasma.clipboard
 
 [Containments][33][Applets][34][Configuration]
-PreloadWeight=70
+PreloadWeight=75
 
 [Containments][33][Applets][35]
 immutability=1
@@ -736,6 +736,7 @@ plugin=org.kde.plasma.volume
 PreloadWeight=100
 
 [Containments][33][Applets][35][Configuration][General]
+currentTab=streams
 migrated=true
 showVirtualDevices=true
 
@@ -803,7 +804,7 @@ immutability=1
 plugin=org.kde.plasma.networkmanagement
 
 [Containments][33][Applets][47][Configuration]
-PreloadWeight=55
+PreloadWeight=75
 
 [Containments][33][Applets][48]
 immutability=1
@@ -817,14 +818,14 @@ immutability=1
 plugin=org.kde.plasma.mediacontroller
 
 [Containments][33][Applets][55][Configuration]
-PreloadWeight=10
+PreloadWeight=2
 
 [Containments][33][Applets][88]
 immutability=1
 plugin=org.kde.plasma.gamemode
 
 [Containments][33][Applets][88][Configuration]
-PreloadWeight=65
+PreloadWeight=70
 
 [Containments][33][General]
 extraItems=org.kde.plasma.clipboard,org.kde.plasma.volume,org.kde.plasma.printmanager,org.kde.plasma.networkmanagement,org.kde.plasma.keyboardindicator,org.kde.plasma.bluetooth,org.kde.plasma.battery,org.kde.plasma.keyboardlayout,org.kde.kdeconnect,org.kde.plasma.vault,org.kde.kupapplet,org.kde.plasma.devicenotifier,org.kde.kscreen,org.kde.plasma.nightcolorcontrol,org.kde.plasma.notifications,org.kde.plasma.manage-inputmethod,org.kde.plasma.mediacontroller,org.kde.plasma.gamemode
@@ -878,7 +879,6 @@ DialogWidth=720
 
 [Containments][57][Applets][58][Configuration][General]
 launchers=applications:net.lutris.Lutris.desktop,applications:discord.desktop,applications:discord-ptb.desktop,applications:discord-canary.desktop,applications:org.telegram.desktop.desktop,applications:steam.desktop,preferred://browser,preferred://filemanager
-showOnlyCurrentScreen=true
 
 [Containments][57][ConfigDialog]
 DialogHeight=84
@@ -901,7 +901,7 @@ immutability=1
 plugin=org.kde.plasma.digitalclock
 
 [Containments][59][Applets][60][Configuration]
-PreloadWeight=60
+PreloadWeight=65
 popupHeight=450
 popupWidth=396
 
@@ -1065,6 +1065,9 @@ plugin=org.kde.plasma.keyboardlayout
 immutability=1
 plugin=org.kde.kdeconnect
 
+[Containments][63][Applets][69][Configuration]
+PreloadWeight=70
+
 [Containments][63][Applets][70]
 immutability=1
 plugin=org.kde.plasma.vault
@@ -1089,7 +1092,7 @@ immutability=1
 plugin=org.kde.plasma.notifications
 
 [Containments][63][Applets][73][Configuration]
-PreloadWeight=60
+PreloadWeight=100
 
 [Containments][63][Applets][74]
 immutability=1
@@ -1111,7 +1114,7 @@ immutability=1
 plugin=org.kde.plasma.mediacontroller
 
 [Containments][63][Applets][77][Configuration]
-PreloadWeight=15
+PreloadWeight=17
 
 [Containments][63][Applets][78]
 immutability=1
@@ -1132,7 +1135,7 @@ immutability=1
 plugin=org.kde.plasma.gamemode
 
 [Containments][63][Applets][89][Configuration]
-PreloadWeight=55
+PreloadWeight=60
 
 [Containments][63][General]
 extraItems=org.kde.plasma.clipboard,org.kde.plasma.volume,org.kde.plasma.printmanager,org.kde.plasma.networkmanagement,org.kde.plasma.keyboardindicator,org.kde.plasma.bluetooth,org.kde.plasma.battery,org.kde.plasma.keyboardlayout,org.kde.kdeconnect,org.kde.plasma.vault,org.kde.kupapplet,org.kde.plasma.devicenotifier,org.kde.kscreen,org.kde.plasma.nightcolorcontrol,org.kde.plasma.notifications,org.kde.plasma.manage-inputmethod,org.kde.plasma.mediacontroller,org.kde.plasma.gamemode

@@ -5,6 +5,7 @@ return {
   build = ":TSUpdate",
   opts = {
     ensure_installed = {
+      "arduino",
       "bash",
       "c",
       "cmake",
