@@ -200,6 +200,7 @@ DialogWidth=720
 
 [Containments][2][Applets][86][Configuration][SensorColors]
 gpu/gpu0/name=237,66,0
+gpu/gpu0/power1=0,237,115
 gpu/gpu0/temp2=237,235,0
 gpu/gpu0/temp3=82,237,0
 gpu/gpu0/temperature=57,0,237
@@ -217,7 +218,7 @@ gpu/gpu0/usage=GPUCore Usage
 gpu/gpu0/usedVram=VRAM Used
 
 [Containments][2][Applets][86][Configuration][Sensors]
-highPrioritySensorIds=["gpu/gpu0/name","gpu/gpu0/usage","gpu/gpu0/temp2","gpu/gpu0/temperature","gpu/gpu0/temp3"]
+highPrioritySensorIds=["gpu/gpu0/name","gpu/gpu0/usage","gpu/gpu0/temp2","gpu/gpu0/temperature","gpu/gpu0/temp3","gpu/gpu0/power1"]
 lowPrioritySensorIds=["gpu/gpu0/coreFrequency","gpu/gpu0/memoryFrequency","gpu/gpu0/usedVram","gpu/gpu0/totalVram"]
 
 [Containments][2][Applets][86][Configuration][org.kde.ksysguard.barchart][General]
@@ -726,7 +727,7 @@ immutability=1
 plugin=org.kde.plasma.clipboard
 
 [Containments][33][Applets][34][Configuration]
-PreloadWeight=75
+PreloadWeight=80
 
 [Containments][33][Applets][35]
 immutability=1
@@ -736,7 +737,6 @@ plugin=org.kde.plasma.volume
 PreloadWeight=100
 
 [Containments][33][Applets][35][Configuration][General]
-currentTab=streams
 migrated=true
 showVirtualDevices=true
 
@@ -804,7 +804,7 @@ immutability=1
 plugin=org.kde.plasma.networkmanagement
 
 [Containments][33][Applets][47][Configuration]
-PreloadWeight=75
+PreloadWeight=80
 
 [Containments][33][Applets][48]
 immutability=1
