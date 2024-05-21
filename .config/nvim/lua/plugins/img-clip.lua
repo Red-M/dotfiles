@@ -3,7 +3,8 @@ return {
     "HakonHarnes/img-clip.nvim",
     event = "BufEnter",
     opts = {
-      max_base64_size = 20, -- max size of base64 string in KB
+      max_base64_size = 6000, -- max size of base64 string in KB
+      embed_image_as_base64 = true,
     },
     keys = {
       -- suggested keymap
