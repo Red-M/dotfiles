@@ -737,6 +737,7 @@ plugin=org.kde.plasma.volume
 PreloadWeight=100
 
 [Containments][33][Applets][35][Configuration][General]
+currentTab=streams
 migrated=true
 showVirtualDevices=true
 
@@ -811,7 +812,7 @@ immutability=1
 plugin=org.kde.plasma.bluetooth
 
 [Containments][33][Applets][48][Configuration]
-PreloadWeight=9
+PreloadWeight=19
 
 [Containments][33][Applets][55]
 immutability=1
@@ -1046,6 +1047,7 @@ plugin=org.kde.plasma.volume
 PreloadWeight=100
 
 [Containments][63][Applets][65][Configuration][General]
+currentTab=streams
 migrated=true
 showVirtualDevices=true
 
@@ -1066,7 +1068,7 @@ immutability=1
 plugin=org.kde.kdeconnect
 
 [Containments][63][Applets][69][Configuration]
-PreloadWeight=70
+PreloadWeight=85
 
 [Containments][63][Applets][70]
 immutability=1
@@ -1101,6 +1103,9 @@ plugin=org.kde.plasma.manage-inputmethod
 [Containments][63][Applets][75]
 immutability=1
 plugin=org.kde.plasma.networkmanagement
+
+[Containments][63][Applets][75][Configuration]
+PreloadWeight=55
 
 [Containments][63][Applets][76]
 immutability=1

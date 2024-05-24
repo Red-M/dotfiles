@@ -1,7 +1,7 @@
 
 alsa_monitor.enabled = true
 
-table.insert (alsa_monitor.rules, {
+table.insert(alsa_monitor.rules, {
   matches = {
     {
       -- Matches all sources.
@@ -17,7 +17,7 @@ table.insert (alsa_monitor.rules, {
   },
 })
 
-table.insert (alsa_monitor.rules, {
+table.insert(alsa_monitor.rules, {
   -- Rules for matching a device or node. It is an array of
   -- properties that all need to match the regexp. If any of the
   -- matches work, the actions are executed for the object.
@@ -40,7 +40,7 @@ table.insert (alsa_monitor.rules, {
   }
 })
 
-table.insert (alsa_monitor.rules, {
+table.insert(alsa_monitor.rules, {
   matches = {
     {
       { "node.name", "matches", "alsa_*.usb-*" },
@@ -52,7 +52,7 @@ table.insert (alsa_monitor.rules, {
   }
 })
 
-table.insert (alsa_monitor.rules, {
+table.insert(alsa_monitor.rules, {
   matches = {
     {
       { "application.process.binary", "equals", "Discord" },
@@ -63,9 +63,4 @@ table.insert (alsa_monitor.rules, {
     ["pulse.min.quantum"] = "1024/48000",
   }
 })
-
-
-
-
-
 

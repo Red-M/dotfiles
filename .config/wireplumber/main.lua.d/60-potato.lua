@@ -1,3 +1,5 @@
+potato_match = { "application.process.host", "equals", "potato" }
+
 table.insert(alsa_monitor.rules, {
   matches = {
     {
