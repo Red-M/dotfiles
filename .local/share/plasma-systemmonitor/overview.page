@@ -2,6 +2,8 @@
 memory/physical/used=237,0,0
 
 [Face-94410238879984][SensorColors]
+network/enp8s0/ipv4address=237,0,0
+network/enp8s0/ipv6address=0,237,237
 network/wlp3s0/ipv4address=237,0,0
 network/wlp3s0/ipv6address=0,237,237
 
@@ -19,5 +21,7 @@ os/system/hostname=237,0,0
 os/system/prettyName=190,237,0
 
 [Face-94410280144624][SensorColors]
+network/enp8s0/download=237,0,0
+network/enp8s0/upload=0,237,237
 network/wlp3s0/download=237,0,0
 network/wlp3s0/upload=0,237,237

@@ -76,3 +76,5 @@ command! IndentAuto call Indent()
 
 ]])
 
+vim.g.trouble_lualine = false
+

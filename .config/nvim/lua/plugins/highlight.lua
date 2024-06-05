@@ -5,6 +5,7 @@ return {
     config = function()
       require('local-highlight').setup({
         insert_mode = true,
+        highlight_single_match = true,
       })
     end,
   },
