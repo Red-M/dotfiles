@@ -67,7 +67,7 @@ require("lazy").setup({
         },
       },
     },
-    { import = "lazyvim" },
+    { import = "lazyvim_extras" },
     { import = "languages" },
     { import = "plugins" },
     { import = "plugs" },

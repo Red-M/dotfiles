@@ -86,14 +86,15 @@ vim.api.nvim_create_autocmd({'BufEnter','UIEnter','TabEnter','VimEnter'}, {
   end
 })
 
-vim.api.nvim_create_autocmd({'BufEnter','UIEnter','TabEnter','VimEnter','BufReadPost'}, {
+-- vim.api.nvim_create_autocmd({'BufEnter','UIEnter','TabEnter','VimEnter','BufReadPost'}, {
+vim.api.nvim_create_autocmd({'BufReadPost','BufEnter'}, {
   group = vim.api.nvim_create_augroup("plugin_Guess_Indent",{clear = true}),
   pattern = {'*'},
   -- once = true,
   -- command = "autocmd BufReadPost * :"
   callback = function(data)
-    vim.api.nvim_exec([[silent lua require('guess-indent').set_from_buffer("auto_cmd")]], false)
-    vim.api.nvim_exec([[silent GuessIndent]], false)
+    require('guess-indent').set_from_buffer(data.buf, true, true)
+    -- vim.api.nvim_exec([[silent GuessIndent]], false)
   end
 })
 

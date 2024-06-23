@@ -31,5 +31,6 @@ return {
       "rcarriga/nvim-notify",
     }
   },
-  --{ "MunifTanjim/nui.nvim", lazy = true },
+  -- { "rcarriga/nvim-notify", enabled = false },
+  -- { "MunifTanjim/nui.nvim", lazy = true },
 }

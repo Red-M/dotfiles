@@ -6,10 +6,10 @@ return {
       }
     end
   },
-  {
-    'ggandor/leap.nvim',
-    enabled = false,
-  },
+  -- {
+    -- 'ggandor/leap.nvim',
+    -- enabled = false,
+  -- },
   {
     'smoka7/hop.nvim',
     version = "*",
