@@ -14,7 +14,7 @@ return {
     end,
     config = function()
       local presets = require("which-key.plugins.presets")
-      presets.operators['D'] = "Void-Delete"
+      -- presets.operators['D'] = "Void-Delete"
       presets.operators['='] = "Indent"
       presets.operators['s'] = "Substitute"
       local wk = require("which-key")
@@ -40,7 +40,7 @@ return {
         },
         operators = {
           gc = "Comments",
-          ["D"] = "Void-delete",
+          -- ["D"] = "Void-delete",
           s = "Substitute",
         },
         layout = {
@@ -50,7 +50,7 @@ return {
       wk.register({
         mode = { "n", "v" },
         ["g"] = { name = "+goto" },
-        ["D"] = { name = "+Void-Delete" },
+        -- ["D"] = { name = "+Void-Delete" },
         ["="] = { name = "+Indent" },
         ["s"] = { name = "+Substitute" },
         ["]"] = { name = "+next" },

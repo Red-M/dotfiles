@@ -8,6 +8,9 @@ return {
     enabled = true,
     lazy = false,
     priority = 2000,
+    dependencies = {
+      "nvim-tree/nvim-web-devicons",
+    },
     config = function()
       require("monokai-pro").setup({
         filter = "classic",

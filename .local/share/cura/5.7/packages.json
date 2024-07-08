@@ -2,7 +2,7 @@
     "dismissed": [],
     "installed": {
         "BananaSplit": {
-            "filename": "/home/redm/.cache/cura/5.6/cura_packages/BananaSplit.curapackage",
+            "filename": "/home/redm/.cache/cura/5.7/cura_packages/BananaSplit.curapackage",
             "package_info": {
                 "author": {
                     "author_id": "jarrrgh",
@@ -17,9 +17,9 @@
                 "is_installed": true,
                 "package_id": "BananaSplit",
                 "package_type": "plugin",
-                "package_version": "1.0.1",
+                "package_version": "1.0.2",
                 "sdk_version": 8,
-                "sdk_version_semver": "8.5.0",
+                "sdk_version_semver": "8.7.0",
                 "website": "https://github.com/jarrrgh/banana-split"
             }
         },
@@ -90,74 +90,6 @@
             }
         },
         "SidebarGUIPlugin": {
-            "filename": "/home/redm/.cache/cura/5.6/cura_packages/SidebarGUIPlugin.curapackage",
-            "package_info": {
-                "author": {
-                    "author_id": "fieldofview",
-                    "display_name": "fieldOfView",
-                    "email": "aldo@fieldofview.com",
-                    "website": "http://fieldofview.com"
-                },
-                "description": "Provides an alternative interface which restores the sidebar.\n\nThe development of this plugin can be sponsored via Github Sponsors (https://github.com/sponsors/fieldofview) or Paypal (https://www.paypal.me/fieldofview)",
-                "display_name": "Sidebar GUI",
-                "is_active": true,
-                "is_bundled": false,
-                "is_installed": true,
-                "package_id": "SidebarGUIPlugin",
-                "package_type": "plugin",
-                "package_version": "4.6.4",
-                "sdk_version": 8,
-                "sdk_version_semver": "8.6.0",
-                "website": "https://github.com/fieldOfView/Cura-SidebarGUIPlugin"
-            }
-        },
-        "TabbedSettingsPlugin": {
-            "filename": "/home/redm/.cache/cura/5.7/cura_packages/TabbedSettingsPlugin.curapackage",
-            "package_info": {
-                "author": {
-                    "author_id": "fieldofview",
-                    "display_name": "fieldOfView",
-                    "email": "aldo@fieldofview.com",
-                    "website": "http://fieldofview.com"
-                },
-                "description": "Adds tabs for categories to the custom print settings. Each settings-category has its own tab, and each tab shows all settings in that category.\n\nThere are two additional tabs: \"Favorites\" and \"Changed settings\". The \"Favorites\" tab behaves much like the original settings view. Instead of making all settings visible here, it is recommended to create a concise set of often-used settings. Start with the \"Basic\" set of favorites, and add other settings as you go. You can use the \"Settings Visibility Set Creator\" plugin to create multiple custom sets.\n\nThe \"Changed settings\" tab shows a list of settings that have been changed compared to the profile you have loaded. It is a handy view to check before you start a print.\n\nThis plugin can be used in tandem with the \"Sidebar GUI\" plugin, but also works fine without it.\n\nThe development of this plugin can be sponsored via Github Sponsors (https://github.com/sponsors/fieldofview) or Paypal (https://www.paypal.me/fieldofview)",
-                "display_name": "Tabbed Settings",
-                "is_active": false,
-                "is_bundled": false,
-                "is_installed": true,
-                "package_id": "TabbedSettingsPlugin",
-                "package_type": "plugin",
-                "package_version": "1.0.4",
-                "sdk_version": 8,
-                "sdk_version_semver": "8.6.0",
-                "website": "https://github.com/fieldOfView/Cura-TabbedSettingsPlugin"
-            }
-        }
-    },
-    "to_install": {
-        "BananaSplit": {
-            "filename": "/home/redm/.cache/cura/5.7/cura_packages/BananaSplit.curapackage",
-            "package_info": {
-                "author": {
-                    "author_id": "jarrrgh",
-                    "display_name": "jarrrgh",
-                    "email": "jarrrgh+ultimaker@gmail.com",
-                    "website": "https://github.com/jarrrgh"
-                },
-                "description": "Split model with one easy action along the build plate. Position your model so that part of it goes below the build plate and press Split button. The tool will reflect anything below the surface on top of it. You may then move the original model along the Z axis to fine tune the \"cut\" real-time.",
-                "display_name": "Banana Split",
-                "is_active": true,
-                "is_bundled": false,
-                "is_installed": false,
-                "package_id": "BananaSplit",
-                "package_type": "plugin",
-                "package_version": "1.0.2",
-                "sdk_version": 8,
-                "sdk_version_semver": "8.7.0",
-                "website": "https://github.com/jarrrgh/banana-split"
-            }
-        },
-        "SidebarGUIPlugin": {
             "filename": "/home/redm/.cache/cura/5.7/cura_packages/SidebarGUIPlugin.curapackage",
             "package_info": {
                 "author": {
@@ -170,7 +102,7 @@
                 "display_name": "Sidebar GUI",
                 "is_active": true,
                 "is_bundled": false,
-                "is_installed": false,
+                "is_installed": true,
                 "package_id": "SidebarGUIPlugin",
                 "package_type": "plugin",
                 "package_version": "4.6.5",
@@ -192,7 +124,7 @@
                 "display_name": "Tabbed Settings",
                 "is_active": true,
                 "is_bundled": false,
-                "is_installed": false,
+                "is_installed": true,
                 "package_id": "TabbedSettingsPlugin",
                 "package_type": "plugin",
                 "package_version": "1.0.5",
@@ -202,6 +134,7 @@
             }
         }
     },
+    "to_install": {},
     "to_remove": [],
     "version": 1
 }
