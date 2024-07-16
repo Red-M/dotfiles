@@ -13,12 +13,22 @@ return {
       vim.o.timeoutlen = 300
     end,
     config = function()
-      local presets = require("which-key.plugins.presets")
+      -- local presets = require("which-key.plugins.presets")
       -- presets.operators['D'] = "Void-Delete"
-      presets.operators['='] = "Indent"
-      presets.operators['s'] = "Substitute"
+      -- presets.operators['='] = "Indent"
+      -- presets.operators['s'] = "Substitute"
       local wk = require("which-key")
       wk.setup({
+        replace = {
+          key = {
+            function(key)
+              return key
+            end,
+          },
+        },
+        icons = {
+          -- rules = false,
+        },
         plugins = {
           marks = true, -- shows a list of your marks on ' and `
           registers = true, -- shows your registers on " in NORMAL or <C-r> in INSERT mode
@@ -38,37 +48,64 @@ return {
             g = true, -- bindings for prefixed with g
           },
         },
-        operators = {
-          gc = "Comments",
-          -- ["D"] = "Void-delete",
-          s = "Substitute",
-        },
+        -- operators = {
+        --   gc = "Comments",
+        --   -- ["D"] = "Void-delete",
+        --   s = "Substitute",
+        -- },
         layout = {
           spacing = 0,
         },
       })
-      wk.register({
+
+      wk.add({
         mode = { "n", "v" },
-        ["g"] = { name = "+goto" },
-        -- ["D"] = { name = "+Void-Delete" },
-        ["="] = { name = "+Indent" },
-        ["s"] = { name = "+Substitute" },
-        ["]"] = { name = "+next" },
-        ["["] = { name = "+prev" },
-        ["<leader>b"] = { name = "+buffer" },
-        ["<leader>c"] = { name = "+code" },
-        ["<leader>f"] = { name = "+file" },
-        ["<leader>g"] = { name = "+git" },
-        ["<leader>h"] = { name = "+help" },
-        ["<leader>n"] = { name = "+noice" },
-        ["<leader>o"] = { name = "+open" },
-        ["<leader>q"] = { name = "+quit/session" },
-        ["<leader>s"] = { name = "+search" },
-        ["<leader>t"] = { name = "+toggle" },
-        ["<leader>x"] = { name = "+diagnostics/quickfix" },
-        ["<leader>w"] = { name = "+windows" },
-        ["<leader><tab>"] = { name = "+tabs" },
+        { "<leader><tab>", group = "tabs" },
+        { "<leader>b", group = "buffer" },
+        { "<leader>c", group = "code" },
+        { "<leader>f", group = "file" },
+        { "<leader>g", group = "git" },
+        { "<leader>G", group = "Guess-Indent" },
+        { "<leader>h", group = "help" },
+        { "<leader>n", group = "noice" },
+        { "<leader>o", group = "open" },
+        { "<leader>q", group = "quit/session" },
+        { "<leader>s", group = "search" },
+        { "<leader>t", group = "toggle" },
+        { "<leader>w", group = "windows" },
+        { "<leader>x", group = "diagnostics/quickfix" },
+        { "=", group = "Indent" },
+        { "[", group = "prev" },
+        { "]", group = "next" },
+        { "g", group = "goto" },
+        { "s", group = "Substitute" },
+        { "f", group = "folds" },
+        { "z", group = "util" },
+        { "<leader>", group = "leader" },
       })
+
+      -- wk.register({
+      --   mode = { "n", "v" },
+      --   ["g"] = { name = "+goto" },
+      --   -- ["D"] = { name = "+Void-Delete" },
+      --   ["="] = { name = "+Indent" },
+      --   ["s"] = { name = "+Substitute" },
+      --   ["]"] = { name = "+next" },
+      --   ["["] = { name = "+prev" },
+      --   ["<leader>b"] = { name = "+buffer" },
+      --   ["<leader>c"] = { name = "+code" },
+      --   ["<leader>f"] = { name = "+file" },
+      --   ["<leader>g"] = { name = "+git" },
+      --   ["<leader>h"] = { name = "+help" },
+      --   ["<leader>n"] = { name = "+noice" },
+      --   ["<leader>o"] = { name = "+open" },
+      --   ["<leader>q"] = { name = "+quit/session" },
+      --   ["<leader>s"] = { name = "+search" },
+      --   ["<leader>t"] = { name = "+toggle" },
+      --   ["<leader>x"] = { name = "+diagnostics/quickfix" },
+      --   ["<leader>w"] = { name = "+windows" },
+      --   ["<leader><tab>"] = { name = "+tabs" },
+      -- })
     end,
     -- opts = {
     --   plugins = {
