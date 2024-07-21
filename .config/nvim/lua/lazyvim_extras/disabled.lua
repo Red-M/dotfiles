@@ -9,6 +9,7 @@ return {
   { "L3MON4D3/LuaSnip", enabled = false },
   { "williamboman/mason-lspconfig.nvim", enabled = false },
   { "williamboman/mason.nvim", enabled = false, build = nil },
+  { "MagicDuck/grug-far.nvim", enabled = false },
   { "echasnovski/mini.ai", enabled = false },
   { "echasnovski/mini.comment", enabled = false },
   { "echasnovski/mini.base16", enabled = false },
