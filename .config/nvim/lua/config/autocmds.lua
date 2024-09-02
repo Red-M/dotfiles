@@ -77,7 +77,7 @@ vim.api.nvim_create_autocmd({'BufEnter','UIEnter','TabEnter','VimEnter'}, {
   pattern = {'neo-tree*'},
   callback = function(data)
     if vim.bo.filetype == "neo-tree" then
-      vim.wo.statuscolumn = [[%!v:lua.StatusCol()." "]]
+      -- vim.wo.statuscolumn = [[%!v:lua.require('statuscol').StatusCol()." "]]
       vim.wo.relativenumber = false
       vim.wo.number = true
       vim.wo.foldenable = false
