@@ -1,0 +1,249 @@
+#!/bin/bash
+
+positional_args=()
+passthrough_args=()
+stop_arg_processing=false
+
+default_args=true
+
+
+enable_mangohud=true
+
+enable_gamemoderun=true
+
+enable_gamescope=false
+max_framerate=240
+
+
+while [[ ${#} -gt 0 ]]; do
+  if [ ${stop_arg_processing} == false ]; then
+    case ${1} in
+      --after)
+        after_mode=true
+        shift
+        ;;
+      -W)
+        width="${2}"
+        shift
+        shift
+        ;;
+      -H)
+        height="${2}"
+        shift
+        shift
+        ;;
+      -r)
+        max_framerate="${2}"
+        shift
+        shift
+        ;;
+      --skip-game-detect)
+        skip_game_detect=true
+        shift
+        ;;
+      --skip-mangohud)
+        skip_mangohud=true
+        shift
+        ;;
+      --skip-gamemoderun)
+        skip_gamemoderun=true
+        shift
+        ;;
+      --skip-gamescope)
+        skip_gamescope=true
+        shift
+        ;;
+      --no-mangohud)
+        enable_mangohud=false
+        shift
+        ;;
+      --no-gamemoderun)
+        enable_gamemoderun=false
+        shift
+        ;;
+      --no-gamescope)
+        enable_gamescope=false
+        shift
+        ;;
+      --gamescope)
+        enable_gamescope=true
+        shift
+        ;;
+      --disable-defaults)
+        default_args=false
+        shift
+        ;;
+      --workarounds|--workaround)
+        workarounds_requested="${2}"
+        shift
+        shift
+        ;;
+      --)
+        shift
+        stop_arg_processing=true
+        ;;
+      *)
+        positional_args+=("${1}")
+        shift
+        ;;
+    esac
+  else
+    passthrough_args+="\"${1}\" "
+    shift
+  fi
+done
+
+
+function get_display_size() {
+  OFFSET_RE="\+([-0-9]+)\+([-0-9]+)"
+
+  # Get the window position
+  eval "$(xdotool getmouselocation --shell)"
+
+  # Loop through each screen and compare the offset with the window coordinates.
+  monitor_index=0
+  while read name width height xoff yoff; do
+    if [ "${X}" -ge "${xoff}" -a "${Y}" -ge "${yoff}" -a "${X}" -lt "$((${xoff}+${width}))" -a "${Y}" -lt "$((${yoff}+${height}))" ]; then
+      monitor=("${name}" "${width}" "${height}")
+      break
+    fi
+    ((monitor_index++))
+  done < <(xrandr | grep -w connected | sed -r "s/^([^ ]*).*\b([-0-9]+)x([-0-9]+)${OFFSET_RE}.*$/\1 \2 \3 \4 \5/" | sort -nk4,5)
+
+  echo "${monitor[@]}"
+}
+
+function get_gamescope_resolution_options() {
+  if [[ -z ${width} && -z ${height} ]]; then
+    monitor=($(get_display_size))
+  else
+    monitor=("dummy" "${width}" "${height}")
+  fi
+  echo "-W ${monitor[1]} -w ${monitor[1]} -H ${monitor[2]} -h ${monitor[2]}"
+}
+
+function arr_contains() {
+  key="${1}"
+  list="${2}"
+
+  grep -Fxqz -- "${key}" "${list}"
+  return ${?}
+}
+
+# export > ~/tmp/steam
+
+output_args=()
+game_args=()
+
+if [[ ! -z ${SteamAppId} || ! -z "${workarounds_requested}" ]]; then
+
+  IFS=',' read -r -a workarounds <<< "${workarounds_requested}"
+  if [[ ! -z ${SteamAppId} && -z ${skip_game_detect} ]]; then
+    case "${SteamAppId}" in
+      "570")
+        workarounds+=('dota2')
+        ;;
+      "632360")
+        workarounds+=('ror2_modded')
+        ;;
+      "1422450")
+        workarounds+=('deadlock')
+        ;;
+      "720")
+        workarounds+=('cs2')
+        ;;
+      "1422450")
+        workarounds+=('runescape')
+        ;;
+    esac
+  fi
+
+  for workaround in ${workarounds[@]}; do
+
+    case "${workaround}" in
+      'runescape')
+        output_args+=("MANGOHUD=1" "mesa_glthread=true" "MESA_LOADER_DRIVER_OVERRIDE=zink")
+        skip_mangohud=true
+        enable_mangohud=false
+        enable_gamescope=false
+        ;;
+      'cs2')
+        enable_mangohud=false
+        ;;
+      'deadlock')
+        enable_mangohud=false
+        enable_gamescope=true
+        unset skip_gamescope
+        game_args+=('-borderless')
+        ;;
+      'ror2_modded')
+        skip_gamescope=true
+        game_args+=('--doorstop-enabled true --doorstop-target-assembly "Z:'${HOME}'/.config/r2modmanPlus-local/RiskOfRain2/profiles/Default/BepInEx/core/BepInEx.Preloader.dll" --r2profile "Default"')
+        ;;
+      'ror2')
+        skip_gamescope=true
+        ;;
+      'dota2')
+        enable_mangohud=false
+        enable_gamescope=true
+        unset skip_gamescope
+        ;;
+    esac
+  done
+fi
+
+if [ -z ${after_mode} ]; then
+  mangohud_args=()
+  if [[ -z ${skip_mangohud} ]]; then
+  if [[ ${enable_gamescope} != true || ! -z ${skip_gamescope} ]]; then
+    if [ ${enable_mangohud} == true ]; then
+      if [ -f ~/".local/bin/mangohud" ]; then
+        mangohud_args+=(~/".local/bin/mangohud")
+      else
+        mangohud_args+=("mangohud")
+      fi
+    else
+      output_args+=("MANGOHUD=0")
+    fi
+  fi
+  fi
+
+  gamemoderun_args=()
+  if [[ -z ${skip_gamemoderun} ]]; then
+    if [ ${enable_gamemoderun} == true ]; then
+      gamemoderun_args+=("gamemoderun")
+    fi
+  fi
+
+  gamescope_args=()
+  if [[ -z ${skip_gamescope} ]]; then
+    if [ ${enable_gamescope} == true ]; then
+
+      max_framerate="$((${max_framerate}*2))"
+      if [ ${default_args} == true ]; then
+        default_args=("--immediate-flips" "-e" "-i" "-f" "-b" "-o" "60" "-r" "${max_framerate}")
+      else
+        default_args=()
+      fi
+
+      if [[ ${#postional_args[@]} -gt 0 ]]; then
+        gamescope_args+=("gamescope" $(get_gamescope_resolution_options) "${default_args[@]}" "${positional_args[@]}" "--")
+      else
+        gamescope_args+=("gamescope" $(get_gamescope_resolution_options) "${default_args[@]}" "--")
+      fi
+    fi
+  fi
+
+  for target_array in mangohud_args gamemoderun_args gamescope_args ; do
+    declare -n target=${target_array}
+    output_args+=(${target[@]})
+  done
+  # output_args+=("%command%")
+  # output_args+=(${game_args[@]})
+
+  echo "${output_args[@]}"
+else
+  echo "${game_args[@]}"
+fi
+exit 0
+

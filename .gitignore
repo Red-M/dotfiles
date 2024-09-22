@@ -15,6 +15,8 @@
 .local/share/cura/*/plugins
 .local/share/cura/*/images
 .local/share/cura/*.log
+.local/share/cura/*.log*
+.local/share/cura/**/*.log*
 .local/share/cura/**/*.log
 
 
