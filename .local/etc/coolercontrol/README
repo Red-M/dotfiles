@@ -1,0 +1,5 @@
+This currently does nothing, however I sometimes will copy my config to here with:
+cp /etc/coolercontrol/*.{json,toml} /home/redm/git/dotfiles/.local/etc/coolercontrol/
+
+The reason for doing this is to serve as a backup.
+
