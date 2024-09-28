@@ -18,6 +18,7 @@ return {
   -- { "echasnovski/mini.surround", enabled = false },
   { "folke/neoconf.nvim", enabled = false },
   { "folke/neodev.nvim", enabled = false },
+  { "folke/lazydev.nvim", enabled = false },
   { "hrsh7th/nvim-cmp", enabled = false },
   { "mfussenegger/nvim-lint", enabled = false },
   { "neovim/nvim-lspconfig", enabled = false, event = {}, opts = nil, config = nil },

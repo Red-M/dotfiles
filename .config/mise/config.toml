@@ -8,4 +8,6 @@ usage = "latest"
 yq = "latest"
 pnpm = "latest"
 node = "latest"
+shfmt = "latest"
+yamlfmt = "latest"
 

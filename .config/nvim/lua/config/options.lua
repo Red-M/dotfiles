@@ -2,12 +2,12 @@
 vim.opt.number = true
 vim.opt.relativenumber = false
 vim.opt.pumheight = 12
-vim.opt.shiftwidth = 4
+vim.opt.shiftwidth = 2
+vim.opt.tabstop = 2
 vim.opt.softtabstop = -1
-vim.opt.tabstop = 4
+vim.opt.expandtab = true
 vim.opt.shiftround = true
 vim.opt.smartindent = true
-vim.opt.expandtab = true
 vim.opt.undofile = true
 vim.opt.hlsearch = true
 vim.opt.cursorline = true
@@ -47,6 +47,38 @@ vim.g.trouble_lualine = false
 
 vim.keymap.set("n", ";", "<Nop>", { silent = true, remap = false })
 vim.g.mapleader = ";"
+
+vim.g.utils_ft = {
+  scrollbars = {
+    "alpha",
+    "dashboard",
+    "DressingInput",
+    "mason",
+    "noice",
+    "prompt",
+    "TelescopePrompt",
+  },
+  misc = {
+    "",
+    "qf",
+    "alpha",
+    "dashboard",
+    "DressingInput",
+    'help',
+    "lazy",
+    "mason",
+    'neo-tree',
+    "noice",
+    "prompt",
+    'TelescopePrompt',
+    'Trouble',
+  }
+}
+local utils_ft_default = {}
+for key, value in pairs(vim.g.utils_ft) do
+  utils_ft_default = vim.list_extend(utils_ft_default,value)
+end
+vim.g.utils_ft['default'] = utils_ft_default
 
 vim.cmd([[
 " set tw=150

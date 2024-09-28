@@ -1,5 +1,4 @@
 return {
-
   {
     "ibhagwan/smartyank.nvim",
     enabled = false,
@@ -39,6 +38,4 @@ return {
     end,
     event = "VeryLazy",
   },
-
 }
-

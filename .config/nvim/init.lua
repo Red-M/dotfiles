@@ -70,6 +70,7 @@ require("lazy").setup({
     },
     { import = "lazyvim_extras" },
     { import = "languages" },
+    { import = "formatters" },
     { import = "plugins" },
     { import = "plugs" },
     { import = "games" },
@@ -107,4 +108,3 @@ require("lazy").setup({
 })
 
 --require("config.options")
-

@@ -11,7 +11,7 @@ return {
 
         -- `ignored_filetypes` configures which filetypes to ignore when
         -- displaying trailing whitespace
-        ignored_filetypes = { 'TelescopePrompt', 'Trouble', 'help' },
+        ignored_filetypes = vim.g.utils_ft['default'],
 
         -- `ignore_terminal` configures whether to ignore terminal buffers
         ignore_terminal = true,
@@ -23,13 +23,21 @@ return {
   },{
     "cappyzawa/trim.nvim",
     opts = {
-      ft_blocklist = {},
+      ft_blocklist = vim.g.utils_ft['default'],
       patterns = {},
       trim_on_write = true,
       trim_trailing = true,
       trim_last_line = false,
       trim_first_line = false,
     },
-  }
+  },{
+    "LumaKernel/nvim-visual-eof.lua",
+    lazy = false,
+    config = function(_, opts)
+      require('visual-eof').setup(opts)
+    end,
+    opts = {
+      ft_ng = vim.g.utils_ft['default'],
+    },
+  },
 }
-

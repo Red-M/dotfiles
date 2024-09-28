@@ -3,18 +3,7 @@ return {
   event = { "BufReadPost", "BufNewFile" },
   opts = {
     set_highlights = false,
-    excluded_filetypes = {
-      "prompt",
-      "TelescopePrompt",
-      "noice",
-      "neo-tree",
-      "dashboard",
-      "alpha",
-      "lazy",
-      "mason",
-      "DressingInput",
-      "",
-    },
+    excluded_filetypes = vim.g.utils_ft['scrollbars'],
     handlers = {
       gitsigns = true,
     },

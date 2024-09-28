@@ -23,6 +23,7 @@ return {
   {
     "stevearc/resession.nvim",
     lazy = false,
+    priority = -2000,
     dependencies = {
       {
         "tiagovla/scope.nvim",
@@ -89,4 +90,3 @@ return {
   },
 
 }
-
