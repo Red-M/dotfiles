@@ -78,7 +78,7 @@ local utils_ft_default = {}
 for key, value in pairs(vim.g.utils_ft) do
   utils_ft_default = vim.list_extend(utils_ft_default,value)
 end
-vim.g.utils_ft['default'] = utils_ft_default
+vim.g.utils_ft["default"] = utils_ft_default
 
 vim.cmd([[
 " set tw=150

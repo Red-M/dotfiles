@@ -11,7 +11,7 @@ return {
 
         -- `ignored_filetypes` configures which filetypes to ignore when
         -- displaying trailing whitespace
-        ignored_filetypes = vim.g.utils_ft['default'],
+        ignored_filetypes = vim.g.utils_ft["default"],
 
         -- `ignore_terminal` configures whether to ignore terminal buffers
         ignore_terminal = true,
@@ -23,7 +23,7 @@ return {
   },{
     "cappyzawa/trim.nvim",
     opts = {
-      ft_blocklist = vim.g.utils_ft['default'],
+      ft_blocklist = vim.g.utils_ft["default"],
       patterns = {},
       trim_on_write = true,
       trim_trailing = true,
@@ -37,7 +37,7 @@ return {
       require('visual-eof').setup(opts)
     end,
     opts = {
-      ft_ng = vim.g.utils_ft['default'],
+      ft_ng = vim.g.utils_ft["default"],
     },
   },
 }
