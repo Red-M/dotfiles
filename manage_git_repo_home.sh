@@ -123,6 +123,7 @@ maintain_path .SciTEUser.properties
 
 maintain_path .config/mise
 maintain_path .config/nvim
+maintain_path .config/yamlfmt
 maintain_path .config/alacritty
 maintain_path .quiltrc-dpkg
 maintain_path .tool-versions
