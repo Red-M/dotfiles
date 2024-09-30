@@ -48,8 +48,8 @@ vim.g.trouble_lualine = false
 vim.keymap.set("n", ";", "<Nop>", { silent = true, remap = false })
 vim.g.mapleader = ";"
 
-vim.g.utils_ft = {
-  scrollbars = {
+local utils_ft = {
+  ["scrollbars"] = {
     "alpha",
     "dashboard",
     "DressingInput",
@@ -58,8 +58,7 @@ vim.g.utils_ft = {
     "prompt",
     "TelescopePrompt",
   },
-  misc = {
-    "",
+  ["misc"] = {
     "qf",
     "alpha",
     "dashboard",
@@ -75,10 +74,10 @@ vim.g.utils_ft = {
   }
 }
 local utils_ft_default = {}
-for key, value in pairs(vim.g.utils_ft) do
-  utils_ft_default = vim.list_extend(utils_ft_default,value)
+for key, value in pairs(utils_ft) do
+  vim.list_extend(utils_ft_default,value)
 end
-vim.g.utils_ft["default"] = utils_ft_default
+vim.g.utils_ft = vim.tbl_extend('force',utils_ft,{["default"] = utils_ft_default})
 
 vim.cmd([[
 " set tw=150

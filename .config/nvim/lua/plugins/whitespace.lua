@@ -37,7 +37,10 @@ return {
       require('visual-eof').setup(opts)
     end,
     opts = {
-      ft_ng = vim.g.utils_ft["default"],
+      -- ft_ng = vim.g.utils_ft["default"],
+      buf_filter = function(bufnr)
+        return(not vim.tbl_contains(vim.g.utils_ft["default"],vim.api.nvim_buf_get_option(bufnr, 'filetype')))
+      end,
     },
   },
 }
