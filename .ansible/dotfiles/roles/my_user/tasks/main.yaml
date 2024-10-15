@@ -1,0 +1,20 @@
+---
+
+- name: Update repo
+  ansible.builtin.shell: git pull
+  args:
+    chdir: ~/git/dotfiles
+  register: git_out
+- debug: var=git_out.stdout_lines
+
+- name: Run manage_git_repo_home
+  ansible.builtin.shell: ./manage_git_repo_home.sh
+  args:
+    chdir: ~/git/dotfiles
+  register: manage_git_repo_home
+- debug: var=manage_git_repo_home.stdout_lines
+
+- name: Run mise role
+  include_role:
+    name: mise
+

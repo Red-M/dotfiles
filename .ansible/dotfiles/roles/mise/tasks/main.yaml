@@ -1,0 +1,36 @@
+---
+- name: Install mise
+  ansible.builtin.shell: curl https://mise.run | sh
+  args:
+    executable: /bin/bash
+    creates: ~/.local/share/mise/shims
+  register: mise
+- debug: var=mise.stderr_lines
+- debug: var=mise.stdout_lines
+
+- name: Mise git
+  ansible.builtin.shell: mise use -g git@latest
+  args:
+    executable: /bin/bash
+  register: mise
+- debug: var=mise.stderr_lines
+- debug: var=mise.stdout_lines
+
+- name: Mise clean up
+  ansible.builtin.shell: mise prune -y
+  args:
+    executable: /bin/bash
+    removes: ~/.local/share/mise/shims
+  register: mise
+- debug: var=mise.stderr_lines
+- debug: var=mise.stdout_lines
+
+- name: Mise install/upgrade packages
+  ansible.builtin.shell: mise up -y
+  args:
+    executable: /bin/bash
+    removes: ~/.local/share/mise/shims
+  register: mise
+- debug: var=mise.stderr_lines
+- debug: var=mise.stdout_lines
+

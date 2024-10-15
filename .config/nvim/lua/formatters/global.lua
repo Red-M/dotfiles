@@ -26,7 +26,7 @@ return {
       formatters_by_ft = {
         ["*"] = {
           "injected",
-          "trim_newlines",
+          -- "trim_newlines",
           "trim_whitespace",
         },
       },

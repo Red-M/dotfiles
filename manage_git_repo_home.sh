@@ -11,6 +11,8 @@ else
 fi
 # echo ${delete_mode}
 
+hostname=$(hostname)
+
 if [ ! -d "${home_path}" ]; then
   mkdir -p "${home_path}"
   chmod 700 "${home_path}"
@@ -96,15 +98,20 @@ function maintain_path() {
 cd "${script_dir_path}" # We do this to allow for shell globbing the paths
 
 maintain_path .bashrc
-
+maintain_path .ansible
 maintain_path .icons
+maintain_path .irssi
+maintain_path .proxychains
+maintain_path .tmux
+maintain_path .tmux.conf
+maintain_path .scite
+maintain_path .SciTEUser.properties
 
 maintain_path .local/{bin/*,etc}
 maintain_path .local/share/{bash-completion,color-schemes,konsole,plasma*}
-maintain_path .local/share/nvim
 maintain_path .local/share/fonts/*.ttf
 
-maintain_path .config/{font*,htop,kdedefaults,mpv,pipewire,wireplumber,xsettingsd}
+maintain_path .config/{font*,htop,kdedefaults,mpv,xsettingsd}
 maintain_path .config/{breezerc,kdeglobals,kglobalshortcutsrc,khotkeysrc,konsolerc,kscreenlockerrc,kwinrulesrc,kwinrc,touchpad*}
 
 maintain_path .fonts/*/*.{ttf,ttc}
@@ -112,38 +119,33 @@ maintain_path .fonts/*/*.{ttf,ttc}
 maintain_path .kde/share/config/breezerc
 maintain_path .kde/share/apps/color-schemes
 
-maintain_path .irssi
-
-maintain_path .proxychains
-
-maintain_path .tmux.conf
-
-maintain_path .scite
-maintain_path .SciTEUser.properties
-
 maintain_path .config/mise
-maintain_path .config/nvim
-maintain_path .config/yamlfmt
-maintain_path .config/alacritty
-maintain_path .quiltrc-dpkg
 maintain_path .tool-versions
 maintain_path .config/MangoHud
 maintain_path .config/gamemode.ini
-maintain_path .config/OpenRGB
-maintain_path .local/share/cura
+maintain_path .quiltrc-dpkg
 
 maintain_path tmux_start_up_scripts
-maintain_path .ansible
 maintain_path Pictures/*
 maintain_path .face{,.icon}
 maintain_path *.sh
 maintain_path .Xresources
 maintain_path .inputrc
 
+maintain_path .config/nvim
+maintain_path .local/share/nvim
+maintain_path .config/yamlfmt
+maintain_path .config/alacritty
+
 maintain_path_optional .ssh
-maintain_path_optional .tmux
 maintain_path_optional .config/gtk-*/*
 maintain_path_optional .config/plasma-org.kde.plasma.desktop-appletsrc # This is somewhat optional as it is for widgets on plasma
+
+if [ "${hostname}" == "potato" ]; then
+  maintain_path .config/{pipewire,wireplumber}
+  maintain_path .config/OpenRGB
+  maintain_path .local/share/cura
+fi
 
 # ls -alh "${home_path}"
 # echo "${!permissions_paths_visited[*]}"

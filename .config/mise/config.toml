@@ -1,7 +1,7 @@
 [tools]
 jq = "latest"
 kubectl = "1.28.7"
-neovim = "latest"
+neovim = "stable"
 pipx = "1.4.3"
 sops = "latest"
 usage = "latest"
@@ -9,5 +9,6 @@ yq = "latest"
 pnpm = "latest"
 node = "latest"
 shfmt = "latest"
-yamlfmt = "latest"
+helm = "3.15.4"
+git = "latest"
 
