@@ -322,7 +322,7 @@ memory/physical/usedPercent=Used RAM
 
 [Containments][2][Applets][87][Configuration][Sensors]
 highPrioritySensorIds=["memory/physical/usedPercent","cpu/cpu0/usage","cpu/cpu1/usage","cpu/cpu2/usage","cpu/cpu3/usage","cpu/cpu4/usage","cpu/cpu5/usage","cpu/cpu6/usage","cpu/cpu7/usage","cpu/cpu8/usage","cpu/cpu9/usage","cpu/cpu10/usage","cpu/cpu11/usage","cpu/cpu12/usage","cpu/cpu13/usage","cpu/cpu14/usage","cpu/cpu15/usage","cpu/cpu16/usage","cpu/cpu17/usage","cpu/cpu18/usage","cpu/cpu19/usage","cpu/cpu20/usage","cpu/cpu21/usage","cpu/cpu22/usage","cpu/cpu23/usage","cpu/cpu24/usage","cpu/cpu25/usage","cpu/cpu26/usage","cpu/cpu27/usage","cpu/cpu28/usage","cpu/cpu29/usage","cpu/cpu30/usage","cpu/cpu31/usage"]
-lowPrioritySensorIds=["cpu/all/averageTemperature","cpu/all/averageFrequency","cpu/all/usage","memory/physical/total"]
+lowPrioritySensorIds=["cpu/all/averageTemperature","cpu/all/averageFrequency","cpu/all/usage","memory/physical/total","os/kernel/version"]
 
 [Containments][2][Applets][91][Configuration]
 CurrentPreset=org.kde.plasma.systemmonitor
@@ -719,7 +719,7 @@ lastScreen=0
 location=3
 plugin=org.kde.plasma.private.systemtray
 popupHeight=720
-popupWidth=713
+popupWidth=711
 wallpaperplugin=org.kde.image
 
 [Containments][33][Applets][34]
@@ -737,6 +737,7 @@ plugin=org.kde.plasma.volume
 PreloadWeight=100
 
 [Containments][33][Applets][35][Configuration][General]
+currentTab=streams
 migrated=true
 showVirtualDevices=true
 
@@ -811,7 +812,7 @@ immutability=1
 plugin=org.kde.plasma.bluetooth
 
 [Containments][33][Applets][48][Configuration]
-PreloadWeight=4
+PreloadWeight=9
 
 [Containments][33][Applets][55]
 immutability=1
@@ -1053,6 +1054,7 @@ plugin=org.kde.plasma.volume
 PreloadWeight=100
 
 [Containments][63][Applets][65][Configuration][General]
+currentTab=streams
 migrated=true
 showVirtualDevices=true
 
