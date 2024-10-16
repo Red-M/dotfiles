@@ -6,14 +6,12 @@ stop_arg_processing=false
 
 default_args=true
 
-
 enable_mangohud=true
 
 enable_gamemoderun=true
 
 enable_gamescope=false
 max_framerate=240
-
 
 while [[ ${#} -gt 0 ]]; do
   if [ ${stop_arg_processing} == false ]; then
@@ -73,7 +71,7 @@ while [[ ${#} -gt 0 ]]; do
         default_args=false
         shift
         ;;
-      --workarounds|--workaround)
+      --workarounds | --workaround)
         workarounds_requested="${2}"
         shift
         shift
@@ -93,7 +91,6 @@ while [[ ${#} -gt 0 ]]; do
   fi
 done
 
-
 function get_display_size() {
   OFFSET_RE="\+([-0-9]+)\+([-0-9]+)"
 
@@ -103,7 +100,7 @@ function get_display_size() {
   # Loop through each screen and compare the offset with the window coordinates.
   monitor_index=0
   while read name width height xoff yoff; do
-    if [ "${X}" -ge "${xoff}" -a "${Y}" -ge "${yoff}" -a "${X}" -lt "$((${xoff}+${width}))" -a "${Y}" -lt "$((${yoff}+${height}))" ]; then
+    if [ "${X}" -ge "${xoff}" -a "${Y}" -ge "${yoff}" -a "${X}" -lt "$((${xoff} + ${width}))" -a "${Y}" -lt "$((${yoff} + ${height}))" ]; then
       monitor=("${name}" "${width}" "${height}")
       break
     fi
@@ -132,6 +129,7 @@ function arr_contains() {
 
 # export > ~/tmp/steam
 
+# output_args=("PIPEWIRE_NODE=output.loopback_group_default")
 output_args=()
 game_args=()
 
@@ -195,17 +193,17 @@ fi
 if [ -z ${after_mode} ]; then
   mangohud_args=()
   if [[ -z ${skip_mangohud} ]]; then
-  if [[ ${enable_gamescope} != true || ! -z ${skip_gamescope} ]]; then
-    if [ ${enable_mangohud} == true ]; then
-      if [ -f ~/".local/bin/mangohud" ]; then
-        mangohud_args+=(~/".local/bin/mangohud")
+    if [[ ${enable_gamescope} != true || ! -z ${skip_gamescope} ]]; then
+      if [ ${enable_mangohud} == true ]; then
+        if [ -f ~/".local/bin/mangohud" ]; then
+          mangohud_args+=(~/".local/bin/mangohud")
+        else
+          mangohud_args+=("mangohud")
+        fi
       else
-        mangohud_args+=("mangohud")
+        output_args+=("MANGOHUD=0")
       fi
-    else
-      output_args+=("MANGOHUD=0")
     fi
-  fi
   fi
 
   gamemoderun_args=()
@@ -219,7 +217,7 @@ if [ -z ${after_mode} ]; then
   if [[ -z ${skip_gamescope} ]]; then
     if [ ${enable_gamescope} == true ]; then
 
-      max_framerate="$((${max_framerate}*2))"
+      max_framerate="$((${max_framerate} * 2))"
       if [ ${default_args} == true ]; then
         default_args=("--immediate-flips" "-e" "-i" "-f" "-b" "-o" "60" "-r" "${max_framerate}")
       else
@@ -234,7 +232,7 @@ if [ -z ${after_mode} ]; then
     fi
   fi
 
-  for target_array in mangohud_args gamemoderun_args gamescope_args ; do
+  for target_array in mangohud_args gamemoderun_args gamescope_args; do
     declare -n target=${target_array}
     output_args+=(${target[@]})
   done
@@ -246,4 +244,3 @@ else
   echo "${game_args[@]}"
 fi
 exit 0
-
