@@ -812,7 +812,7 @@ immutability=1
 plugin=org.kde.plasma.bluetooth
 
 [Containments][33][Applets][48][Configuration]
-PreloadWeight=9
+PreloadWeight=0
 
 [Containments][33][Applets][55]
 immutability=1
@@ -826,7 +826,7 @@ immutability=1
 plugin=org.kde.plasma.gamemode
 
 [Containments][33][Applets][88][Configuration]
-PreloadWeight=85
+PreloadWeight=95
 
 [Containments][33][ConfigDialog]
 DialogHeight=540

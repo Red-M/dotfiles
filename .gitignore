@@ -11,6 +11,21 @@
 .config/OpenRGB/logs/*
 .ansible/*
 
+.config/steamtinkerlaunch/compatdata
+.config/steamtinkerlaunch/downloads
+.config/steamtinkerlaunch/collections
+.config/steamtinkerlaunch/gamecfgs/title
+.config/steamtinkerlaunch/games
+.config/steamtinkerlaunch/hedgemodmanager
+.config/steamtinkerlaunch/hide
+.config/steamtinkerlaunch/lang
+.config/steamtinkerlaunch/meta
+.config/steamtinkerlaunch/mo2
+.config/steamtinkerlaunch/proton
+.config/steamtinkerlaunch/tweaks
+.config/steamtinkerlaunch/vortex
+.config/steamtinkerlaunch/wine
+
 .local/share/cura/.sentry-native
 .local/share/cura/*/plugins
 .local/share/cura/*/images
@@ -19,6 +34,8 @@
 .local/share/cura/**/*.log*
 .local/share/cura/**/*.log
 
+**.log
+**/logs/
 
 !**/.keep_me
 

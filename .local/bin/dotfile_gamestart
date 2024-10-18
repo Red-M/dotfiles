@@ -147,10 +147,10 @@ if [[ ! -z ${SteamAppId} || ! -z "${workarounds_requested}" ]]; then
       "1422450")
         workarounds+=('deadlock')
         ;;
-      "720")
+      "730")
         workarounds+=('cs2')
         ;;
-      "1422450")
+      "1343400")
         workarounds+=('runescape')
         ;;
     esac
@@ -161,6 +161,7 @@ if [[ ! -z ${SteamAppId} || ! -z "${workarounds_requested}" ]]; then
     case "${workaround}" in
       'runescape')
         output_args+=("MANGOHUD=1" "mesa_glthread=true" "MESA_LOADER_DRIVER_OVERRIDE=zink")
+        # export MANGOHUD=1 mesa_glthread=true MESA_LOADER_DRIVER_OVERRIDE=zink
         skip_mangohud=true
         enable_mangohud=false
         enable_gamescope=false
@@ -239,7 +240,8 @@ if [ -z ${after_mode} ]; then
   # output_args+=("%command%")
   # output_args+=(${game_args[@]})
 
-  echo "${output_args[@]}"
+  echo "${SteamAppId} ${output_args[@]} ${positional_args[*]}" > ~/tmp/steam_args
+  echo ${output_args[@]}
 else
   echo "${game_args[@]}"
 fi
