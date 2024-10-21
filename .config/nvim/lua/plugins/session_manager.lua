@@ -45,7 +45,7 @@ return {
           if buftype == 'help' then
             return true
           end
-          if buftype ~= "" and buftype ~= "acwrite" then
+          if buftype ~= "" or buftype ~= "acwrite" then
             return false
           end
           if vim.api.nvim_buf_get_name(bufnr) == "" then
@@ -54,8 +54,11 @@ return {
 
           -- this is required, since the default filter skips nobuflisted buffers
           return true
-      end,
-      extensions = { scope = {} }, -- add scope.nvim extension
+        end,
+        extensions = {
+          scope = {},
+          -- barbar = {},
+        },
       })
 
       vim.api.nvim_create_autocmd("VimEnter", {
@@ -88,5 +91,4 @@ return {
       vim.keymap.set('n', '<leader>sd', resession.delete)
     end,
   },
-
 }

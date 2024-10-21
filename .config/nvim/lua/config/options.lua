@@ -48,6 +48,14 @@ vim.g.trouble_lualine = false
 vim.keymap.set("n", ";", "<Nop>", { silent = true, remap = false })
 vim.g.mapleader = ";"
 
+vim.g.my_icons = {
+  ["close"] = '☒',
+  ["modified"] = '‼',
+  ["slant_left"] = '',
+  ["slant_right"] = '',
+}
+
+
 local utils_ft = {
   ["scrollbars"] = {
     "alpha",

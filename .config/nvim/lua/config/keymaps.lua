@@ -29,8 +29,8 @@ vim.cmd([[
 "inoremap <C-k> <C-o>d$
 "nnoremap <C-S-k> "Kdd
 "inoremap <C-S-k> <C-o>"Kdd
-nnoremap <C-k> "Kdd
-inoremap <C-k> <C-o>"K<C-o>dd
+" nnoremap <C-k> "Kdd
+" inoremap <C-k> <C-o>"K<C-o>dd
 
 " comment toggle
 " nnoremap <C-q> _gcc
