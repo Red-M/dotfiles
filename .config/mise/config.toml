@@ -1,15 +1,15 @@
 [tools]
 jq = "latest"
-kubectl = "1.29.9"
 neovim = "stable"
-pipx = "1.4.3"
 sops = "latest"
 usage = "latest"
 yq = "latest"
 pnpm = "latest"
 node = "latest"
 shfmt = "latest"
-helm = "3.15.4"
 git = "latest"
 kind = "0.24.0"
+kubectl = "1.31.2"
+pipx = "1.7.1"
+helm = "3.16.2"
 
