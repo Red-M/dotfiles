@@ -27,10 +27,10 @@ if [[ -e "${KREW_ROOT:-$HOME/.krew}" && ! -f "${KREW_ROOT:-$HOME/.krew}" ]]; the
     export PATH="${KREW_ROOT:-$HOME/.krew}/bin:${PATH}"
 fi
 
-if [ -d "$HOME/.asdf" ]; then
-    . "$HOME/.asdf/asdf.sh"
-    . "$HOME/.asdf/completions/asdf.bash"
-fi
+# if [ -d "$HOME/.asdf" ]; then
+#     . "$HOME/.asdf/asdf.sh"
+#     . "$HOME/.asdf/completions/asdf.bash"
+# fi
 
 if [ -d "$HOME/.local/share/mise" ]; then
     export PATH="$HOME/.local/share/mise/shims:$PATH"
