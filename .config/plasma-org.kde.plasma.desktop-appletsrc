@@ -737,6 +737,7 @@ plugin=org.kde.plasma.volume
 PreloadWeight=100
 
 [Containments][33][Applets][35][Configuration][General]
+currentTab=streams
 migrated=true
 showVirtualDevices=true
 
@@ -1053,7 +1054,6 @@ plugin=org.kde.plasma.volume
 PreloadWeight=100
 
 [Containments][63][Applets][65][Configuration][General]
-currentTab=streams
 migrated=true
 showVirtualDevices=true
 
@@ -1125,7 +1125,7 @@ immutability=1
 plugin=org.kde.plasma.mediacontroller
 
 [Containments][63][Applets][77][Configuration]
-PreloadWeight=5
+PreloadWeight=0
 
 [Containments][63][Applets][78]
 immutability=1

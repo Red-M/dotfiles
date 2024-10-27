@@ -4,7 +4,7 @@ usage = "latest"
 sops = "latest"
 yq = "latest"
 jq = "latest"
-git = "latest"
+# git = "latest"
 pipx = "1.7.1"
 pnpm = "latest"
 node = "latest"
@@ -18,7 +18,7 @@ kustomize = "latest"
 kubent = "latest"
 opentofu = "latest"
 
-[plugins]
-git = "https://gitlab.com/jcaigitlab/asdf-git"
+# [plugins]
+# git = "https://gitlab.com/jcaigitlab/asdf-git"
 
 
