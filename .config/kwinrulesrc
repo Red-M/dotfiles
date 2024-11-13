@@ -85,8 +85,6 @@ wmclassmatch=1
 
 [5]
 Description=Window settings for org.telegram.desktop
-clientmachine=potato
-clientmachinematch=1
 desktops=\\0
 desktopsrule=2
 title=Virtual Machine Manager
@@ -108,8 +106,6 @@ wmclassmatch=1
 
 [6]
 Description=Window settings for virt-manager
-clientmachine=potato
-clientmachinematch=1
 desktops=eabe6957-0be4-438c-8775-e064f005dbc8
 desktopsrule=2
 title=Virtual Machine Manager
@@ -129,8 +125,6 @@ wmclassmatch=1
 
 [7]
 Description=Application settings for teamspeak 3
-clientmachine=potato
-clientmachinematch=1
 desktops=\\0
 desktopsrule=2
 title=Spotify
@@ -152,8 +146,6 @@ wmclassmatch=1
 
 [8]
 Description=Application settings for steam
-clientmachine=potato
-clientmachinematch=1
 desktop=8
 desktoprule=2
 desktops=0a61b858-ae1a-478a-99c9-4d329111f65f
@@ -165,8 +157,6 @@ wmclassmatch=2
 
 [9]
 Description=Application settings for Discord
-clientmachine=potato
-clientmachinematch=1
 desktops=\\0
 desktopsrule=2
 title=Spotify

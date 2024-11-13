@@ -39,6 +39,11 @@ eead69d1c2d74cedc72b1eb9c18f86f281dd5a22a10548f38adf4576ef5926f6 = "jc42"
 af15705319fabcd511119d8ff2cb9b663126161237433a62fa92673ff499c313 = "jc42"
 fcd5d892055b1f1d743048b4747d23e6faff1e7b52ff2acfd7a1f98019c8d312 = "nvme0"
 639f0f27e4ab0b531efed2d98ce878835c9989be98951d62658e376227cfbb5b = "nvme2"
+950b08d11444c2559e2b267e8589193b7da99c398ce96f73aec1a55de8e5c05b = "jc42"
+271bc921bb6400b418c3c56a3edf104d1f888199eb45dfb48b94097b9b18ced4 = "jc42"
+3928689ad8d53e97fee2f8b6199a06631969739cf72dfa541029d1a822e90fdd = "jc42"
+b74ce68d0461bb009cc6087782a24f86caef99575f8d0fb16b271c40df15d03d = "jc42"
+c2e8da21b4f695dcc16a230b416713149efd053abbe402e6d603d4d1f1570e37 = "Corsair Commander Core XT (experimental)"
 #fa49f4645cba12961942172e0455e53675b4adbc2ed077a740863e40266e9803 = "it8622"
 
 
@@ -74,9 +79,9 @@ lcd = { lcd = { mode = "image", brightness = 100, orientation = 0, image_file_pr
 external = { lighting = { mode = "fixed", colors = [[255, 0, 0]] } }
 
 [device-settings.261622c90195c82fcf3b2efaa0b9e8834a8f5328867e8511183b1071bd0613a1]
-fan2 = { profile_uid = "0" }
-fan3 = { profile_uid = "0" }
-fan1 = { profile_uid = "0" , speed_fixed = 100 }
+fan2 = { profile_uid = "448934b7-8403-4ebd-8c2f-12de8a3e6cf8" }
+fan3 = { profile_uid = "0" , speed_fixed = 0 }
+fan1 = { profile_uid = "0" , speed_fixed = 0 }
 fan4 = { profile_uid = "448934b7-8403-4ebd-8c2f-12de8a3e6cf8" }
 fan5 = { profile_uid = "448934b7-8403-4ebd-8c2f-12de8a3e6cf8" }
 
@@ -86,9 +91,9 @@ fan1 = { profile_uid = "4665a4c9-9cc1-4c39-88b0-efeffdeea5fd" }
 [device-settings.fa49f4645cba12961942172e0455e53675b4adbc2ed077a740863e40266e9803]
 fan5 = { profile_uid = "4665a4c9-9cc1-4c39-88b0-efeffdeea5fd" }
 fan3 = { profile_uid = "448934b7-8403-4ebd-8c2f-12de8a3e6cf8" }
-fan1 = { profile_uid = "448934b7-8403-4ebd-8c2f-12de8a3e6cf8" , speed_fixed = 100 }
-fan2 = { profile_uid = "448934b7-8403-4ebd-8c2f-12de8a3e6cf8" }
-fan4 = { profile_uid = "448934b7-8403-4ebd-8c2f-12de8a3e6cf8" }
+fan1 = { profile_uid = "4665a4c9-9cc1-4c39-88b0-efeffdeea5fd", speed_fixed = 100 }
+fan2 = { profile_uid = "448934b7-8403-4ebd-8c2f-12de8a3e6cf8", speed_fixed = 0 }
+fan4 = { profile_uid = "9488d2e8-77e7-4f94-a73c-9733ec81cef1" }
 
 [device-settings.6652394d0545f0577cc613773ca85145b28fb5a266512af9e414704d3ed10744]
 led1 = { lighting = { mode = "fixed", colors = [[255, 0, 0]] } }
@@ -99,6 +104,11 @@ led5 = { lighting = { mode = "fixed", colors = [[255, 0, 0]] } }
 led4 = { lighting = { mode = "fixed", colors = [[255, 0, 0]] } }
 led3 = { lighting = { mode = "fixed", colors = [[255, 0, 0]] } }
 led2 = { lighting = { mode = "fixed", colors = [[255, 0, 0]] } }
+
+[device-settings.c2e8da21b4f695dcc16a230b416713149efd053abbe402e6d603d4d1f1570e37]
+fan5 = { profile_uid = "448934b7-8403-4ebd-8c2f-12de8a3e6cf8" }
+fan6 = { profile_uid = "448934b7-8403-4ebd-8c2f-12de8a3e6cf8" }
+fan1 = { profile_uid = "66e5bcc1-0b23-431c-af77-9fc8b3800a26" }
 
 
 # A list of profiles to be used with each device's settings
@@ -139,6 +149,14 @@ name = "GPU Fans"
 p_type = "Graph"
 speed_profile = [[0.0, 20], [32.0, 30], [45.0, 60], [60.0, 100], [100.0, 100]]
 temp_source = { temp_name = "sensor1", device_uid = "19e098e312e1b1b39163a343ea22b6ea17f18ec1a803ffe0ce44f5bacd6076ee" }
+function_uid = "b5fbdea1-8c39-4f6e-b1a8-e30008d246a2"
+
+[[profiles]]
+uid = "66e5bcc1-0b23-431c-af77-9fc8b3800a26"
+name = "Case Fans"
+p_type = "Graph"
+speed_profile = [[0.0, 0], [30.0, 20], [40.0, 60], [50.0, 80], [60.0, 100], [100.0, 100]]
+temp_source = { temp_name = "sensor3", device_uid = "19e098e312e1b1b39163a343ea22b6ea17f18ec1a803ffe0ce44f5bacd6076ee" }
 function_uid = "b5fbdea1-8c39-4f6e-b1a8-e30008d246a2"
 
 
@@ -232,6 +250,47 @@ weight = 1
 
 [[custom_sensors.sources]]
 temp_source = { temp_name = "temp4", device_uid = "1aeaec8958dd06de804444608774ed2d58e7b9ae76bc957b32123c967e49350c" }
+weight = 1
+
+[[custom_sensors]]
+id = "sensor3"
+cs_type = "Mix"
+mix_function = "Avg"
+
+[[custom_sensors.sources]]
+temp_source = { temp_name = "temp1", device_uid = "1aeaec8958dd06de804444608774ed2d58e7b9ae76bc957b32123c967e49350c" }
+weight = 1
+
+[[custom_sensors.sources]]
+temp_source = { temp_name = "temp3", device_uid = "1aeaec8958dd06de804444608774ed2d58e7b9ae76bc957b32123c967e49350c" }
+weight = 1
+
+[[custom_sensors.sources]]
+temp_source = { temp_name = "temp4", device_uid = "1aeaec8958dd06de804444608774ed2d58e7b9ae76bc957b32123c967e49350c" }
+weight = 1
+
+[[custom_sensors.sources]]
+temp_source = { temp_name = "temp1", device_uid = "fcfeb9710ac5f09835f6959496672b15dcd5b7f855cf2d3df372d4672da90f16" }
+weight = 1
+
+[[custom_sensors.sources]]
+temp_source = { temp_name = "temp2", device_uid = "fcfeb9710ac5f09835f6959496672b15dcd5b7f855cf2d3df372d4672da90f16" }
+weight = 1
+
+[[custom_sensors.sources]]
+temp_source = { temp_name = "temp3", device_uid = "fcfeb9710ac5f09835f6959496672b15dcd5b7f855cf2d3df372d4672da90f16" }
+weight = 1
+
+[[custom_sensors.sources]]
+temp_source = { temp_name = "temp4", device_uid = "fa49f4645cba12961942172e0455e53675b4adbc2ed077a740863e40266e9803" }
+weight = 1
+
+[[custom_sensors.sources]]
+temp_source = { temp_name = "temp5", device_uid = "fa49f4645cba12961942172e0455e53675b4adbc2ed077a740863e40266e9803" }
+weight = 1
+
+[[custom_sensors.sources]]
+temp_source = { temp_name = "temp6", device_uid = "fa49f4645cba12961942172e0455e53675b4adbc2ed077a740863e40266e9803" }
 weight = 1
 
 # CoolerControl Device settings Example:

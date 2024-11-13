@@ -6,7 +6,9 @@ Theme=org.kde.breezedark.desktop
 WallpaperPlugin=org.kde.image
 
 [Greeter][Wallpaper][org.kde.image][General]
+Color=0,0,0
 FillMode=1
-Image=file:///home/redm/Pictures/lockscreen.png
+Image=/home/redm/git/dotfiles/Pictures/1440-lock.png
+PreviewImage=/home/redm/git/dotfiles/Pictures/1440-lock.png
 height=1080
 width=1920

@@ -1,0 +1,61 @@
+ipc_socket = true
+live_config_reload = true
+
+[colors]
+transparent_background_colors = true
+
+[colors.bright]
+black = "#686868"
+blue = "#5454ff"
+cyan = "#54ffff"
+green = "#54ff54"
+magenta = "#ff54ff"
+red = "#ff5454"
+white = "#ffffff"
+yellow = "#ffff54"
+
+[colors.cursor]
+cursor = "#f8f8f2"
+text = "#191622"
+
+[colors.dim]
+black = "#000000"
+blue = "#1818b2"
+cyan = "#18b2b2"
+green = "#18b218"
+magenta = "#b218b2"
+red = "#b21818"
+white = "#b2b2b2"
+yellow = "#b26818"
+
+[colors.normal]
+black = "#000000"
+blue = "#1818b2"
+cyan = "#18b2b2"
+green = "#18b218"
+magenta = "#b218b2"
+red = "#b21818"
+white = "#b2b2b2"
+yellow = "#b26818"
+
+[colors.primary]
+background = "#1f1f1f"
+bright_foreground = "#ffffff"
+foreground = "#e3e3e3"
+
+[font]
+builtin_box_drawing = false
+# draw_bold_text_with_bright_colors = false
+size = 9
+
+[font.bold]
+style = "Regular"
+
+[font.normal]
+family = "monospace"
+style = "Regular"
+
+[window]
+dynamic_padding = false
+dynamic_title = true
+resize_increments = true

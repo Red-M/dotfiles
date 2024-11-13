@@ -5,33 +5,6 @@ wheel:Vertical;NoModifier=org.kde.switchdesktop
 [ActionPlugins][1]
 RightButton;NoModifier=org.kde.contextmenu
 
-[Containments][1]
-ItemGeometries-2560x1440=
-ItemGeometriesHorizontal=
-activityId=031bb120-ac14-4e7c-9c3f-232ac77202f1
-formfactor=0
-immutability=1
-lastScreen=0
-location=0
-plugin=org.kde.plasma.folder
-wallpaperplugin=org.kde.image
-
-[Containments][1][ConfigDialog]
-DialogHeight=540
-DialogWidth=720
-
-[Containments][1][General]
-ToolBoxButtonState=topcenter
-ToolBoxButtonX=775
-ToolBoxButtonY=36
-positions={"2560x1440":[]\\,"1920x1200":[""]\\,"1024x768":[""]}
-sortMode=-1
-
-[Containments][1][Wallpaper][org.kde.image][General]
-FillMode=1
-Image=/home/redm/Pictures/1440-lock.png
-SlidePaths=/usr/share/wallpapers/
-
 [Containments][10]
 activityId=
 formfactor=2
@@ -118,7 +91,7 @@ PreloadWeight=42
 
 [Containments][10][Applets][21]
 immutability=1
-plugin=org.kde.plasma.gamemode
+plugin=org.kde.plasma.cameraindicator
 
 [Containments][10][Applets][21][Configuration]
 PreloadWeight=42
@@ -162,18 +135,38 @@ plugin=org.kde.plasma.mediacontroller
 [Containments][10][Applets][56][Configuration]
 PreloadWeight=0
 
+[Containments][10][Applets][93]
+immutability=1
+plugin=org.kde.plasma.brightness
+
 [Containments][10][Configuration]
 PreloadWeight=42
 
 [Containments][10][General]
-extraItems=org.kde.plasma.clipboard,org.kde.plasma.volume,org.kde.plasma.printmanager,org.kde.plasma.networkmanagement,org.kde.plasma.keyboardindicator,org.kde.plasma.bluetooth,org.kde.plasma.battery,org.kde.plasma.keyboardlayout,org.kde.kdeconnect,org.kde.plasma.vault,org.kde.kupapplet,org.kde.plasma.devicenotifier,org.kde.kscreen,org.kde.plasma.nightcolorcontrol,org.kde.plasma.notifications,org.kde.plasma.manage-inputmethod,org.kde.plasma.mediacontroller,org.kde.plasma.gamemode
-knownItems=org.kde.plasma.clipboard,org.kde.plasma.volume,org.kde.plasma.printmanager,org.kde.plasma.networkmanagement,org.kde.plasma.keyboardindicator,org.kde.plasma.bluetooth,org.kde.plasma.battery,org.kde.plasma.keyboardlayout,org.kde.kdeconnect,org.kde.plasma.vault,org.kde.kupapplet,org.kde.plasma.devicenotifier,org.kde.kscreen,org.kde.plasma.nightcolorcontrol,org.kde.plasma.notifications,org.kde.plasma.manage-inputmethod,org.kde.plasma.mediacontroller,org.kde.plasma.gamemode
+extraItems=org.kde.plasma.clipboard,org.kde.plasma.volume,org.kde.plasma.printmanager,org.kde.plasma.networkmanagement,org.kde.plasma.keyboardindicator,org.kde.plasma.battery,org.kde.plasma.keyboardlayout,org.kde.plasma.devicenotifier,org.kde.kscreen,org.kde.plasma.notifications,org.kde.plasma.manage-inputmethod,org.kde.plasma.mediacontroller,org.kde.plasma.brightness,org.kde.plasma.cameraindicator,org.kde.plasma.bluetooth
+knownItems=org.kde.plasma.clipboard,org.kde.plasma.volume,org.kde.plasma.printmanager,org.kde.plasma.networkmanagement,org.kde.plasma.keyboardindicator,org.kde.plasma.battery,org.kde.plasma.keyboardlayout,org.kde.plasma.devicenotifier,org.kde.kscreen,org.kde.plasma.notifications,org.kde.plasma.manage-inputmethod,org.kde.plasma.mediacontroller,org.kde.plasma.brightness,org.kde.plasma.cameraindicator,org.kde.plasma.bluetooth
 
-[Containments][2]
-ItemGeometries-0x0=Applet-86:2176,0,192,352,0;Applet-87:2368,0,192,976,0;
-ItemGeometries-2560x1440=Applet-86:2176,0,192,352,0;Applet-87:2368,0,192,976,0;
-ItemGeometriesHorizontal=Applet-86:2176,0,192,352,0;Applet-87:2368,0,192,976,0;
-activityId=031bb120-ac14-4e7c-9c3f-232ac77202f1
+[Containments][101]
+ItemGeometries-2560x1440=
+ItemGeometriesHorizontal=
+activityId=f16962fe-8fb8-459d-ac55-8ee109611d5f
+formfactor=0
+immutability=1
+lastScreen=0
+location=0
+plugin=org.kde.plasma.folder
+wallpaperplugin=org.kde.image
+
+[Containments][101][Wallpaper][org.kde.image][General]
+Color=0,0,0
+FillMode=1
+Image=/home/redm/git/dotfiles/Pictures/dragon11-supinten.jpg
+SlidePaths=/nix/store/kls40zsrq9dd74innawflbf4ja7ba857-breeze-6.0.5/share/wallpapers/,/run/current-system/sw/share/wallpapers/
+
+[Containments][102]
+ItemGeometries-2560x1440=Applet-105:2176,0,192,352,0;Applet-104:2368,0,192,992,0;
+ItemGeometriesHorizontal=Applet-105:2176,0,192,352,0;Applet-104:2368,0,192,992,0;
+activityId=f16962fe-8fb8-459d-ac55-8ee109611d5f
 formfactor=0
 immutability=1
 lastScreen=1
@@ -181,73 +174,27 @@ location=0
 plugin=org.kde.plasma.folder
 wallpaperplugin=org.kde.image
 
-[Containments][2][Applets][86]
+[Containments][102][Applets][104]
 immutability=1
 plugin=org.kde.plasma.systemmonitor
 
-[Containments][2][Applets][86][Configuration]
+[Containments][102][Applets][104][Configuration]
 CurrentPreset=org.kde.plasma.systemmonitor
 UserBackgroundHints=ShadowBackground
 
-[Containments][2][Applets][86][Configuration][Appearance]
+[Containments][102][Applets][104][Configuration][Appearance]
 chartFace=org.kde.ksysguard.linechart
 showTitle=false
+title=
 updateRateLimit=500
 
-[Containments][2][Applets][86][Configuration][ConfigDialog]
-DialogHeight=540
-DialogWidth=720
+[Containments][102][Applets][104][Configuration][ConfigDialog]
+DialogHeight=1073
+DialogWidth=1747
 
-[Containments][2][Applets][86][Configuration][SensorColors]
-gpu/gpu0/name=237,66,0
-gpu/gpu0/power1=0,237,115
-gpu/gpu0/temp2=237,235,0
-gpu/gpu0/temp3=82,237,0
-gpu/gpu0/temperature=57,0,237
-gpu/gpu0/usage=237,154,0
-gpu/gpu0/usedVram=13,0,237
-
-[Containments][2][Applets][86][Configuration][SensorLabels]
-gpu/gpu0/coreFrequency=GPU Freq
-gpu/gpu0/memoryFrequency=VRAM Freq
-gpu/gpu0/temp2=GPU Junct Temp
-gpu/gpu0/temp3=VRAM Temp
-gpu/gpu0/temperature=GPUCore Temp
-gpu/gpu0/totalVram=Total VRAM
-gpu/gpu0/usage=GPUCore Usage
-gpu/gpu0/usedVram=VRAM Used
-
-[Containments][2][Applets][86][Configuration][Sensors]
-highPrioritySensorIds=["gpu/gpu0/name","gpu/gpu0/usage","gpu/gpu0/temp2","gpu/gpu0/temperature","gpu/gpu0/temp3","gpu/gpu0/power1"]
-lowPrioritySensorIds=["gpu/gpu0/coreFrequency","gpu/gpu0/memoryFrequency","gpu/gpu0/usedVram","gpu/gpu0/totalVram"]
-
-[Containments][2][Applets][86][Configuration][org.kde.ksysguard.barchart][General]
-rangeAuto=false
-
-[Containments][2][Applets][86][Configuration][org.kde.ksysguard.linechart][General]
-rangeAutoY=false
-rangeFromYUnit=607
-rangeToYUnit=607
-
-[Containments][2][Applets][87]
-immutability=1
-plugin=org.kde.plasma.systemmonitor
-
-[Containments][2][Applets][87][Configuration]
-CurrentPreset=org.kde.plasma.systemmonitor
-UserBackgroundHints=ShadowBackground
-
-[Containments][2][Applets][87][Configuration][Appearance]
-chartFace=org.kde.ksysguard.linechart
-showTitle=false
-updateRateLimit=500
-
-[Containments][2][Applets][87][Configuration][ConfigDialog]
-DialogHeight=848
-DialogWidth=995
-
-[Containments][2][Applets][87][Configuration][SensorColors]
-cpu/cpu age=237,0,213
+[Containments][102][Applets][104][Configuration][SensorColors]
+cpu/cpu\requency=237,119,0
+cpu/cpu age=129,237,0
 cpu/cpu0/usage=237,0,0
 cpu/cpu1/usage=237,44,0
 cpu/cpu10/usage=30,237,0
@@ -280,337 +227,79 @@ cpu/cpu6/usage=207,237,0
 cpu/cpu7/usage=163,237,0
 cpu/cpu8/usage=119,237,0
 cpu/cpu9/usage=74,237,0
-memory/physical/usedPercent=237,218,0
 
-[Containments][2][Applets][87][Configuration][SensorLabels]
-cpu/all/averageFrequency=Avg CPU Freq
-cpu/all/averageTemperature=Avg CPU Temp
-cpu/cpu0/usage=Core 1
-cpu/cpu1/usage=Core 2
-cpu/cpu10/usage=Core 11
-cpu/cpu11/usage=Core 12
-cpu/cpu12/usage=Core 13
-cpu/cpu13/usage=Core 14
-cpu/cpu14/usage=Core 15
-cpu/cpu15/usage=Core 16
-cpu/cpu16/usage=Core 17
-cpu/cpu17/usage=Core 18
-cpu/cpu18/usage=Core 19
-cpu/cpu19/usage=Core 20
-cpu/cpu2/usage=Core 3
-cpu/cpu20/usage=Core 21
-cpu/cpu21/usage=Core 22
-cpu/cpu22/usage=Core 23
-cpu/cpu23/usage=Core 24
-cpu/cpu24/usage=Core 25
-cpu/cpu25/usage=Core 26
-cpu/cpu26/usage=Core 27
-cpu/cpu27/usage=Core 28
-cpu/cpu28/usage=Core 29
-cpu/cpu29/usage=Core 30
-cpu/cpu3/usage=Core 4
-cpu/cpu30/usage=Core 31
-cpu/cpu31/usage=Core 32
-cpu/cpu4/usage=Core 5
-cpu/cpu5/usage=Core 6
-cpu/cpu6/usage=Core 7
-cpu/cpu7/usage=Core 8
-cpu/cpu8/usage=Core 9
-cpu/cpu9/usage=Core 10
-memory/physical/total=Total RAM
-memory/physical/usedPercent=Used RAM
+[Containments][102][Applets][104][Configuration][Sensors]
+highPrioritySensorIds=["cpu/cpu\\\\d+/usage"]
+lowPrioritySensorIds=["cpu/all/usage","memory/physical/usedPercent","memory/physical/total","cpu/all/averageFrequency","cpu/all/maximumTemperature","cpu/all/averageTemperature","os/kernel/version"]
 
-[Containments][2][Applets][87][Configuration][Sensors]
-highPrioritySensorIds=["memory/physical/usedPercent","cpu/cpu0/usage","cpu/cpu1/usage","cpu/cpu2/usage","cpu/cpu3/usage","cpu/cpu4/usage","cpu/cpu5/usage","cpu/cpu6/usage","cpu/cpu7/usage","cpu/cpu8/usage","cpu/cpu9/usage","cpu/cpu10/usage","cpu/cpu11/usage","cpu/cpu12/usage","cpu/cpu13/usage","cpu/cpu14/usage","cpu/cpu15/usage","cpu/cpu16/usage","cpu/cpu17/usage","cpu/cpu18/usage","cpu/cpu19/usage","cpu/cpu20/usage","cpu/cpu21/usage","cpu/cpu22/usage","cpu/cpu23/usage","cpu/cpu24/usage","cpu/cpu25/usage","cpu/cpu26/usage","cpu/cpu27/usage","cpu/cpu28/usage","cpu/cpu29/usage","cpu/cpu30/usage","cpu/cpu31/usage"]
-lowPrioritySensorIds=["cpu/all/averageTemperature","cpu/all/averageFrequency","cpu/all/usage","memory/physical/total","os/kernel/version"]
+[Containments][102][Applets][104][Configuration][org.kde.ksysguard.linechart][General]
+lineChartFillOpacity=5
+lineChartSmooth=false
+rangeAutoY=false
 
-[Containments][2][Applets][91][Configuration]
+[Containments][102][Applets][105]
+immutability=1
+plugin=org.kde.plasma.systemmonitor
+
+[Containments][102][Applets][105][Configuration]
 CurrentPreset=org.kde.plasma.systemmonitor
 UserBackgroundHints=ShadowBackground
 
-[Containments][2][Applets][91][Configuration][Appearance]
-chartFace=org.kde.ksysguard.facegrid
+[Containments][102][Applets][105][Configuration][Appearance]
+chartFace=org.kde.ksysguard.linechart
 showTitle=false
 title=
 updateRateLimit=500
 
-[Containments][2][Applets][91][Configuration][ConfigDialog]
+[Containments][102][Applets][105][Configuration][ConfigDialog]
 DialogHeight=540
 DialogWidth=720
 
-[Containments][2][Applets][91][Configuration][SensorColors]
-gpu/all/totalVram=237,168,0
-gpu/all/usage=237,0,171
-gpu/all/usedVram=195,237,0
-gpu/gpu0/coreFrequency=0,237,83
-gpu/gpu0/memoryFrequency=35,237,0
-gpu/gpu0/name=237,107,0
-gpu/gpu0/power=237,116,0
-gpu/gpu0/temp3=237,0,16
-gpu/gpu0/temperature=164,237,0
-gpu/gpu0/totalVram=237,101,0
-gpu/gpu0/usage=237,213,0
-gpu/gpu0/usedVram=237,137,0
+[Containments][102][Applets][105][Configuration][SensorColors]
+gpu/gpu1/coreFrequency=237,83,0
+gpu/gpu1/memoryFrequency=237,0,93
+gpu/gpu1/power1=237,0,172
+gpu/gpu1/temp2=28,0,237
+gpu/gpu1/temp3=237,231,0
+gpu/gpu1/temperature=106,237,0
+gpu/gpu1/totalVram=209,0,237
+gpu/gpu1/usage=172,237,0
+gpu/gpu1/usedVram=0,237,145
 
-[Containments][2][Applets][91][Configuration][Sensors]
-highPrioritySensorIds=["gpu/gpu0/name","gpu/gpu0/usage","gpu/gpu0/coreFrequency","gpu/gpu0/memoryFrequency","gpu/gpu0/temperature","gpu/gpu0/temp3","gpu/gpu0/usedVram","gpu/gpu0/totalVram"]
+[Containments][102][Applets][105][Configuration][Sensors]
+highPrioritySensorIds=["gpu/gpu1/usage","gpu/gpu1/power1","gpu/gpu1/temp2","gpu/gpu1/temp3","gpu/gpu1/temperature"]
+lowPrioritySensorIds=["gpu/gpu1/usedVram","gpu/gpu1/totalVram","gpu/gpu1/memoryFrequency","gpu/gpu1/coreFrequency","gpu/gpu1/name"]
 
-[Containments][2][Applets][93][Configuration]
-CurrentPreset=org.kde.plasma.systemmonitor
-UserBackgroundHints=ShadowBackground
-
-[Containments][2][Applets][93][Configuration][Appearance]
-chartFace=org.kde.ksysguard.linechart
-showTitle=true
-updateRateLimit=500
-
-[Containments][2][Applets][93][Configuration][ConfigDialog]
-DialogHeight=840
-DialogWidth=1286
-
-[Containments][2][Applets][93][Configuration][FaceGrid][Appearance]
-chartFace=org.kde.ksysguard.linechart
-showTitle=false
-
-[Containments][2][Applets][93][Configuration][FaceGrid][SensorColors]
-cpu/all/averageFrequency=237,0,4
-cpu/all/averageTemperature=0,78,237
-cpu/all/name=0,96,237
-cpu/all/usage=237,111,0
-cpu/cpu\name=0,237,6
-cpu/cpu\requency=237,134,0
-cpu/cpu age=0,237,46
-cpu/cpu0/frequency=0,237,237
-cpu/cpu0/name=119,237,0
-cpu/cpu0/usage=237,122,0
-cpu/cpu1/frequency=0,215,237
-cpu/cpu1/name=237,44,0
-cpu/cpu1/usage=237,163,0
-cpu/cpu10/frequency=0,15,237
-cpu/cpu10/name=0,237,193
-cpu/cpu10/usage=0,237,54
-cpu/cpu11/frequency=7,0,237
-cpu/cpu11/name=7,237,0
-cpu/cpu11/usage=0,237,95
-cpu/cpu12/frequency=30,0,237
-cpu/cpu12/name=163,237,0
-cpu/cpu12/usage=0,237,135
-cpu/cpu13/frequency=52,0,237
-cpu/cpu13/name=237,22,0
-cpu/cpu13/usage=0,237,176
-cpu/cpu14/frequency=74,0,237
-cpu/cpu14/name=0,237,15
-cpu/cpu14/usage=0,237,217
-cpu/cpu15/frequency=96,0,237
-cpu/cpu15/name=0,237,148
-cpu/cpu15/usage=0,217,237
-cpu/cpu16/frequency=119,0,237
-cpu/cpu16/name=237,200,0
-cpu/cpu16/usage=0,176,237
-cpu/cpu17/frequency=141,0,237
-cpu/cpu17/name=30,237,0
-cpu/cpu17/usage=0,135,237
-cpu/cpu18/frequency=163,0,237
-cpu/cpu18/name=237,111,0
-cpu/cpu18/usage=0,95,237
-cpu/cpu19/frequency=185,0,237
-cpu/cpu19/name=0,237,104
-cpu/cpu19/usage=0,54,237
-cpu/cpu2/frequency=0,193,237
-cpu/cpu2/name=141,237,0
-cpu/cpu2/usage=237,203,0
-cpu/cpu20/frequency=207,0,237
-cpu/cpu20/name=52,237,0
-cpu/cpu20/usage=0,14,237
-cpu/cpu21/frequency=230,0,237
-cpu/cpu21/name=237,222,0
-cpu/cpu21/usage=27,0,237
-cpu/cpu22/frequency=237,0,222
-cpu/cpu22/name=0,237,37
-cpu/cpu22/usage=68,0,237
-cpu/cpu23/frequency=237,0,200
-cpu/cpu23/name=96,237,0
-cpu/cpu23/usage=108,0,237
-cpu/cpu24/frequency=237,0,178
-cpu/cpu24/name=237,89,0
-cpu/cpu24/usage=149,0,237
-cpu/cpu25/frequency=237,0,156
-cpu/cpu25/name=237,67,0
-cpu/cpu25/usage=190,0,237
-cpu/cpu26/frequency=237,0,133
-cpu/cpu26/name=237,156,0
-cpu/cpu26/usage=230,0,237
-cpu/cpu27/frequency=237,0,111
-cpu/cpu27/name=185,237,0
-cpu/cpu27/usage=237,0,203
-cpu/cpu28/frequency=237,0,89
-cpu/cpu28/name=0,237,170
-cpu/cpu28/usage=237,0,163
-cpu/cpu29/frequency=237,0,67
-cpu/cpu29/name=0,237,59
-cpu/cpu29/usage=237,0,122
-cpu/cpu3/frequency=0,170,237
-cpu/cpu3/name=237,133,0
-cpu/cpu3/usage=230,237,0
-cpu/cpu30/frequency=237,0,44
-cpu/cpu30/name=0,237,81
-cpu/cpu30/usage=237,0,81
-cpu/cpu31/frequency=237,0,22
-cpu/cpu31/name=237,178,0
-cpu/cpu31/usage=237,0,41
-cpu/cpu4/frequency=0,148,237
-cpu/cpu4/name=0,237,126
-cpu/cpu4/usage=190,237,0
-cpu/cpu5/frequency=0,126,237
-cpu/cpu5/name=0,237,215
-cpu/cpu5/usage=149,237,0
-cpu/cpu6/frequency=0,104,237
-cpu/cpu6/name=230,237,0
-cpu/cpu6/usage=108,237,0
-cpu/cpu7/frequency=0,81,237
-cpu/cpu7/name=74,237,0
-cpu/cpu7/usage=68,237,0
-cpu/cpu8/frequency=0,59,237
-cpu/cpu8/name=207,237,0
-cpu/cpu8/usage=27,237,0
-cpu/cpu9/frequency=0,37,237
-cpu/cpu9/name=237,0,0
-cpu/cpu9/usage=0,237,14
-memory/physical/total=237,149,0
-memory/physical/usedPercent=0,144,237
-
-[Containments][2][Applets][93][Configuration][FaceGrid][Sensors]
-highPrioritySensorIds=["cpu/cpu31/usage"]
-
-[Containments][2][Applets][93][Configuration][SensorColors]
-cpu/all/averageFrequency=237,0,4
-cpu/all/averageTemperature=0,78,237
-cpu/all/name=0,96,237
-cpu/all/usage=237,111,0
-cpu/cpu\name=0,237,6
-cpu/cpu\requency=237,134,0
-cpu/cpu age=0,237,46
-cpu/cpu0/frequency=0,237,237
-cpu/cpu0/name=119,237,0
-cpu/cpu0/usage=237,122,0
-cpu/cpu1/frequency=0,215,237
-cpu/cpu1/name=237,44,0
-cpu/cpu1/usage=237,163,0
-cpu/cpu10/frequency=0,15,237
-cpu/cpu10/name=0,237,193
-cpu/cpu10/usage=0,237,54
-cpu/cpu11/frequency=7,0,237
-cpu/cpu11/name=7,237,0
-cpu/cpu11/usage=0,237,95
-cpu/cpu12/frequency=30,0,237
-cpu/cpu12/name=163,237,0
-cpu/cpu12/usage=0,237,135
-cpu/cpu13/frequency=52,0,237
-cpu/cpu13/name=237,22,0
-cpu/cpu13/usage=0,237,176
-cpu/cpu14/frequency=74,0,237
-cpu/cpu14/name=0,237,15
-cpu/cpu14/usage=0,237,217
-cpu/cpu15/frequency=96,0,237
-cpu/cpu15/name=0,237,148
-cpu/cpu15/usage=0,217,237
-cpu/cpu16/frequency=119,0,237
-cpu/cpu16/name=237,200,0
-cpu/cpu16/usage=0,176,237
-cpu/cpu17/frequency=141,0,237
-cpu/cpu17/name=30,237,0
-cpu/cpu17/usage=0,135,237
-cpu/cpu18/frequency=163,0,237
-cpu/cpu18/name=237,111,0
-cpu/cpu18/usage=0,95,237
-cpu/cpu19/frequency=185,0,237
-cpu/cpu19/name=0,237,104
-cpu/cpu19/usage=0,54,237
-cpu/cpu2/frequency=0,193,237
-cpu/cpu2/name=141,237,0
-cpu/cpu2/usage=237,203,0
-cpu/cpu20/frequency=207,0,237
-cpu/cpu20/name=52,237,0
-cpu/cpu20/usage=0,14,237
-cpu/cpu21/frequency=230,0,237
-cpu/cpu21/name=237,222,0
-cpu/cpu21/usage=27,0,237
-cpu/cpu22/frequency=237,0,222
-cpu/cpu22/name=0,237,37
-cpu/cpu22/usage=68,0,237
-cpu/cpu23/frequency=237,0,200
-cpu/cpu23/name=96,237,0
-cpu/cpu23/usage=108,0,237
-cpu/cpu24/frequency=237,0,178
-cpu/cpu24/name=237,89,0
-cpu/cpu24/usage=149,0,237
-cpu/cpu25/frequency=237,0,156
-cpu/cpu25/name=237,67,0
-cpu/cpu25/usage=190,0,237
-cpu/cpu26/frequency=237,0,133
-cpu/cpu26/name=237,156,0
-cpu/cpu26/usage=230,0,237
-cpu/cpu27/frequency=237,0,111
-cpu/cpu27/name=185,237,0
-cpu/cpu27/usage=237,0,203
-cpu/cpu28/frequency=237,0,89
-cpu/cpu28/name=0,237,170
-cpu/cpu28/usage=237,0,163
-cpu/cpu29/frequency=237,0,67
-cpu/cpu29/name=0,237,59
-cpu/cpu29/usage=237,0,122
-cpu/cpu3/frequency=0,170,237
-cpu/cpu3/name=237,133,0
-cpu/cpu3/usage=230,237,0
-cpu/cpu30/frequency=237,0,44
-cpu/cpu30/name=0,237,81
-cpu/cpu30/usage=237,0,81
-cpu/cpu31/frequency=237,0,22
-cpu/cpu31/name=237,178,0
-cpu/cpu31/usage=237,0,41
-cpu/cpu4/frequency=0,148,237
-cpu/cpu4/name=0,237,126
-cpu/cpu4/usage=190,237,0
-cpu/cpu5/frequency=0,126,237
-cpu/cpu5/name=0,237,215
-cpu/cpu5/usage=149,237,0
-cpu/cpu6/frequency=0,104,237
-cpu/cpu6/name=230,237,0
-cpu/cpu6/usage=108,237,0
-cpu/cpu7/frequency=0,81,237
-cpu/cpu7/name=74,237,0
-cpu/cpu7/usage=68,237,0
-cpu/cpu8/frequency=0,59,237
-cpu/cpu8/name=207,237,0
-cpu/cpu8/usage=27,237,0
-cpu/cpu9/frequency=0,37,237
-cpu/cpu9/name=237,0,0
-cpu/cpu9/usage=0,237,14
-memory/physical/total=237,149,0
-memory/physical/usedPercent=0,144,237
-
-[Containments][2][Applets][93][Configuration][Sensors]
-highPrioritySensorIds=["cpu/cpu0/usage","cpu/cpu1/usage","cpu/cpu2/usage","cpu/cpu3/usage","cpu/cpu4/usage","cpu/cpu5/usage","cpu/cpu6/usage","cpu/cpu7/usage","cpu/cpu8/usage","cpu/cpu9/usage","cpu/cpu10/usage","cpu/cpu11/usage","cpu/cpu12/usage","cpu/cpu13/usage","cpu/cpu14/usage","cpu/cpu15/usage","cpu/cpu16/usage","cpu/cpu17/usage","cpu/cpu18/usage","cpu/cpu19/usage","cpu/cpu20/usage","cpu/cpu21/usage","cpu/cpu22/usage","cpu/cpu23/usage","cpu/cpu24/usage","cpu/cpu25/usage","cpu/cpu26/usage","cpu/cpu27/usage","cpu/cpu28/usage","cpu/cpu29/usage","cpu/cpu30/usage","cpu/cpu31/usage"]
-lowPrioritySensorIds=["cpu/all/usage","cpu/all/averageFrequency","cpu/all/averageTemperature","memory/physical/usedPercent","memory/physical/total"]
-
-[Containments][2][Applets][93][Configuration][org.kde.ksysguard.linechart][General]
+[Containments][102][Applets][105][Configuration][org.kde.ksysguard.linechart][General]
+lineChartFillOpacity=5
+lineChartSmooth=false
 rangeAutoY=false
-rangeFromYUnit=607
-rangeToYUnit=607
 
-[Containments][2][ConfigDialog]
-DialogHeight=540
-DialogWidth=720
-
-[Containments][2][General]
+[Containments][102][General]
 ToolBoxButtonState=topcenter
-ToolBoxButtonX=775
+ToolBoxButtonX=716
 ToolBoxButtonY=40
 
-[Containments][2][Wallpaper][org.kde.image][General]
+[Containments][102][Wallpaper][org.kde.image][General]
+Color=0,0,0
 FillMode=1
-Image=/home/redm/git/dotfiles/Pictures/dragon11-supinten.jpg
-SlidePaths=/usr/share/wallpapers/
+Image=/home/redm/git/dotfiles/Pictures/1440-lock.png
+SlidePaths=/nix/store/kls40zsrq9dd74innawflbf4ja7ba857-breeze-6.0.5/share/wallpapers/,/run/current-system/sw/share/wallpapers/
+
+[Containments][103]
+activityId=f16962fe-8fb8-459d-ac55-8ee109611d5f
+formfactor=0
+immutability=1
+lastScreen=2
+location=0
+plugin=org.kde.plasma.folder
+wallpaperplugin=org.kde.image
+
+[Containments][103][Wallpaper][org.kde.image][General]
+Color=0,0,0
+FillMode=1
+Image=/home/redm/git/dotfiles/Pictures/BnWM8x6.jpg
+SlidePaths=/nix/store/kls40zsrq9dd74innawflbf4ja7ba857-breeze-6.0.5/share/wallpapers/,/run/current-system/sw/share/wallpapers/
 
 [Containments][28]
 activityId=
@@ -650,8 +339,8 @@ plugin=org.kde.plasma.kicker
 
 [Containments][28][Applets][52][Configuration]
 PreloadWeight=100
-popupHeight=514
-popupWidth=647
+popupHeight=613
+popupWidth=300
 
 [Containments][28][Applets][52][Configuration][ConfigDialog]
 DialogHeight=540
@@ -675,7 +364,11 @@ popupWidth=810
 dateDisplayFormat=BelowTime
 dateFormat=isoDate
 enabledCalendarPlugins=/usr/lib/x86_64-linux-gnu/qt5/plugins/plasmacalendarplugins/holidaysevents.so
-showSeconds=true
+fontFamily=CozetteVector NFM
+fontSize=9
+fontStyleName=Regular
+fontWeight=400
+showSeconds=Always
 
 [Containments][28][Applets][53][Configuration][ConfigDialog]
 DialogHeight=540
@@ -687,29 +380,6 @@ DialogWidth=2560
 
 [Containments][28][General]
 AppletOrder=52;30;31;32;53
-
-[Containments][3]
-ItemGeometries-2560x1440=
-ItemGeometriesHorizontal=
-activityId=031bb120-ac14-4e7c-9c3f-232ac77202f1
-formfactor=0
-immutability=1
-lastScreen=2
-location=0
-plugin=org.kde.plasma.folder
-wallpaperplugin=org.kde.image
-
-[Containments][3][ConfigDialog]
-DialogHeight=540
-DialogWidth=720
-
-[Containments][3][General]
-ToolBoxButtonState=topcenter
-ToolBoxButtonX=775
-
-[Containments][3][Wallpaper][org.kde.image][General]
-Image=/home/redm/Pictures/BnWM8x6.jpg
-SlidePaths=/usr/share/wallpapers/
 
 [Containments][33]
 activityId=
@@ -737,7 +407,6 @@ plugin=org.kde.plasma.volume
 PreloadWeight=100
 
 [Containments][33][Applets][35][Configuration][General]
-currentTab=streams
 migrated=true
 showVirtualDevices=true
 
@@ -752,6 +421,9 @@ plugin=org.kde.plasma.keyboardindicator
 [Containments][33][Applets][38]
 immutability=1
 plugin=org.kde.plasma.keyboardlayout
+
+[Containments][33][Applets][38][Configuration]
+PreloadWeight=55
 
 [Containments][33][Applets][39]
 immutability=1
@@ -805,7 +477,7 @@ immutability=1
 plugin=org.kde.plasma.networkmanagement
 
 [Containments][33][Applets][47][Configuration]
-PreloadWeight=100
+PreloadWeight=73
 
 [Containments][33][Applets][48]
 immutability=1
@@ -823,19 +495,26 @@ PreloadWeight=0
 
 [Containments][33][Applets][88]
 immutability=1
-plugin=org.kde.plasma.gamemode
+plugin=org.kde.plasma.cameraindicator
 
 [Containments][33][Applets][88][Configuration]
 PreloadWeight=95
+
+[Containments][33][Applets][94]
+immutability=1
+plugin=org.kde.plasma.brightness
+
+[Containments][33][Applets][94][Configuration]
+PreloadWeight=2
 
 [Containments][33][ConfigDialog]
 DialogHeight=540
 DialogWidth=720
 
 [Containments][33][General]
-extraItems=org.kde.plasma.clipboard,org.kde.plasma.volume,org.kde.plasma.printmanager,org.kde.plasma.networkmanagement,org.kde.plasma.keyboardindicator,org.kde.plasma.bluetooth,org.kde.plasma.battery,org.kde.plasma.keyboardlayout,org.kde.kdeconnect,org.kde.plasma.vault,org.kde.kupapplet,org.kde.plasma.devicenotifier,org.kde.kscreen,org.kde.plasma.nightcolorcontrol,org.kde.plasma.notifications,org.kde.plasma.manage-inputmethod,org.kde.plasma.mediacontroller,org.kde.plasma.gamemode
+extraItems=org.kde.plasma.clipboard,org.kde.plasma.volume,org.kde.plasma.printmanager,org.kde.plasma.networkmanagement,org.kde.plasma.keyboardindicator,org.kde.plasma.battery,org.kde.plasma.keyboardlayout,org.kde.plasma.devicenotifier,org.kde.kscreen,org.kde.plasma.notifications,org.kde.plasma.manage-inputmethod,org.kde.plasma.mediacontroller,org.kde.plasma.brightness,org.kde.plasma.cameraindicator,org.kde.plasma.bluetooth
 iconSpacing=1
-knownItems=org.kde.plasma.clipboard,org.kde.plasma.volume,org.kde.plasma.printmanager,org.kde.plasma.networkmanagement,org.kde.plasma.keyboardindicator,org.kde.plasma.bluetooth,org.kde.plasma.battery,org.kde.plasma.keyboardlayout,org.kde.kdeconnect,org.kde.plasma.vault,org.kde.kupapplet,org.kde.plasma.devicenotifier,org.kde.kscreen,org.kde.plasma.nightcolorcontrol,org.kde.plasma.notifications,org.kde.plasma.manage-inputmethod,org.kde.plasma.mediacontroller,org.kde.plasma.gamemode
+knownItems=org.kde.plasma.clipboard,org.kde.plasma.volume,org.kde.plasma.printmanager,org.kde.plasma.networkmanagement,org.kde.plasma.keyboardindicator,org.kde.plasma.battery,org.kde.plasma.keyboardlayout,org.kde.plasma.devicenotifier,org.kde.kscreen,org.kde.plasma.notifications,org.kde.plasma.manage-inputmethod,org.kde.plasma.mediacontroller,org.kde.plasma.brightness,org.kde.plasma.cameraindicator,org.kde.plasma.bluetooth
 scaleIconsToFit=true
 
 [Containments][50]
@@ -914,7 +593,7 @@ popupHeight=450
 popupWidth=396
 
 [Containments][59][Applets][60][Configuration][Appearance]
-showSeconds=true
+showSeconds=Always
 
 [Containments][59][Applets][60][Configuration][ConfigDialog]
 DialogHeight=540
@@ -938,6 +617,8 @@ plugin=org.kde.plasma.kicker
 
 [Containments][59][Applets][80][Configuration]
 PreloadWeight=100
+popupHeight=613
+popupWidth=300
 
 [Containments][59][Applets][80][Configuration][ConfigDialog]
 DialogHeight=540
@@ -1069,6 +750,9 @@ plugin=org.kde.plasma.keyboardindicator
 immutability=1
 plugin=org.kde.plasma.keyboardlayout
 
+[Containments][63][Applets][68][Configuration]
+PreloadWeight=55
+
 [Containments][63][Applets][69]
 immutability=1
 plugin=org.kde.kdeconnect
@@ -1111,7 +795,7 @@ immutability=1
 plugin=org.kde.plasma.networkmanagement
 
 [Containments][63][Applets][75][Configuration]
-PreloadWeight=60
+PreloadWeight=28
 
 [Containments][63][Applets][76]
 immutability=1
@@ -1143,19 +827,26 @@ PreloadWeight=0
 
 [Containments][63][Applets][89]
 immutability=1
-plugin=org.kde.plasma.gamemode
+plugin=org.kde.plasma.cameraindicator
 
 [Containments][63][Applets][89][Configuration]
 PreloadWeight=60
+
+[Containments][63][Applets][95]
+immutability=1
+plugin=org.kde.plasma.brightness
+
+[Containments][63][Applets][95][Configuration]
+PreloadWeight=2
 
 [Containments][63][ConfigDialog]
 DialogHeight=540
 DialogWidth=720
 
 [Containments][63][General]
-extraItems=org.kde.plasma.clipboard,org.kde.plasma.volume,org.kde.plasma.printmanager,org.kde.plasma.networkmanagement,org.kde.plasma.keyboardindicator,org.kde.plasma.bluetooth,org.kde.plasma.battery,org.kde.plasma.keyboardlayout,org.kde.kdeconnect,org.kde.plasma.vault,org.kde.kupapplet,org.kde.plasma.devicenotifier,org.kde.kscreen,org.kde.plasma.nightcolorcontrol,org.kde.plasma.notifications,org.kde.plasma.manage-inputmethod,org.kde.plasma.mediacontroller,org.kde.plasma.gamemode
+extraItems=org.kde.plasma.clipboard,org.kde.plasma.volume,org.kde.plasma.printmanager,org.kde.plasma.networkmanagement,org.kde.plasma.keyboardindicator,org.kde.plasma.battery,org.kde.plasma.keyboardlayout,org.kde.plasma.devicenotifier,org.kde.kscreen,org.kde.plasma.notifications,org.kde.plasma.manage-inputmethod,org.kde.plasma.mediacontroller,org.kde.plasma.brightness,org.kde.plasma.cameraindicator,org.kde.plasma.bluetooth
 iconSpacing=1
-knownItems=org.kde.plasma.clipboard,org.kde.plasma.volume,org.kde.plasma.printmanager,org.kde.plasma.networkmanagement,org.kde.plasma.keyboardindicator,org.kde.plasma.bluetooth,org.kde.plasma.battery,org.kde.plasma.keyboardlayout,org.kde.kdeconnect,org.kde.plasma.vault,org.kde.kupapplet,org.kde.plasma.devicenotifier,org.kde.kscreen,org.kde.plasma.nightcolorcontrol,org.kde.plasma.notifications,org.kde.plasma.manage-inputmethod,org.kde.plasma.mediacontroller,org.kde.plasma.gamemode
+knownItems=org.kde.plasma.clipboard,org.kde.plasma.volume,org.kde.plasma.printmanager,org.kde.plasma.networkmanagement,org.kde.plasma.keyboardindicator,org.kde.plasma.battery,org.kde.plasma.keyboardlayout,org.kde.plasma.devicenotifier,org.kde.kscreen,org.kde.plasma.notifications,org.kde.plasma.manage-inputmethod,org.kde.plasma.mediacontroller,org.kde.plasma.brightness,org.kde.plasma.cameraindicator,org.kde.plasma.bluetooth
 
 [ScreenMapping]
 itemsOnDisabledScreens=

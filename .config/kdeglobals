@@ -54,6 +54,34 @@ ForegroundNormal=239,240,241
 ForegroundPositive=17,209,22
 ForegroundVisited=247,0,0
 
+[Colors:Header]
+BackgroundAlternate[$d]
+BackgroundNormal[$d]
+DecorationFocus[$d]
+DecorationHover[$d]
+ForegroundActive[$d]
+ForegroundInactive[$d]
+ForegroundLink[$d]
+ForegroundNegative[$d]
+ForegroundNeutral[$d]
+ForegroundNormal[$d]
+ForegroundPositive[$d]
+ForegroundVisited[$d]
+
+[Colors:Header][Inactive]
+BackgroundAlternate[$d]
+BackgroundNormal[$d]
+DecorationFocus[$d]
+DecorationHover[$d]
+ForegroundActive[$d]
+ForegroundInactive[$d]
+ForegroundLink[$d]
+ForegroundNegative[$d]
+ForegroundNeutral[$d]
+ForegroundNormal[$d]
+ForegroundPositive[$d]
+ForegroundVisited[$d]
+
 [Colors:Selection]
 BackgroundAlternate=218,0,0
 BackgroundNormal=237,0,0
@@ -117,7 +145,8 @@ Size=48
 Size=32
 
 [DirSelect Dialog]
-DirSelectDialog Size=1222,695
+DirSelectDialog Size=1300,780
+History Items[$e]=file:///run/media/redm/cfc11cbc-92d8-4b49-9145-79731ba2cbca/home/redm/.local/share/Steam/steamapps
 
 [Emoticons]
 emoticonsTheme=Konqi
@@ -141,7 +170,7 @@ toolBarFont=Noto Sans,10,-1,5,50,0,0,0,0,0
 widgetStyle=Breeze
 
 [Icons]
-Theme=breeze-dark
+Theme=breeze
 
 [KDE]
 AnimationDurationFactor=0.000000
@@ -164,7 +193,7 @@ Breadcrumb Navigation=false
 Decoration position=2
 LocationCombo Completionmode=5
 PathCombo Completionmode=5
-Preview Width=289
+Preview Width=311
 Show Bookmarks=false
 Show Full Path=false
 Show Inline Previews=false

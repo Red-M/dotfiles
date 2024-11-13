@@ -115,6 +115,7 @@ maintain_path .config/{font*,htop,kdedefaults,mpv,xsettingsd}
 maintain_path .config/{breezerc,kdeglobals,kglobalshortcutsrc,khotkeysrc,konsolerc,kscreenlockerrc,kwinrulesrc,kwinrc,touchpad*}
 
 maintain_path .fonts/*/*.{ttf,ttc}
+maintain_path .local/share/fonts/*.{ttf,ttc}
 
 maintain_path .kde/share/config/breezerc
 maintain_path .kde/share/apps/color-schemes
@@ -143,7 +144,7 @@ maintain_path_optional .config/gtk-*/*
 maintain_path_optional .config/plasma-org.kde.plasma.desktop-appletsrc # This is somewhat optional as it is for widgets on plasma
 
 if [ "${hostname}" == "potato" ]; then
-  maintain_path .config/{pipewire,wireplumber}
+  # maintain_path .config/{pipewire,wireplumber}
   maintain_path .config/OpenRGB
   maintain_path .local/share/cura
 fi
