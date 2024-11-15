@@ -26,15 +26,6 @@
       persistent = true;
     };
 
-    modulesTree = lib.mkForce [(
-      (pkgs.aggregateModules
-        ( config.boot.extraModulePackages ++ [ config.boot.kernelPackages.kernel ])
-      ).overrideAttrs {
-        # earlier items in the list above override the contents of later items
-        ignoreCollisions = true;
-      }
-    )]; # Allows loading out-of-tree modules over the top of mainline modules
-
     activationScripts.report-changes = ''
       PATH=$PATH:${lib.makeBinPath [ pkgs.nvd pkgs.nix ]}
       echo " ---  Changes since boot  ---"
@@ -48,5 +39,11 @@
 
   environment.etc."nixos/hardware-configuration.nix".source = "/home/redm/git/dotfiles/NixOS/hosts/${config.networking.hostName}/hardware-configuration.nix";
 
+  environment.systemPackages = with pkgs; [
+    nvd
+    dconf2nix
+
+    nixos-anywhere
+  ];
 }
 

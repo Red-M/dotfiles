@@ -20,5 +20,60 @@
     magicOrExtension = ''\x7fELF....AI\x02'';
   };
 
+  environment.systemPackages = with pkgs; [
+    alacritty
+    unstable.neovim
+    tmux
+    rsync
+
+    git
+    # bash
+    # bashInteractive
+    bashInteractiveFHS
+    curl
+    bc
+    htop
+    iotop
+    iftop
+    file
+    sysstat
+    complete-alias
+    gnupg
+    unzip
+
+    mise
+    usage
+
+    gnome.gnome-keyring
+    wl-clipboard-x11
+    coreutils-full
+    procps
+    certstrap
+    libva-utils
+    psmisc
+    pciutils
+
+    libgcc
+    clang_multi
+    cmake
+    glib
+    glibc
+    libglibutil
+
+    gparted
+    ntfs3g
+    bindfs
+    ventoy-full
+
+    xwayland
+    dbus
+
+    mono
+
+    python3
+
+    firmware-updater
+  ];
+
 }
 

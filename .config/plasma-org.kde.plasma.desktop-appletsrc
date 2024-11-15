@@ -477,7 +477,7 @@ immutability=1
 plugin=org.kde.plasma.networkmanagement
 
 [Containments][33][Applets][47][Configuration]
-PreloadWeight=73
+PreloadWeight=57
 
 [Containments][33][Applets][48]
 immutability=1
@@ -505,7 +505,7 @@ immutability=1
 plugin=org.kde.plasma.brightness
 
 [Containments][33][Applets][94][Configuration]
-PreloadWeight=2
+PreloadWeight=0
 
 [Containments][33][ConfigDialog]
 DialogHeight=540
@@ -638,6 +638,7 @@ CurrentPreset=org.kde.plasma.systemmonitor
 
 [Containments][59][Applets][82][Configuration][Appearance]
 chartFace=org.kde.ksysguard.barchart
+showTitle=false
 title=Individual Core Usage
 updateRateLimit=500
 
@@ -795,7 +796,7 @@ immutability=1
 plugin=org.kde.plasma.networkmanagement
 
 [Containments][63][Applets][75][Configuration]
-PreloadWeight=28
+PreloadWeight=12
 
 [Containments][63][Applets][76]
 immutability=1
@@ -837,7 +838,7 @@ immutability=1
 plugin=org.kde.plasma.brightness
 
 [Containments][63][Applets][95][Configuration]
-PreloadWeight=2
+PreloadWeight=0
 
 [Containments][63][ConfigDialog]
 DialogHeight=540

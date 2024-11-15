@@ -21,8 +21,46 @@
     variant = "";
   };
 
-xdg.portal.enable = true;
-xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+  # Enable CUPS to print documents.
+  services.printing.enable = true;
+
+  # Enable touchpad support (enabled default in most desktopManager).
+  # services.xserver.libinput.enable = true;
+
+  # Install firefox.
+  programs.firefox.enable = true;
+
+  xdg.portal.enable = true;
+  xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+
+
+  environment.systemPackages = with pkgs; [
+    glxinfo
+
+    # kdePackages
+    kdePackages.kcalc
+    kdePackages.kate
+    kdePackages.sddm-kcm
+
+  ];
+
+  hardware = {
+    bluetooth.enable = true;
+
+    opengl = {
+      ## radv: an open-source Vulkan driver from freedesktop
+      driSupport32Bit = true;
+
+      ## amdvlk: an open-source Vulkan driver from AMD
+      extraPackages = [ unstable.amdvlk ];
+      extraPackages32 = [ unstable.driversi686Linux.amdvlk ];
+    };
+  };
+
+  services = {
+    udisks2.enable = true;
+
+  };
 
 }
 

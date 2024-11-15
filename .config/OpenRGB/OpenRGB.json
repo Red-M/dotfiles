@@ -1923,6 +1923,16 @@
                 "description": "Set Fan curves based on hardware sensors",
                 "enabled": false,
                 "name": "Hardware Fan Sync"
+            },
+            {
+                "description": "Sync colors with hardware measures",
+                "enabled": false,
+                "name": "Hardware Sync"
+            },
+            {
+                "description": "Provides a variety of custom effects",
+                "enabled": false,
+                "name": "OpenRGB Effects Plugin"
             }
         ]
     },

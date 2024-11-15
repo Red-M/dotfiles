@@ -12,5 +12,14 @@
     enable = true;
   };
 
+  environment.systemPackages = with pkgs; [
+    lact
+  ];
+
+  boot = {
+    extraModprobeConfig = ''
+      options amdgpu ppfeaturemask=0xffffffff
+    '';
+  };
 }
 

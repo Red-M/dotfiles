@@ -37,5 +37,10 @@
       winePackages.fonts
     ];
   };
+
+  environment.systemPackages = with pkgs; [
+    fontconfig
+
+  ];
 }
 

@@ -16,5 +16,11 @@
       };
     };
   };
+
+  environment.systemPackages = with pkgs; [
+    os-prober
+    kdePackages.breeze-grub
+  ];
+
 }
 

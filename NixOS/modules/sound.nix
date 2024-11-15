@@ -17,6 +17,17 @@
     extraLv2Packages = [ pkgs.lsp-plugins ];
   };
 
+  environment.systemPackages = with pkgs; [
+    qpwgraph
+    alsa-utils
+    rnnoise-plugin
+    wireplumber
+
+    nvd
+    dconf2nix
+
+  ];
+
   services.pipewire.extraConfig.pipewire = {
     "5-rates" = {
       "context.properties" = {
@@ -81,7 +92,7 @@
           "name" = "libpipewire-module-loopback";
           "args" = {
               "node.name" = "loopback_group_default";
-              "node.description" = "Catch-all";
+  "node.description" = "Catch-all";
               "source_dont_move" = false;
               "remix" = false;
               "stream.dont-remix" = true;

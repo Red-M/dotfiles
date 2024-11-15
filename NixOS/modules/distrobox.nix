@@ -2,11 +2,8 @@
 { config, lib, pkgs, unstable, inputs, ... }:
 
 {
-  services.fprintd.enable = true;
-
   environment.systemPackages = with pkgs; [
-    fprintd
+    distrobox
   ];
-
 }
 
