@@ -17,6 +17,8 @@
     extraLv2Packages = [ pkgs.lsp-plugins ];
   };
 
+  # sound.mediaKeys.enable = true;
+
   environment.systemPackages = with pkgs; [
     qpwgraph
     alsa-utils
@@ -27,6 +29,7 @@
     dconf2nix
 
   ];
+
 
   services.pipewire.extraConfig.pipewire = {
     "5-rates" = {
@@ -55,126 +58,47 @@
         "flags" = [ "ifexists" "nofail" ];
       }];
     };
-    "10-noise-cancel" = {
-        "context.modules" = [{ # https://github.com/werman/noise-suppression-for-voice
+    "20-noise-cancel" = {
+      "context.modules" = [{ # https://github.com/werman/noise-suppression-for-voice
         "name" = "libpipewire-module-filter-chain";
         "args" = {
           "node.description" = "Noise Canceling source";
-            "media.name" = "Noise Canceling source";
-            "filter.graph" = {
-              "nodes" = [{
-                "type" = "ladspa";
-                "name" = "rnnoise";
-                "plugin" = "${pkgs.rnnoise-plugin}/lib/ladspa/librnnoise_ladspa.so";
-                "label" = "noise_suppressor_mono";
-                "control" = {
-                  "VAD Threshold (%)" = 50.0;
-                  "VAD Grace Period (ms)" = 20;
-                  "Retroactive VAD Grace (ms)" = 0;
-                };
-              }];
-            };
+          "media.name" = "Noise Canceling source";
+          "filter.graph" = {
+            "nodes" = [{
+              "type" = "ladspa";
+              "name" = "rnnoise";
+              "plugin" = "${pkgs.rnnoise-plugin}/lib/ladspa/librnnoise_ladspa.so";
+              "label" = "noise_suppressor_stereo";
+              "control" = {
+                "VAD Threshold (%)" = 80.0;
+                "VAD Grace Period (ms)" = 120;
+                "Retroactive VAD Grace (ms)" = 0;
+              };
+            }];
+          };
           "capture.props" = {
-            "node.name" = "capture.rnnoise_source";
+            # "node.name" = "capture.rnnoise_source";
             "node.passive" = true;
             "audio.rate" = 48000;
+            "node.name" = "noise_cancel.cancel";
+            "target.object" = "echo_cancel.echoless";
           };
           "playback.props" = {
             "node.name" = "rnnoise_source";
             "media.class" = "Audio/Source";
             "audio.rate" = 48000;
+            "node.autoconnect" = false;
           };
         };
       }];
     };
-    "10-virtual-groups" = {
-      "context.modules" = [{
-          "name" = "libpipewire-module-loopback";
-          "args" = {
-              "node.name" = "loopback_group_default";
-  "node.description" = "Catch-all";
-              "source_dont_move" = false;
-              "remix" = false;
-              "stream.dont-remix" = true;
-              "node.passive" = true;
-              "capture.props" = {
-                  "device.intended-roles" = "Games";
-                  "media.class" = "Audio/Sink";
-                  "audio.position" = [ "FL" "FR" ];
-              };
-              "playback.props" = {
-                  "audio.position" = [ "FL" "FR" ];
-                  "node.passive" = true;
-                  "node.dont-remix" = true;
-              };
-          };
-      }{
-          "name" = "libpipewire-module-loopback";
-          "args" = {
-              "node.name" = "loopback_group_music";
-              "node.description" = "Music";
-              "source_dont_move" = false;
-              "remix" = false;
-              "stream.dont-remix" = true;
-              "node.passive" = true;
-              "capture.props" = {
-                  "device.intended-roles" = "Music";
-                  "media.class" = "Audio/Sink";
-                  "audio.position" = [ "FL" "FR" ];
-              };
-              "playback.props" = {
-                  "audio.position" = [ "FL" "FR" ];
-                  "node.passive" = true;
-                  "node.dont-remix" = true;
-              };
-          };
-      }{
-          "name" = "libpipewire-module-loopback";
-          "args" = {
-              "node.name" = "loopback_group_voice";
-              "node.description" = "Voice";
-              "source_dont_move" = false;
-              "remix" = false;
-              "stream.dont-remix" = true;
-              "node.passive" = true;
-              "capture.props" = {
-                  "device.intended-roles" = "Communication";
-                  "media.class" = "Audio/Sink";
-                  "audio.position" = [ "FL" "FR" ];
-              };
-              "playback.props" = {
-                  "audio.position" = [ "FL" "FR" ];
-                  "node.passive" = true;
-                  "node.dont-remix" = true;
-              };
-          };
-      }{
-          "name" = "libpipewire-module-loopback";
-          "args" = {
-              "node.name" = "loopback_group_low_prio_games";
-              "node.description" = "Low Priority";
-              "source_dont_move" = false;
-              "remix" = false;
-              "stream.dont-remix" = true;
-              "node.passive" = true;
-              "capture.props" = {
-                  "media.class" = "Audio/Sink";
-                  "audio.position" = [ "FL" "FR" ];
-              };
-              "playback.props" = {
-                  "audio.position" = [ "FL" "FR" ];
-                  "node.passive" = true;
-                  "node.dont-remix" = true;
-              };
-          };
-      }];
-    };
-    "10-echo-cancel" = {
+    "15-echo-cancel" = {
       "context.modules" = [{
         "name" = "libpipewire-module-echo-cancel";
         "args" = {
           "library.name" = "aec/libspa-aec-webrtc";
-          "monitor.mode" = true;
+          # "monitor.mode" = true;
           "aec.args" = {
             "webrtc.extended_filter" = true;
             "webrtc.delay_agnostic" = true;
@@ -185,40 +109,170 @@
             "webrtc.experimental_agc" = true;
             "webrtc.experimental_ns" = true;
           };
-          "audio.channels" = 1;
-            "source.props" = {
-              "node.name" = "Echo Cancellation Source";
-            };
+          "audio.channels" = 2;
+          "source.props" = {
+            "node.name" = "echo_cancel.echoless";
+            "node.autoconnect" = false;
+          };
           "sink.props" = {
-            "node.name" = "Echo Cancellation Sink";
+            "node.name" = "echo_cancel.sink";
+            "node.autoconnect" = false;
+          };
+          "playback.props" = {
+            "node.autoconnect" = false;
           };
         };
       }];
     };
+    "10-virtual-groups" = {
+      "context.modules" = [{
+        "name" = "libpipewire-module-loopback";
+        "args" = {
+          "node.name" = "loopback_group_default";
+          "node.description" = "Catch-all";
+          "source_dont_move" = false;
+          "remix" = false;
+          "stream.dont-remix" = true;
+          "node.passive" = true;
+          "capture.props" = {
+            "device.intended-roles" = "Games";
+            "media.class" = "Audio/Sink";
+            "audio.position" = [ "FL" "FR" ];
+          };
+          "playback.props" = {
+            "audio.position" = [ "FL" "FR" ];
+            "node.passive" = true;
+            "node.dont-remix" = true;
+          };
+        };
+      }{
+          "name" = "libpipewire-module-loopback";
+          "args" = {
+            "node.name" = "loopback_group_music";
+            "node.description" = "Music";
+            "source_dont_move" = false;
+            "remix" = false;
+            "stream.dont-remix" = true;
+            "node.passive" = true;
+            "capture.props" = {
+              "device.intended-roles" = "Music";
+              "media.class" = "Audio/Sink";
+              "audio.position" = [ "FL" "FR" ];
+            };
+            "playback.props" = {
+              "audio.position" = [ "FL" "FR" ];
+              "node.passive" = true;
+              "node.dont-remix" = true;
+            };
+          };
+        }{
+          "name" = "libpipewire-module-loopback";
+          "args" = {
+            "node.name" = "loopback_group_voice";
+            "node.description" = "Voice";
+            "source_dont_move" = false;
+            "remix" = false;
+            "stream.dont-remix" = true;
+            "node.passive" = true;
+            "capture.props" = {
+              "device.intended-roles" = "Communication";
+              "media.class" = "Audio/Sink";
+              "audio.position" = [ "FL" "FR" ];
+            };
+            "playback.props" = {
+              "audio.position" = [ "FL" "FR" ];
+              "node.passive" = true;
+              "node.dont-remix" = true;
+            };
+          };
+        }{
+          "name" = "libpipewire-module-loopback";
+          "args" = {
+            "node.name" = "loopback_group_low_prio_games";
+            "node.description" = "Low Priority";
+            "source_dont_move" = false;
+            "remix" = false;
+            "stream.dont-remix" = true;
+            "node.passive" = true;
+            "capture.props" = {
+              "media.class" = "Audio/Sink";
+              "audio.position" = [ "FL" "FR" ];
+            };
+            "playback.props" = {
+              "audio.position" = [ "FL" "FR" ];
+              "node.passive" = true;
+              "node.dont-remix" = true;
+            };
+          };
+        }];
+    };
   };
 
   services.pipewire.wireplumber.extraConfig = {
-    "creative-soundcard" = {
-      "alsa_monitor.rules" = [{
-        "matches" = [
+    "10-creative-soundcard" = {
+      "monitor.alsa.rules" = [{
+        matches = [
           { "node.name" = "*output.usb-Creative_Technology_Ltd_Sound_BlasterX_G6*"; }
         ];
-        "apply_properties" = {
-          "audio.rate" = 384000;
-          "alsa.rate" = 384000;
-          "alsa.resolution_bits" = 32;
-          "node.max-latency" = "32768/384000";
-          "audio.format" = "S32LE";
+        actions = {
+          update-props = {
+            "audio.rate" = 384000;
+            "alsa.rate" = 384000;
+            "alsa.resolution_bits" = 32;
+            "node.max-latency" = "32768/384000";
+            "audio.format" = "S32LE";
+          };
         };
       }];
     };
-    "music-soundcard" = {
-      "alsa_monitor.rules" = [{
-        "matches" = [
+    "10-music-soundcard" = {
+      "monitor.alsa.rules" = [{
+        matches = [
           { "node.name" = "*usb-Creative_Technology_Ltd_Sound_BlasterX_G6_2C00*"; }
         ];
-        "apply_properties" = {
-          "node.description" = "Music SoundBlasterX G6";
+        actions = {
+          update-props = {
+            "node.description" = "Music SoundBlasterX G6";
+          };
+        };
+      }];
+    };
+    "10-bluez" = {
+      "monitor.bluez.properties" = {
+        "bluez5.enable-sbc-xq" = true;
+        "bluez5.enable-msbc" = true;
+        "bluez5.enable-hw-volume" = true;
+        "bluez5.roles" = [
+          "hsp_hs"
+          "hsp_ag"
+          "hfp_hf"
+          "hfp_ag"
+        ];
+      };
+    };
+
+    "99-discord" = {
+      "monitor.alsa.rules" = [{
+        matches = [
+          { "node.name" = "alsa_output.*"; }
+        ];
+        actions = {
+          update-props = {
+            "session.suspend-timeout-seconds" = 0;
+          };
+        };
+      }];
+    };
+
+    "99-disable-suspend" = {
+      "monitor.alsa.rules" = [{
+        matches = [
+          { "node.name" = "alsa_output.*"; }
+        ];
+        actions = {
+          update-props = {
+            "session.suspend-timeout-seconds" = 0;
+          };
         };
       }];
     };

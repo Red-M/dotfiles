@@ -51,13 +51,13 @@
   };
 
   hardware = {
-    opengl = {
+    graphics = {
       extraPackages = with pkgs; [
         mangohud
         gamescope
         gamemode
       ];
-      extraPackages32 = config.hardware.opengl.extraPackages;
+      extraPackages32 = config.hardware.graphics.extraPackages;
     };
 
     # xone.enable = true;

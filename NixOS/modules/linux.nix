@@ -6,19 +6,40 @@
 
   programs = {
     # This fixes issues with libraries not being found to be more linux compatiable
-    nix-ld = { enable = true; libraries = pkgs.steam-run.fhsenv.args.multiPkgs pkgs; };
+    nix-ld = {
+      enable = true;
+      libraries = with pkgs; [
+        zlib
+        zstd
+        stdenv.cc.cc
+        curl
+        openssl
+        attr
+        libssh
+        bzip2
+        libxml2
+        acl
+        libsodium
+        util-linux
+        xz
+        systemd
+      ] ++ pkgs.steam-run.args.multiPkgs pkgs;
+    };
   };
 
   # Allows running AppImage
   programs.appimage.enable = true;
-  boot.binfmt.registrations.appimage = {
-    wrapInterpreterInShell = false;
-    interpreter = "${pkgs.appimage-run}/bin/appimage-run";
-    recognitionType = "magic";
-    offset = 0;
-    mask = ''\xff\xff\xff\xff\x00\x00\x00\x00\xff\xff\xff'';
-    magicOrExtension = ''\x7fELF....AI\x02'';
-  };
+  programs.appimage.binfmt = true;
+  # boot.binfmt.registrations.appimage = {
+  #   wrapInterpreterInShell = false;
+  #   interpreter = "${pkgs.appimage-run}/bin/appimage-run";
+  #   recognitionType = "magic";
+  #   offset = 0;
+  #   mask = ''\xff\xff\xff\xff\x00\x00\x00\x00\xff\xff\xff'';
+  #   magicOrExtension = ''\x7fELF....AI\x02'';
+  # };
+
+  services.gnome.gnome-keyring.enable = true;
 
   environment.systemPackages = with pkgs; [
     alacritty
@@ -44,7 +65,7 @@
     mise
     usage
 
-    gnome.gnome-keyring
+    # gnome.gnome-keyring
     wl-clipboard-x11
     coreutils-full
     procps
@@ -52,6 +73,7 @@
     libva-utils
     psmisc
     pciutils
+    qdirstat
 
     libgcc
     clang_multi
@@ -59,6 +81,7 @@
     glib
     glibc
     libglibutil
+    libsecret
 
     gparted
     ntfs3g

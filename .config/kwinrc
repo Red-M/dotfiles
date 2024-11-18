@@ -32,6 +32,10 @@ Rows=1
 TabBox=false
 TabBoxAlternative=false
 
+[EdgeBarrier]
+CornerBarrier=false
+EdgeBarrier=20
+
 [Effect-CoverSwitch]
 Reflection=false
 TabBox=true
@@ -116,6 +120,9 @@ tiles={"layoutDirection":"horizontal","tiles":[{"width":0.25},{"width":0.5},{"wi
 [Tiling][2ba57c16-38c4-5da0-871f-7daab867495b]
 tiles={"layoutDirection":"horizontal","tiles":[{"width":0.25},{"width":0.5},{"width":0.25}]}
 
+[Tiling][368d17fc-2180-52fd-b63d-84f445391311]
+tiles={"layoutDirection":"horizontal","tiles":[{"width":0.25},{"width":0.5},{"width":0.25}]}
+
 [Tiling][3e35457c-0842-5bd9-ae58-f89b68bce7d9]
 tiles={"layoutDirection":"horizontal","tiles":[{"width":0.25},{"width":0.5},{"width":0.25}]}
 
@@ -135,6 +142,9 @@ tiles={"layoutDirection":"horizontal","tiles":[{"width":0.25},{"width":0.5},{"wi
 tiles={"layoutDirection":"horizontal","tiles":[{"width":0.25},{"width":0.5},{"width":0.25}]}
 
 [Tiling][63f98cf6-b989-5d18-a416-16f6c44a94aa]
+tiles={"layoutDirection":"horizontal","tiles":[{"width":0.25},{"width":0.5},{"width":0.25}]}
+
+[Tiling][767dc43c-ce0e-5ad2-a352-15a3fc7d810c]
 tiles={"layoutDirection":"horizontal","tiles":[{"width":0.25},{"width":0.5},{"width":0.25}]}
 
 [Tiling][867458d5-5ae7-5a0a-8da6-1a54d255864a]

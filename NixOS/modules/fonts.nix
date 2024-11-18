@@ -23,7 +23,7 @@
       wqy_zenhei
 
       noto-fonts
-      noto-fonts-cjk
+      noto-fonts-cjk-sans
       emojione
       noto-fonts-color-emoji
       openmoji-color

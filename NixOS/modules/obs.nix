@@ -10,7 +10,7 @@
         obs-studio-plugins.obs-backgroundremoval
         obs-studio-plugins.obs-tuna
         obs-studio-plugins.obs-vaapi
-        obs-studio-plugins.obs-ndi
+        # obs-studio-plugins.obs-ndi # broken on 24.11
         obs-studio-plugins.obs-teleport
         obs-studio-plugins.obs-source-clone
         obs-studio-plugins.obs-shaderfilter

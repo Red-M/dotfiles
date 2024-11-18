@@ -7,6 +7,7 @@
     description = "Red_M";
     group = "redm";
     extraGroups = [ "networkmanager" "wheel" "kvm" ];
+    initialPassword = "a"; # Very secure :^)
     packages = with pkgs; [
       unstable.neovim
 

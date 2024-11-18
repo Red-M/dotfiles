@@ -477,14 +477,14 @@ immutability=1
 plugin=org.kde.plasma.networkmanagement
 
 [Containments][33][Applets][47][Configuration]
-PreloadWeight=57
+PreloadWeight=49
 
 [Containments][33][Applets][48]
 immutability=1
 plugin=org.kde.plasma.bluetooth
 
 [Containments][33][Applets][48][Configuration]
-PreloadWeight=0
+PreloadWeight=9
 
 [Containments][33][Applets][55]
 immutability=1
@@ -593,6 +593,7 @@ popupHeight=450
 popupWidth=396
 
 [Containments][59][Applets][60][Configuration][Appearance]
+dateFormat=isoDate
 showSeconds=Always
 
 [Containments][59][Applets][60][Configuration][ConfigDialog]
@@ -796,7 +797,7 @@ immutability=1
 plugin=org.kde.plasma.networkmanagement
 
 [Containments][63][Applets][75][Configuration]
-PreloadWeight=12
+PreloadWeight=4
 
 [Containments][63][Applets][76]
 immutability=1

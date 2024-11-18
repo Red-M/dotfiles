@@ -30,6 +30,7 @@ return {
       "markdown",
       "markdown_inline",
       "ninja",
+      "nix",
       "perl",
       "php",
       "phpdoc",
