@@ -1,12 +1,12 @@
 
-{ config, lib, pkgs, unstable, inputs, ... }:
+{ config, lib, pkgs, nixbeta, unstable, nixmaster, inputs, ... }:
 
 {
   users.users.redm = {
     isNormalUser = true;
     description = "Red_M";
     group = "redm";
-    extraGroups = [ "networkmanager" "wheel" "kvm" ];
+    extraGroups = [ "networkmanager" "wheel" ];
     initialPassword = "a"; # Very secure :^)
     packages = with pkgs; [
       unstable.neovim

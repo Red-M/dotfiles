@@ -1,5 +1,5 @@
 
-{ config, lib, pkgs, unstable, inputs, ... }:
+{ config, lib, pkgs, nixbeta, unstable, nixmaster, inputs, ... }:
 
 {
   programs = {

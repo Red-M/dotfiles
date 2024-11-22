@@ -1,5 +1,5 @@
 
-{ config, lib, pkgs, unstable, inputs, ... }:
+{ config, lib, pkgs, nixbeta, unstable, nixmaster, inputs, ... }:
 
 {
   # Enable sound with pipewire.
@@ -24,10 +24,6 @@
     alsa-utils
     rnnoise-plugin
     wireplumber
-
-    nvd
-    dconf2nix
-
   ];
 
 
@@ -237,19 +233,19 @@
         };
       }];
     };
-    "10-bluez" = {
-      "monitor.bluez.properties" = {
-        "bluez5.enable-sbc-xq" = true;
-        "bluez5.enable-msbc" = true;
-        "bluez5.enable-hw-volume" = true;
-        "bluez5.roles" = [
-          "hsp_hs"
-          "hsp_ag"
-          "hfp_hf"
-          "hfp_ag"
-        ];
-      };
-    };
+    # "10-bluez" = {
+    #   "monitor.bluez.properties" = {
+    #     "bluez5.enable-sbc-xq" = true;
+    #     "bluez5.enable-msbc" = true;
+    #     "bluez5.enable-hw-volume" = true;
+    #     "bluez5.roles" = [
+    #       "hsp_hs"
+    #       "hsp_ag"
+    #       "hfp_hf"
+    #       "hfp_ag"
+    #     ];
+    #   };
+    # };
 
     "99-discord" = {
       "monitor.alsa.rules" = [{

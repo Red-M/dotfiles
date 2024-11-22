@@ -1,5 +1,5 @@
 
-{ config, lib, pkgs, unstable, inputs, ... }:
+{ config, lib, pkgs, nixbeta, unstable, nixmaster, inputs, ... }:
 
 {
   services.envfs.enable = true;
@@ -23,13 +23,27 @@
         util-linux
         xz
         systemd
+        libGL
+        unstable.kdePackages.qtwayland
+        unstable.kdePackages.qt5compat
+        unstable.libsForQt5.qt5.qtwayland
+        gcc-unwrapped.lib
+        wayland
+        xwayland
       ] ++ pkgs.steam-run.args.multiPkgs pkgs;
     };
   };
 
   # Allows running AppImage
-  programs.appimage.enable = true;
-  programs.appimage.binfmt = true;
+  programs.appimage = {
+    enable = true;
+    binfmt = true;
+    # package = pkgs.appimage-run.override {
+    #   extraPkgs = pkgs: [
+    #     pkgs.libGL
+    #   ];
+    # };
+  };
   # boot.binfmt.registrations.appimage = {
   #   wrapInterpreterInShell = false;
   #   interpreter = "${pkgs.appimage-run}/bin/appimage-run";
@@ -65,6 +79,7 @@
     mise
     usage
 
+    pkg-config
     # gnome.gnome-keyring
     wl-clipboard-x11
     coreutils-full
@@ -89,6 +104,7 @@
     ventoy-full
 
     xwayland
+    libsForQt5.qt5.qtwayland
     dbus
 
     mono

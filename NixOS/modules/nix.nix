@@ -1,5 +1,5 @@
 
-{ config, lib, pkgs, unstable, inputs, ... }:
+{ config, lib, pkgs, nixbeta, unstable, nixmaster, inputs, ... }:
 
 {
   # Allow unfree packages
@@ -13,12 +13,19 @@
       auto-optimise-store = true;
       keep-outputs = true;
       keep-derivations = true;
+      # Enable flakes and 'nix' command
+      experimental-features = ["nix-command" "flakes"];
     };
     gc = {
       automatic = true;
       dates = "weekly";
       options = "--delete-older-than=7d";
     };
+    # Add each flake input as a registry, making nix3 commands consistent with flake
+    # registry.nixpkgs.flake = inputs.nixpkgs;
+    registry = lib.mapAttrs (_: value: { flake = value; }) inputs;
+    # Additionally, add inputs to system's legacy channels to make legacy nix commands consistent
+    nixPath = lib.mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry;
   };
 
   system = {
@@ -45,6 +52,7 @@
   environment.systemPackages = with pkgs; [
     nvd
     dconf2nix
+    nix-index
 
     nixos-anywhere
   ];

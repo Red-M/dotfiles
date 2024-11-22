@@ -1,5 +1,5 @@
 
-{ config, lib, pkgs, unstable, inputs, ... }:
+{ config, lib, pkgs, nixbeta, unstable, nixmaster, inputs, ... }:
 
 {
   systemd.services.lact = {
@@ -17,6 +17,11 @@
   ];
 
   boot = {
+    kernelModules = with config.boot.kernelPackages; [
+      "i2c-dev"
+      "i2c-piix4"
+      "jc42"
+    ]; # fans, etc
     extraModprobeConfig = ''
       options amdgpu ppfeaturemask=0xffffffff
     '';

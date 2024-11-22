@@ -3,7 +3,9 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
+    nixpkgs-beta.url = "github:NixOS/nixpkgs/nixos-24.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs-master.url = "github:NixOS/nixpkgs/master";
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -20,25 +22,31 @@
     ucodenix.url = "github:e-tho/ucodenix";
   };
 
-  outputs = { nixpkgs, nixpkgs-unstable, home-manager, nixos-hardware, ... }@inputs: {
+  outputs = { nixpkgs, nixpkgs-beta, nixpkgs-unstable, home-manager, nixos-hardware, ... }@inputs: {
     nixosConfigurations = {
       potato = nixpkgs.lib.nixosSystem rec {
         system = "x86_64-linux";
         specialArgs = {
           inherit inputs;
           inherit system;
+          nixbeta = import nixpkgs-beta {
+            inherit system;
+            inherit inputs;
+            config.allowUnfree = true;
+          };
           unstable = import nixpkgs-unstable {
             inherit system;
             inherit inputs;
-            # Refer to the `system` parameter from
-            # the outer scope recursively
-            # To use Chrome, we need to allow the
-            # installation of non-free software.
+            config.allowUnfree = true;
+          };
+          nixmaster = import inputs.nixpkgs-master {
+            inherit system;
+            inherit inputs;
             config.allowUnfree = true;
           };
         };
         modules = [
-          ./hosts/potato/configuration.nix
+          ./hosts/potato
         ];
       };
 
@@ -47,14 +55,24 @@
         specialArgs = {
           inherit inputs;
           inherit system;
+          nixbeta = import nixpkgs-beta {
+            inherit system;
+            inherit inputs;
+            config.allowUnfree = true;
+          };
           unstable = import nixpkgs-unstable {
+            inherit system;
+            inherit inputs;
+            config.allowUnfree = true;
+          };
+          nixmaster = import inputs.nixpkgs-master {
             inherit system;
             inherit inputs;
             config.allowUnfree = true;
           };
         };
         modules = [
-          ./hosts/redm/configuration.nix
+          ./hosts/redm
         ];
       };
 
@@ -63,14 +81,24 @@
         specialArgs = {
           inherit inputs;
           inherit system;
+          nixbeta = import nixpkgs-beta {
+            inherit system;
+            inherit inputs;
+            config.allowUnfree = true;
+          };
           unstable = import nixpkgs-unstable {
+            inherit system;
+            inherit inputs;
+            config.allowUnfree = true;
+          };
+          nixmaster = import inputs.nixpkgs-master {
             inherit system;
             inherit inputs;
             config.allowUnfree = true;
           };
         };
         modules = [
-          ./hosts/redbox/configuration.nix
+          ./hosts/redbox
         ];
       };
     };

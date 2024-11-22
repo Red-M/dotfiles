@@ -1,5 +1,5 @@
 
-{ config, lib, pkgs, unstable, inputs, ... }:
+{ config, lib, pkgs, nixbeta, unstable, nixmaster, inputs, ... }:
 
 {
   users.users.redm = {
@@ -13,6 +13,7 @@
       yad
       r2modman
       moonlight-qt
+      r2mod_cli
     ];
   };
 
@@ -64,11 +65,6 @@
     xpadneo.enable = true;
     steam-hardware.enable = true;
   };
-
-  environment.systemPackages = with pkgs; [
-    linuxKernel.packages.linux_6_11.xpadneo
-    linuxKernel.packages.linux_latest_libre.xpadneo
-  ];
 
   boot = {
     kernelModules = with config.boot.kernelPackages; [
