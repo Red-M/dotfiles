@@ -13,6 +13,7 @@
 
   programs = {
     xwayland.enable = true;
+    kdeconnect.enable = true;
   };
 
   # Configure keymap in X11
@@ -72,6 +73,8 @@
     kdePackages.kdenlive
 
     libreoffice-qt6-fresh
+
+    bottles
 
   ];
 
