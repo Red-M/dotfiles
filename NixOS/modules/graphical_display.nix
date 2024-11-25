@@ -1,5 +1,5 @@
 
-{ config, lib, pkgs, nixbeta, unstable, nixmaster, inputs, ... }:
+{ config, lib, pkgs, nixalt, unstable, nixmaster, inputs, ... }:
 
 {
   # Enable the X11 windowing system.
@@ -39,6 +39,8 @@
 
   environment.systemPackages = with pkgs; [
     glxinfo
+    vulkan-tools
+    clinfo
 
     # kdePackages
     kdePackages.kcalc
@@ -46,6 +48,31 @@
     kdePackages.sddm-kcm
 
     libglibutil
+
+
+    mpv
+    open-in-mpv
+    # play-with-mpv
+    libplacebo
+    mpvScripts.uosc
+    mpvScripts.thumbfast
+    mpvScripts.sponsorblock
+    mpvScripts.quality-menu
+    mpvScripts.mpv-cheatsheet
+    mpvScripts.reload
+    mpvScripts.modernx
+    mpvScripts.autoload
+    mpvScripts.chapterskip
+    mpvScripts.blacklistExtensions
+    mpvScripts.mpv-playlistmanager
+    mpvpaper
+
+    krita
+    gimp-with-plugins
+    kdePackages.kdenlive
+
+    libreoffice-qt6-fresh
+
   ];
 
   hardware = {
@@ -59,6 +86,8 @@
       ## amdvlk: an open-source Vulkan driver from AMD
       # extraPackages = [ unstable.amdvlk ];
       # extraPackages32 = [ unstable.driversi686Linux.amdvlk ];
+      extraPackages = [ pkgs.libva-utils ];
+      extraPackages32 = [ pkgs.libva-utils ];
     };
     amdgpu.amdvlk = {
       enable = true;

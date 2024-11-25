@@ -1,5 +1,5 @@
 
-{ config, lib, pkgs, nixbeta, unstable, nixmaster, inputs, ... }:
+{ config, lib, pkgs, nixalt, unstable, nixmaster, inputs, ... }:
 
 {
   boot = {
@@ -26,7 +26,7 @@
     xrdp = {
       enable = true;
       package = (pkgs.xrdp.overrideAttrs (super: {
-        config.systemd.services.xrdp.serviceConfig.ExecStart = "${pkgs.xrdp}/bin/xrdp --nodaemon --port vsock://-1:3389 --config ${confDir}/xrdp.ini";
+        config.systemd.services.xrdp.serviceConfig.ExecStart = "${pkgs.xrdp}/bin/xrdp --nodaemon --port vsock://-1:3389 --config ${confDir}/xrdp.ini"; # https://github.com/NixOS/nixpkgs/pull/300418
       }));
       defaultWindowManager = "startplasma-x11";
       openFirewall = true;

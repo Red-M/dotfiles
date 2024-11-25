@@ -3,7 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
-    nixpkgs-beta.url = "github:NixOS/nixpkgs/nixos-24.05";
+    nixpkgs-alt.url = "github:NixOS/nixpkgs/nixos-24.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-master.url = "github:NixOS/nixpkgs/master";
     home-manager = {
@@ -11,6 +11,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    nur.url = "github:nix-community/NUR"; # https://github.com/nix-community/NUR
     nixos-hardware = {
       url = "github:NixOS/nixos-hardware/master";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -22,14 +23,14 @@
     ucodenix.url = "github:e-tho/ucodenix";
   };
 
-  outputs = { nixpkgs, nixpkgs-beta, nixpkgs-unstable, home-manager, nixos-hardware, ... }@inputs: {
+  outputs = { nixpkgs, nixpkgs-alt, nixpkgs-unstable, home-manager, nixos-hardware, nur, ... }@inputs: {
     nixosConfigurations = {
       potato = nixpkgs.lib.nixosSystem rec {
         system = "x86_64-linux";
         specialArgs = {
           inherit inputs;
           inherit system;
-          nixbeta = import nixpkgs-beta {
+          nixalt = import nixpkgs-alt {
             inherit system;
             inherit inputs;
             config.allowUnfree = true;
@@ -40,6 +41,11 @@
             config.allowUnfree = true;
           };
           nixmaster = import inputs.nixpkgs-master {
+            inherit system;
+            inherit inputs;
+            config.allowUnfree = true;
+          };
+          nur = import inputs.nur {
             inherit system;
             inherit inputs;
             config.allowUnfree = true;
@@ -55,7 +61,7 @@
         specialArgs = {
           inherit inputs;
           inherit system;
-          nixbeta = import nixpkgs-beta {
+          nixalt = import nixpkgs-alt {
             inherit system;
             inherit inputs;
             config.allowUnfree = true;
@@ -66,6 +72,11 @@
             config.allowUnfree = true;
           };
           nixmaster = import inputs.nixpkgs-master {
+            inherit system;
+            inherit inputs;
+            config.allowUnfree = true;
+          };
+          nur = import inputs.nur {
             inherit system;
             inherit inputs;
             config.allowUnfree = true;
@@ -81,7 +92,7 @@
         specialArgs = {
           inherit inputs;
           inherit system;
-          nixbeta = import nixpkgs-beta {
+          nixalt = import nixpkgs-alt {
             inherit system;
             inherit inputs;
             config.allowUnfree = true;
@@ -92,6 +103,11 @@
             config.allowUnfree = true;
           };
           nixmaster = import inputs.nixpkgs-master {
+            inherit system;
+            inherit inputs;
+            config.allowUnfree = true;
+          };
+          nur = import inputs.nur {
             inherit system;
             inherit inputs;
             config.allowUnfree = true;

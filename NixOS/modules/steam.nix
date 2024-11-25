@@ -1,5 +1,5 @@
 
-{ config, lib, pkgs, nixbeta, unstable, nixmaster, inputs, ... }:
+{ config, lib, pkgs, nixalt, unstable, nixmaster, inputs, ... }:
 
 {
   users.users.redm = {
@@ -8,7 +8,7 @@
       lutris
       mangohud
       gamemode
-      gamescope
+      unstable.gamescope
       steamtinkerlaunch
       yad
       r2modman
@@ -18,51 +18,54 @@
   };
 
   programs = {
-    # gamescope.enable = true;
+    gamescope = {
+      enable = true;
+      # capSysNice = true;
+      package = unstable.gamescope;
+    };
     gamemode.enable = true;
-    java.enable = true;
     steam = {
       enable = true;
       # gamescopeSession.enable = true;
-      # protontricks.enable = true;
+      protontricks.enable = true;
       # package = unstable.steam;
-      package = pkgs.steam.override {
-        extraPkgs = pkgs: with pkgs; [
-          # mangohud
-          # gamescope
-          # gamemode
-          # steamtinkerlaunch
-          xorg.libXcursor
-          xorg.libXi
-          xorg.libXinerama
-          xorg.libXScrnSaver
-          libpng
-          libpulseaudio
-          libvorbis
-          stdenv.cc.cc.lib
-          libkrb5
-          keyutils
-        ] ++ config.fonts.packages;
-      };
-      # extraPackages = config.fonts.packages;
+      extraPackages = with pkgs; [
+        xorg.libXcursor
+        xorg.libXi
+        xorg.libXinerama
+        xorg.libXScrnSaver
+        xorg.libxcb
+        libpng
+        libpulseaudio
+        libvorbis
+        stdenv.cc.cc.lib
+        libkrb5
+        keyutils
+        gamemode
+      ] ++ config.fonts.packages;
+      extraCompatPackages = with pkgs; [
+        steamtinkerlaunch
+      ];
       remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
       dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
       localNetworkGameTransfers.openFirewall = true; # Open ports in the firewall for Steam Local Network Game Transfers
     };
+    java.enable = true;
   };
 
   hardware = {
     graphics = {
       extraPackages = with pkgs; [
-        mangohud
-        gamescope
-        gamemode
+        # mangohud
+        # gamescope
+        # gamemode
       ];
       extraPackages32 = config.hardware.graphics.extraPackages;
     };
 
     # xone.enable = true;
-    xpadneo.enable = true;
+    # xpadneo.enable = true;
+    xpadneo.enable = false; # until the 6.12 fixed patch is in nixbeta, as the 6.12 fixed version is only in master atm
     steam-hardware.enable = true;
   };
 
@@ -71,7 +74,7 @@
       "hid-xpadneo"
     ];
     extraModulePackages = with config.boot.kernelPackages; [
-      xpadneo
+      nixmaster.linuxPackages_latest.xpadneo
     ];
     extraModprobeConfig = ''
       options hid_xpadneo disable_deadzones=0 rumble_attenuation=0 trigger_rumble_mode=0 ff_connect_notify=1 disable_shift_mode=1
@@ -124,6 +127,20 @@
         { domain = "@gamemode"; type = "-"; item = "nice"; value = -11; }
       ];
     };
+    # wrappers = {
+    #   mangohud = {
+    #     owner = "root";
+    #     group = "root";
+    #     source = "${pkgs.mangohud}/bin/mangohud";
+    #     capabilities = "cap_sys_nice+pie";
+    #   };
+    #   mangoapp = {
+    #     owner = "root";
+    #     group = "root";
+    #     source = "${pkgs.mangohud}/bin/mangoapp";
+    #     capabilities = "cap_sys_nice+pie";
+    #   };
+    # };
   };
 }
 
