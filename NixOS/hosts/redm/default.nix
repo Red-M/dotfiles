@@ -69,82 +69,82 @@
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "24.05"; # Did you read the comment?
 
-  disko.devices = {
-    disk.disk1 = {
-      device = lib.mkDefault "/dev/nvme0n1";
-      type = "disk";
-      content = {
-        type = "gpt";
-        partitions = {
-          boot = {
-            name = "boot";
-            size = "1M";
-            type = "EF02";
-          };
-          esp = {
-            name = "ESP";
-            size = "4G";
-            type = "EF00";
-            content = {
-              type = "filesystem";
-              format = "vfat";
-              mountpoint = "/boot";
-              mountOptions = [ "umask=0077" ];
-            };
-          };
-          luks = {
-            size = "75G";
-            content = {
-              type = "luks";
-              name = "OS-crypted";
-              extraOpenArgs = [ ];
-              askPassword = true;
-              settings = {
-                allowDiscards = true;
-              };
-              content = {
-                type = "filesystem";
-                format = "ext4";
-                mountpoint = "/";
-              };
-            };
-          };
-          luks2 = {
-            size = "75G";
-            content = {
-              type = "luks";
-              name = "OS2-crypted";
-              extraOpenArgs = [ ];
-              askPassword = true;
-              initrdUnlock = false;
-              settings = {
-                allowDiscards = true;
-              };
-              content = {
-                type = "filesystem";
-                format = "ext4";
-              };
-            };
-          };
-          home = {
-            size = "100%";
-            content = {
-              type = "luks";
-              name = "home-crypted";
-              extraOpenArgs = [ ];
-              askPassword = true;
-              settings = {
-                allowDiscards = true;
-              };
-              content = {
-                type = "filesystem";
-                format = "ext4";
-                mountpoint = "/home";
-              };
-            };
-          };
-        };
-      };
-    };
-  };
+  # disko.devices = {
+  #   disk.disk1 = {
+  #     device = lib.mkDefault "/dev/nvme0n1";
+  #     type = "disk";
+  #     content = {
+  #       type = "gpt";
+  #       partitions = {
+  #         boot = {
+  #           name = "boot";
+  #           size = "1M";
+  #           type = "EF02";
+  #         };
+  #         esp = {
+  #           name = "ESP";
+  #           size = "4G";
+  #           type = "EF00";
+  #           content = {
+  #             type = "filesystem";
+  #             format = "vfat";
+  #             mountpoint = "/boot";
+  #             mountOptions = [ "umask=0077" ];
+  #           };
+  #         };
+  #         luks = {
+  #           size = "75G";
+  #           content = {
+  #             type = "luks";
+  #             name = "OS-crypted";
+  #             extraOpenArgs = [ ];
+  #             askPassword = true;
+  #             settings = {
+  #               allowDiscards = true;
+  #             };
+  #             content = {
+  #               type = "filesystem";
+  #               format = "ext4";
+  #               mountpoint = "/";
+  #             };
+  #           };
+  #         };
+  #         luks2 = {
+  #           size = "75G";
+  #           content = {
+  #             type = "luks";
+  #             name = "OS2-crypted";
+  #             extraOpenArgs = [ ];
+  #             askPassword = true;
+  #             initrdUnlock = false;
+  #             settings = {
+  #               allowDiscards = true;
+  #             };
+  #             content = {
+  #               type = "filesystem";
+  #               format = "ext4";
+  #             };
+  #           };
+  #         };
+  #         home = {
+  #           size = "100%";
+  #           content = {
+  #             type = "luks";
+  #             name = "home-crypted";
+  #             extraOpenArgs = [ ];
+  #             askPassword = true;
+  #             settings = {
+  #               allowDiscards = true;
+  #             };
+  #             content = {
+  #               type = "filesystem";
+  #               format = "ext4";
+  #               mountpoint = "/home";
+  #             };
+  #           };
+  #         };
+  #       };
+  #     };
+  #   };
+  # };
 }
