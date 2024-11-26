@@ -45,18 +45,19 @@
     "5-rt" = {
       "context.modules" = [{
         "name" = "libpipewire-module-rtkit";
+        "flags" = [ "ifexists" "nofail" ];
         "args" = {
           #nice.level   = -11
           #rt.prio      = 88
           #rt.time.soft = 200000
           #rt.time.hard = 200000
         };
-        "flags" = [ "ifexists" "nofail" ];
       }];
     };
     "20-noise-cancel" = {
       "context.modules" = [{ # https://github.com/werman/noise-suppression-for-voice
         "name" = "libpipewire-module-filter-chain";
+        "flags" = [ "ifexists" "nofail" ];
         "args" = {
           "node.description" = "Noise Canceling source";
           "media.name" = "Noise Canceling source";
@@ -92,6 +93,7 @@
     "15-echo-cancel" = {
       "context.modules" = [{
         "name" = "libpipewire-module-echo-cancel";
+        "flags" = [ "ifexists" "nofail" ];
         "args" = {
           "library.name" = "aec/libspa-aec-webrtc";
           # "monitor.mode" = true;
@@ -123,6 +125,7 @@
     "10-virtual-groups" = {
       "context.modules" = [{
         "name" = "libpipewire-module-loopback";
+        "flags" = [ "ifexists" "nofail" ];
         "args" = {
           "node.name" = "loopback_group_default";
           "node.description" = "Catch-all";
@@ -143,6 +146,7 @@
         };
       }{
           "name" = "libpipewire-module-loopback";
+          "flags" = [ "ifexists" "nofail" ];
           "args" = {
             "node.name" = "loopback_group_music";
             "node.description" = "Music";
@@ -163,6 +167,7 @@
           };
         }{
           "name" = "libpipewire-module-loopback";
+            "flags" = [ "ifexists" "nofail" ];
           "args" = {
             "node.name" = "loopback_group_voice";
             "node.description" = "Voice";
@@ -183,6 +188,7 @@
           };
         }{
           "name" = "libpipewire-module-loopback";
+          "flags" = [ "ifexists" "nofail" ];
           "args" = {
             "node.name" = "loopback_group_low_prio_games";
             "node.description" = "Low Priority";
@@ -200,7 +206,8 @@
               "node.dont-remix" = true;
             };
           };
-        }];
+        }
+      ];
     };
   };
 
