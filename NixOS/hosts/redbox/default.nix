@@ -20,6 +20,7 @@
     ../../modules/my_user.nix
     ../../modules/nix.nix
     ../../modules/obs.nix
+    ../../modules/python.nix
     ../../modules/serial_devices.nix
     ../../modules/sound.nix
     ../../modules/ssh_server.nix

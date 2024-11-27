@@ -14,6 +14,7 @@
     ../../modules/firmware.nix
     ../../modules/fonts.nix
     ../../modules/graphical_display.nix
+    ../../modules/graphical_display_extras.nix
     ../../modules/grub.nix
     ../../modules/keepass.nix
     ../../modules/kernel.nix
@@ -24,6 +25,7 @@
     ../../modules/my_user.nix
     ../../modules/nix.nix
     ../../modules/obs.nix
+    ../../modules/python.nix
     ../../modules/rgb.nix
     ../../modules/serial_devices.nix
     ../../modules/sound.nix

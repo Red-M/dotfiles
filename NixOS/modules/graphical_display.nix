@@ -43,39 +43,9 @@
     vulkan-tools
     clinfo
 
-    # kdePackages
-    kdePackages.kcalc
-    kdePackages.kate
-    kdePackages.sddm-kcm
-
     libglibutil
 
-
-    mpv
-    open-in-mpv
-    # play-with-mpv
-    libplacebo
-    mpvScripts.uosc
-    mpvScripts.thumbfast
-    mpvScripts.sponsorblock
-    mpvScripts.quality-menu
-    mpvScripts.mpv-cheatsheet
-    mpvScripts.reload
-    mpvScripts.modernx
-    mpvScripts.autoload
-    mpvScripts.chapterskip
-    mpvScripts.blacklistExtensions
-    mpvScripts.mpv-playlistmanager
-    mpvpaper
-
-    krita
-    gimp-with-plugins
-    kdePackages.kdenlive
-
-    libreoffice-qt6-fresh
-
-    bottles
-
+    kdePackages.sddm-kcm
   ];
 
   hardware = {

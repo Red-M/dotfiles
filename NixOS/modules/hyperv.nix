@@ -1,5 +1,5 @@
 
-{ config, lib, pkgs, nixalt, unstable, nixmaster, inputs, ... }:
+{ config, lib, pkgs, nixalt, unstable, nixmaster, outoftree, inputs, ... }:
 
 {
   boot = {
@@ -18,62 +18,8 @@
 
   environment.systemPackages = [
     config.boot.kernelPackages.hyperv-daemons.bin
-    pkgs.pulseaudio-module-xrdp
 
-    # (pkgs.stdenv.mkDerivation {
-    #   pname = "pipewire-module-xrdp";
-    #   version = "0.2";
-    #
-    #   src = fetchFromGitHub {
-    #     owner = "neutrinolabs";
-    #     repo = pname;
-    #     rev = "v${version}";
-    #     hash = "";
-    #   };
-    #
-    #   preConfigure = ''
-    #     tar -xvf ${pkgs.pulseaudio.src}
-    #     mv pulseaudio-* pulseaudio-src
-    #     chmod +w -Rv pulseaudio-src
-    #     cp ${pkgs.pulseaudio.dev}/include/pulse/config.h pulseaudio-src
-    #     configureFlags="$configureFlags PULSE_DIR=$(realpath ./pulseaudio-src)"
-    #   '';
-    #
-    #   installPhase = ''
-    #     runHook preInstall
-    #
-    #     mkdir -p $out/lib/pulseaudio/modules $out/libexec/pulsaudio-xrdp-module $out/etc/xdg/autostart
-    #     install -m 755 src/.libs/*${pkgs.stdenv.hostPlatform.extensions.sharedLibrary} $out/lib/pulseaudio/modules
-    #
-    #     install -m 755 instfiles/load_pa_modules.sh $out/libexec/pulsaudio-xrdp-module/pulseaudio_xrdp_init
-    #     substituteInPlace $out/libexec/pulsaudio-xrdp-module/pulseaudio_xrdp_init \
-    #       --replace pactl ${pkgs.pulseaudio}/bin/pactl
-    #
-    #     runHook postInstall
-    #   '';
-    #
-    #   nativeBuildInputs = [
-    #     pkgs.autoreconfHook
-    #     pkgs.pkg-config
-    #     pkgs.pipewire.dev
-    #   ];
-    #
-    #   passthru = {
-    #     updateScript = gitUpdater { rev-prefix = "v"; };
-    #     tests = {
-    #       inherit (nixosTests) xrdp-with-audio-pulseaudio;
-    #     };
-    #   };
-    #
-    #   meta = with lib; {
-    #     description = "xrdp sink/source pipewire modules";
-    #     homepage = "https://github.com/neutrinolabs/pipewire-module-xrdp";
-    #     license = licenses.mit;
-    #     maintainers = with maintainers; [  ];
-    #     platforms = platforms.linux;
-    #     sourceProvenance = [ sourceTypes.fromSource ];
-    #   };
-    # })
+    outoftree.packages.${pkgs.system}.pipewire-module-xrdp
 
   ];
 

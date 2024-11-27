@@ -14,6 +14,8 @@
       r2modman
       moonlight-qt
       r2mod_cli
+
+      bottles
     ];
   };
 
