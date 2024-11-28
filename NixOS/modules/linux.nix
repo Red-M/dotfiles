@@ -9,27 +9,28 @@
     nix-ld = {
       enable = true;
       libraries = with pkgs; [
-        zlib
-        zstd
-        stdenv.cc.cc
-        curl
-        openssl
-        attr
-        libssh
-        bzip2
-        libxml2
         acl
-        libsodium
-        util-linux
-        xz
-        systemd
-        libGL
-        unstable.kdePackages.qtwayland
-        unstable.kdePackages.qt5compat
-        unstable.libsForQt5.qt5.qtwayland
+        attr
+        bzip2
+        curl
         gcc-unwrapped.lib
+        libGL
+        libsodium
+        libssh
+        libxml2
+        openssl
+        stdenv.cc.cc
+        systemd
+        icu.dev
+        unstable.kdePackages.qt5compat
+        unstable.kdePackages.qtwayland
+        unstable.libsForQt5.qt5.qtwayland
+        util-linux
         wayland
         xwayland
+        xz
+        zlib
+        zstd
       ] ++ pkgs.steam-run.args.multiPkgs pkgs;
     };
   };
@@ -38,11 +39,11 @@
   programs.appimage = {
     enable = true;
     binfmt = true;
-    # package = pkgs.appimage-run.override {
-    #   extraPkgs = pkgs: [
-    #     pkgs.libGL
-    #   ];
-    # };
+    package = pkgs.appimage-run.override {
+      extraPkgs = pkgs: [
+        pkgs.icu.dev
+      ];
+    };
   };
   # boot.binfmt.registrations.appimage = {
   #   wrapInterpreterInShell = false;

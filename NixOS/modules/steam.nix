@@ -14,6 +14,7 @@
       r2modman
       moonlight-qt
       r2mod_cli
+      unstable.nexusmods-app-unfree
 
       bottles
     ];
