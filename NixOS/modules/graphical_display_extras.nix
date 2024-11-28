@@ -4,6 +4,8 @@
 {
   users.users.redm = {
     packages = with pkgs; [
+      wl-clipboard-x11
+
       kdePackages.kcalc
       kdePackages.kate
 

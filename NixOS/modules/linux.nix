@@ -76,13 +76,13 @@
     complete-alias
     gnupg
     unzip
+    pwgen
 
     mise
     usage
 
     pkg-config
     # gnome.gnome-keyring
-    wl-clipboard-x11
     coreutils-full
     procps
     certstrap

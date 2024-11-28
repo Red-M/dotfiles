@@ -21,6 +21,7 @@
       unixtools.xxd
       xorg.xwininfo
       xdotool
+      xclip
       wget
       deluge
       remmina
