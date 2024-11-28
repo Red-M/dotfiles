@@ -68,15 +68,15 @@
               "plugin" = "${pkgs.rnnoise-plugin}/lib/ladspa/librnnoise_ladspa.so";
               "label" = "noise_suppressor_stereo";
               "control" = {
-                "VAD Threshold (%)" = 80.0;
-                "VAD Grace Period (ms)" = 120;
+                "VAD Threshold (%)" = 45.0;
+                "VAD Grace Period (ms)" = 80;
                 "Retroactive VAD Grace (ms)" = 0;
               };
             }];
           };
           "capture.props" = {
             # "node.name" = "capture.rnnoise_source";
-            "node.passive" = true;
+            # "node.passive" = true;
             "audio.rate" = 48000;
             "node.name" = "noise_cancel.cancel";
             "target.object" = "echo_cancel.echoless";
@@ -98,12 +98,12 @@
           "library.name" = "aec/libspa-aec-webrtc";
           # "monitor.mode" = true;
           "aec.args" = {
-            "webrtc.extended_filter" = true;
-            "webrtc.delay_agnostic" = true;
             "webrtc.high_pass_filter" = true;
             "webrtc.noise_suppression" = true;
             "webrtc.voice_detection" = true;
-            "webrtc.gain_control" = true;
+            "webrtc.extended_filter" = true;
+            "webrtc.delay_agnostic" = true;
+            "webrtc.gain_control" = false; # AGC seems to mess up with Agnostic Delay Detection, especially with speech, result in very poor performance, disable by default
             "webrtc.experimental_agc" = true;
             "webrtc.experimental_ns" = true;
           };
