@@ -5,8 +5,9 @@
   imports = [
     ./hardware-configuration.nix
 
-    ../../modules/amdgpu_oc.nix
     ../../modules/amd_ucode.nix
+    ../../modules/amdgpu.nix
+    ../../modules/amdgpu_oc.nix
     ../../modules/cad.nix
     ../../modules/distrobox.nix
     ../../modules/fans.nix
@@ -70,7 +71,6 @@
   };
 
   hardware = {
-    amdgpu.initrd.enable = true;
     i2c.enable = true;
   };
 
@@ -89,3 +89,4 @@
   system.stateVersion = "24.05"; # Did you read the comment?
 
 }
+

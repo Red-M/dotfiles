@@ -7,6 +7,7 @@
     inputs.disko.nixosModules.disko
 
     ../../modules/amd_ucode.nix
+    ../../modules/amdgpu.nix
     ../../modules/cad.nix
     ../../modules/distrobox.nix
     ../../modules/fans.nix
@@ -52,10 +53,6 @@
   #   enable = true;
   #   enableSSHSupport = true;
   # };
-
-  hardware = {
-    amdgpu.initrd.enable = true;
-  };
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
@@ -150,3 +147,4 @@
   #   };
   # };
 }
+
