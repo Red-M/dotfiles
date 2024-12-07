@@ -15,12 +15,14 @@
     ../../modules/kernel.nix
     ../../modules/kvm.nix
     ../../modules/laptop.nix
+    ../../modules/langs/arduino.nix
+    ../../modules/langs/go.nix
+    ../../modules/langs/python.nix
     ../../modules/linux.nix
     ../../modules/locale.nix
     ../../modules/my_user.nix
     ../../modules/nix.nix
     ../../modules/obs.nix
-    ../../modules/python.nix
     ../../modules/serial_devices.nix
     ../../modules/sound.nix
     ../../modules/ssh_server.nix

@@ -4,8 +4,7 @@
 {
   system = {
     modulesTree = lib.mkForce [(
-      # (pkgs.aggregateModules
-      (nixalt.aggregateModules
+      (pkgs.aggregateModules
         ( config.boot.extraModulePackages ++ [ config.boot.kernelPackages.kernel ])
       ).overrideAttrs {
         # earlier items in the list above override the contents of later items
@@ -16,7 +15,6 @@
 
   boot = {
     kernelPackages = pkgs.linuxPackages_latest;
-    # kernelPackages = nixalt.linuxPackages_latest;
     kernelModules = [ "tcp_bbr" ];
 
     kernel = {

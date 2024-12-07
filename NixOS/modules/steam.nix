@@ -108,11 +108,31 @@
               options = [ "NOPASSWD" ];
             }
             {
+              command = "${pkgs.gamemode}/libexec/procsysctl";
+              options = [ "NOPASSWD" ];
+            }
+            {
               command = "${pkgs.gamemode}/libexec/cpugovctl";
               options = [ "NOPASSWD" ];
             }
             {
               command = "${pkgs.gamemode}/libexec/gpuclockctl";
+              options = [ "NOPASSWD" ];
+            }
+            {
+              command = "^/nix/store/.*/bin/gamemoderun$";
+              options = [ "NOPASSWD" ];
+            }
+            {
+              command = "^/nix/store/.*/libexec/procsysctl$";
+              options = [ "NOPASSWD" ];
+            }
+            {
+              command = "^/nix/store/.*/libexec/cpugovctl$";
+              options = [ "NOPASSWD" ];
+            }
+            {
+              command = "^/nix/store/.*/libexec/gpuclockctl$";
               options = [ "NOPASSWD" ];
             }
           ];

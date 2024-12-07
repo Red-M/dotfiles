@@ -19,13 +19,15 @@
     ../../modules/keepass.nix
     ../../modules/kernel.nix
     ../../modules/kvm.nix
+    ../../modules/langs/arduino.nix
+    ../../modules/langs/go.nix
+    ../../modules/langs/python.nix
     ../../modules/linux.nix
     ../../modules/locale.nix
     ../../modules/messaging.nix
     ../../modules/my_user.nix
     ../../modules/nix.nix
     ../../modules/obs.nix
-    ../../modules/python.nix
     ../../modules/rgb.nix
     ../../modules/serial_devices.nix
     ../../modules/sound.nix

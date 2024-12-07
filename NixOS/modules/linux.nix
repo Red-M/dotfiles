@@ -89,6 +89,7 @@
     libva-utils
     psmisc
     pciutils
+    usbutils
     qdirstat
 
     libgcc

@@ -24,6 +24,7 @@
     alsa-utils
     rnnoise-plugin
     wireplumber
+    coppwr
   ];
 
 

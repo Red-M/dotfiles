@@ -25,6 +25,8 @@
       wget
       deluge
       remmina
+      neofetch
+      inetutils
     ];
   };
 
