@@ -81,5 +81,31 @@
       }
     });
   '';
+
+  environment.etc."opt/chrome/native-messaging-hosts/org.keepassxc.keepassxc_browser.json".text = ''
+    {
+      "name": "org.keepassxc.keepassxc_browser",
+      "description": "KeepassXC integration with Native Messaging support",
+      "path" : "${pkgs.keeweb}/share/keeweb-desktop/keeweb-native-messaging-host",
+      "type": "stdio",
+      "allowed_origins": [
+        "chrome-extension://pikpfmjfkekaeinceagbebpfkmkdlcjk/",
+        "chrome-extension://dphoaaiomekdhacmfoblfblmncpnbahm/",
+        "chrome-extension://iopaggbpplllidnfmcghoonnokmjoicf/",
+        "chrome-extension://oboonakemofpalcgghocfoadofidjkkk/",
+        "chrome-extension://pdffhmdngciaglkoonimfcmckehcpafo/"
+      ]
+    }
+  '';
+
+  users.users.redm = {
+    packages = with pkgs; [
+      google-chrome
+
+      deluge
+      remmina
+    ];
+  };
+
 }
 

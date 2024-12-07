@@ -20,9 +20,7 @@
     ../../modules/kernel.nix
     ../../modules/kvm.nix
     ../../modules/laptop.nix
-    ../../modules/langs/arduino.nix
-    ../../modules/langs/go.nix
-    ../../modules/langs/python.nix
+    ../../modules/langs
     ../../modules/linux.nix
     ../../modules/locale.nix
     ../../modules/messaging.nix
