@@ -1,5 +1,5 @@
 
-{ config, lib, pkgs, nixalt, unstable, nixmaster, inputs, ... }:
+{ config, lib, pkgs, nixalt, unstable, nixmaster, outoftree, inputs, ... }:
 
 {
   users.users.redm = {
@@ -77,7 +77,7 @@
       "hid-xpadneo"
     ];
     extraModulePackages = with config.boot.kernelPackages; [
-      nixmaster.linuxPackages_latest.xpadneo
+      xpadneo
     ];
     extraModprobeConfig = ''
       options hid_xpadneo disable_deadzones=0 rumble_attenuation=0 trigger_rumble_mode=0 ff_connect_notify=1 disable_shift_mode=1

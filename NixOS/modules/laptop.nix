@@ -1,5 +1,5 @@
 
-{ config, lib, pkgs, nixalt, unstable, nixmaster, inputs, ... }:
+{ config, lib, pkgs, nixalt, unstable, nixmaster, outoftree, inputs, ... }:
 
 {
   # services.auto-cpufreq.enable = true;

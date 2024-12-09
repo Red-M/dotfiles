@@ -1,5 +1,5 @@
 
-{ config, lib, pkgs, nixalt, unstable, nixmaster, inputs, ... }:
+{ config, lib, pkgs, nixalt, unstable, nixmaster, outoftree, inputs, ... }:
 
 {
   services.envfs.enable = true;
@@ -29,7 +29,7 @@
         wayland
         xwayland
         xz
-        zlib
+        zlib.dev
         zstd
       ] ++ pkgs.steam-run.args.multiPkgs pkgs;
     };
@@ -66,6 +66,7 @@
     # bash
     # bashInteractive
     bashInteractiveFHS
+    su
     curl
     bc
     htop
@@ -81,6 +82,7 @@
     mise
     usage
 
+    gnumake
     pkg-config
     # gnome.gnome-keyring
     coreutils-full
@@ -111,7 +113,7 @@
 
     mono
 
-    python3
+    outoftree.pkgs.${pkgs.system}.python3Optimized
 
     firmware-updater
   ];

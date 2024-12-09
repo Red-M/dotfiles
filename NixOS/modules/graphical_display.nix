@@ -1,5 +1,5 @@
 
-{ config, lib, pkgs, nixalt, unstable, nixmaster, inputs, ... }:
+{ config, lib, pkgs, nixalt, unstable, nixmaster, outoftree, inputs, ... }:
 
 {
   # Enable the X11 windowing system.

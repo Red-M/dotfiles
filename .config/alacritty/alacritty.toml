@@ -2,44 +2,150 @@
 [colors]
 transparent_background_colors = true
 
-[colors.bright]
-black = "#686868"
-blue = "#5454ff"
-cyan = "#54ffff"
-green = "#54ff54"
-magenta = "#ff54ff"
-red = "#ff5454"
-white = "#ffffff"
-yellow = "#ffff54"
-
 [colors.cursor]
 cursor = "#f8f8f2"
 text = "#191622"
 
-[colors.dim]
-black = "#000000"
-blue = "#1818b2"
-cyan = "#18b2b2"
-green = "#18b218"
-magenta = "#b218b2"
-red = "#b21818"
-white = "#b2b2b2"
-yellow = "#b26818"
+# XTerm's default colors
 
-[colors.normal]
-black = "#000000"
-blue = "#1818b2"
-cyan = "#18b2b2"
-green = "#18b218"
-magenta = "#b218b2"
-red = "#b21818"
-white = "#b2b2b2"
-yellow = "#b26818"
-
+# Default colors XTerm
 [colors.primary]
-background = "#1f1f1f"
-bright_foreground = "#ffffff"
-foreground = "#e3e3e3"
+background = '#000000'
+foreground = '#ffffff'
+
+# Normal colors
+[colors.normal]
+black   = '#1d1d1d' # (Monokai Charcoal)
+red     = '#cd0000'
+green   = '#00cd00'
+yellow  = '#cdcd00'
+blue    = '#0000ee'
+magenta = '#cd00cd'
+cyan    = '#00cdcd'
+white   = '#e5e5e5'
+
+# Bright colors
+[colors.bright]
+black   = '#7f7f7f'
+red     = '#ff0000'
+green   = '#00ff00'
+yellow  = '#ffff00'
+blue    = '#5c5cff'
+magenta = '#ff00ff'
+cyan    = '#00ffff'
+white   = '#ffffff'
+
+# Konsole
+# [colors.bright]
+# black = "#686868"
+# blue = "#5454ff"
+# cyan = "#54ffff"
+# green = "#54ff54"
+# magenta = "#ff54ff"
+# red = "#ff5454"
+# white = "#ffffff"
+# yellow = "#ffff54"
+#
+# [colors.dim]
+# black = "#000000"
+# blue = "#1818b2"
+# cyan = "#18b2b2"
+# green = "#18b218"
+# magenta = "#b218b2"
+# red = "#b21818"
+# white = "#b2b2b2"
+# yellow = "#b26818"
+#
+# [colors.normal]
+# black = "#000000"
+# blue = "#1818b2"
+# cyan = "#18b2b2"
+# green = "#18b218"
+# magenta = "#b218b2"
+# red = "#b21818"
+# white = "#b2b2b2"
+# yellow = "#b26818"
+#
+# [colors.primary]
+# background = "#1f1f1f"
+# bright_foreground = "#ffffff"
+# foreground = "#e3e3e3"
+# # Theme: enfocado_dark
+# # Source:  https://github.com/wuelnerdotexe/vim-enfocado
+#
+# # Default colors
+# [colors.primary]
+# background =  '#181818'
+# foreground =  '#b9b9b9'
+#
+# # Normal colors
+# [colors.normal]
+# black   = '#3b3b3b'
+# red     = '#ed4a46'
+# green   = '#70b433'
+# yellow  = '#dbb32d'
+# blue    = '#368aeb'
+# magenta = '#eb6eb7'
+# cyan    = '#3fc5b7'
+# white   = '#b9b9b9'
+#
+# # Bright colors
+# [colors.bright]
+# black   = '#777777'
+# red     = '#ff5e56'
+# green   = '#83c746'
+# yellow  = '#efc541'
+# blue    = '#4f9cfe'
+# magenta = '#ff81ca'
+# cyan    = '#56d8c9'
+# white   = '#dedede'
+#
+# # based on https//stephango.com/flexoki and https//github.com/kepano/flexoki/tree/main/alacritty
+#
+# # Default colors
+# [colors.primary]
+# background = '#282726'
+# foreground = '#FFFCF0'
+# dim_foreground = '#FFFCF0'
+# bright_foreground = '#FFFCF0'
+#
+# # Cursor colors
+# [colors.cursor]
+# text = '#FFFCF0'
+# cursor = '#FFFCF0'
+#
+# # Normal colors
+# [colors.normal]
+# black = '#100F0F'
+# red = '#AF3029'
+# green = '#66800B'
+# yellow = '#AD8301'
+# blue = '#205EA6'
+# magenta = '#A02F6F'
+# cyan = '#24837B'
+# white = '#FFFCF0'
+#
+# # Bright colors
+# [colors.bright]
+# black = '#100F0F'
+# red = '#D14D41'
+# green = '#879A39'
+# yellow = '#D0A215'
+# blue = '#4385BE'
+# magenta = '#CE5D97'
+# cyan = '#3AA99F'
+# white = '#FFFCF0'
+#
+# # Dim colors
+# [colors.dim]
+# black = '#100F0F'
+# red = '#AF3029'
+# green = '#66800B'
+# yellow = '#AD8301'
+# blue = '#205EA6'
+# magenta = '#A02F6F'
+# cyan = '#24837B'
+# white = '#FFFCF0'
 
 [font]
 builtin_box_drawing = false
@@ -61,3 +167,4 @@ resize_increments = true
 [general]
 live_config_reload = true
 ipc_socket = true
+

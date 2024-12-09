@@ -1,5 +1,5 @@
 
-{ config, lib, pkgs, nixalt, unstable, nixmaster, inputs, ... }:
+{ config, lib, pkgs, nixalt, unstable, nixmaster, outoftree, inputs, ... }:
 
 {
   users.users.redm = {
@@ -11,7 +11,6 @@
     packages = with pkgs; [
       unstable.neovim
 
-      python3
       rclone
       curl
       mise

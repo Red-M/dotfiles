@@ -1,12 +1,15 @@
 
-{ config, lib, pkgs, nixalt, unstable, nixmaster, inputs, ... }:
+{ config, lib, pkgs, nixalt, unstable, nixmaster, outoftree, inputs, ... }:
 
 {
   users.users.redm = {
-    packages = with pkgs; [
-      python3
-      python3Packages.virtualenvwrapper
-      python3Packages.dbus-python
+    packages = with outoftree.pkgs.${pkgs.system}; [
+      python3Optimized
+
+      pyPkgs.pip
+      pyPkgs.cython
+      pyPkgs.virtualenvwrapper
+      pyPkgs.dbus-python
 
     ];
   };
