@@ -78,6 +78,7 @@
     gnupg
     unzip
     pwgen
+    dig
 
     mise
     usage

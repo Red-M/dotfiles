@@ -46,6 +46,9 @@
     libglibutil
 
     kdePackages.sddm-kcm
+    kdePackages.kwallet
+    kdePackages.kwalletmanager
+    kdePackages.kwallet-pam
   ];
 
   hardware = {
