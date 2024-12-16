@@ -35,6 +35,8 @@ return {
   { "saghen/blink.cmp", enabled = false },
   { "snacks.nvim",
     opts = {
+      animate = { enabled = false },
+      chunk = { enabled = false },
       indent = { enabled = false },
       input = { enabled = false },
       notifier = { enabled = false },
