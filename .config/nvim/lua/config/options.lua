@@ -1,4 +1,3 @@
--- vim.g.vscode = true
 vim.opt.number = true
 vim.opt.relativenumber = false
 vim.opt.pumheight = 12
@@ -44,6 +43,7 @@ vim.opt.conceallevel = 0
 -- LazyVim
 vim.g.linebreak = false
 vim.g.trouble_lualine = false
+vim.g.snacks_animate = false
 
 vim.keymap.set("n", ";", "<Nop>", { silent = true, remap = false })
 vim.g.mapleader = ";"
@@ -126,7 +126,4 @@ endfunction
 command! IndentAuto call Indent()
 
 ]])
-
-vim.g.trouble_lualine = false
-vim.g.snacks_animate = false
 
