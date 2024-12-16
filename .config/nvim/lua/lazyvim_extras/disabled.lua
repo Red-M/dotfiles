@@ -32,4 +32,17 @@ return {
   -- { "nvim-treesitter/nvim-treesitter-textobjects", enabled = false },
   { "mason.nvim", enabled = false },
   { "trouble.nvim", enabled = false },
+  { "saghen/blink.cmp", enabled = false },
+  { "snacks.nvim",
+    opts = {
+      indent = { enabled = false },
+      input = { enabled = false },
+      notifier = { enabled = false },
+      scope = { enabled = false },
+      scroll = { enabled = false },
+      statuscolumn = { enabled = false }, -- we set this in options.lua
+      toggle = { map = LazyVim.safe_keymap_set },
+      words = { enabled = false },
+    },
+  },
 }

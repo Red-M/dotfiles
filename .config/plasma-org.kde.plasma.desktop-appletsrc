@@ -164,8 +164,8 @@ Image=/home/redm/git/dotfiles/Pictures/dragon11-supinten.jpg
 SlidePaths=/nix/store/kls40zsrq9dd74innawflbf4ja7ba857-breeze-6.0.5/share/wallpapers/,/run/current-system/sw/share/wallpapers/
 
 [Containments][102]
-ItemGeometries-2560x1440=Applet-105:2176,0,192,352,0;Applet-104:2368,0,192,992,0;
-ItemGeometriesHorizontal=Applet-105:2176,0,192,352,0;Applet-104:2368,0,192,992,0;
+ItemGeometries-2560x1440=Applet-105:2176,0,192,352,0;Applet-104:2368,0,192,1008,0;
+ItemGeometriesHorizontal=Applet-105:2176,0,192,352,0;Applet-104:2368,0,192,1008,0;
 activityId=f16962fe-8fb8-459d-ac55-8ee109611d5f
 formfactor=0
 immutability=1
@@ -189,8 +189,8 @@ title=
 updateRateLimit=500
 
 [Containments][102][Applets][104][Configuration][ConfigDialog]
-DialogHeight=1073
-DialogWidth=1747
+DialogHeight=540
+DialogWidth=720
 
 [Containments][102][Applets][104][Configuration][SensorColors]
 cpu/cpu\requency=237,119,0
@@ -230,7 +230,7 @@ cpu/cpu9/usage=74,237,0
 
 [Containments][102][Applets][104][Configuration][Sensors]
 highPrioritySensorIds=["cpu/cpu\\\\d+/usage"]
-lowPrioritySensorIds=["cpu/all/usage","memory/physical/usedPercent","memory/physical/total","cpu/all/averageFrequency","cpu/all/maximumTemperature","cpu/all/averageTemperature","os/kernel/version"]
+lowPrioritySensorIds=["cpu/all/usage","cpu/all/averageFrequency","memory/physical/usedPercent","memory/physical/total","cpu/all/averageFrequency","cpu/all/maximumTemperature","cpu/all/averageTemperature","os/kernel/version"]
 
 [Containments][102][Applets][104][Configuration][org.kde.ksysguard.linechart][General]
 lineChartFillOpacity=5
@@ -407,6 +407,7 @@ plugin=org.kde.plasma.volume
 PreloadWeight=100
 
 [Containments][33][Applets][35][Configuration][General]
+currentTab=streams
 migrated=true
 showVirtualDevices=true
 
@@ -477,14 +478,14 @@ immutability=1
 plugin=org.kde.plasma.networkmanagement
 
 [Containments][33][Applets][47][Configuration]
-PreloadWeight=0
+PreloadWeight=5
 
 [Containments][33][Applets][48]
 immutability=1
 plugin=org.kde.plasma.bluetooth
 
 [Containments][33][Applets][48][Configuration]
-PreloadWeight=63
+PreloadWeight=88
 
 [Containments][33][Applets][55]
 immutability=1

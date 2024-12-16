@@ -38,6 +38,7 @@ return {
     },
     main = "ibl",
   },
+  { import = "lazyvim.plugins.extras.ui.indent-blankline" },
 
   -- Active indent guide and indent text objects. When you're browsing
   -- code, this highlights the current level of indentation, and animates

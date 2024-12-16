@@ -11,7 +11,7 @@ for cardNumber in ${cardNumbers}; do
     echo "Failed to configure PCM Capture source for ${soundcard}"
   fi
 
-  amixer -c "${cardNumber}" -q sset 'Input Gain Control' 3
+  amixer -c "${cardNumber}" -q sset 'Input Gain Control' 2
 
   if [ $? -eq 0 ]; then
     echo "Input Gain Control set to 3"

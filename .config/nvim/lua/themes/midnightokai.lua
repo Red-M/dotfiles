@@ -285,6 +285,7 @@ return {
             Title = { bold = false },
             Special = { fg = c.base.red },
             SpecialChar = { fg = c.base.red },
+            ["@constructor"] = { fg = c.base.red },
             ["@attribute"] = { fg = c.base.green },
             ["@constructor.python"] = { fg = c.base.orange },
             ["@exception.python"] = { fg = c.base.red, italic = false },

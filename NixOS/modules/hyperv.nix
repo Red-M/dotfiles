@@ -44,6 +44,7 @@
     };
   };
   systemd.services.xrdp.serviceConfig.ExecStart = lib.mkForce "${pkgs.xrdp.outPath}/bin/xrdp --nodaemon --port vsock://-1:3389 --config /etc/xrdp/xrdp.ini";
+  security.pam.services.login.enableKwallet = true;
 
   services.pipewire.extraConfig.pipewire = {
     "80-xrdp" = {
