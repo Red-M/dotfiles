@@ -296,6 +296,7 @@ return {
             ["@function.call"] = { fg = c.base.green, },
             ["@function.call.python"] = { fg = c.base.green, },
             ["@keyword"] = { fg = c.base.red, italic = false},
+            ["@keyword.type"] = { italic = false },
             ["@keyword.cpp"] = { fg = c.base.red, italic = false },
             ["@keyword.function"] = { fg = c.base.cyan, bold = false, italic = false},
             ["@keyword.function.python"] = { fg = c.base.red, italic = false },
