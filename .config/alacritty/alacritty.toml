@@ -11,7 +11,7 @@ text = "#191622"
 # Default colors XTerm
 [colors.primary]
 background = '#000000'
-foreground = '#ffffff'
+foreground = '#dfdfdf'
 
 # Normal colors
 [colors.normal]
@@ -22,7 +22,7 @@ yellow  = '#cdcd00'
 blue    = '#0000ee'
 magenta = '#cd00cd'
 cyan    = '#00cdcd'
-white   = '#e5e5e5'
+white   = '#efefef'
 
 # Bright colors
 [colors.bright]

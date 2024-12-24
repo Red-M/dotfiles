@@ -5,7 +5,7 @@
   users.users.redm = {
     extraGroups = [ "gamemode" ];
     packages = with pkgs; [
-      lutris
+      unstable.lutris
       mangohud
       gamemode
       unstable.gamescope
