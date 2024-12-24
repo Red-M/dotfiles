@@ -1,6 +1,6 @@
 return {
   "nvim-treesitter/nvim-treesitter",
-  --lazy = false,
+  lazy = false,
   --priority = 500,
   build = ":TSUpdate",
   opts = {

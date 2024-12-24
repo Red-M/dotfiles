@@ -1,4 +1,5 @@
 return {
+  { import = "lazyvim.plugins.extras.coding.mini-surround" },
   { import = "lazyvim.plugins.extras.editor.leap" },
   {
     "ggandor/leap.nvim",
@@ -6,7 +7,7 @@ return {
     lazy = false,
     keys = {
       { "x", mode = { "n" }, desc = "Leap to" },
-      { "gs", mode = { "n" }, desc = "Leap from Windows" },
+      { "gl", mode = { "n" }, desc = "Leap from Windows" },
       { "x", mode = { "x", "o" }, desc = "Leap Forward to" },
       { "X", mode = { "x", "o" }, desc = "Leap Backward to" },
     },
@@ -22,7 +23,7 @@ return {
       -- leap.add_default_mappings(true)
       -- vim.keymap.del({ "x", "o" }, "x")
       vim.keymap.set('n',        'x', '<Plug>(leap)')
-      vim.keymap.set('n',        'gs', '<Plug>(leap-from-window)')
+      vim.keymap.set('n',        'gl', '<Plug>(leap-from-window)')
       vim.keymap.set({'x', 'o'}, 'x', '<Plug>(leap-forward)')
       vim.keymap.set({'x', 'o'}, 'X', '<Plug>(leap-backward)')
     end,

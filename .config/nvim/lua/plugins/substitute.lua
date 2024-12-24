@@ -2,7 +2,7 @@ return {
   {
     "gbprod/substitute.nvim",
     branch = "main",
-    -- lazy = false,
+    lazy = false,
     config = function(_, opts)
       local subs = require('substitute')
       subs.setup(opts)
