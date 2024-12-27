@@ -60,8 +60,14 @@
       ## amdvlk: an open-source Vulkan driver from AMD
       # extraPackages = [ unstable.amdvlk ];
       # extraPackages32 = [ unstable.driversi686Linux.amdvlk ];
-      extraPackages = [ pkgs.libva-utils ];
-      extraPackages32 = [ pkgs.libva-utils ];
+      extraPackages = with pkgs; [
+        libva-utils
+        amdvlk
+      ];
+      extraPackages32 = with pkgs; [
+        libva-utils
+        driversi686Linux.amdvlk
+      ];
     };
     amdgpu.amdvlk = {
       enable = true;
