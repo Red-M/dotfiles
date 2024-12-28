@@ -11,12 +11,16 @@
       unstable.gamescope
       steamtinkerlaunch
       yad
-      r2modman
+
       moonlight-qt
+
+      r2modman
       r2mod_cli
       unstable.nexusmods-app-unfree
 
       bottles
+
+      xboxdrv
     ];
   };
 
@@ -66,9 +70,8 @@
       extraPackages32 = config.hardware.graphics.extraPackages;
     };
 
-    # xone.enable = true;
-    # xpadneo.enable = true;
-    xpadneo.enable = false; # until the 6.12 fixed patch is in nixbeta, as the 6.12 fixed version is only in master atm
+    xone.enable = true;
+    xpadneo.enable = true;
     steam-hardware.enable = true;
   };
 

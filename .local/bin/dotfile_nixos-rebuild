@@ -1,4 +1,4 @@
 #!/bin/bash
-rsync --delete -a --progress --exclude=flake.lock --exclude=./hardware-configuration.nix /home/redm/git/dotfiles/NixOS/ /etc/nixos/
+rsync --delete -a --progress --exclude=flake.lock --exclude=hardware-configuration.nix /home/redm/git/dotfiles/NixOS/ /etc/nixos/
 nixos-rebuild ${@}
 
