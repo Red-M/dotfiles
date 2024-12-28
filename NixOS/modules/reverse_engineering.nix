@@ -12,6 +12,19 @@
         ghidra-delinker-extension
         ghidra-golanganalyzerextension
       ]))
+
+      gdb
+      gdbgui
+      gf
+      cgdb
+      seer
+      xxgdb
+      pwndbg
+      gef
+      kdbg
+      radare2
+      iaito
+      valgrind
     ];
   };
 }
