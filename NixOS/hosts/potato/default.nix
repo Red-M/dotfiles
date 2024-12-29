@@ -8,7 +8,7 @@
     ../../modules/amd_ucode.nix
     ../../modules/amdgpu.nix
     ../../modules/amdgpu_oc.nix
-    ../../modules/cad.nix
+    ../../modules/cad
     ../../modules/distrobox.nix
     ../../modules/fans.nix
     ../../modules/fingerprint.nix

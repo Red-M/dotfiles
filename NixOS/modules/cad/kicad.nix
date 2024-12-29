@@ -4,8 +4,9 @@
 {
   users.users.redm = {
     packages = with pkgs; [
-      freecad
-      # kicad # broken on 24.11
+      kicad
+      easyeda2kicad
+      turbocase
     ];
   };
 }
