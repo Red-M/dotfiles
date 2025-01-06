@@ -5,6 +5,7 @@
   users.users.redm = {
     packages = with pkgs; [
       arduino
+      arduino-cli
     ];
   };
   # programs = {

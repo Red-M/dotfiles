@@ -164,6 +164,9 @@ dynamic_padding = false
 dynamic_title = true
 resize_increments = true
 
+# [debug]
+# render_timer=true
+#
 [general]
 live_config_reload = true
 ipc_socket = true

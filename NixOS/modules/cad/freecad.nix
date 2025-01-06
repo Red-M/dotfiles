@@ -4,7 +4,8 @@
 {
   users.users.redm = {
     packages = with pkgs; [
-      freecad
+      (lib.mkIf (config.services.displayManager.sddm.wayland.enable == true) freecad-wayland)
+      (lib.mkIf (config.services.displayManager.sddm.wayland.enable == false) freecad)
     ];
   };
 }

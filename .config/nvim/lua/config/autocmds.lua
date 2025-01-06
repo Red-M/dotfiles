@@ -97,3 +97,4 @@ vim.api.nvim_create_autocmd({'BufReadPost','BufEnter'}, {
     -- vim.api.nvim_exec([[silent GuessIndent]], false)
   end
 })
+

@@ -1,6 +1,5 @@
 jq latest
 kubectl 1.28.7
-neovim stable
 sops latest
 yq latest
 usage latest

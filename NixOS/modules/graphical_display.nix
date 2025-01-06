@@ -111,6 +111,7 @@
 
       deluge
       remmina
+      scrcpy
     ];
   };
 

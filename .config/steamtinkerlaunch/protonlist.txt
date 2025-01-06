@@ -1,2 +1,3 @@
 /home/redm/.config/steamtinkerlaunch/proton/custom/GE-Proton9-16/proton
 /home/redm/.config/steamtinkerlaunch/proton/custom/GE-Proton8-32/proton
+/home/redm/.config/steamtinkerlaunch/proton/custom/GE-Proton9-22/proton

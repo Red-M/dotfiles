@@ -27,6 +27,7 @@
     ../../modules/my_user.nix
     ../../modules/nix.nix
     ../../modules/obs.nix
+    ../../modules/patching/qdoled.nix
     ../../modules/reverse_engineering.nix
     ../../modules/rgb.nix
     ../../modules/serial_devices.nix
@@ -44,6 +45,7 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+
   ];
 
   # Some programs need SUID wrappers, can be configured further or are

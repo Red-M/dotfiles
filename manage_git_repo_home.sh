@@ -69,7 +69,7 @@ function _maintain_path() {
             \rm -rf "${home_target}"
             echo "Deleted: ${home_target}"
           else
-            echo "Would have deleted: ${home_target}"
+            echo "Would have deleted, but delete mode is disabled: ${home_target}"
           fi
         fi
       fi
@@ -120,7 +120,17 @@ maintain_path .local/share/fonts/*.{ttf,ttc}
 maintain_path .kde/share/config/breezerc
 maintain_path .kde/share/apps/color-schemes
 
-maintain_path .config/mise
+if [ $(grep -E '^NAME=' /etc/os-release) == "NAME=NixOS" ]; then
+  if [ -L ~/".config/mise" ]; then
+    \rm ~/".config/mise"
+  fi
+  maintain_path .config/mise/nixos_config.toml
+  if [ ! -L ~/".config/mise/config.toml" ]; then
+    ln -s "${script_dir_path}/.config/mise/nixos_config.toml" ~/.config/mise/config.toml
+  fi
+else
+  maintain_path .config/mise
+fi
 maintain_path .tool-versions
 maintain_path .config/MangoHud
 maintain_path .config/gamemode.ini
