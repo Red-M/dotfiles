@@ -8,12 +8,12 @@
 
   users.users.redm = {
     packages = with pkgs; [
-      python3Full
+      python3Optimized
 
-      python3Full.pkgs.pip
-      python3Full.pkgs.cython
-      python3Full.pkgs.virtualenvwrapper
-      python3Full.pkgs.dbus-python
+      python3Optimized.pkgs.pip
+      python3Optimized.pkgs.cython
+      python3Optimized.pkgs.virtualenvwrapper
+      python3Optimized.pkgs.dbus-python
 
     ];
     # packages = with outoftree.pkgs.${pkgs.system}; [

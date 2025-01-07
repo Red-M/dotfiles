@@ -93,6 +93,7 @@
     psmisc
     pciutils
     usbutils
+    lsof
     qdirstat
 
     libgcc
