@@ -8,6 +8,11 @@
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-master.url = "github:NixOS/nixpkgs/master";
 
+    lix-module = {
+      url = "https://git.lix.systems/lix-project/nixos-module/archive/2.91.1-2.tar.gz";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -29,10 +34,13 @@
     };
   };
 
-  outputs = { self, nixpkgs, nixpkgs-alt, nixpkgs-unstable, home-manager, nixos-hardware, nur, outoftree, ... }@inputs:
+  outputs = { self, nixpkgs, nixpkgs-alt, nixpkgs-unstable, lix-module, home-manager, nixos-hardware, nur, outoftree, ... }@inputs:
     let inherit (self);
-    mkNixOS = {modules, system, ...}: nixpkgs.lib.nixosSystem rec {
-      inherit modules system;
+    mkNixOS = {host_modules, system, ...}: nixpkgs.lib.nixosSystem rec {
+      inherit system;
+      modules = [
+        lix-module.nixosModules.default
+      ] ++ host_modules;
       specialArgs = {
         inherit inputs system nixos-hardware outoftree;
         nixalt = import nixpkgs-alt {
@@ -58,7 +66,7 @@
     nixosConfigurations = {
       potato = mkNixOS rec {
         system = "x86_64-linux";
-        modules = [
+        host_modules = [
           ./hosts/potato
         ];
       };
@@ -72,7 +80,7 @@
 
       redbox = mkNixOS rec {
         system = "x86_64-linux";
-        modules = [
+        host_modules = [
           ./hosts/redbox
         ];
       };

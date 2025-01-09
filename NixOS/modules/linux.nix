@@ -115,7 +115,7 @@
 
     mono
 
-    outoftree.pkgs.${pkgs.system}.python3Optimized
+    python3Optimized
 
     firmware-updater
   ];
