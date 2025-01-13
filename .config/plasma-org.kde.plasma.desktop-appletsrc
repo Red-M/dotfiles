@@ -11,15 +11,20 @@ ItemGeometriesHorizontal=
 activityId=f16962fe-8fb8-459d-ac55-8ee109611d5f
 formfactor=0
 immutability=1
-lastScreen=0
+lastScreen=2
 location=0
 plugin=org.kde.plasma.folder
 wallpaperplugin=org.kde.image
 
+[Containments][101][ConfigDialog]
+DialogHeight=540
+DialogWidth=720
+
 [Containments][101][Wallpaper][org.kde.image][General]
 Color=0,0,0
 FillMode=1
-Image=/home/redm/git/dotfiles/Pictures/dragon11-supinten.jpg
+Image=/home/redm/git/dotfiles/Pictures/BnWM8x6.jpg
+PreviewImage=/home/redm/git/dotfiles/Pictures/BnWM8x6.jpg
 SlidePaths=/nix/store/kls40zsrq9dd74innawflbf4ja7ba857-breeze-6.0.5/share/wallpapers/,/run/current-system/sw/share/wallpapers/
 
 [Containments][102]
@@ -134,6 +139,10 @@ lineChartFillOpacity=5
 lineChartSmooth=false
 rangeAutoY=false
 
+[Containments][102][ConfigDialog]
+DialogHeight=540
+DialogWidth=720
+
 [Containments][102][General]
 ToolBoxButtonState=topcenter
 ToolBoxButtonX=716
@@ -143,21 +152,29 @@ ToolBoxButtonY=40
 Color=0,0,0
 FillMode=1
 Image=/home/redm/git/dotfiles/Pictures/1440-lock.png
+PreviewImage=/home/redm/git/dotfiles/Pictures/1440-lock.png
 SlidePaths=/nix/store/kls40zsrq9dd74innawflbf4ja7ba857-breeze-6.0.5/share/wallpapers/,/run/current-system/sw/share/wallpapers/
 
 [Containments][103]
+ItemGeometries-2560x1440=
+ItemGeometriesHorizontal=
 activityId=f16962fe-8fb8-459d-ac55-8ee109611d5f
 formfactor=0
 immutability=1
-lastScreen=2
+lastScreen=0
 location=0
 plugin=org.kde.plasma.folder
 wallpaperplugin=org.kde.image
 
+[Containments][103][ConfigDialog]
+DialogHeight=540
+DialogWidth=720
+
 [Containments][103][Wallpaper][org.kde.image][General]
 Color=0,0,0
 FillMode=1
-Image=/home/redm/git/dotfiles/Pictures/BnWM8x6.jpg
+Image=/home/redm/git/dotfiles/Pictures/dragon11-supinten.jpg
+PreviewImage=/home/redm/git/dotfiles/Pictures/dragon11-supinten.jpg
 SlidePaths=/nix/store/kls40zsrq9dd74innawflbf4ja7ba857-breeze-6.0.5/share/wallpapers/,/run/current-system/sw/share/wallpapers/
 
 [Containments][28]
@@ -266,6 +283,7 @@ plugin=org.kde.plasma.volume
 PreloadWeight=100
 
 [Containments][33][Applets][35][Configuration][General]
+currentTab=streams
 migrated=true
 showVirtualDevices=true
 
@@ -343,7 +361,7 @@ immutability=1
 plugin=org.kde.plasma.bluetooth
 
 [Containments][33][Applets][48][Configuration]
-PreloadWeight=84
+PreloadWeight=76
 
 [Containments][33][Applets][55]
 immutability=1

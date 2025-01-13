@@ -159,7 +159,7 @@
             "webrtc.experimental_agc" = false;
             "webrtc.experimental_ns" = true;
           };
-          "audio.channels" = 2;
+          "audio.channels" = 1;
           "source.props" = {
             "node.name" = "echo_cancel.echoless";
             "node.autoconnect" = false;
@@ -186,7 +186,7 @@
               "type" = "ladspa";
               "name" = "rnnoise";
               "plugin" = "${pkgs.rnnoise-plugin}/lib/ladspa/librnnoise_ladspa.so";
-              "label" = "noise_suppressor_stereo";
+              "label" = "noise_suppressor_mono";
               "control" = {
                 "VAD Threshold (%)" = 55.0;
                 "VAD Grace Period (ms)" = 350;
@@ -205,7 +205,7 @@
           "playback.props" = {
             "node.name" = "noise_cancel.playback";
             "node.description" = "Noise Cancel Playback";
-            # "media.class" = "Audio/Source";
+            "media.class" = "Audio/Source";
             "audio.rate" = 48000;
             "node.autoconnect" = false;
           };
@@ -240,7 +240,7 @@
             "webrtc.experimental_agc" = true;
             "webrtc.experimental_ns" = false;
           };
-          "audio.channels" = 2;
+          "audio.channels" = 1;
           "capture.props" = {
             # "node.name" = "capture.rnnoise_source";
             # "node.passive" = true;

@@ -73,7 +73,7 @@
 
       redm = mkNixOS rec {
         system = "x86_64-linux";
-        modules = [
+        host_modules = [
           ./hosts/redm
         ];
       };
