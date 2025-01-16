@@ -11,12 +11,12 @@ Index: freetype-2.10.0/src/smooth/ftsmooth.c
 -    sub[1].y = 0;
 -    sub[2].x = 21;
 -    sub[2].y = 0;
-+    sub[0].x = -18;
-+    sub[0].y = -11;
-+    sub[1].x = 2;
-+    sub[1].y = 22;
++    sub[0].x = -16;
++    sub[0].y = -16;
++    sub[1].x = 0;
++    sub[1].y = 16;
 +    sub[2].x = 16;
-+    sub[2].y = -11;
++    sub[2].y = -16;
 
      render->clazz->raster_class->raster_reset( render->raster, NULL, 0 );
 

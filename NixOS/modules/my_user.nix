@@ -22,6 +22,7 @@
       wget
       neofetch
       inetutils
+      ipcalc
     ];
   };
 

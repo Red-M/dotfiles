@@ -9,10 +9,12 @@
           ./patches/freetype/0004-QD-OLED-subpixel.patch
           # ./patches/freetype/QD-OLED-lcdfilter.patch
         ];
-        useEncumberedCode = true;
+        useEncumberedCode = false;
       });
     }
   )];
+
+  environment.etc."custom_packages/freetype_qdoled".text = "${pkgs.freetype_qdoled}";
 
   environment.systemPackages = with pkgs; [
     freetype_qdoled

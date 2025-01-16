@@ -18,6 +18,10 @@ export SCRCPY_SERVER_PATH=~/.local/bin/scrcpy-server
 export SciTE_USERHOME=~
 export SciTE_HOME=$(readlink -f ~/.scite || echo ~/.scite)
 
+if [ -f /etc/custom_packages/freetype_qdoled ]; then
+  export LD_LIBRARY_PATH="$(cat /etc/custom_packages/freetype_qdoled)/lib:${LD_LIBRARY_PATH}"
+fi
+
 if [[ -f ~/ssh_keys.sh && (-S /run/user/1000/keyring/ssh || -n $DISPLAY) ]]; then
   export SSH_AUTH_SOCK=/run/user/1000/keyring/ssh
 fi

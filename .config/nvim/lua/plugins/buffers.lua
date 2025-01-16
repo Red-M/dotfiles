@@ -24,7 +24,7 @@ return {
         buffer_close_icon = vim.g.my_icons["close"],
         close_icon = vim.g.my_icons["close"],
         modified_icon = vim.g.my_icons["modified"],
-        -- stylua: ignore
+        show_buffer_icons = true,
         close_command = function(n) require("mini.bufremove").delete(n, false) end,
         -- stylua: ignore
         right_mouse_command = function(n) require("mini.bufremove").delete(n, false) end,
@@ -38,6 +38,7 @@ return {
           --   },
         },
       },
+      show_buffer_icons = true,
     },
     keys = {
       { "<C-1>", "<Cmd>BufferLineGoToBuffer 1<CR>", desc = "Go to buffer 1" },
