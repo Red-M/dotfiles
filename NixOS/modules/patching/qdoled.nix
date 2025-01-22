@@ -10,6 +10,9 @@
         ];
         useEncumberedCode = true;
       });
+      google-chrome = pkgprev.google-chrome.override {
+        freetype = pkgfinal.freetype_qdoled;
+      };
     }
   )];
 
@@ -17,6 +20,10 @@
 
   environment.systemPackages = with pkgs; [
     freetype_qdoled
+  ];
+
+  environment.sessionVariables.LD_LIBRARY_PATH = [
+    "${pkgs.freetype_qdoled}/lib"
   ];
 
 }

@@ -2,9 +2,9 @@
 # Source global definitions (if any)
 #-------------------------------------------------------------
 
-if [ -f /etc/bashrc ]; then
-  . /etc/bashrc # --> Read /etc/bashrc, if present.
-fi
+# if [ -f /etc/bashrc ]; then
+#   . /etc/bashrc # --> Read /etc/bashrc, if present.
+# fi
 
 export HISTSIZE=4096
 export HISTFILESIZE=32768
@@ -15,31 +15,27 @@ export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 export SCRCPY_SERVER_PATH=~/.local/bin/scrcpy-server
 
-export SciTE_USERHOME=~
-export SciTE_HOME=$(readlink -f ~/.scite || echo ~/.scite)
-
-if [ -f /etc/custom_packages/freetype_qdoled ]; then
-  export LD_LIBRARY_PATH="$(cat /etc/custom_packages/freetype_qdoled)/lib:${LD_LIBRARY_PATH}"
-fi
+#export SciTE_USERHOME=~
+#export SciTE_HOME=$(readlink -f ~/.scite || echo ~/.scite)
 
 if [[ -f ~/ssh_keys.sh && (-S /run/user/1000/keyring/ssh || -n $DISPLAY) ]]; then
   export SSH_AUTH_SOCK=/run/user/1000/keyring/ssh
 fi
 
-if [ -d "$HOME/.local/share/mise" ]; then
-  export PATH="$HOME/.local/share/mise/shims:$PATH"
+if [ -n "$(command -v mise 2>&1 >/dev/null)" ]; then
+  export PATH="${HOME}/.local/share/mise/shims:${PATH}"
   . <(mise completion bash)
 fi
 
-export KREW_ROOT=${KREW_ROOT:-$HOME/.krew}
+export KREW_ROOT=${KREW_ROOT:-${HOME}/.krew}
 if [[ -e "${KREW_ROOT}" && ! -f "${KREW_ROOT}" ]]; then
   export KREW_ROOT=${KREW_ROOT}
-  export PATH="${KREW_ROOT}/bin:${PATH}"
+  export PATH="${PATH}:${KREW_ROOT}/bin"
 fi
 
-if [ -d "$HOME/.pyenv" ]; then
-  export PYENV_ROOT="$HOME/.pyenv"
-  command -v pyenv > /dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+if [ -d "${HOME}/.pyenv" ]; then
+  export PYENV_ROOT="${HOME}/.pyenv"
+  command -v pyenv > /dev/null || export PATH="${PATH}:${PYENV_ROOT}/bin"
   eval "$(pyenv init -)"
   if [ -d "$(pyenv root)/plugins/pyenv-virtualenv" ]; then
     eval "$(pyenv virtualenv-init -)"
@@ -523,10 +519,6 @@ function te() { # wrapper around xemacs/gnuserv
     (xemacs "$@" &)
   fi
 }
-
-function soffice() { command soffice "$@" & }
-function firefox() { command firefox "$@" & }
-function xpdf() { command xpdf "$@" & }
 
 #-------------------------------------------------------------
 # File & strings related functions:

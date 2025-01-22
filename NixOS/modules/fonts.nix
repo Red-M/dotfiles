@@ -6,6 +6,11 @@
     fontDir.enable = true;
     fontconfig = {
       cache32Bit = true;
+      antialias = true;
+      hinting.enable = true;
+      subpixel.lcdfilter = "default";
+      subpixel.rgba = "rgb";
+      includeUserConf =  true;
       defaultFonts.monospace = [
         "Cozette Vector NFM"
         "Cozette Vector NF"

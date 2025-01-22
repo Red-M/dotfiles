@@ -9,21 +9,26 @@
       kdePackages.kcalc
       kdePackages.kate
 
-      mpv
+      # mpv
       open-in-mpv
       # play-with-mpv
       libplacebo
-      mpvScripts.uosc
-      mpvScripts.thumbfast
-      mpvScripts.sponsorblock
-      mpvScripts.quality-menu
-      mpvScripts.mpv-cheatsheet
-      mpvScripts.reload
-      mpvScripts.modernx
-      mpvScripts.autoload
-      mpvScripts.chapterskip
-      mpvScripts.blacklistExtensions
-      mpvScripts.mpv-playlistmanager
+      (mpv-unwrapped.wrapper {
+        mpv = mpv-unwrapped;
+        scripts = [
+          mpvScripts.uosc
+          mpvScripts.thumbfast
+          mpvScripts.sponsorblock
+          mpvScripts.quality-menu
+          mpvScripts.mpv-cheatsheet
+          mpvScripts.reload
+          mpvScripts.modernx
+          mpvScripts.autoload
+          mpvScripts.chapterskip
+          mpvScripts.blacklistExtensions
+          mpvScripts.mpv-playlistmanager
+        ];
+      })
       mpvpaper
 
       krita
