@@ -98,6 +98,24 @@
           ./hosts/gir5
         ];
       };
+      gir6 = mkNixOS rec {
+        system = "x86_64-linux";
+        host_modules = [
+          ./hosts/gir6
+        ];
+      };
+      gir7 = mkNixOS rec {
+        system = "x86_64-linux";
+        host_modules = [
+          ./hosts/gir7
+        ];
+      };
+      gir8 = mkNixOS rec {
+        system = "x86_64-linux";
+        host_modules = [
+          ./hosts/gir8
+        ];
+      };
     };
   };
 }
