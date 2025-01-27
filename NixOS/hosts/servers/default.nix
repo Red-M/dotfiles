@@ -10,6 +10,7 @@
     # ../../modules/my_user.nix
     ../../modules/nix.nix
     ../../modules/ssh_server.nix
+    ../../modules/langs/python.nix
   ];
 
 }
