@@ -89,31 +89,31 @@
       gir3 = mkNixOS rec {
         system = "x86_64-linux";
         host_modules = [
-          ./hosts/gir3
+          ./hosts/servers/gir3
         ];
       };
       gir5 = mkNixOS rec {
         system = "x86_64-linux";
         host_modules = [
-          ./hosts/gir5
+          ./hosts/servers/gir5
         ];
       };
       gir6 = mkNixOS rec {
         system = "x86_64-linux";
         host_modules = [
-          ./hosts/gir6
+          ./hosts/servers/gir6
         ];
       };
       gir7 = mkNixOS rec {
         system = "x86_64-linux";
         host_modules = [
-          ./hosts/gir7
+          ./hosts/servers/gir7
         ];
       };
       gir8 = mkNixOS rec {
         system = "x86_64-linux";
         host_modules = [
-          ./hosts/gir8
+          ./hosts/servers/gir8
         ];
       };
     };

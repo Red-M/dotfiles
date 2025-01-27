@@ -6,7 +6,7 @@
     ./hardware-configuration.nix
     ./networking.nix # generated at runtime by nixos-infect
 
-    ../servers.nix
+    ../../servers
   ];
 
   boot.tmp.cleanOnBoot = true;
