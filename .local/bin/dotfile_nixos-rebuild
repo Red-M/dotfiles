@@ -1,4 +1,12 @@
 #!/bin/bash
-rsync --delete -a --progress --exclude=flake.lock --exclude=/hardware-configuration.nix /home/redm/git/dotfiles/NixOS/ /etc/nixos/
+
+if [ -d /home/redm/git/dotfiles ];  then
+  nixos_conf=/home/redm/git/dotfiles
+else
+  nixos_conf=~/git/dotfiles
+fi
+
+rsync --delete -a --progress --exclude=flake.lock --exclude=/hardware-configuration.nix "${nixos_conf}/NixOS/" /etc/nixos/
+
 nixos-rebuild ${@}
 
