@@ -7,7 +7,7 @@
     ../../modules/kernel.nix
     ../../modules/linux.nix
     ../../modules/locale.nix
-    # ../../modules/my_user.nix
+    ../../modules/my_user.nix
     ../../modules/nix.nix
     ../../modules/ssh_server.nix
     ../../modules/langs/python.nix
