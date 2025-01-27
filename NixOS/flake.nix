@@ -84,6 +84,20 @@
           ./hosts/redbox
         ];
       };
+
+
+      gir3 = mkNixOS rec {
+        system = "x86_64-linux";
+        host_modules = [
+          ./hosts/gir3
+        ];
+      };
+      gir5 = mkNixOS rec {
+        system = "x86_64-linux";
+        host_modules = [
+          ./hosts/gir5
+        ];
+      };
     };
   };
 }
