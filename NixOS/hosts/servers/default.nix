@@ -3,7 +3,6 @@
 
 {
   imports = [
-    ../../modules/grub.nix
     ../../modules/kernel.nix
     ../../modules/linux.nix
     ../../modules/locale.nix
@@ -11,6 +10,11 @@
     ../../modules/nix.nix
     ../../modules/ssh_server.nix
     ../../modules/langs/python.nix
+  ];
+
+  environment.systemPackages = with pkgs; [
+    outoftree.packages.${pkgs.system}.dropbox
+    outoftree.packages.${pkgs.system}.dropbox-cli
   ];
 
 }
