@@ -11,7 +11,6 @@
     nixpkgs-alt.url = "github:NixOS/nixpkgs/nixos-24.11";
 
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
-    nixpkgs-master.url = "github:NixOS/nixpkgs/master";
 
     lix-module = {
       url = "https://git.lix.systems/lix-project/nixos-module/archive/2.92.0.tar.gz";
@@ -53,10 +52,6 @@
           config.allowUnfree = true;
         };
         unstable = import nixpkgs-unstable {
-          inherit inputs system;
-          config.allowUnfree = true;
-        };
-        nixmaster = import inputs.nixpkgs-master {
           inherit inputs system;
           config.allowUnfree = true;
         };

@@ -1,5 +1,5 @@
 
-{ config, lib, pkgs, nixalt, unstable, nixmaster, outoftree, inputs, ... }:
+{ config, lib, pkgs, nixalt, unstable, outoftree, inputs, ... }:
 
 {
   services.envfs.enable = true;

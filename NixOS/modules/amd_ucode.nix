@@ -1,4 +1,4 @@
-{ config, lib, pkgs, nixalt, unstable, nixmaster, outoftree, inputs, ... }:
+{ config, lib, pkgs, nixalt, unstable, outoftree, inputs, ... }:
 {
   imports = [ inputs.ucodenix.nixosModules.default ];
 
