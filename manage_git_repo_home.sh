@@ -108,7 +108,7 @@ maintain_path .scite
 maintain_path .SciTEUser.properties
 
 maintain_path .local/{bin/*,etc}
-maintain_path .local/share/{bash-completion,color-schemes,konsole,plasma*}
+maintain_path .local/share/{bash-completion,color-schemes,konsole,plasma*,nix}
 maintain_path .local/share/fonts/*.ttf
 
 maintain_path .config/{font*,htop,kdedefaults,mpv,xsettingsd}

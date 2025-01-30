@@ -6,7 +6,7 @@
   outputs = {self, nixpkgs, ...}@inputs: let
     forAllSys = nixpkgs.lib.genAttrs nixpkgs.lib.platforms.all;
   in {
-    packages = forAllSys (system: let
+    pkgs = forAllSys (system: let
       pkgs = import nixpkgs {
         inherit system;
         config.allowUnfree = true;
