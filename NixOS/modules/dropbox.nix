@@ -15,7 +15,7 @@
     wants = ["multi-user.target"];
     serviceConfig = {
       ExecStart = "${lib.getBin outoftree.pkgs.${pkgs.system}.dropbox}/bin/dropbox";
-      ExecReload = "${lib.getBin pkgs.coreutils}/bin/kill -HUP $MAINPID";
+      ExecReload = "${lib.getBin pkgs.coreutils}/bin/kill -TERM $MAINPID";
       KillMode = "control-group";
       Restart = "on-failure";
       PrivateTmp = true;
