@@ -62,6 +62,7 @@
       };
 
     };
+    forAllSys = nixpkgs.lib.genAttrs nixpkgs.lib.platforms.all;
   in {
     nixosConfigurations = {
       potato = mkNixOS rec {
@@ -117,6 +118,16 @@
         ];
       };
     };
+
+    packages = forAllSys (system: let
+      pkgs = import nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+      };
+    in {
+      redserv = outoftree.pkgs.${pkgs.system}.redserv;
+    });
+
   };
 }
 

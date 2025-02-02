@@ -27,10 +27,22 @@
   programs = {
     gamescope = {
       enable = true;
-      # capSysNice = true;
+      capSysNice = true;
       package = unstable.gamescope;
     };
-    gamemode.enable = true;
+    gamemode = {
+      enable = true;
+      settings = {
+        general = {
+          renice = 10;
+        };
+        # gpu = {
+        #   apply_gpu_optimisations = "accept-responsibility";
+        #   gpu_device = 1;
+        #   amd_performance_level = "high";
+        # };
+      };
+    };
     steam = {
       enable = true;
       # gamescopeSession.enable = true;
@@ -168,5 +180,82 @@
     #   };
     # };
   };
+  security.polkit.extraConfig = ''
+    polkit.addRule(function (action, subject) {
+      if ((action.id == "com.feralinteractive.GameMode.governor-helper" ||
+        action.id == "com.feralinteractive.GameMode.gpu-helper" ||
+        action.id == "com.feralinteractive.GameMode.cpu-helper" ||
+        action.id == "com.feralinteractive.GameMode.procsys-helper") &&
+        subject.isInGroup("gamemode"))
+      {
+        return polkit.Result.YES;
+      }
+    });
+  '';
+
+  environment.etc."polkit-1/actions/com.feralinteractive.GameMode.policy".text = ''
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE policyconfig PUBLIC
+ "-//freedesktop//DTD PolicyKit Policy Configuration 1.0//EN"
+ "http://www.freedesktop.org/standards/PolicyKit/1.0/policyconfig.dtd">
+<policyconfig>
+
+  <!--
+    Copyright (c) 2017-2019, Feral Interactive
+    All rights reserved.
+  -->
+
+  <vendor>Feral GameMode Activation</vendor>
+  <vendor_url>http://www.feralinteractive.com</vendor_url>
+
+  <action id="com.feralinteractive.GameMode.governor-helper">
+    <description>Modify the CPU governor</description>
+    <message>Authentication is required to modify the CPU governor</message>
+    <defaults>
+      <allow_any>no</allow_any>
+      <allow_inactive>no</allow_inactive>
+      <allow_active>no</allow_active>
+    </defaults>
+    <annotate key="org.freedesktop.policykit.exec.path">${pkgs.gamemode}/libexec/cpugovctl</annotate>
+  </action>
+
+  <action id="com.feralinteractive.GameMode.gpu-helper">
+    <description>Modify the GPU clock states</description>
+    <message>Authentication is required to modify the GPU clock states</message>
+    <defaults>
+      <allow_any>no</allow_any>
+      <allow_inactive>no</allow_inactive>
+      <allow_active>no</allow_active>
+    </defaults>
+    <annotate key="org.freedesktop.policykit.exec.path">${pkgs.gamemode}/libexec/gpuclockctl</annotate>
+    <annotate key="org.freedesktop.policykit.exec.allow_gui">true</annotate>
+  </action>
+
+  <action id="com.feralinteractive.GameMode.cpu-helper">
+    <description>Modify the CPU core states</description>
+    <message>Authentication is required to modify the CPU core states</message>
+    <defaults>
+      <allow_any>no</allow_any>
+      <allow_inactive>no</allow_inactive>
+      <allow_active>no</allow_active>
+    </defaults>
+    <annotate key="org.freedesktop.policykit.exec.path">${pkgs.gamemode}/libexec/cpucorectl</annotate>
+    <annotate key="org.freedesktop.policykit.exec.allow_gui">true</annotate>
+  </action>
+
+  <action id="com.feralinteractive.GameMode.procsys-helper">
+    <description>Modify the /proc/sys values</description>
+    <message>Authentication is required to modify the /proc/sys/ values</message>
+    <defaults>
+      <allow_any>no</allow_any>
+      <allow_inactive>no</allow_inactive>
+      <allow_active>no</allow_active>
+    </defaults>
+    <annotate key="org.freedesktop.policykit.exec.path">${pkgs.gamemode}/libexec/procsysctl</annotate>
+    <annotate key="org.freedesktop.policykit.exec.allow_gui">true</annotate>
+  </action>
+</policyconfig>
+  '';
+
 }
 

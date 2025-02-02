@@ -10,9 +10,9 @@
         ];
         useEncumberedCode = true;
       });
-      google-chrome = pkgprev.google-chrome.override {
-        freetype = pkgfinal.freetype_qdoled;
-      };
+      # google-chrome = pkgprev.google-chrome.override {
+      #   freetype = pkgfinal.freetype_qdoled;
+      # };
     }
   )];
 

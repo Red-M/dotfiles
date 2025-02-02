@@ -45,6 +45,7 @@
 
   environment.systemPackages = with pkgs; [
     fontconfig
+    font-config-info
 
   ];
 }

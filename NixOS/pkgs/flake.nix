@@ -1,4 +1,5 @@
 {
+  description = "Out Of Tree";
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
   };
@@ -16,13 +17,16 @@
         enableOptimizations = true;
         reproducibleBuild = false;
       };
-      pyPkgs = self.packages.${system}.python3Optimized.pkgs;
+      pyPkgs = self.pkgs.${system}.python3Optimized.pkgs;
 
       dropbox = pkgs.callPackage ./dropbox {};
-      dropbox-cli = pkgs.callPackage ./dropbox/cli.nix { dropbox = self.packages.${system}.dropbox; };
+      dropbox-cli = pkgs.callPackage ./dropbox/cli.nix { dropbox = self.pkgs.${system}.dropbox; };
 
       pipewire-module-xrdp = pkgs.callPackage ./pipewire-module-xrdp {};
+      redserv = pkgs.callPackage ./redserv {};
     });
+    overlays = {};
+
   };
 }
 

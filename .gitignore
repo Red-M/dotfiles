@@ -37,6 +37,8 @@
 **.log
 **/logs/
 
+NixOS/result
+NixOS/flake.lock
 !**/.keep_me
 
 

@@ -10,12 +10,20 @@
     ../../modules/nix.nix
     ../../modules/ssh_server.nix
     ../../modules/langs/python.nix
+    ../../modules/dropbox.nix
+    ../../modules/redserv.nix
   ];
 
   environment.systemPackages = with pkgs; [
-    outoftree.packages.${pkgs.system}.dropbox
-    outoftree.packages.${pkgs.system}.dropbox-cli
   ];
+
+  services.openssh.settings  = {
+    PasswordAuthentication = false;
+    PermitRootLogin = "prohibit-password";
+  };
+
+  systemd.services.dropbox.enable = true;
+  systemd.services.redserv.enable = true;
 
 }
 

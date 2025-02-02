@@ -10,6 +10,7 @@
     ../../modules/amdgpu_oc.nix
     ../../modules/cad
     ../../modules/distrobox.nix
+    ../../modules/dropbox.nix
     ../../modules/fans.nix
     ../../modules/fingerprint.nix
     ../../modules/firmware.nix

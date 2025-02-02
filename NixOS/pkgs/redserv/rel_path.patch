@@ -1,0 +1,54 @@
+diff --git a/webserver3.py b/webserver3.py
+index 0c09118..441dbd9 100644
+--- a/webserver3.py
++++ b/webserver3.py
+@@ -22,6 +22,7 @@
+ #  - Logging needs to be replaced with a backgroundtask using: cherrypy.process.plugins.BackgroundTask(interval, function, args=[], kwargs={}, bus=None)
+ #  - Investigate SSL further and see if we can get an A+ instead of A on SSL labs
+ #  - Optimize
++import argparse
+ import cherrypy
+ import os
+ import sys
+@@ -43,6 +44,7 @@ import re
+ import traceback
+ import cgi
+ import gc
++import pathlib
+ from watchdog.observers import Observer as watchdog_observer
+ from watchdog.events import FileSystemEventHandler as watchdog_file_event_handler
+ try:
+@@ -58,16 +60,24 @@ except Exception as e:
+     print('ERROR: Could not load requests library.')
+ 
+ 
++
+ os.chdir('.' or sys.path[0])
+-current_dir = os.path.join(os.getcwd(),os.sep.join(sys.argv[0].split(os.sep)[0:-1]))
+-if current_dir.endswith('.'):
+-    current_dir = current_dir[0:-1]
+-if sys.argv[0].split(os.sep)[-1] in os.listdir(current_dir):
++lib_dir = os.path.join(os.getcwd(),os.sep.join(sys.argv[0].split(os.sep)[0:-1]))
++if lib_dir.endswith('.'):
++    lib_dir = lib_dir[0:-1]
++if sys.argv[0].split(os.sep)[-1] in os.listdir(lib_dir):
+     print('INFO: Found webserver path')
++    sys.path.insert(1, lib_dir)
+ else:
+     print('INFO: Bad web server path')
+     exit()
+ 
++parser = argparse.ArgumentParser()
++parser.add_argument("webroot",type=pathlib.Path,nargs='?',default=lib_dir)
++args = parser.parse_args()
++current_dir = str(args.webroot.resolve())
++os.chdir(current_dir)
++print('INFO: Serving from '+current_dir)
+ 
+ exed = False
+ if current_dir.endswith('.zip'):
+@@ -1718,3 +1728,4 @@ if __name__ == '__main__':
+     page_observer.join()
+     config_observer.join()
+     exit()
++
