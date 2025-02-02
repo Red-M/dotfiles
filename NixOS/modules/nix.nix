@@ -16,6 +16,7 @@
       keep-derivations = true;
       # Enable flakes and 'nix' command
       experimental-features = ["nix-command" "flakes"];
+      trusted-users =  [ "root" "@wheel" ];
       trusted-substituters = [
         "https://cache.nixos.org/"
         "https://hydra.nixos.org/"
