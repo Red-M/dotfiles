@@ -24,6 +24,9 @@
       inetutils
       ipcalc
       irssi
+      yq-go
+      jq
+      openssl_3
     ];
     openssh.authorizedKeys.keys = [
 

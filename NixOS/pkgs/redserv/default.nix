@@ -4,6 +4,7 @@
   fetchFromGitHub,
   python312,
   makeWrapper,
+  openssl_3,
 
 }:
 
@@ -21,7 +22,7 @@ stdenv.mkDerivation rec {
     ./rel_path.patch
   ];
 
-  nativeBuildInputs = [ makeWrapper ];
+  nativeBuildInputs = [ makeWrapper openssl_3 ];
   propagatedBuildInputs = [
     (python312.withPackages (pythonPackages: with pythonPackages; [
       cherrypy
@@ -32,12 +33,20 @@ stdenv.mkDerivation rec {
       pexpect
       # ipaddress
       distro
+      pyopenssl
+      pycrypto
+      mako
+      jinja2
     ]))
   ];
   preferLocalBuild = true;
 
   installPhase = ''
     install -Dm755 webserver3.py $out/bin/redserv
+    install -Dm755 util/__init__.py $out/bin/util/__init__.py
+    install -Dm755 util/ssl_fix.py $out/bin/util/ssl_fix.py
+    install -Dm755 util/ssl_fix3.py $out/bin/util/ssl_fix3.py
+    install -Dm755 util/ssl_pyopenssl.py $out/bin/util/ssl_pyopenssl.py
     '';
 
 }

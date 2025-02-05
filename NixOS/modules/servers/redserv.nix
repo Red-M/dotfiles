@@ -3,14 +3,14 @@
 
 {
   imports = [
-    ./patching/redserv.nix
+    ../patching/redserv.nix
   ];
 
   systemd.services.redserv = {
     enable = lib.mkDefault false;
     description = "RedServ";
     wants = ["multi-user.target"];
-    after = [ config.systemd.services.dropbox.name ];
+    after = [ "network.target" config.systemd.services.dropbox.name ];
     serviceConfig = {
       ExecStart = "${lib.getBin pkgs.redserv}/bin/redserv /home/redm/Dropbox/webserv";
       KillMode = "control-group";
@@ -19,6 +19,11 @@
       ProtectSystem = "full";
       Nice = 5;
       User = "redm";
+      Group = "redm";
+      StandardOutput = "journal";
+      StandardError = "journal";
+      NoNewPriviledges = true;
+      AmbientCapabilities = "CAP_NET_BIND_SERVICE";
     };
   };
 

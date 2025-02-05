@@ -8,22 +8,48 @@
     ../../modules/locale.nix
     ../../modules/my_user.nix
     ../../modules/nix.nix
-    ../../modules/ssh_server.nix
     ../../modules/langs/python.nix
     ../../modules/dropbox.nix
-    ../../modules/redserv.nix
+
+    ../../modules/servers/ssh_server.nix
+    ../../modules/servers/redserv.nix
+    ../../modules/servers/mail_relay_out.nix
   ];
 
   environment.systemPackages = with pkgs; [
+    ipset
   ];
 
-  services.openssh.settings  = {
-    PasswordAuthentication = false;
-    PermitRootLogin = "prohibit-password";
+  systemd.services = {
+    dropbox.enable = true;
+    redserv.enable = true;
   };
 
-  systemd.services.dropbox.enable = true;
-  systemd.services.redserv.enable = true;
+  services = {
+  };
+
+  networking = {
+    firewall = {
+      allowedTCPPorts = [
+        80
+        443
+        8081
+        8082
+      ];
+    };
+
+    nftables = {
+      enable = true;
+      ruleset = ''
+        table ip nat {
+          chain PREROUTING {
+            type nat hook prerouting priority dstnat; policy accept;
+            tcp dport 80 dnat to :8081
+          }
+        }
+      '';
+    };
+  };
 
 }
 
