@@ -28,6 +28,8 @@
   services = {
   };
 
+  system.autoUpgrade.enable = true;
+
   networking = {
     firewall = {
       allowedTCPPorts = [

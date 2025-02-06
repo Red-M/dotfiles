@@ -27,6 +27,7 @@
       yq-go
       jq
       openssl_3
+      proxychains
     ];
     openssh.authorizedKeys.keys = [
 

@@ -1,0 +1,43 @@
+# https://github.com/NixOS/nixpkgs/issues/217119
+# https://wiki.nixos.org/wiki/VR#Patching_AMDGPU_to_allow_high_priority_queues
+# https://wiki.nixos.org/wiki/Linux_kernel#Patching_a_single_In-tree_kernel_module
+# https://github.com/Frogging-Family/community-patches/blob/master/linux61-tkg/cap_sys_nice_begone.mypatch
+{ pkgs
+, lib
+, kernel ? pkgs.linuxPackages_latest.kernel
+}:
+
+pkgs.stdenv.mkDerivation {
+  pname = "amdgpu-kernel-module";
+  inherit (kernel) src version postPatch nativeBuildInputs;
+
+  kernel_dev = kernel.dev;
+  kernelVersion = kernel.modDirVersion;
+
+  modulePath = "drivers/gpu/drm/amd/amdgpu";
+
+  buildPhase = ''
+    BUILT_KERNEL=$kernel_dev/lib/modules/$kernelVersion/build
+
+    cp $BUILT_KERNEL/Module.symvers .
+    cp $BUILT_KERNEL/.config        .
+    cp $kernel_dev/vmlinux          .
+
+    make "-j$NIX_BUILD_CORES" modules_prepare
+    make "-j$NIX_BUILD_CORES" M=$modulePath modules
+  '';
+
+  installPhase = ''
+    make \
+      INSTALL_MOD_PATH="$out" \
+      XZ="xz -T$NIX_BUILD_CORES" \
+      M="$modulePath" \
+      modules_install
+  '';
+
+  meta = {
+    description = "AMD GPU kernel module";
+    license = lib.licenses.gpl3;
+  };
+}
+

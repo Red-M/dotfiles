@@ -10,10 +10,14 @@
 
   nix = {
     package = pkgs.lix;
+    daemonCPUSchedPolicy = "idle";
+    daemonIOSchedClass = "idle";
     settings = {
       auto-optimise-store = true;
       keep-outputs = true;
       keep-derivations = true;
+      keep-failed = false;
+      keep-going = true;
       # Enable flakes and 'nix' command
       experimental-features = ["nix-command" "flakes"];
       trusted-users =  [ "root" "@wheel" ];
@@ -44,6 +48,21 @@
     registry = lib.mapAttrs (_: value: { flake = value; }) inputs;
     # Additionally, add inputs to system's legacy channels to make legacy nix commands consistent
     nixPath = lib.mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry;
+  };
+
+  systemd.services = {
+    nix-gc.serviceConfig = {
+      Nice = 19;
+    };
+    nix-optimise.serviceConfig = {
+      Nice = 19;
+    };
+    nixos-upgrade.serviceConfig = {
+      Nice = 19;
+    };
+    nix-daemon.serviceConfig = {
+      Nice = 19;
+    };
   };
 
   system = {

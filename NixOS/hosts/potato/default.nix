@@ -25,6 +25,7 @@
     ../../modules/linux.nix
     ../../modules/locale.nix
     ../../modules/messaging.nix
+    ../../modules/mice.nix
     ../../modules/my_user.nix
     ../../modules/nix.nix
     ../../modules/obs.nix
@@ -35,6 +36,7 @@
     ../../modules/sound.nix
     ../../modules/ssh_server.nix
     ../../modules/steam.nix
+    ../../modules/vr.nix
   ];
 
   networking.hostName = "potato"; # Define your hostname.

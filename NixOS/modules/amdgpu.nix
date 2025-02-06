@@ -17,5 +17,9 @@
     '';
     kernelParams = [ "amd_iommu=on" ];
   };
+
+  environment.systemPackages = with pkgs; [
+    radeontop
+  ];
 }
 

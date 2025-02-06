@@ -24,6 +24,7 @@
     ../../modules/linux.nix
     ../../modules/locale.nix
     ../../modules/messaging.nix
+    ../../modules/mice.nix
     ../../modules/my_user.nix
     ../../modules/nix.nix
     ../../modules/obs.nix

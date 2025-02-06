@@ -14,6 +14,10 @@
 
       moonlight-qt
 
+      prismlauncher
+
+      vulkan-tools
+
       r2modman
       r2mod_cli
       unstable.nexusmods-app-unfree
@@ -105,6 +109,12 @@
       alias hid:b0005g*v0000045Ep00000B22 hid_xpadneo
 
     '';
+
+    kernel.sysctl = {
+      # SteamOS/Fedora default, can help with performance.
+      "vm.max_map_count" = 2147483642;
+    };
+
   };
 
   services.udev.extraRules = ''
