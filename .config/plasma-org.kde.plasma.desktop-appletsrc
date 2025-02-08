@@ -460,6 +460,35 @@ location=3
 plugin=org.kde.panel
 wallpaperplugin=org.kde.image
 
+[Containments][59][Applets][106]
+immutability=1
+plugin=org.kde.plasma.systemmonitor.diskactivity
+
+[Containments][59][Applets][106][Configuration]
+CurrentPreset=org.kde.plasma.systemmonitor
+
+[Containments][59][Applets][106][Configuration][Appearance]
+chartFace=org.kde.ksysguard.textonly
+title=
+
+[Containments][59][Applets][106][Configuration][ConfigDialog]
+DialogHeight=540
+DialogWidth=720
+
+[Containments][59][Applets][106][Configuration][SensorColors]
+disk/all/read=0,237,237
+disk/all/write=237,0,0
+network/all/download=0,237,237
+network/all/upload=237,0,0
+
+[Containments][59][Applets][106][Configuration][SensorLabels]
+network/all/download=Down
+network/all/upload=Up
+
+[Containments][59][Applets][106][Configuration][Sensors]
+highPrioritySensorIds=["network/all/upload","network/all/download"]
+lowPrioritySensorIds=[]
+
 [Containments][59][Applets][60]
 immutability=1
 plugin=org.kde.plasma.digitalclock
@@ -589,7 +618,7 @@ DialogHeight=84
 DialogWidth=2560
 
 [Containments][59][General]
-AppletOrder=80;83;61;82;62;60
+AppletOrder=80;83;61;106;82;62;60
 
 [Containments][63]
 activityId=

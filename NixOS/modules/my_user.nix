@@ -2,6 +2,10 @@
 { config, lib, pkgs, nixalt, unstable, outoftree, inputs, ... }:
 
 {
+  imports = [
+    ./home_manager
+  ];
+
   users.users.redm = {
     isNormalUser = true;
     description = "Red_M";

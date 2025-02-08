@@ -2,6 +2,9 @@
 { config, lib, pkgs, nixalt, unstable, outoftree, inputs, ... }:
 
 {
+
+  home-manager.users.redm = import ./home_manager/vr.nix;
+
   users.users.redm = {
     packages = with pkgs; [
       opencomposite
