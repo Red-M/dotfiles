@@ -24,7 +24,7 @@
       wget
       inetutils
       ipcalc
-      irssi
+      irssi_plugins
       yq-go
       jq
       openssl_3

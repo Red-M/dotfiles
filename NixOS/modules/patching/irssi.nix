@@ -4,9 +4,12 @@
 {
   nixpkgs.overlays = [(pkgfinal: pkgprev:
     {
-      irssi = pkgprev.irssi.overrideAttrs (oldAttrs:
-        let
-          deps = with pkgprev.perlPackages; [
+      irssi_plugins = pkgs.symlinkJoin {
+        name = "irssi_plugins";
+        paths = [ pkgprev.irssi ];
+        buildInputs = [ pkgs.makeWrapper ];
+        postBuild = ''
+          wrapProgram "$out/bin/irssi" --set PERL5LIB "$out/${pkgprev.perlPackages.perl.libPrefix}:${pkgprev.perlPackages.makePerlPath (with pkgprev.perlPackages; [
             EncodeLocale
             Clone
             HTTPDate
@@ -22,20 +25,9 @@
             StringShellQuote
             TextSprintfNamed
             TryTiny
-          ];
-        in {
-          # Add all packages as build inputs, including makeWrapper which we
-          # will use in the postFixup hook.
-          nativeBuildInputs = oldAttrs.nativeBuildInputs ++ [ pkgs.makeWrapper ];# ++ deps;
-          buildInputs = oldAttrs.buildInputs ++ [ pkgs.makeWrapper ] ++ deps;
-
-          # Prepend all of the Perl package's paths to the Perl include path (@INC)
-          # using ':' as a string separator
-          postInstall = ''
-            wrapProgram "$out/bin/irssi" --set PERL5LIB "$out/${pkgprev.perlPackages.perl.libPrefix}:${pkgprev.perlPackages.makePerlPath deps}"
-          '';
-        }
-      );
+          ])}"
+        '';
+      };
     }
   )];
 }
