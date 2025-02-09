@@ -47,6 +47,18 @@
 
     kdePackages.sddm-kcm
     kdePackages.kwallet-pam
+
+    alacritty
+    qdirstat
+    gparted
+    ntfs3g
+    ventoy-full
+    xwayland
+    libsForQt5.qt5.qtwayland
+    mono
+
+    firmware-updater
+
   ];
 
   hardware = {
@@ -105,8 +117,28 @@
     }
   '';
 
+  programs = {
+    # This fixes issues with libraries not being found to be more linux compatiable
+    nix-ld = {
+      enable = true;
+      libraries = with pkgs; [
+        libGL
+        icu.dev
+        unstable.kdePackages.qt5compat
+        unstable.kdePackages.qtwayland
+        unstable.libsForQt5.qt5.qtwayland
+        wayland
+        xwayland
+      ];
+    };
+  };
+
   users.users.redm = {
     packages = with pkgs; [
+      neofetch
+      xorg.xwininfo
+      xdotool
+      xclip
       google-chrome
 
       deluge
@@ -114,6 +146,25 @@
       scrcpy
     ];
   };
+
+  # Allows running AppImage
+  programs.appimage = {
+    enable = true;
+    binfmt = true;
+    package = pkgs.appimage-run.override {
+      extraPkgs = pkgs: [
+        pkgs.icu.dev
+      ];
+    };
+  };
+  # boot.binfmt.registrations.appimage = {
+  #   wrapInterpreterInShell = false;
+  #   interpreter = "${pkgs.appimage-run}/bin/appimage-run";
+  #   recognitionType = "magic";
+  #   offset = 0;
+  #   mask = ''\xff\xff\xff\xff\x00\x00\x00\x00\xff\xff\xff'';
+  #   magicOrExtension = ''\x7fELF....AI\x02'';
+  # };
 
 }
 

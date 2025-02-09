@@ -34,6 +34,10 @@
 .local/share/cura/**/*.log*
 .local/share/cura/**/*.log
 
+.irssi/nicklist*
+.irssi/otr
+.irssi/scripts/old
+
 **.log
 **/logs/
 

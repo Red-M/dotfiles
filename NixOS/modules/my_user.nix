@@ -4,6 +4,7 @@
 {
   imports = [
     ./home_manager
+    ./patching/irssi.nix
   ];
 
   users.users.redm = {
@@ -20,11 +21,7 @@
       mise
       complete-alias
       unixtools.xxd
-      xorg.xwininfo
-      xdotool
-      xclip
       wget
-      neofetch
       inetutils
       ipcalc
       irssi

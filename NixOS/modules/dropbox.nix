@@ -12,7 +12,7 @@
   systemd.services.dropbox = {
     enable = lib.mkDefault false;
     description = "Dropbox";
-    wants = ["multi-user.target"];
+    wantedBy = ["multi-user.target"];
     serviceConfig = {
       ExecStart = "${lib.getBin outoftree.pkgs.${pkgs.system}.dropbox}/bin/dropbox";
       KillMode = "control-group";

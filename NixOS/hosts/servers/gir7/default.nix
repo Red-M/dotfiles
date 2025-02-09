@@ -12,7 +12,7 @@
   boot.tmp.cleanOnBoot = true;
   zramSwap.enable = true;
   networking.hostName = "gir7";
-  networking.domain = "";
+  networking.domain = "red-m.net";
   services.openssh.enable = true;
   system.stateVersion = "24.11";
 

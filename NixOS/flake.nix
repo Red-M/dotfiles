@@ -87,6 +87,12 @@
       };
 
 
+      gir = mkNixOS rec {
+        system = "x86_64-linux";
+        host_modules = [
+          ./hosts/servers/gir
+        ];
+      };
       gir3 = mkNixOS rec {
         system = "x86_64-linux";
         host_modules = [
