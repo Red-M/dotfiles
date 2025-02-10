@@ -12,6 +12,9 @@
 
   home-manager.useUserPackages = true;
   home-manager.useGlobalPkgs = true;
+  home-manager.extraSpecialArgs = {
+    inherit inputs outoftree;
+  };
 
 }
 

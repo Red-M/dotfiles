@@ -18,6 +18,7 @@
     ../../modules/graphical_display.nix
     ../../modules/graphical_display_extras.nix
     ../../modules/grub.nix
+    ../../modules/hm.nix
     ../../modules/keepass.nix
     ../../modules/kernel.nix
     ../../modules/kvm.nix
