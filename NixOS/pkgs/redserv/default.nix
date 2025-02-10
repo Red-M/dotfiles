@@ -47,7 +47,7 @@ stdenv.mkDerivation rec {
     install -Dm755 util/ssl_fix.py $out/bin/util/ssl_fix.py
     install -Dm755 util/ssl_fix3.py $out/bin/util/ssl_fix3.py
     install -Dm755 util/ssl_pyopenssl.py $out/bin/util/ssl_pyopenssl.py
-    '';
+  '';
 
 }
 

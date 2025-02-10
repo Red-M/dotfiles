@@ -132,6 +132,7 @@
       };
     in {
       redserv = outoftree.pkgs.${pkgs.system}.redserv;
+      reeemiks = outoftree.pkgs.${pkgs.system}.reeemiks;
     });
 
   };

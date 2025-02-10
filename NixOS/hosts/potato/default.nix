@@ -30,6 +30,7 @@
     ../../modules/nix.nix
     ../../modules/obs.nix
     ../../modules/patching/qdoled.nix
+    ../../modules/reeemiks.nix
     ../../modules/reverse_engineering.nix
     ../../modules/rgb.nix
     ../../modules/serial_devices.nix

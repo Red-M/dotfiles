@@ -25,6 +25,7 @@
       pipewire-module-xrdp = pkgs.callPackage ./pipewire-module-xrdp {};
       redserv = pkgs.callPackage ./redserv {};
       amdgpu-kernel-module = pkgs.callPackage ./amdgpu-kernel-module {};
+      reeemiks = pkgs.callPackage ./reeemiks {};
     });
     overlays = {};
 
