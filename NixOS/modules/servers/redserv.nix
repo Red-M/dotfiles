@@ -6,7 +6,7 @@
     ../patching/redserv.nix
   ];
 
-  systemd.user.services.redserv = {
+  systemd.services.redserv = {
     enable = lib.mkDefault false;
     description = "RedServ";
     wantedBy = ["multi-user.target"];

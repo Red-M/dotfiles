@@ -133,6 +133,8 @@
     in {
       redserv = outoftree.pkgs.${pkgs.system}.redserv;
       reeemiks = outoftree.pkgs.${pkgs.system}.reeemiks;
+      znc = outoftree.pkgs.${pkgs.system}.znc;
+      znc_clientaway = outoftree.pkgs.${pkgs.system}.zncModules.clientaway;
     });
 
   };

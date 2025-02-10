@@ -29,6 +29,9 @@
       redserv = pkgs.callPackage ./redserv {};
       reeemiks = pkgs.callPackage ./reeemiks {};
 
+      znc = pkgs.callPackage ./znc {};
+      zncModules = pkgs.callPackage ./znc/modules.nix { znc = self.pkgs.${system}.znc; };
+
     });
     overlays = {};
 

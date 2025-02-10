@@ -7,7 +7,7 @@
     dataDir = "/home/redm/.znc";
     user = "redm";
     group = "redm";
-    modulePackages = with pkgs.zncModules; [
+    modulePackages = with outoftree.pkgs.${pkgs.system}.zncModules; [
       playback
       privmsg
       ignore
@@ -34,7 +34,7 @@
       User = config.services.znc.user;
       Group = config.services.znc.group;
       Restart = "always";
-      ExecStart = "${pkgs.znc}/bin/znc --foreground --datadir ${config.services.znc.dataDir} ${lib.escapeShellArgs config.services.znc.extraFlags}";
+      ExecStart = "${outoftree.pkgs.${pkgs.system}.znc}/bin/znc --foreground --datadir ${config.services.znc.dataDir} ${lib.escapeShellArgs config.services.znc.extraFlags}";
       ExecReload = "${pkgs.coreutils}/bin/kill -HUP $MAINPID";
       ExecStop = "${pkgs.coreutils}/bin/kill -INT $MAINPID";
       CapabilityBoundingSet = [ "" ];
