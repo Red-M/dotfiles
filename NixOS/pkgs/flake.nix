@@ -36,6 +36,7 @@
       lovr-playspace = pkgs.callPackage ./lovr-playspace { lovr = self.pkgs.${system}.lovr; };
       vrcadvert = pkgs.callPackage ./vrcadvert {};
       oscavmgr = pkgs.callPackage ./oscavmgr {};
+      wayvr-dashboard = pkgs.callPackage ./wayvr-dashboard {};
 
     });
     overlays = {};

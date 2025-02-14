@@ -17,6 +17,7 @@
       outoftree.pkgs.${pkgs.system}.lovr-playspace
       outoftree.pkgs.${pkgs.system}.vrcadvert
       outoftree.pkgs.${pkgs.system}.oscavmgr
+      outoftree.pkgs.${pkgs.system}.wayvr-dashboard
     ];
   };
 
@@ -44,7 +45,8 @@
     environment = {
       AMD_VULKAN_ICD="RADV";
       XRT_COMPOSITOR_SCALE_PERCENTAGE="130";
-      U_PACING_COMP_MIN_TIME_MS = "5";
+      # U_PACING_COMP_MIN_TIME_MS = "5";
+      U_PACING_APP_IMMEDIATE_WAIT_FRAME_RETURN = "on";
       STEAMVR_LH_ENABLE = "1";
       XRT_COMPOSITOR_COMPUTE = "1";
       VIT_SYSTEM_LIBRARY_PATH = "${pkgs.basalt-monado}/lib/libbasalt.so";

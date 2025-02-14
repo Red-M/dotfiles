@@ -141,6 +141,7 @@
       lovr-playspace = outoftree.pkgs.${pkgs.system}.lovr-playspace;
       vrcadvert = outoftree.pkgs.${pkgs.system}.vrcadvert;
       oscavmgr = outoftree.pkgs.${pkgs.system}.oscavmgr;
+      wayvr-dashboard = outoftree.pkgs.${pkgs.system}.wayvr-dashboard;
     });
 
   };
