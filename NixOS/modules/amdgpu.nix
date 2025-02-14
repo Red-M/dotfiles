@@ -3,7 +3,21 @@
 
 {
   hardware = {
-    amdgpu.initrd.enable = true;
+    amdgpu = {
+      initrd.enable = true;
+      amdvlk = {
+        enable = true;
+        support32Bit.enable = true;
+      };
+    };
+    graphics = {
+      extraPackages = with pkgs; [
+        amdvlk
+      ];
+      extraPackages32 = with pkgs; [
+        driversi686Linux.amdvlk
+      ];
+    };
   };
 
   boot = {

@@ -21,5 +21,22 @@
       teamspeak_client
     ];
   };
+
+  nixpkgs.config.permittedInsecurePackages = [
+    "olm-3.2.16"
+  ]; # For the bitlbee libpurple matrix plugin
+
+  services.bitlbee = {
+    enable = true;
+    plugins = with pkgs; [
+      bitlbee-facebook
+      bitlbee-mastodon
+    ];
+    libpurple_plugins = with pkgs; [
+      pidginPackages.purple-matrix
+      pidginPackages.purple-signald
+    ];
+  };
+
 }
 

@@ -37,11 +37,15 @@
     extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
   };
 
+  users.users.redm = {
+    extraGroups = [ "video" ];
+  };
 
   environment.systemPackages = with pkgs; [
     glxinfo
     vulkan-tools
     clinfo
+    xdg-utils
 
     libglibutil
 
@@ -69,21 +73,12 @@
       ## radv: an open-source Vulkan driver from freedesktop
       enable32Bit = true;
 
-      ## amdvlk: an open-source Vulkan driver from AMD
-      # extraPackages = [ unstable.amdvlk ];
-      # extraPackages32 = [ unstable.driversi686Linux.amdvlk ];
       extraPackages = with pkgs; [
         libva-utils
-        amdvlk
       ];
       extraPackages32 = with pkgs; [
         libva-utils
-        driversi686Linux.amdvlk
       ];
-    };
-    amdgpu.amdvlk = {
-      enable = true;
-      support32Bit.enable = true;
     };
   };
 

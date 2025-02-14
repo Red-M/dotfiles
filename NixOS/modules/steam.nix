@@ -65,6 +65,8 @@
         libkrb5
         keyutils
         gamemode
+        procps
+        usbutils
       ] ++ config.fonts.packages;
       extraCompatPackages = with pkgs; [
         steamtinkerlaunch

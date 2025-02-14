@@ -3,12 +3,20 @@
 
 {
 
+  imports = [
+    inputs.nixpkgs-xr.nixosModules.nixpkgs-xr
+  ];
   home-manager.users.redm = import ./home_manager/vr.nix;
 
   users.users.redm = {
     packages = with pkgs; [
-      opencomposite
+      motoc
+      index_camera_passthrough
       wlx-overlay-s
+      libsurvive
+      outoftree.pkgs.${pkgs.system}.lovr-playspace
+      outoftree.pkgs.${pkgs.system}.vrcadvert
+      outoftree.pkgs.${pkgs.system}.oscavmgr
     ];
   };
 
@@ -20,16 +28,28 @@
 
   };
   programs = {
-    envision.enable = true;
-    git = {
-      enable = true;
-      lfs.enable = true;
+    envision = {
+      enable = false;
+      package = pkgs.envision-unwrapped;
     };
+    # git = {
+    #   enable = true;
+    #   lfs.enable = true;
+    # };
   };
 
-  systemd.user.services.monado.environment = {
-    STEAMVR_LH_ENABLE = "1";
-    XRT_COMPOSITOR_COMPUTE = "1";
+  environment.systemPackages = with pkgs; [ basalt-monado ];
+
+  systemd.user.services.monado = {
+    environment = {
+      AMD_VULKAN_ICD="RADV";
+      XRT_COMPOSITOR_SCALE_PERCENTAGE="130";
+      U_PACING_COMP_MIN_TIME_MS = "5";
+      STEAMVR_LH_ENABLE = "1";
+      XRT_COMPOSITOR_COMPUTE = "1";
+      VIT_SYSTEM_LIBRARY_PATH = "${pkgs.basalt-monado}/lib/libbasalt.so";
+      IPC_EXIT_ON_DISCONNECT = "on"; # kill when last client disconnects
+    };
   };
 
   # git clone https://gitlab.freedesktop.org/monado/utilities/hand-tracking-models ~/.local/share/monado/hand-tracking-models

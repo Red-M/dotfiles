@@ -27,6 +27,7 @@
       url = "github:NixOS/nixos-hardware/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nixpkgs-xr.url = "github:nix-community/nixpkgs-xr";
     disko = {
       url = "github:nix-community/disko/latest";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -135,6 +136,11 @@
       reeemiks = outoftree.pkgs.${pkgs.system}.reeemiks;
       znc = outoftree.pkgs.${pkgs.system}.znc;
       znc_clientaway = outoftree.pkgs.${pkgs.system}.zncModules.clientaway;
+      ovras = outoftree.pkgs.${pkgs.system}.ovras;
+      lovr = outoftree.pkgs.${pkgs.system}.lovr;
+      lovr-playspace = outoftree.pkgs.${pkgs.system}.lovr-playspace;
+      vrcadvert = outoftree.pkgs.${pkgs.system}.vrcadvert;
+      oscavmgr = outoftree.pkgs.${pkgs.system}.oscavmgr;
     });
 
   };
