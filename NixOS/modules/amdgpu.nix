@@ -5,22 +5,27 @@
   hardware = {
     amdgpu = {
       initrd.enable = true;
-      amdvlk = {
-        enable = true;
-        support32Bit.enable = true;
-      };
+      # amdvlk = {
+      #   enable = true;
+      #   support32Bit.enable = true;
+      # };
     };
-    graphics = {
-      extraPackages = with pkgs; [
-        amdvlk
-      ];
-      extraPackages32 = with pkgs; [
-        driversi686Linux.amdvlk
-      ];
-    };
+    # graphics = {
+    #   extraPackages = with pkgs; [
+    #     amdvlk
+    #   ];
+    #   extraPackages32 = with pkgs; [
+    #     driversi686Linux.amdvlk
+    #   ];
+    # };
   };
 
   boot = {
+    kernelModules = with config.boot.kernelPackages; [
+      "i2c-dev"
+      "i2c-piix4"
+      "jc42"
+    ]; # fans, etc
     initrd.availableKernelModules = [ "vfio-pci" ];
     initrd.preDeviceCommands = ''
       DEVS="0000:0e:00.1"

@@ -14,10 +14,12 @@
       index_camera_passthrough
       wlx-overlay-s
       libsurvive
+      wayvr-dashboard
       outoftree.pkgs.${pkgs.system}.lovr-playspace
       outoftree.pkgs.${pkgs.system}.vrcadvert
       outoftree.pkgs.${pkgs.system}.oscavmgr
-      outoftree.pkgs.${pkgs.system}.wayvr-dashboard
+      outoftree.pkgs.${pkgs.system}.adgobye
+      outoftree.pkgs.${pkgs.system}.vr_start
     ];
   };
 
@@ -28,16 +30,16 @@
     };
 
   };
-  programs = {
-    envision = {
-      enable = false;
-      package = pkgs.envision-unwrapped;
-    };
-    # git = {
-    #   enable = true;
-    #   lfs.enable = true;
-    # };
-  };
+  # programs = {
+  #   envision = {
+  #     enable = false;
+  #     package = pkgs.envision-unwrapped;
+  #   };
+  #   git = {
+  #     enable = true;
+  #     lfs.enable = true;
+  #   };
+  # };
 
   environment.systemPackages = with pkgs; [ basalt-monado ];
 
@@ -45,12 +47,12 @@
     environment = {
       AMD_VULKAN_ICD="RADV";
       XRT_COMPOSITOR_SCALE_PERCENTAGE="130";
-      # U_PACING_COMP_MIN_TIME_MS = "5";
-      U_PACING_APP_IMMEDIATE_WAIT_FRAME_RETURN = "on";
+      U_PACING_COMP_MIN_TIME_MS = "5";
+      # U_PACING_APP_IMMEDIATE_WAIT_FRAME_RETURN = "on";
       STEAMVR_LH_ENABLE = "1";
       XRT_COMPOSITOR_COMPUTE = "1";
       VIT_SYSTEM_LIBRARY_PATH = "${pkgs.basalt-monado}/lib/libbasalt.so";
-      IPC_EXIT_ON_DISCONNECT = "on"; # kill when last client disconnects
+      # IPC_EXIT_ON_DISCONNECT = "on"; # kill when a client disconnects
     };
   };
 

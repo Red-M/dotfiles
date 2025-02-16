@@ -142,6 +142,8 @@
       vrcadvert = outoftree.pkgs.${pkgs.system}.vrcadvert;
       oscavmgr = outoftree.pkgs.${pkgs.system}.oscavmgr;
       wayvr-dashboard = outoftree.pkgs.${pkgs.system}.wayvr-dashboard;
+      adgobye = outoftree.pkgs.${pkgs.system}.adgobye;
+      vr_start = outoftree.pkgs.${pkgs.system}.vr_start;
     });
 
   };

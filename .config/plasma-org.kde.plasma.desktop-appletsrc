@@ -215,7 +215,7 @@ plugin=org.kde.plasma.kicker
 
 [Containments][28][Applets][52][Configuration]
 PreloadWeight=100
-popupHeight=613
+popupHeight=653
 popupWidth=300
 
 [Containments][28][Applets][52][Configuration][ConfigDialog]
@@ -264,8 +264,8 @@ immutability=1
 lastScreen=0
 location=3
 plugin=org.kde.plasma.private.systemtray
-popupHeight=720
-popupWidth=711
+popupHeight=448
+popupWidth=600
 wallpaperplugin=org.kde.image
 
 [Containments][33][Applets][34]
@@ -283,6 +283,7 @@ plugin=org.kde.plasma.volume
 PreloadWeight=100
 
 [Containments][33][Applets][35][Configuration][General]
+currentTab=streams
 migrated=true
 showVirtualDevices=true
 
@@ -360,7 +361,7 @@ immutability=1
 plugin=org.kde.plasma.bluetooth
 
 [Containments][33][Applets][48][Configuration]
-PreloadWeight=76
+PreloadWeight=62
 
 [Containments][33][Applets][55]
 immutability=1
@@ -381,7 +382,7 @@ immutability=1
 plugin=org.kde.plasma.brightness
 
 [Containments][33][Applets][94][Configuration]
-PreloadWeight=5
+PreloadWeight=0
 
 [Containments][33][ConfigDialog]
 DialogHeight=540
@@ -626,7 +627,7 @@ immutability=1
 lastScreen=1
 location=3
 plugin=org.kde.plasma.private.systemtray
-popupHeight=720
+popupHeight=448
 popupWidth=583
 wallpaperplugin=org.kde.image
 
