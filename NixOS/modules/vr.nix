@@ -24,8 +24,8 @@
       # xrizer
       motoc
       index_camera_passthrough
+      wlx-overlay-s
       libsurvive
-      outoftree.pkgs.${pkgs.system}.wlx-overlay-s
       outoftree.pkgs.${pkgs.system}.wayvr-dashboard
       outoftree.pkgs.${pkgs.system}.lovr-playspace
       outoftree.pkgs.${pkgs.system}.vrcadvert

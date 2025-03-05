@@ -26,20 +26,21 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "wayvr-dashboard";
-  version = "0.2.1";
+  version = "0.2.5";
   src = fetchFromGitHub rec {
     owner = "olekolek1000";
     repo = "${pname}";
-    rev = "9246f42ddb00301fbc46d3c2999736894b2ae615";
-    hash = "sha256-EPpa6uJcim0DfgucxXEEQjqVyFDQUeoKZMsz7X6as0g=";
+    rev = "7da4adfc6532f5adda9113b1421b232eecefb274";
+    hash = "sha256-VmoxcOClR4BU+md6gVbNKEQWRY4D9JnIHIhWSvLFb0M=";
   };
   sourceRoot = "${src.name}/src-tauri";
 
   cargoDeps = rustPlatform.importCargoLock {
     lockFile = ./Cargo.lock;
     outputHashes = {
+      "libmonado-1.3.1" = "sha256-HYYfpYhyo5VmbUdwMTJuAR+2dnMITIGZIPGX9Qsnc/g=";
       "keyvalues-parser-0.2.0" = "sha256-zbpgA6q2mIfFN6RoM0tauIQQFWT091TZ+6CCnBcYLa0=";
-      "wayvr_ipc-0.1.0" = "sha256-o224e306Y0Rlmkci/jBQwCNsgeI7jlOpRkLuVveQP2E=";
+      "wayvr_ipc-0.1.0" = "sha256-ieQaY08Ogl/F3t/p825LBp1lAO3SWH1F8206IPXEgTc=";
     };
   };
   useFetchCargoVendor = true;

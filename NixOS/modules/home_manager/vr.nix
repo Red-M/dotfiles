@@ -24,7 +24,7 @@
     ## which button should toggle the overlay visibility. press things
     ## button on both controllers to toggle the overlay.
     ## possible values: "Menu" | "Grip" | "Trigger" | "A" | "B"
-    toggle_button = "B"
+    toggle_button = "Menu"
 
     ## how long does the button need to be held before the overlay open,
     ## closing the overlay is always instantaneous

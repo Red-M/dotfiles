@@ -51,7 +51,7 @@
         lovr-playspace = self.pkgs.${system}.lovr-playspace;
         adgobye = self.pkgs.${system}.adgobye;
         motoc = pkgs.motoc;
-        wlx-overlay-s = self.pkgs.${system}.wlx-overlay-s;
+        wlx-overlay-s = nixpkgs-xr.outputs.packages.${system}.wlx-overlay-s;
         index_camera_passthrough = nixpkgs-xr.outputs.packages.${system}.index_camera_passthrough;
       };
 
