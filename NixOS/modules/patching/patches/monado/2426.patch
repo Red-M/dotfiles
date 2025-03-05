@@ -1,0 +1,816 @@
+From fc5b176db6a1d2db094d2d91548c830567cb1065 Mon Sep 17 00:00:00 2001
+From: averyv <avery@williamvds.me>
+Date: Mon, 24 Feb 2025 23:30:33 +0000
+Subject: [PATCH 1/7] xrt: Add brightness control feature and callbacks
+
+Allowing a headset's display brightness to be queried and updated.
+---
+ src/xrt/include/xrt/xrt_device.h | 47 ++++++++++++++++++++++++++++++++
+ 1 file changed, 47 insertions(+)
+
+diff --git a/src/xrt/include/xrt/xrt_device.h b/src/xrt/include/xrt/xrt_device.h
+index 8331a81a4b..46f9c95b64 100644
+--- a/src/xrt/include/xrt/xrt_device.h
++++ b/src/xrt/include/xrt/xrt_device.h
+@@ -284,6 +284,7 @@ struct xrt_device
+ 	bool face_tracking_supported;
+ 	bool body_tracking_supported;
+ 	bool battery_status_supported;
++	bool brightness_control_supported;
+ 
+ 	/*
+ 	 *
+@@ -533,6 +534,28 @@ struct xrt_device
+ 	                                   bool *out_charging,
+ 	                                   float *out_charge);
+ 
++	/*!
++	 * @brief Get the current display brightness.
++	 *
++	 * @param[in] xdev             The device.
++	 * @param[out] out_brightness  Current display brightness. Usually between 0 and 1. Some devices may
++	 *                             exceed 1 if the supported range exceeds 100%
++	 */
++	xrt_result_t (*get_brightness)(struct xrt_device *xdev, float *out_brightness);
++
++	/*!
++	 * @brief Set the display brightness.
++	 *
++	 * @param[in] xdev            The device.
++	 * @param[in] brightness      Desired display brightness. Usually between 0 and 1. Some devices may
++	 *                            allow exceeding 1 if the supported range exceeds 100%, but it will be clamped to
++	 *                            the supported range.
++	 * @param[in] relative        Whether to add \a brightness to the current brightness, instead of overwriting
++	 *                            the current brightness.
++	 * @param[out] out_brightness The actual brightness value that was set by the driver.
++	 */
++	xrt_result_t (*set_brightness)(struct xrt_device *xdev, float brightness, bool relative, float *out_brightness);
++
+ 	/*!
+ 	 * Enable the feature for this device.
+ 	 *
+@@ -754,6 +777,30 @@ xrt_device_get_battery_status(struct xrt_device *xdev, bool *out_present, bool *
+ 	return xdev->get_battery_status(xdev, out_present, out_charging, out_charge);
+ }
+ 
++/*!
++ * Helper function for @ref xrt_device::get_brightness.
++ *
++ * @copydoc xrt_device::get_brightness
++ * @public @memberof xrt_device
++ */
++static inline xrt_result_t
++xrt_device_get_brightness(struct xrt_device *xdev, float *out_brightness)
++{
++	return xdev->get_brightness(xdev, out_brightness);
++}
++
++/*!
++ * Helper function for @ref xrt_device::set_brightness.
++ *
++ * @copydoc xrt_device::set_brightness
++ * @public @memberof xrt_device
++ */
++static inline xrt_result_t
++xrt_device_set_brightness(struct xrt_device *xdev, float brightness, bool relative, float *out_brightness)
++{
++	return xdev->set_brightness(xdev, brightness, relative, out_brightness);
++}
++
+ /*!
+  * Helper function for @ref xrt_device::begin_feature.
+  *
+-- 
+GitLab
+
+
+From f46c1e2694c189072acdf5743f7d0bcc577ab2af Mon Sep 17 00:00:00 2001
+From: averyv <avery@williamvds.me>
+Date: Mon, 24 Feb 2025 23:30:33 +0000
+Subject: [PATCH 2/7] d/steamvr_lh: Implement Context::VendorSpecificEvent
+
+Which allows clients to submit to the event queue.
+---
+ src/xrt/drivers/steamvr_lh/steamvr_lh.cpp | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
+
+diff --git a/src/xrt/drivers/steamvr_lh/steamvr_lh.cpp b/src/xrt/drivers/steamvr_lh/steamvr_lh.cpp
+index 1ae4460720..dbc2f6f4fd 100644
+--- a/src/xrt/drivers/steamvr_lh/steamvr_lh.cpp
++++ b/src/xrt/drivers/steamvr_lh/steamvr_lh.cpp
+@@ -343,7 +343,18 @@ Context::VendorSpecificEvent(uint32_t unWhichDevice,
+                              vr::EVREventType eventType,
+                              const vr::VREvent_Data_t &eventData,
+                              double eventTimeOffset)
+-{}
++{
++	std::lock_guard lk(event_queue_mut);
++	events.push_back({std::chrono::steady_clock::now(),
++	                  {
++	                      .eventType = eventType,
++	                      .trackedDeviceIndex = unWhichDevice,
++	                      // TODO: Is eventTimeOffset actually seconds?
++	                      // Also, PollNextEvent should only overwrite eventAgeSeconds if the value is 0
++	                      .eventAgeSeconds = static_cast<float>(eventTimeOffset),
++	                      .data = eventData,
++	                  }});
++}
+ 
+ bool
+ Context::IsExiting()
+-- 
+GitLab
+
+
+From eb16f1c1f5cc1ed4ccaa9467c67f404f53062f1a Mon Sep 17 00:00:00 2001
+From: averyv <avery@williamvds.me>
+Date: Mon, 24 Feb 2025 23:30:34 +0000
+Subject: [PATCH 3/7] d/steamvr_lh: Support get_brightness and set_brightness
+
+Currently tailored just for the Index headset.
+---
+ src/xrt/drivers/steamvr_lh/device.cpp         | 101 ++++++++++++++++++
+ src/xrt/drivers/steamvr_lh/device.hpp         |  13 +++
+ .../drivers/steamvr_lh/interfaces/context.hpp |  12 +++
+ 3 files changed, 126 insertions(+)
+
+diff --git a/src/xrt/drivers/steamvr_lh/device.cpp b/src/xrt/drivers/steamvr_lh/device.cpp
+index 2d6bd81d82..f0a7f48bb5 100644
+--- a/src/xrt/drivers/steamvr_lh/device.cpp
++++ b/src/xrt/drivers/steamvr_lh/device.cpp
+@@ -11,6 +11,7 @@
+ #include <cstring>
+ #include <thread>
+ #include <algorithm>
++#include <map>
+ 
+ #include "math/m_api.h"
+ #include "math/m_relation_history.h"
+@@ -27,6 +28,7 @@
+ #include "xrt/xrt_device.h"
+ 
+ #include "vive/vive_poses.h"
++#include "openvr_driver.h"
+ 
+ #define DEV_ERR(...) U_LOG_IFL_E(ctx->log_level, __VA_ARGS__)
+ #define DEV_WARN(...) U_LOG_IFL_W(ctx->log_level, __VA_ARGS__)
+@@ -162,6 +164,72 @@ device_bouncer(struct xrt_device *xdev, Args... args)
+ 	auto *dev = static_cast<DeviceType *>(xdev);
+ 	return std::invoke(Func, dev, args...);
+ }
++
++constexpr auto min_brightness = 0.2f;
++constexpr auto max_brightness = 1.5f;
++
++// Setting used for brightness in the steamvr section. This isn't defined by the openvr header.
++static const char *analog_gain_settings_key = "analogGain";
++
++/**
++ * Perfect linear interpolation.
++ */
++constexpr float
++lerp(float range_start, float range_end, float blend_amount)
++{
++	return ((1 - blend_amount) * range_start) + (blend_amount * range_end);
++}
++
++/**
++ * Map a 0-1 (or > 1) brightness value into the analogGain value stored in SteamVR settings.
++ */
++float
++brightness_to_analog_gain(float brightness)
++{
++	// Lookup table from brightness to analog gain value
++	// Courtesy of
++	// https://github.com/Raphiiko/OyasumiVR/blob/c9e7fbcc2ea6caa07a8233a75218598087043171/src-ui/app/services/brightness-control/hardware-brightness-drivers/valve-index-hardware-brightness-control-driver.ts#L92
++	// TODO: We should support having a lookup table per headset model. If not present, fallback to lerp between the
++	// given min and max analog gain. Maybe we can assume 100% brightness = 1.0 analog gain, but we need info from
++	// more headsets.
++	static const auto lookup = std::map<float, float>{{
++	    {0.20, 0.03},  {0.23, 0.04},  {0.26, 0.05},  {0.27, 0.055}, {0.28, 0.06},  {0.30, 0.07},  {0.32, 0.08},
++	    {0.33, 0.09},  {0.34, 0.095}, {0.35, 0.1},   {0.36, 0.105}, {0.37, 0.11},  {0.37, 0.115}, {0.38, 0.12},
++	    {0.39, 0.125}, {0.40, 0.13},  {0.40, 0.135}, {0.41, 0.14},  {0.42, 0.145}, {0.42, 0.15},  {0.43, 0.155},
++	    {0.43, 0.16},  {0.44, 0.165}, {0.45, 0.17},  {0.45, 0.175}, {0.46, 0.18},  {0.46, 0.185}, {0.47, 0.19},
++	    {0.48, 0.195}, {0.48, 0.2},   {0.49, 0.21},  {0.53, 0.25},  {0.58, 0.3},   {0.59, 0.315}, {0.60, 0.32},
++	    {0.60, 0.33},  {0.61, 0.34},  {0.62, 0.35},  {0.66, 0.4},   {0.69, 0.445}, {0.70, 0.45},  {0.70, 0.46},
++	    {0.71, 0.465}, {0.71, 0.47},  {0.71, 0.475}, {0.72, 0.48},  {0.72, 0.49},  {0.73, 0.5},   {0.79, 0.6},
++	    {0.85, 0.7},   {0.90, 0.8},   {0.95, 0.9},   {1.00, 1},     {1.50, 1.50},
++	}};
++
++	if (const auto upper_it = lookup.upper_bound(brightness); upper_it == lookup.end()) {
++		return lookup.rbegin()->second;
++	} else if (upper_it == lookup.begin()) {
++		return upper_it->second;
++	} else {
++		// Linearly interpolate between the greater and lower points
++		const auto lower_it = std::prev(upper_it);
++		const auto brightness_range = (upper_it->first - lower_it->first);
++		const auto blend_amount = ((brightness - lower_it->first) / brightness_range);
++		return lerp(lower_it->second, upper_it->second, blend_amount);
++	}
++
++	return brightness;
++}
++
++constexpr float
++clamp(float min, float max, float value)
++{
++	return std::min(std::max(value, min), max);
++}
++
++constexpr float
++clamp_analog_gain(float analog_gain, HmdDevice::AnalogGainRange range)
++{
++	return clamp(range.min, range.max, analog_gain);
++}
++
+ } // namespace
+ 
+ HmdDevice::HmdDevice(const DeviceBuilder &builder) : Device(builder)
+@@ -169,6 +237,7 @@ HmdDevice::HmdDevice(const DeviceBuilder &builder) : Device(builder)
+ 	this->name = XRT_DEVICE_GENERIC_HMD;
+ 	this->device_type = XRT_DEVICE_TYPE_HMD;
+ 	this->container_handle = 0;
++	this->brightness_control_supported = true;
+ 
+ 	inputs_vec = {xrt_input{true, 0, XRT_INPUT_GENERIC_HEAD_POSE, {}}};
+ 	this->inputs = inputs_vec.data();
+@@ -177,6 +246,8 @@ HmdDevice::HmdDevice(const DeviceBuilder &builder) : Device(builder)
+ #define SETUP_MEMBER_FUNC(name) this->xrt_device::name = &device_bouncer<HmdDevice, &HmdDevice::name>
+ 	SETUP_MEMBER_FUNC(get_view_poses);
+ 	SETUP_MEMBER_FUNC(compute_distortion);
++	SETUP_MEMBER_FUNC(set_brightness);
++	SETUP_MEMBER_FUNC(get_brightness);
+ #undef SETUP_MEMBER_FUNC
+ }
+ 
+@@ -426,6 +497,24 @@ Device::get_battery_status(bool *out_present, bool *out_charging, float *out_cha
+ 	return XRT_SUCCESS;
+ }
+ 
++xrt_result_t
++HmdDevice::get_brightness(float *out_brightness)
++{
++	*out_brightness = this->brightness;
++	return XRT_SUCCESS;
++}
++
++xrt_result_t
++HmdDevice::set_brightness(float brightness, bool relative, float *out_brightness)
++{
++	const auto target_brightness = relative ? (this->brightness + brightness) : brightness;
++	this->brightness = clamp(min_brightness, max_brightness, target_brightness);
++	const auto analog_gain = clamp_analog_gain(brightness_to_analog_gain(this->brightness), analog_gain_range);
++	ctx->get_settings().SetFloat(vr::k_pch_SteamVR_Section, analog_gain_settings_key, analog_gain);
++	*out_brightness = this->brightness;
++	return XRT_SUCCESS;
++}
++
+ xrt_result_t
+ HmdDevice::get_tracked_pose(xrt_input_name name, uint64_t at_timestamp_ns, xrt_space_relation *out_relation)
+ {
+@@ -815,6 +904,18 @@ HmdDevice::handle_property_write(const vr::PropertyWrite_t &prop)
+ 		DEV_DEBUG("Battery: HMD: %f", bat);
+ 		break;
+ 	}
++	case vr::Prop_DisplaySupportsAnalogGain_Bool: {
++		this->brightness_control_supported = *static_cast<bool *>(prop.pvBuffer);
++		break;
++	}
++	case vr::Prop_DisplayMinAnalogGain_Float: {
++		this->analog_gain_range.min = *static_cast<float *>(prop.pvBuffer);
++		break;
++	}
++	case vr::Prop_DisplayMaxAnalogGain_Float: {
++		this->analog_gain_range.max = *static_cast<float *>(prop.pvBuffer);
++		break;
++	}
+ 	default: {
+ 		Device::handle_property_write(prop);
+ 		break;
+diff --git a/src/xrt/drivers/steamvr_lh/device.hpp b/src/xrt/drivers/steamvr_lh/device.hpp
+index 6bd3de9935..bc44350afa 100644
+--- a/src/xrt/drivers/steamvr_lh/device.hpp
++++ b/src/xrt/drivers/steamvr_lh/device.hpp
+@@ -114,6 +114,12 @@ public:
+ 		vr::IVRDisplayComponent *display;
+ 	};
+ 
++	struct AnalogGainRange
++	{
++		float min{0.1f};
++		float max{1.0f};
++	};
++
+ 	HmdDevice(const DeviceBuilder &builder);
+ 
+ 	xrt_result_t
+@@ -144,6 +150,11 @@ public:
+ 		return ipd;
+ 	}
+ 
++	xrt_result_t
++	get_brightness(float *out_brightness);
++	xrt_result_t
++	set_brightness(float brightness, bool relative, float *out_brightness);
++
+ private:
+ 	std::unique_ptr<Parts> hmd_parts{nullptr};
+ 
+@@ -155,6 +166,8 @@ private:
+ 
+ 	std::condition_variable hmd_parts_cv;
+ 	std::mutex hmd_parts_mut;
++	float brightness{1.0f};
++	AnalogGainRange analog_gain_range{};
+ };
+ 
+ class ControllerDevice : public Device
+diff --git a/src/xrt/drivers/steamvr_lh/interfaces/context.hpp b/src/xrt/drivers/steamvr_lh/interfaces/context.hpp
+index 4ef6116e28..3288482b0d 100644
+--- a/src/xrt/drivers/steamvr_lh/interfaces/context.hpp
++++ b/src/xrt/drivers/steamvr_lh/interfaces/context.hpp
+@@ -136,6 +136,18 @@ public:
+ 	void
+ 	add_haptic_event(vr::VREvent_HapticVibration_t event);
+ 
++	Settings &
++	get_settings()
++	{
++		return settings;
++	}
++
++	const Settings &
++	get_settings() const
++	{
++		return settings;
++	}
++
+ 	void
+ 	Log(const char *pchLogMessage) override;
+ 
+-- 
+GitLab
+
+
+From 99ec9a4feef83b41cdf92026d9a90e8185883018 Mon Sep 17 00:00:00 2001
+From: averyv <avery@williamvds.me>
+Date: Mon, 24 Feb 2025 23:30:34 +0000
+Subject: [PATCH 4/7] d/steamvr_lh: Send event when analogGain setting is
+ changed
+
+For now, just the steamvr section, because that's what triggers the lighthouse
+driver to reload video settings.
+---
+ .../drivers/steamvr_lh/interfaces/context.hpp |  7 +++++
+ .../steamvr_lh/interfaces/settings.cpp        | 28 ++++++++++++++-----
+ .../steamvr_lh/interfaces/settings.hpp        |  8 +++++-
+ src/xrt/drivers/steamvr_lh/steamvr_lh.cpp     |  2 +-
+ 4 files changed, 36 insertions(+), 9 deletions(-)
+
+diff --git a/src/xrt/drivers/steamvr_lh/interfaces/context.hpp b/src/xrt/drivers/steamvr_lh/interfaces/context.hpp
+index 3288482b0d..9e598e4290 100644
+--- a/src/xrt/drivers/steamvr_lh/interfaces/context.hpp
++++ b/src/xrt/drivers/steamvr_lh/interfaces/context.hpp
+@@ -136,6 +136,13 @@ public:
+ 	void
+ 	add_haptic_event(vr::VREvent_HapticVibration_t event);
+ 
++	void
++	send_event(vr::EVREventType type)
++	{
++		const auto data = vr::VREvent_Data_t{};
++		VendorSpecificEvent(0, type, data, 0);
++	}
++
+ 	Settings &
+ 	get_settings()
+ 	{
+diff --git a/src/xrt/drivers/steamvr_lh/interfaces/settings.cpp b/src/xrt/drivers/steamvr_lh/interfaces/settings.cpp
+index f413841590..17344cd957 100644
+--- a/src/xrt/drivers/steamvr_lh/interfaces/settings.cpp
++++ b/src/xrt/drivers/steamvr_lh/interfaces/settings.cpp
+@@ -7,21 +7,31 @@
+  * @ingroup drv_steamvr_lh
+  */
+ 
++#include <openvr_driver.h>
+ #include <optional>
+ #include <cstring>
++#include <map>
++#include <string_view>
+ 
+ #include "settings.hpp"
++#include "context.hpp"
+ #include "util/u_json.hpp"
+ 
++using namespace std::string_view_literals;
++
++// Default to 100% brightness.
+ DEBUG_GET_ONCE_FLOAT_OPTION(lh_default_brightness, "LH_DEFAULT_BRIGHTNESS", 1.0)
+ 
+ using xrt::auxiliary::util::json::JSONNode;
+ 
+-Settings::Settings(const std::string &steam_install, const std::string &steamvr_install)
++Settings::Settings(const std::string &steam_install, const std::string &steamvr_install, Context *context)
+     : steamvr_settings(JSONNode::loadFromFile(steam_install + "/config/steamvr.vrsettings")),
+       driver_defaults(
+-          JSONNode::loadFromFile(steamvr_install + "/drivers/lighthouse/resources/settings/default.vrsettings"))
+-{}
++          JSONNode::loadFromFile(steamvr_install + "/drivers/lighthouse/resources/settings/default.vrsettings")),
++      context{context}
++{
++	analog_gain = debug_get_float_option_lh_default_brightness();
++}
+ 
+ // NOLINTBEGIN(bugprone-easily-swappable-parameters)
+ const char *
+@@ -40,7 +50,12 @@ Settings::SetInt32(const char *pchSection, const char *pchSettingsKey, int32_t n
+ 
+ void
+ Settings::SetFloat(const char *pchSection, const char *pchSettingsKey, float flValue, vr::EVRSettingsError *peError)
+-{}
++{
++	if (pchSection == std::string_view{vr::k_pch_SteamVR_Section} && pchSettingsKey == "analogGain"sv) {
++		analog_gain = flValue;
++		context->send_event(vr::VREvent_SteamVRSectionSettingChanged);
++	}
++}
+ 
+ void
+ Settings::SetString(const char *pchSection,
+@@ -64,10 +79,9 @@ Settings::GetInt32(const char *pchSection, const char *pchSettingsKey, vr::EVRSe
+ float
+ Settings::GetFloat(const char *pchSection, const char *pchSettingsKey, vr::EVRSettingsError *peError)
+ {
+-	if (!strcmp(pchSection, "steamvr")) {
++	if (!strcmp(pchSection, vr::k_pch_SteamVR_Section)) {
+ 		if (!strcmp(pchSettingsKey, "analogGain")) {
+-			// Return 100% brightness.
+-			return debug_get_float_option_lh_default_brightness();
++			return analog_gain;
+ 		}
+ 		if (!strcmp(pchSettingsKey, "ipd")) {
+ 			// Inform the SteamVR driver we have 0 ipd (in case) it factors this into the eye matrix.
+diff --git a/src/xrt/drivers/steamvr_lh/interfaces/settings.hpp b/src/xrt/drivers/steamvr_lh/interfaces/settings.hpp
+index 76cf331fab..b1d3a2fc60 100644
+--- a/src/xrt/drivers/steamvr_lh/interfaces/settings.hpp
++++ b/src/xrt/drivers/steamvr_lh/interfaces/settings.hpp
+@@ -12,14 +12,20 @@
+ #include "openvr_driver.h"
+ #include "util/u_json.hpp"
+ 
++class Context;
++
+ class Settings : public vr::IVRSettings
+ {
+ private:
+ 	const xrt::auxiliary::util::json::JSONNode steamvr_settings;
+ 	const xrt::auxiliary::util::json::JSONNode driver_defaults;
+ 
++	Context *context;
++
++	float analog_gain;
++
+ public:
+-	Settings(const std::string &steam_install, const std::string &steamvr_install);
++	Settings(const std::string &steam_install, const std::string &steamvr_install, Context *context);
+ 
+ 	const char *
+ 	GetSettingsErrorNameFromEnum(vr::EVRSettingsError eError) override;
+diff --git a/src/xrt/drivers/steamvr_lh/steamvr_lh.cpp b/src/xrt/drivers/steamvr_lh/steamvr_lh.cpp
+index dbc2f6f4fd..eeb1bb728a 100644
+--- a/src/xrt/drivers/steamvr_lh/steamvr_lh.cpp
++++ b/src/xrt/drivers/steamvr_lh/steamvr_lh.cpp
+@@ -112,7 +112,7 @@ Context::create(const std::string &steam_install,
+ }
+ 
+ Context::Context(const std::string &steam_install, const std::string &steamvr_install, u_logging_level level)
+-    : settings(steam_install, steamvr_install), resources(level, steamvr_install), log_level(level)
++    : settings(steam_install, steamvr_install, this), resources(level, steamvr_install), log_level(level)
+ {}
+ 
+ Context::~Context()
+-- 
+GitLab
+
+
+From 3bffe23d6ac16a528353d33e6ced4e6959c9294e Mon Sep 17 00:00:00 2001
+From: averyv <avery@williamvds.me>
+Date: Tue, 25 Feb 2025 22:49:39 +0000
+Subject: [PATCH 5/7] ipc: Add device_get_brightness and device_set_brightness
+
+---
+ src/xrt/ipc/server/ipc_server_handler.c | 19 +++++++++++++++++++
+ src/xrt/ipc/shared/proto.json           | 21 ++++++++++++++++++++-
+ 2 files changed, 39 insertions(+), 1 deletion(-)
+
+diff --git a/src/xrt/ipc/server/ipc_server_handler.c b/src/xrt/ipc/server/ipc_server_handler.c
+index b7d54e861a..855bfa41b7 100644
+--- a/src/xrt/ipc/server/ipc_server_handler.c
++++ b/src/xrt/ipc/server/ipc_server_handler.c
+@@ -17,6 +17,7 @@
+ 
+ #include "server/ipc_server.h"
+ #include "ipc_server_generated.h"
++#include "xrt/xrt_device.h"
+ 
+ #ifdef XRT_GRAPHICS_SYNC_HANDLE_IS_FD
+ #include <unistd.h>
+@@ -2262,3 +2263,21 @@ ipc_handle_device_get_battery_status(
+ 	struct xrt_device *xdev = get_xdev(ics, id);
+ 	return xrt_device_get_battery_status(xdev, out_present, out_charging, out_charge);
+ }
++
++xrt_result_t
++ipc_handle_device_get_brightness(volatile struct ipc_client_state *ics, uint32_t id, float *out_brightness)
++{
++	struct xrt_device *xdev = get_xdev(ics, id);
++	return xrt_device_get_brightness(xdev, out_brightness);
++}
++
++xrt_result_t
++ipc_handle_device_set_brightness(
++    volatile struct ipc_client_state *ics, uint32_t id, float brightness, bool relative, float *out_brightness)
++{
++	struct xrt_device *xdev = get_xdev(ics, id);
++	if (!xdev->brightness_control_supported) {
++		return XRT_ERROR_FEATURE_NOT_SUPPORTED;
++	}
++	return xrt_device_set_brightness(xdev, brightness, relative, out_brightness);
++}
+diff --git a/src/xrt/ipc/shared/proto.json b/src/xrt/ipc/shared/proto.json
+index 39793d0aa2..e1e95db7fc 100644
+--- a/src/xrt/ipc/shared/proto.json
++++ b/src/xrt/ipc/shared/proto.json
+@@ -536,6 +536,25 @@
+ 			{"name": "charging", "type": "bool"},
+ 			{"name": "charge", "type": "float"}
+ 		]
+-	}
++	},
+ 
++	"device_get_brightness": {
++		"in": [
++			{"name": "id", "type": "uint32_t"}
++		],
++		"out": [
++			{"name": "brightness", "type": "float"}
++		]
++	},
++
++	"device_set_brightness": {
++		"in": [
++			{"name": "id", "type": "uint32_t"},
++			{"name": "brightness", "type": "float"},
++			{"name": "relative", "type": "bool"}
++		],
++		"out": [
++			{"name": "brightness", "type": "float"}
++		]
++	}
+ }
+-- 
+GitLab
+
+
+From 4db701edff1554cb09c132677d44e3c9c94f83cc Mon Sep 17 00:00:00 2001
+From: averyv <avery@williamvds.me>
+Date: Tue, 25 Feb 2025 22:50:12 +0000
+Subject: [PATCH 6/7] t/ctl: Add --set-brightness option
+
+Which calls device_set_brightness on the desired client.
+---
+ src/xrt/targets/ctl/main.c | 61 +++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 60 insertions(+), 1 deletion(-)
+
+diff --git a/src/xrt/targets/ctl/main.c b/src/xrt/targets/ctl/main.c
+index ee223d07f5..07522f0b21 100644
+--- a/src/xrt/targets/ctl/main.c
++++ b/src/xrt/targets/ctl/main.c
+@@ -14,6 +14,7 @@
+ 
+ #include "ipc_client_generated.h"
+ 
++#include <getopt.h>
+ #include <ctype.h>
+ 
+ 
+@@ -27,6 +28,7 @@ typedef enum op_mode
+ 	MODE_SET_FOCUSED,
+ 	MODE_TOGGLE_IO,
+ 	MODE_RECENTER,
++	MODE_SET_BRIGHTNESS,
+ } op_mode_t;
+ 
+ 
+@@ -143,6 +145,43 @@ recenter_local_spaces(struct ipc_connection *ipc_c)
+ 
+ 	return 0;
+ }
++
++int
++set_brightness(struct ipc_connection *ipc_c, int client_id, const char *value)
++{
++	const int length = strlen(value);
++	if (length == 0) {
++		return 1;
++	}
++
++	bool relative = (value[0] == '-' || value[0] == '+');
++
++	char *end = NULL;
++	float target_brightness = strtof(value, &end);
++
++	if ((length > (end - value)) && *end == '%') {
++		target_brightness /= 100.f;
++	}
++
++	float out_brightness;
++	const xrt_result_t r =
++	    ipc_call_device_set_brightness(ipc_c, client_id, target_brightness, relative, &out_brightness);
++
++	IPC_CHK_AND_RET(ipc_c, r, "ipc_call_device_set_brightness");
++
++	if (relative || out_brightness != target_brightness) {
++		P("Set brightness to %d%%\n", (int)(out_brightness * 100));
++	}
++
++	return 0;
++}
++
++enum LongOptions
++{
++	OPTION_CLIENT = 100,
++	OPTION_SET_BRIGHTNESS,
++};
++
+ int
+ main(int argc, char *argv[])
+ {
+@@ -151,9 +190,17 @@ main(int argc, char *argv[])
+ 	// parse arguments
+ 	int c;
+ 	int s_val = 0;
++	char *brightness;
+ 
++	static struct option long_options[] = {
++	    {"client", required_argument, NULL, OPTION_CLIENT},
++	    {"set-brightness", required_argument, NULL, OPTION_SET_BRIGHTNESS},
++	    {NULL, 0, NULL, 0},
++	};
++
++	int option_index = 0;
+ 	opterr = 0;
+-	while ((c = getopt(argc, argv, "p:f:i:c")) != -1) {
++	while ((c = getopt_long(argc, argv, "p:f:i:c", long_options, &option_index)) != -1) {
+ 		switch (c) {
+ 		case 'p':
+ 			s_val = atoi(optarg);
+@@ -168,6 +215,15 @@ main(int argc, char *argv[])
+ 			op_mode = MODE_TOGGLE_IO;
+ 			break;
+ 		case 'c': op_mode = MODE_RECENTER; break;
++		case OPTION_CLIENT: {
++			s_val = atoi(optarg);
++			break;
++		}
++		case OPTION_SET_BRIGHTNESS: {
++			brightness = optarg;
++			op_mode = MODE_SET_BRIGHTNESS;
++			break;
++		}
+ 		case '?':
+ 			if (optopt == 's') {
+ 				PE("Option -s requires an id to set.\n");
+@@ -177,6 +233,8 @@ main(int argc, char *argv[])
+ 				PE("    -f <id>: Set focused client\n");
+ 				PE("    -p <id>: Set primary client\n");
+ 				PE("    -i <id>: Toggle whether client receives input\n");
++				PE("    --client <id>: Set client for subsequent command\n");
++				PE("    --set-brightness <[+-]brightness[%%]>: Set display brightness\n");
+ 			} else {
+ 				PE("Option `\\x%x' unknown.\n", optopt);
+ 			}
+@@ -204,6 +262,7 @@ main(int argc, char *argv[])
+ 	case MODE_SET_FOCUSED: exit(set_focused(&ipc_c, s_val)); break;
+ 	case MODE_TOGGLE_IO: exit(toggle_io(&ipc_c, s_val)); break;
+ 	case MODE_RECENTER: exit(recenter_local_spaces(&ipc_c)); break;
++	case MODE_SET_BRIGHTNESS: exit(set_brightness(&ipc_c, s_val, brightness)); break;
+ 	default: P("Unrecognised operation mode.\n"); exit(1);
+ 	}
+ 
+-- 
+GitLab
+
+
+From 9fbac116ef1d2cd9040d6e4befb22c858032897c Mon Sep 17 00:00:00 2001
+From: averyv <avery@williamvds.me>
+Date: Tue, 25 Feb 2025 22:01:49 +0000
+Subject: [PATCH 7/7] u/json: Implement rule of 5 in JSONNode
+
+`operator=(JSONNode)` and `operator=(JSONNode &&)` conflict with each other
+resulting in neither, and particularly the move operator, being usable.
+
+Implement the missing traditional operators instead:
+- `JSONNode(const JSONNode&)`,
+- `operator=(const JSONNode&)`, and
+- `operator=(JSONNode&&)`
+---
+ src/xrt/auxiliary/util/u_json.hpp | 26 +++++++++++++++--------
+ tests/tests_json.cpp              | 34 +++++++++++++++++++++++++++++++
+ 2 files changed, 51 insertions(+), 9 deletions(-)
+
+diff --git a/src/xrt/auxiliary/util/u_json.hpp b/src/xrt/auxiliary/util/u_json.hpp
+index f115447463..8221473246 100644
+--- a/src/xrt/auxiliary/util/u_json.hpp
++++ b/src/xrt/auxiliary/util/u_json.hpp
+@@ -114,9 +114,25 @@ public:
+ 		parent = nullptr;
+ 	}
+ 
+-	JSONNode(JSONNode &&) = default;
++	JSONNode(JSONNode &&node)
++	{
++		*this = std::move(node);
++	}
+ 
+ 	JSONNode(const JSONNode &node)
++	{
++		*this = node;
++	};
++
++	JSONNode &
++	operator=(JSONNode &&rhs)
++	{
++		swap(*this, rhs);
++		return *this;
++	}
++
++	JSONNode &
++	operator=(const JSONNode &node)
+ 	{
+ 		is_owner = node.is_owner;
+ 		parent = node.parent;
+@@ -125,15 +141,7 @@ public:
+ 		} else {
+ 			cjson = node.cjson; // Shallow copy
+ 		}
+-	};
+ 
+-	JSONNode &
+-	operator=(JSONNode &&) = default;
+-
+-	JSONNode &
+-	operator=(JSONNode rhs)
+-	{
+-		swap(*this, rhs);
+ 		return *this;
+ 	};
+ 
+diff --git a/tests/tests_json.cpp b/tests/tests_json.cpp
+index 2c1ded7ab0..157f3c08f1 100644
+--- a/tests/tests_json.cpp
++++ b/tests/tests_json.cpp
+@@ -147,4 +147,38 @@ TEST_CASE("u_json")
+ 		CHECK(stringToDouble.isDouble());
+ 		CHECK(stringToDouble.asDouble() == Catch::Approx(0.5).margin(e));
+ 	}
++
++	SECTION("Copy construction duplicates the JSON")
++	{
++		JSONNode copy{json_node};
++		CHECK(copy.getCJSON() != json_node.getCJSON());
++		CHECK(copy.toString(false) == json_node.toString(false));
++	}
++
++	SECTION("Copy assignment duplicates the JSON")
++	{
++		JSONNode copy;
++		copy = json_node;
++		CHECK(copy.getCJSON() != json_node.getCJSON());
++		CHECK(copy.toString(false) == json_node.toString(false));
++	}
++
++	SECTION("Move construction doesn't duplicate the JSON")
++	{
++		JSONNode temp{json_node};
++		const auto cjson = temp.getCJSON();
++		JSONNode moved{std::move(temp)};
++		CHECK(moved.getCJSON() == cjson);
++		CHECK(moved.toString(false) == json_node.toString(false));
++	}
++
++	SECTION("Move assignment doesn't duplicate the JSON")
++	{
++		JSONNode temp{json_node};
++		const auto cjson = temp.getCJSON();
++		JSONNode moved;
++		moved = std::move(temp);
++		CHECK(moved.getCJSON() == cjson);
++		CHECK(moved.toString(false) == json_node.toString(false));
++	}
+ }
+-- 
+GitLab
+

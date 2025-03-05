@@ -9,6 +9,7 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
     nixpkgs-alt.url = "github:NixOS/nixpkgs/nixos-24.11";
+    nixpkgs-xr.url = "github:nix-community/nixpkgs-xr";
 
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
 
@@ -23,11 +24,15 @@
     };
 
     nur.url = "github:nix-community/NUR"; # https://github.com/nix-community/NUR
+    fenix = {
+      url = "github:nix-community/fenix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nixos-hardware = {
       url = "github:NixOS/nixos-hardware/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nixpkgs-xr.url = "github:nix-community/nixpkgs-xr";
+
     disko = {
       url = "github:nix-community/disko/latest";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -39,7 +44,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, nixpkgs-alt, nixpkgs-unstable, lix-module, home-manager, nixos-hardware, nur, outoftree, ... }@inputs:
+  outputs = { self, nixpkgs, nixpkgs-alt, nixpkgs-unstable, lix-module, home-manager, nixos-hardware, nur, fenix, outoftree, ... }@inputs:
     let inherit (self);
     mkNixOS = {host_modules, system, ...}: nixpkgs.lib.nixosSystem rec {
       inherit system;
@@ -143,6 +148,7 @@
       oscavmgr = outoftree.pkgs.${pkgs.system}.oscavmgr;
       wayvr-dashboard = outoftree.pkgs.${pkgs.system}.wayvr-dashboard;
       adgobye = outoftree.pkgs.${pkgs.system}.adgobye;
+      wlx-overlay-s = outoftree.pkgs.${pkgs.system}.wlx-overlay-s;
       vr_start = outoftree.pkgs.${pkgs.system}.vr_start;
     });
 

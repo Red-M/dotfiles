@@ -4,7 +4,7 @@
 {
   users.users.redm = {
     packages = with pkgs; [
-      kicad
+      # kicad
       easyeda2kicad
       turbocase
     ];

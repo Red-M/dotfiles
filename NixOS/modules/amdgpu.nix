@@ -26,14 +26,15 @@
       "i2c-piix4"
       "jc42"
     ]; # fans, etc
-    initrd.availableKernelModules = [ "vfio-pci" ];
-    initrd.preDeviceCommands = ''
-      DEVS="0000:0e:00.1"
-      for DEV in $DEVS; do
-        echo "vfio-pci" > /sys/bus/pci/devices/$DEV/driver_override
-      done
-      modprobe -i vfio-pci
-    '';
+
+    # initrd.availableKernelModules = [ "vfio-pci" ];
+    # initrd.preDeviceCommands = ''
+    #   DEVS="0000:0e:00.1"
+    #   for DEV in $DEVS; do
+    #     echo "vfio-pci" > /sys/bus/pci/devices/$DEV/driver_override
+    #   done
+    #   modprobe -i vfio-pci
+    # '';
     kernelParams = [ "amd_iommu=on" ];
   };
 

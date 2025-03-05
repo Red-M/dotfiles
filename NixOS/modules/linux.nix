@@ -50,6 +50,7 @@
     complete-alias
     gnupg
     unzip
+    unrar-wrapper
     pwgen
     dig
 

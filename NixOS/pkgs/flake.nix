@@ -43,6 +43,7 @@
       vrcadvert = pkgs.callPackage ./vrcadvert {};
       oscavmgr = pkgs.callPackage ./oscavmgr {};
       adgobye = pkgs.callPackage ./adgobye {};
+      wlx-overlay-s = pkgs.callPackage ./wlx-overlay-s {};
 
       vr_start = pkgs.callPackage ./vr_start {
         vrcadvert = self.pkgs.${system}.vrcadvert;
@@ -50,7 +51,7 @@
         lovr-playspace = self.pkgs.${system}.lovr-playspace;
         adgobye = self.pkgs.${system}.adgobye;
         motoc = pkgs.motoc;
-        wlx-overlay-s = nixpkgs-xr.outputs.packages.${system}.wlx-overlay-s;
+        wlx-overlay-s = self.pkgs.${system}.wlx-overlay-s;
         index_camera_passthrough = nixpkgs-xr.outputs.packages.${system}.index_camera_passthrough;
       };
 

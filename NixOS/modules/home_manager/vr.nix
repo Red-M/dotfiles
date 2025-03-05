@@ -75,8 +75,27 @@
   '';
 
   xdg.configFile."openxr/opencomposite".source = "${pkgs.opencomposite-vendored}";
-  xdg.configFile."openxr/1/active_runtime.json".source = "${pkgs.monado}/share/openxr/1/openxr_monado.json";
+  xdg.configFile."openxr/xrizer".source = "${pkgs.xrizer}";
+  xdg.configFile."openxr/1/active_runtime.json".source = "${pkgs.monado_patched}/share/openxr/1/openxr_monado.json";
   xdg.configFile."openxr/2/active_runtime.json".text = ''
+    {
+      "file_format_version": "1.0.0",
+      "runtime": {
+        "name": "opencomposite",
+        "library_path": "/home/redm/.config/openxr/opencomposite/lib/opencomposite/bin/linux64/vrclient.so",
+      }
+    }
+  '';
+  xdg.configFile."openxr/3/active_runtime.json".text = ''
+    {
+      "file_format_version": "1.0.0",
+      "runtime": {
+        "name": "XRizer",
+        "library_path": "/home/redm/.config/openxr/xrixer/lib/xrizer/bin/linux64/vrclient.so",
+      }
+    }
+  '';
+  xdg.configFile."openxr/4/active_runtime.json".text = ''
     {
       "file_format_version" : "1.0.0",
       "runtime" : {
@@ -98,6 +117,7 @@
     ],
     "runtime": [
       "/home/redm/.config/openxr/opencomposite/lib/opencomposite",
+      "/home/redm/.config/openxr/xrizer/lib/xrizer",
       "/home/redm/.local/share/Steam/steamapps/common/SteamVR"
     ],
     "version": 1

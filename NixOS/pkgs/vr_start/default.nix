@@ -61,7 +61,7 @@ writeShellApplication {
     motoc monitor &> /dev/null &
     lovr-playspace &
     wlx-overlay-s &
-    AdGoBye &
+    # AdGoBye &
     index_camera_passthrough
 
   '';

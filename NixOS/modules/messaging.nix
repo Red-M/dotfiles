@@ -17,7 +17,7 @@
         withVencord = true;
       })
       betterdiscordctl
-      telegram-desktop
+      unstable.telegram-desktop
       teamspeak_client
     ];
   };

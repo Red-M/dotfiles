@@ -5,16 +5,28 @@
 
   imports = [
     inputs.nixpkgs-xr.nixosModules.nixpkgs-xr
+    ./patching/monado.nix
   ];
+  nixpkgs.overlays = [(final: prev: {
+      xrizer = prev.xrizer.overrideAttrs rec {
+        nativeBuildInputs = with pkgs; [
+          inputs.fenix.packages.${pkgs.system}.default.toolchain
+        ];
+      };
+    }
+  )];
+
   home-manager.users.redm = import ./home_manager/vr.nix;
 
   users.users.redm = {
     packages = with pkgs; [
+      # opencomposite
+      # xrizer
       motoc
       index_camera_passthrough
-      wlx-overlay-s
       libsurvive
-      wayvr-dashboard
+      outoftree.pkgs.${pkgs.system}.wlx-overlay-s
+      outoftree.pkgs.${pkgs.system}.wayvr-dashboard
       outoftree.pkgs.${pkgs.system}.lovr-playspace
       outoftree.pkgs.${pkgs.system}.vrcadvert
       outoftree.pkgs.${pkgs.system}.oscavmgr
@@ -27,6 +39,7 @@
     monado = {
       enable = true;
       defaultRuntime = true; # Register as default OpenXR runtime
+      package = pkgs.monado_patched;
     };
 
   };
@@ -46,12 +59,13 @@
   systemd.user.services.monado = {
     environment = {
       AMD_VULKAN_ICD="RADV";
-      XRT_COMPOSITOR_SCALE_PERCENTAGE="130";
-      U_PACING_COMP_MIN_TIME_MS = "5";
-      # U_PACING_APP_IMMEDIATE_WAIT_FRAME_RETURN = "on";
-      STEAMVR_LH_ENABLE = "1";
       XRT_COMPOSITOR_COMPUTE = "1";
+      STEAMVR_LH_ENABLE = "1";
       VIT_SYSTEM_LIBRARY_PATH = "${pkgs.basalt-monado}/lib/libbasalt.so";
+      XRT_COMPOSITOR_SCALE_PERCENTAGE="130";
+      U_PACING_COMP_MIN_TIME_MS = "1";
+      # LH_HANDTRACKING = "on";
+      # U_PACING_APP_IMMEDIATE_WAIT_FRAME_RETURN = "on";
       # IPC_EXIT_ON_DISCONNECT = "on"; # kill when a client disconnects
     };
   };
