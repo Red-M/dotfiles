@@ -63,9 +63,9 @@
       STEAMVR_LH_ENABLE = "1";
       VIT_SYSTEM_LIBRARY_PATH = "${pkgs.basalt-monado}/lib/libbasalt.so";
       XRT_COMPOSITOR_SCALE_PERCENTAGE="130";
-      U_PACING_COMP_MIN_TIME_MS = "1";
+      U_PACING_COMP_MIN_TIME_MS = "3";
+      U_PACING_APP_IMMEDIATE_WAIT_FRAME_RETURN = "on";
       # LH_HANDTRACKING = "on";
-      # U_PACING_APP_IMMEDIATE_WAIT_FRAME_RETURN = "on";
       # IPC_EXIT_ON_DISCONNECT = "on"; # kill when a client disconnects
     };
   };

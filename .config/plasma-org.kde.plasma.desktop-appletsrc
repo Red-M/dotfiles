@@ -28,6 +28,7 @@ PreviewImage=/home/redm/git/dotfiles/Pictures/BnWM8x6.jpg
 SlidePaths=/nix/store/kls40zsrq9dd74innawflbf4ja7ba857-breeze-6.0.5/share/wallpapers/,/run/current-system/sw/share/wallpapers/
 
 [Containments][102]
+ItemGeometries-2048x1152=Applet-104:1760,0,288,1008,0;Applet-105:1856,1008,192,352,0;
 ItemGeometries-2560x1440=Applet-105:2176,0,192,352,0;Applet-104:2368,0,192,1008,0;
 ItemGeometriesHorizontal=Applet-105:2176,0,192,352,0;Applet-104:2368,0,192,1008,0;
 activityId=f16962fe-8fb8-459d-ac55-8ee109611d5f
@@ -361,7 +362,7 @@ immutability=1
 plugin=org.kde.plasma.bluetooth
 
 [Containments][33][Applets][48][Configuration]
-PreloadWeight=97
+PreloadWeight=100
 
 [Containments][33][Applets][55]
 immutability=1
@@ -382,7 +383,7 @@ immutability=1
 plugin=org.kde.plasma.brightness
 
 [Containments][33][Applets][94][Configuration]
-PreloadWeight=7
+PreloadWeight=5
 
 [Containments][33][ConfigDialog]
 DialogHeight=540
@@ -749,7 +750,7 @@ immutability=1
 plugin=org.kde.plasma.brightness
 
 [Containments][63][Applets][95][Configuration]
-PreloadWeight=10
+PreloadWeight=2
 
 [Containments][63][ConfigDialog]
 DialogHeight=540

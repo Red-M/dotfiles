@@ -28,11 +28,24 @@
     ];
   };
 
+  services.ananicy = { # https://github.com/NixOS/nixpkgs/issues/351516
+    enable = true;
+    package = pkgs.ananicy-cpp;
+    rulesProvider = pkgs.ananicy-cpp;
+    extraRules = [
+      {
+        "name" = "gamescope";
+        "nice" = -20;
+      }
+    ];
+  };
+
   programs = {
     gamescope = {
       enable = true;
-      capSysNice = true;
-      package = unstable.gamescope;
+      capSysNice = false;
+      # capSysNice = true;
+      # package = unstable.gamescope;
     };
     gamemode = {
       enable = true;
