@@ -24,7 +24,7 @@ vim.opt.wrap = false
 vim.opt.whichwrap = "<,>,[,]"
 vim.opt.backspace = "eol,start"
 
-vim.opt.scrolloff = 6
+vim.opt.scrolloff = 8
 vim.g.netrw_banner = 0
 
 vim.opt.foldenable = true
@@ -44,6 +44,35 @@ vim.opt.conceallevel = 0
 vim.g.linebreak = false
 vim.g.trouble_lualine = false
 vim.g.snacks_animate = false
+vim.g.lazyvim_check_order = false
+vim.opt.showmode = false -- Dont show mode since we have a statusline
+vim.opt.signcolumn = "yes" -- Always show the signcolumn, otherwise it would shift the text each time
+vim.opt.termguicolors = true -- True color support
+vim.opt.updatetime = 200 -- Save swap file and trigger CursorHold
+vim.opt.smoothscroll = true
+vim.opt.completeopt = "menu,menuone,noselect"
+vim.opt.autowrite = true -- Enable auto write
+vim.opt.fillchars = {
+  foldopen = "",
+  foldclose = "",
+  fold = " ",
+  foldsep = " ",
+  diff = "╱",
+  eob = " ",
+}
+vim.opt.ruler = false -- Disable the default ruler
+vim.opt.spelllang = { "en" }
+vim.opt.list = true -- Show some invisible characters (tabs...
+vim.opt.undofile = true
+vim.opt.undolevels = 10000
+vim.opt.updatetime = 200 -- Save swap file and trigger CursorHold
+vim.opt.virtualedit = "block" -- Allow cursor to move where there is no text in visual block mode
+vim.opt.wildmode = "longest:full,full" -- Command-line completion mode
+vim.opt.winminwidth = 5 -- Minimum window width
+vim.opt.wrap = false -- Disable line wrap
+vim.opt.foldtext = ""
+-- Fix markdown indentation settings
+vim.g.markdown_recommended_style = 0
 
 vim.keymap.set("n", ";", "<Nop>", { silent = true, remap = false })
 vim.g.mapleader = ";"

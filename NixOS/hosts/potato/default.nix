@@ -62,6 +62,7 @@
   # };
 
   boot = {
+    # kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
     kernelParams = [ "acpi_enforce_resources=lax" ];
     extraModulePackages = with config.boot.kernelPackages; [
       (it87.overrideAttrs (super: {

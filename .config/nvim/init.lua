@@ -49,13 +49,15 @@ vim.api.nvim_create_autocmd({ "BufRead" }, {
   end,
 })
 
+require("config.options")
+
 -- Plugins configured at ./lua/plugins/
 require("lazy").setup({
   spec = {
     { import = "themes" },
     {
       "LazyVim/LazyVim",
-      import = "lazyvim.plugins",
+      -- import = "lazyvim.plugins",
       opts = {
         colorscheme = "monokai-pro",
         news = {
@@ -67,7 +69,7 @@ require("lazy").setup({
         },
       },
     },
-    { import = "lazyvim_extras" },
+    --{ import = "lazyvim_extras" },
     { import = "languages" },
     { import = "formatters" },
     { import = "plugins" },
@@ -106,4 +108,6 @@ require("lazy").setup({
   },
 })
 
---require("config.options")
+require("config.options")
+require("config.keymaps")
+

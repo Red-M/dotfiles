@@ -7,7 +7,7 @@ return {
     },
   },
   -- indent guides for Neovim
-  { import = "lazyvim.plugins.extras.ui.indent-blankline" },
+  --{ import = "lazyvim.plugins.extras.ui.indent-blankline" },
   {
     "lukas-reineke/indent-blankline.nvim",
     lazy = false,
@@ -20,20 +20,23 @@ return {
         --tab_char = "│",
         tab_char = "┊",
       },
-      -- scope = { enabled = true },
+      scope = { enabled = false, show_start = false, show_end = false },
       exclude = {
         filetypes = {
-          "help",
+          "Trouble",
           "alpha",
           "dashboard",
-          "neo-tree",
-          "Trouble",
-          "trouble",
+          "help",
           "lazy",
           "mason",
+          "neo-tree",
           "notify",
+          "snacks_dashboard",
+          "snacks_notif",
+          "snacks_terminal",
+          "snacks_win",
           "toggleterm",
-          "lazyterm",
+          "trouble",
         },
       },
     },
@@ -45,7 +48,7 @@ return {
   -- the highlighting.
   {
     "echasnovski/mini.indentscope",
-    -- enabled = true,
+    enabled = true,
     lazy = false,
     --version = "*", -- wait till new 0.7.0 release to put it back on semver
     --event = "LazyFile",
@@ -61,7 +64,7 @@ return {
         draw = {
           animation = mini_indentscope.gen_animation.none()
         },
-        options = { try_as_border = true },
+        options = { try_as_border = false },
       }
     end,
   },

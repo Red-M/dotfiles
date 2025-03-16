@@ -36,14 +36,16 @@
       ## VR
       # broken on openxr or no longer being used
       ovras = pkgs.libsForQt5.callPackage ./ovras {};
-      wayvr-dashboard = pkgs.callPackage ./wayvr-dashboard {};
 
+      wayvr-dashboard = pkgs.callPackage ./wayvr-dashboard {};
       lovr = pkgs.callPackage ./lovr {};
       lovr-playspace = pkgs.callPackage ./lovr-playspace { lovr = self.pkgs.${system}.lovr; };
       vrcadvert = pkgs.callPackage ./vrcadvert {};
       oscavmgr = pkgs.callPackage ./oscavmgr {};
       adgobye = pkgs.callPackage ./adgobye {};
       wlx-overlay-s = pkgs.callPackage ./wlx-overlay-s {};
+      monado-vulkan-layers = pkgs.callPackage ./monado-vulkan-layers {};
+      # xrizer = pkgs.callPackage ./xrizer { nixpkgs-xr-xrizer = inputs.nixpkgs-xr.overlays.default.xrizer };
 
       vr_start = pkgs.callPackage ./vr_start {
         vrcadvert = self.pkgs.${system}.vrcadvert;

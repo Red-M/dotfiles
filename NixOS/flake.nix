@@ -150,6 +150,7 @@
       adgobye = outoftree.pkgs.${pkgs.system}.adgobye;
       wlx-overlay-s = outoftree.pkgs.${pkgs.system}.wlx-overlay-s;
       vr_start = outoftree.pkgs.${pkgs.system}.vr_start;
+      monado-vulkan-layers = outoftree.pkgs.${pkgs.system}.monado-vulkan-layers;
     });
 
   };

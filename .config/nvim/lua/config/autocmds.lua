@@ -39,13 +39,13 @@ vim.api.nvim_create_autocmd({ "BufWritePre" }, {
   end,
 })
 
-vim.api.nvim_create_autocmd({'BufRead','BufEnter'}, {
-  group = vim.api.nvim_create_augroup("plugin_local-highlight_attach",{clear = false}),
-  pattern = {'*.*'},
-  callback = function(data)
-    require('local-highlight').attach(data.buf)
-  end
-})
+-- vim.api.nvim_create_autocmd({'BufRead','BufEnter','UIEnter','TabEnter'}, {
+--   group = vim.api.nvim_create_augroup("plugin_local-highlight_attach",{clear = false}),
+--   pattern = {'*.*'},
+--   callback = function(data)
+--     require('local-highlight').attach(data.buf)
+--   end
+-- })
 
 -- vim.api.nvim_create_autocmd("UiEnter", { -- Changed from BufReadPre
 --   desc = "Open neo-tree on enter",

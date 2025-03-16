@@ -8,20 +8,20 @@
     ./patching/monado.nix
   ];
   nixpkgs.overlays = [(final: prev: {
-      xrizer = prev.xrizer.overrideAttrs rec {
-        nativeBuildInputs = with pkgs; [
-          inputs.fenix.packages.${pkgs.system}.default.toolchain
-        ];
-      };
-    }
-  )];
+    xrizer-patched = final.xrizer.overrideAttrs rec {
+      nativeBuildInputs = with pkgs; [
+        inputs.fenix.packages.${pkgs.system}.default.toolchain
+      ] ++ final.xrizer.nativeBuildInputs;
+      doCheck = false;
+    };
+  })];
 
   home-manager.users.redm = import ./home_manager/vr.nix;
 
   users.users.redm = {
     packages = with pkgs; [
       # opencomposite
-      # xrizer
+      xrizer-patched
       motoc
       index_camera_passthrough
       wlx-overlay-s
@@ -32,6 +32,7 @@
       outoftree.pkgs.${pkgs.system}.oscavmgr
       outoftree.pkgs.${pkgs.system}.adgobye
       outoftree.pkgs.${pkgs.system}.vr_start
+      outoftree.pkgs.${pkgs.system}.monado-vulkan-layers
     ];
   };
 
@@ -64,7 +65,7 @@
       VIT_SYSTEM_LIBRARY_PATH = "${pkgs.basalt-monado}/lib/libbasalt.so";
       XRT_COMPOSITOR_SCALE_PERCENTAGE="130";
       U_PACING_COMP_MIN_TIME_MS = "3";
-      U_PACING_APP_IMMEDIATE_WAIT_FRAME_RETURN = "on";
+      # U_PACING_APP_IMMEDIATE_WAIT_FRAME_RETURN = "on";
       # LH_HANDTRACKING = "on";
       # IPC_EXIT_ON_DISCONNECT = "on"; # kill when a client disconnects
     };
