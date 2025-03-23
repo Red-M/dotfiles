@@ -45,7 +45,7 @@
       adgobye = pkgs.callPackage ./adgobye {};
       wlx-overlay-s = pkgs.callPackage ./wlx-overlay-s {};
       monado-vulkan-layers = pkgs.callPackage ./monado-vulkan-layers {};
-      # xrizer = pkgs.callPackage ./xrizer { nixpkgs-xr-xrizer = inputs.nixpkgs-xr.overlays.default.xrizer };
+      xrizer = pkgs.callPackage ./xrizer {};
 
       vr_start = pkgs.callPackage ./vr_start {
         vrcadvert = self.pkgs.${system}.vrcadvert;

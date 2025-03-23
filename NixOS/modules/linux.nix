@@ -53,6 +53,7 @@
     unrar-wrapper
     pwgen
     dig
+    tree
 
     mise
     usage
@@ -68,6 +69,8 @@
     pciutils
     usbutils
     lsof
+    likwid
+    dmidecode
 
     libgcc
     clang_multi

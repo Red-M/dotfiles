@@ -8,15 +8,18 @@
 vim.opt.rtp:prepend(vim.fn.stdpath("config") .. "/lazy/base46")
 
 local lazypath = vim.fn.stdpath("config") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
-  vim.fn.system({
-    "git",
-    "clone",
-    "--filter=blob:none",
-    "https://github.com/folke/lazy.nvim.git",
-    "--branch=stable", -- latest stable release
-    lazypath,
-  })
+if not (vim.uv or vim.loop).fs_stat(lazypath) then
+  local lazyrepo = "https://github.com/folke/lazy.nvim.git"
+  local out = vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
+  if vim.v.shell_error ~= 0 then
+    vim.api.nvim_echo({
+      { "Failed to clone lazy.nvim:\n", "ErrorMsg" },
+      { out, "WarningMsg" },
+      { "\nPress any key to exit..." },
+    }, true, {})
+    vim.fn.getchar()
+    os.exit(1)
+  end
 end
 vim.opt.rtp:prepend(lazypath)
 
@@ -55,20 +58,20 @@ require("config.options")
 require("lazy").setup({
   spec = {
     { import = "themes" },
-    {
-      "LazyVim/LazyVim",
-      -- import = "lazyvim.plugins",
-      opts = {
-        colorscheme = "monokai-pro",
-        news = {
-          -- When enabled, NEWS.md will be shown when changed.
-          -- This only contains big new features and breaking changes.
-          lazyvim = true,
-          -- Same but for Neovim's news.txt
-          neovim = true,
-        },
-      },
-    },
+    -- {
+    --   "LazyVim/LazyVim",
+    --   -- import = "lazyvim.plugins",
+    --   opts = {
+    --     colorscheme = "monokai-pro",
+    --     news = {
+    --       -- When enabled, NEWS.md will be shown when changed.
+    --       -- This only contains big new features and breaking changes.
+    --       lazyvim = true,
+    --       -- Same but for Neovim's news.txt
+    --       neovim = true,
+    --     },
+    --   },
+    -- },
     --{ import = "lazyvim_extras" },
     { import = "languages" },
     { import = "formatters" },
@@ -108,6 +111,5 @@ require("lazy").setup({
   },
 })
 
-require("config.options")
 require("config.keymaps")
 

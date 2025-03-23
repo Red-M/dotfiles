@@ -73,6 +73,7 @@
     ];
     kernelModules = with config.boot.kernelPackages; [
       "it87"
+      "i2c-piix4"
     ];
     extraModprobeConfig = ''
       options it87 ignore_resource_conflict=1 mmio=1

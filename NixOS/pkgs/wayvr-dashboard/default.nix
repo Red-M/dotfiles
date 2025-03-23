@@ -30,8 +30,8 @@ rustPlatform.buildRustPackage rec {
   src = fetchFromGitHub rec {
     owner = "olekolek1000";
     repo = "${pname}";
-    rev = "7da4adfc6532f5adda9113b1421b232eecefb274";
-    hash = "sha256-VmoxcOClR4BU+md6gVbNKEQWRY4D9JnIHIhWSvLFb0M=";
+    rev = "cdd5982da9497509cb5fbb5c499289e506cf2499";
+    hash = "";
   };
   sourceRoot = "${src.name}/src-tauri";
 

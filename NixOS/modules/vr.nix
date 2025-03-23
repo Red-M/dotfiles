@@ -12,6 +12,18 @@
       nativeBuildInputs = with pkgs; [
         inputs.fenix.packages.${pkgs.system}.default.toolchain
       ] ++ final.xrizer.nativeBuildInputs;
+      patches = [
+        ./patching/patches/xrizer/72.patch
+      ] ++ outoftree.pkgs.${pkgs.system}.xrizer.patches;
+      doCheck = false;
+    };
+    xrizer-patched2 = outoftree.pkgs.${pkgs.system}.xrizer.overrideAttrs rec {
+      nativeBuildInputs = with pkgs; [
+        inputs.fenix.packages.${pkgs.system}.default.toolchain
+      ] ++ outoftree.pkgs.${pkgs.system}.xrizer.nativeBuildInputs;
+      patches = [
+        ./patching/patches/xrizer/72.patch
+      ] ++ outoftree.pkgs.${pkgs.system}.xrizer.patches;
       doCheck = false;
     };
   })];
@@ -21,18 +33,21 @@
   users.users.redm = {
     packages = with pkgs; [
       # opencomposite
-      xrizer-patched
+      # xrizer-patched
+      xrizer-patched2
+      # outoftree.pkgs.${pkgs.system}.xrizer
       motoc
       index_camera_passthrough
       wlx-overlay-s
       libsurvive
-      outoftree.pkgs.${pkgs.system}.wayvr-dashboard
+      wayvr-dashboard
+      # outoftree.pkgs.${pkgs.system}.wayvr-dashboard
       outoftree.pkgs.${pkgs.system}.lovr-playspace
       outoftree.pkgs.${pkgs.system}.vrcadvert
       outoftree.pkgs.${pkgs.system}.oscavmgr
       outoftree.pkgs.${pkgs.system}.adgobye
       outoftree.pkgs.${pkgs.system}.vr_start
-      outoftree.pkgs.${pkgs.system}.monado-vulkan-layers
+      # outoftree.pkgs.${pkgs.system}.monado-vulkan-layers
     ];
   };
 
@@ -70,8 +85,6 @@
       # IPC_EXIT_ON_DISCONNECT = "on"; # kill when a client disconnects
     };
   };
-
-  # git clone https://gitlab.freedesktop.org/monado/utilities/hand-tracking-models ~/.local/share/monado/hand-tracking-models
 
   # https://github.com/NixOS/nixpkgs/issues/217119
   # https://github.com/Frogging-Family/community-patches/blob/master/linux61-tkg/cap_sys_nice_begone.mypatch

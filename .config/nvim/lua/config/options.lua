@@ -25,6 +25,7 @@ vim.opt.whichwrap = "<,>,[,]"
 vim.opt.backspace = "eol,start"
 
 vim.opt.scrolloff = 8
+vim.opt.sidescrolloff = 12
 vim.g.netrw_banner = 0
 
 vim.opt.foldenable = true
