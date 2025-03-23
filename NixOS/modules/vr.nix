@@ -13,6 +13,9 @@
         inputs.fenix.packages.${pkgs.system}.default.toolchain
       ] ++ final.xrizer.nativeBuildInputs;
       patches = [
+        ./patching/patches/xrizer/67.patch
+        # ./patching/patches/xrizer/68.patch
+        ./patching/patches/xrizer/69.patch
         ./patching/patches/xrizer/72.patch
       ] ++ outoftree.pkgs.${pkgs.system}.xrizer.patches;
       doCheck = false;
@@ -33,8 +36,8 @@
   users.users.redm = {
     packages = with pkgs; [
       # opencomposite
-      # xrizer-patched
-      xrizer-patched2
+      xrizer-patched
+      # xrizer-patched2
       # outoftree.pkgs.${pkgs.system}.xrizer
       motoc
       index_camera_passthrough

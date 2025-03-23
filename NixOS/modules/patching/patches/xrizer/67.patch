@@ -1,0 +1,83 @@
+From c56d9cdb088b63f0f1e47755d1596c524a94c768 Mon Sep 17 00:00:00 2001
+From: galister <22305755+galister@users.noreply.github.com>
+Date: Sun, 23 Mar 2025 06:02:37 +0900
+Subject: [PATCH] Overlay alpha corrections
+
+---
+ shaders/src/overlay.frag        |  5 +++--
+ src/graphics_backends/vulkan.rs |  9 ++-------
+ src/overlay.rs                  | 15 +++++++++------
+ 3 files changed, 14 insertions(+), 15 deletions(-)
+
+diff --git a/shaders/src/overlay.frag b/shaders/src/overlay.frag
+index d9bf96f..7a7163d 100644
+--- a/shaders/src/overlay.frag
++++ b/shaders/src/overlay.frag
+@@ -2,10 +2,11 @@
+ layout(set = 0, binding = 0) uniform sampler2D overlay;
+ layout(location = 0) in vec2 texCoord;
+ layout(push_constant, std430) uniform pc {
+-	float alpha;
++	layout(offset = 16) float alpha;
+ };
+ layout(location = 0) out vec4 color;
+
+ void main() {
+-	color = vec4(texture(overlay, texCoord).xyz, alpha);
++	color = texture(overlay, texCoord);
++	color.a *= alpha;
+ }
+diff --git a/src/graphics_backends/vulkan.rs b/src/graphics_backends/vulkan.rs
+index ab22373..4734a0e 100644
+--- a/src/graphics_backends/vulkan.rs
++++ b/src/graphics_backends/vulkan.rs
+@@ -784,14 +784,9 @@ impl PipelineData {
+         let multi_state = vk::PipelineMultisampleStateCreateInfo::default();
+         let depth_state = vk::PipelineDepthStencilStateCreateInfo::default();
+         let blend = vk::PipelineColorBlendAttachmentState {
+-            blend_enable: vk::TRUE,
+-            src_color_blend_factor: vk::BlendFactor::ONE,
+-            dst_color_blend_factor: vk::BlendFactor::ZERO,
+-            color_blend_op: vk::BlendOp::ADD,
+-            src_alpha_blend_factor: vk::BlendFactor::ONE,
+-            dst_alpha_blend_factor: vk::BlendFactor::ZERO,
+-            alpha_blend_op: vk::BlendOp::ADD,
++            blend_enable: vk::FALSE,
+             color_write_mask: vk::ColorComponentFlags::RGBA,
++            ..Default::default()
+         };
+         let blend_state = vk::PipelineColorBlendStateCreateInfo::default()
+             .attachments(std::slice::from_ref(&blend));
+diff --git a/src/overlay.rs b/src/overlay.rs
+index acadb1b..6a951a5 100644
+--- a/src/overlay.rs
++++ b/src/overlay.rs
+@@ -180,7 +180,10 @@ impl OverlayMan {
+                 ($ty:ident) => {{
+                     $ty::new()
+                         .space(space)
+-                        .layer_flags(xr::CompositionLayerFlags::BLEND_TEXTURE_SOURCE_ALPHA)
++                        .layer_flags(
++                            xr::CompositionLayerFlags::BLEND_TEXTURE_SOURCE_ALPHA
++                                | xr::CompositionLayerFlags::UNPREMULTIPLIED_ALPHA,
++                        )
+                         .eye_visibility(xr::EyeVisibility::BOTH)
+                         .sub_image(
+                             xr::SwapchainSubImage::new()
+@@ -545,11 +548,11 @@ impl vr::IVROverlay027_Interface for OverlayMan {
+         vr::EVROverlayError::None
+     }
+
+-    fn SetOverlayAlpha(&self, handle: vr::VROverlayHandle_t, alpha: f32) -> vr::EVROverlayError {
+-        get_overlay!(self, handle, mut overlay);
+-
+-        debug!("setting overlay {:?} alpha to {alpha}", overlay.name);
+-        overlay.alpha = alpha.clamp(0.0, 1.0);
++    fn SetOverlayAlpha(&self, _handle: vr::VROverlayHandle_t, _alpha: f32) -> vr::EVROverlayError {
++        // Merely setting overlay.alpha here is not enough.
++        // The swapchain texture needs to be re-rendered with the new alpha.
++        // Once we have a mechanism to do that, consider re-enabling this.
++        crate::warn_unimplemented!("SetOverlayAlpha");
+         vr::EVROverlayError::None
+     }
+
