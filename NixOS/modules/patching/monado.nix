@@ -9,6 +9,7 @@
         patches = (old.patches or []) ++ [
           ./patches/monado/2253.patch
           ./patches/monado/2389.patch
+          # ./patches/monado/2425.patch
           ./patches/monado/2426.patch
           ./patches/monado/up_client_max.patch
         ];

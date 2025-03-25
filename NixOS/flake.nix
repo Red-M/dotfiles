@@ -49,7 +49,7 @@
     mkNixOS = {host_modules, system, ...}: nixpkgs.lib.nixosSystem rec {
       inherit system;
       modules = [
-        lix-module.nixosModules.default
+        lix-module.nixosModules.lixFromNixpkgs
       ] ++ host_modules;
       specialArgs = {
         inherit inputs system nixos-hardware outoftree;
