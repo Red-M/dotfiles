@@ -77,7 +77,7 @@ local config_keymap = {
   {"i", [[<C-d>]], [[<C-o>"dY<C-o>"dp<C-o>:let @"=@0<cr>]], {desc = "Duplicate current line",}},
 
   -- Fake refresh of the current window
-  {"n", [[<leader>r]], "<C-Left><C-Right>", {desc = [["Refresh" the window]],}},
+  -- {"n", [[<leader>r]], "<C-Left><C-Right>", {desc = [["Refresh" the window]],}},
 
   -- Line movement
   {{"i","n"}, [[<A-k>]], "<cmd>m .-2<cr>", {desc = "Move line up",}},

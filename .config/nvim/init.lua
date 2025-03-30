@@ -53,6 +53,8 @@ vim.api.nvim_create_autocmd({ "BufRead" }, {
 })
 
 require("config.options")
+require("config.keymaps")
+require("config.autocmds")
 
 -- Plugins configured at ./lua/plugins/
 require("lazy").setup({
@@ -111,5 +113,5 @@ require("lazy").setup({
   },
 })
 
-require("config.keymaps")
+require("config.lazy")
 

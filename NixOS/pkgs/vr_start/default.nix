@@ -12,7 +12,6 @@
   motoc,
   lovr-playspace,
   wlx-overlay-s,
-  adgobye,
   index_camera_passthrough,
 
 }:
@@ -29,7 +28,6 @@ writeShellApplication {
     motoc
     lovr-playspace
     wlx-overlay-s
-    adgobye
     index_camera_passthrough
   ];
 
@@ -61,7 +59,6 @@ writeShellApplication {
     motoc monitor &> /dev/null &
     lovr-playspace &
     wlx-overlay-s &
-    # AdGoBye &
     index_camera_passthrough
 
   '';

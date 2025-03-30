@@ -1287,7 +1287,7 @@
             "MSI Mystic Light MS_7E07": true,
             "MSI Mystic Light MS_7E10": true,
             "MSI Mystic Light MS_B926": true,
-            "MSI Optix controller": true,
+            "MSI Optix controller": false,
             "MSI Radeon RX 6600 XT Gaming X": true,
             "MSI Radeon RX 6700 XT Gaming X": true,
             "MSI Radeon RX 6750 XT Gaming X Trio 12G": true,
@@ -1915,6 +1915,9 @@
         }
     },
     "LogManager": {
+        "dialog_no_show_hashes": [
+            14306703760882907409
+        ],
         "log_console": false
     },
     "Plugins": {

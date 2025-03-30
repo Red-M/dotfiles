@@ -2,6 +2,7 @@
   description = "Out Of Tree";
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-xr.url = "github:nix-community/nixpkgs-xr";
   };
 
@@ -10,6 +11,10 @@
   in {
     pkgs = forAllSys (system: let
       pkgs = import nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+      };
+      unstable_pkgs = import inputs.nixpkgs-unstable {
         inherit system;
         config.allowUnfree = true;
       };
@@ -33,25 +38,25 @@
       znc = pkgs.callPackage ./znc {};
       zncModules = pkgs.callPackage ./znc/modules.nix { znc = self.pkgs.${system}.znc; };
 
-      ## VR
-      # broken on openxr or no longer being used
-      ovras = pkgs.libsForQt5.callPackage ./ovras {};
+      argbColors = pkgs.callPackage ./argbColors {};
 
+      ## VR
       wayvr-dashboard = pkgs.callPackage ./wayvr-dashboard {};
       lovr = pkgs.callPackage ./lovr {};
       lovr-playspace = pkgs.callPackage ./lovr-playspace { lovr = self.pkgs.${system}.lovr; };
       vrcadvert = pkgs.callPackage ./vrcadvert {};
       oscavmgr = pkgs.callPackage ./oscavmgr {};
-      adgobye = pkgs.callPackage ./adgobye {};
       wlx-overlay-s = pkgs.callPackage ./wlx-overlay-s {};
-      monado-vulkan-layers = pkgs.callPackage ./monado-vulkan-layers {};
       xrizer = pkgs.callPackage ./xrizer {};
+      eepyxr = pkgs.callPackage ./eepyxr {
+        zig = unstable_pkgs.zig;
+        sdl3 = unstable_pkgs.sdl3;
+      };
 
       vr_start = pkgs.callPackage ./vr_start {
         vrcadvert = self.pkgs.${system}.vrcadvert;
         oscavmgr = self.pkgs.${system}.oscavmgr;
         lovr-playspace = self.pkgs.${system}.lovr-playspace;
-        adgobye = self.pkgs.${system}.adgobye;
         motoc = pkgs.motoc;
         wlx-overlay-s = nixpkgs-xr.outputs.packages.${system}.wlx-overlay-s;
         index_camera_passthrough = nixpkgs-xr.outputs.packages.${system}.index_camera_passthrough;

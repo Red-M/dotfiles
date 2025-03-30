@@ -141,16 +141,14 @@
       reeemiks = outoftree.pkgs.${pkgs.system}.reeemiks;
       znc = outoftree.pkgs.${pkgs.system}.znc;
       znc_clientaway = outoftree.pkgs.${pkgs.system}.zncModules.clientaway;
-      ovras = outoftree.pkgs.${pkgs.system}.ovras;
       lovr = outoftree.pkgs.${pkgs.system}.lovr;
       lovr-playspace = outoftree.pkgs.${pkgs.system}.lovr-playspace;
       vrcadvert = outoftree.pkgs.${pkgs.system}.vrcadvert;
       oscavmgr = outoftree.pkgs.${pkgs.system}.oscavmgr;
       wayvr-dashboard = outoftree.pkgs.${pkgs.system}.wayvr-dashboard;
-      adgobye = outoftree.pkgs.${pkgs.system}.adgobye;
       wlx-overlay-s = outoftree.pkgs.${pkgs.system}.wlx-overlay-s;
       vr_start = outoftree.pkgs.${pkgs.system}.vr_start;
-      monado-vulkan-layers = outoftree.pkgs.${pkgs.system}.monado-vulkan-layers;
+      argbColors = outoftree.pkgs.${pkgs.system}.argbColors;
     });
 
   };

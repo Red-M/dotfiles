@@ -36,6 +36,8 @@
       kdePackages.kdenlive
 
       libreoffice-qt6-fresh
+
+      winbox4
     ];
   };
 

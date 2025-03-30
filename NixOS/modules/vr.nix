@@ -13,7 +13,7 @@
         inputs.fenix.packages.${pkgs.system}.default.toolchain
       ] ++ final.xrizer.nativeBuildInputs;
       patches = [
-        ./patching/patches/xrizer/67.patch
+        # ./patching/patches/xrizer/67.patch
         # ./patching/patches/xrizer/68.patch
         ./patching/patches/xrizer/69.patch
         # ./patching/patches/xrizer/72.patch
@@ -48,7 +48,6 @@
       outoftree.pkgs.${pkgs.system}.lovr-playspace
       outoftree.pkgs.${pkgs.system}.vrcadvert
       outoftree.pkgs.${pkgs.system}.oscavmgr
-      outoftree.pkgs.${pkgs.system}.adgobye
       outoftree.pkgs.${pkgs.system}.vr_start
       # outoftree.pkgs.${pkgs.system}.monado-vulkan-layers
     ];

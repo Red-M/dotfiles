@@ -41,8 +41,12 @@
 **.log
 **/logs/
 
+.config/fontconfig/conf.d/*-hm-*.conf
+.local/share/nix/repl-history
 NixOS/result
 NixOS/flake.lock
+
+
 !**/.keep_me
 
 

@@ -116,11 +116,11 @@ return {
   },
   config = function(_, opts)
     require("refactoring").setup(opts)
-    if LazyVim.has("telescope.nvim") then
-      LazyVim.on_load("telescope.nvim", function()
-        require("telescope").load_extension("refactoring")
-      end)
-    end
+    -- if LazyVim.has("telescope.nvim") then
+    --   LazyVim.on_load("telescope.nvim", function()
+    --     require("telescope").load_extension("refactoring")
+    --   end)
+    -- end
   end,
 }
 }
