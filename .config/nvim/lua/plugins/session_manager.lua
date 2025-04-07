@@ -20,6 +20,7 @@ return {
 --   autosave_only_in_session = false, -- Always autosaves session. If true, only autosaves after a session is active.
 --   max_path_length = 80,  -- Shorten the display path if length exceeds this threshold. Use 0 if don't want to shorten the path at all.
 -- }) end,
+
   {
     "stevearc/resession.nvim",
     lazy = false,
@@ -37,7 +38,7 @@ return {
         autosave = {
           enabled = true,
           interval = 60,
-          notify = true,
+          notify = false,
         },
         -- override default filter
         buf_filter = function(bufnr)

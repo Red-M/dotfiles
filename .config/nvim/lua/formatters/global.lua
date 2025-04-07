@@ -1,4 +1,16 @@
 
+vim.api.nvim_create_user_command("Format", function(args)
+  local range = nil
+  if args.count ~= -1 then
+    local end_line = vim.api.nvim_buf_get_lines(0, args.line2 - 1, args.line2, true)[1]
+    range = {
+      start = { args.line1, 0 },
+      ["end"] = { args.line2, end_line:len() },
+    }
+  end
+  require("conform").format({ async = true, lsp_format = "fallback", range = range })
+end, { range = true })
+
 vim.api.nvim_create_user_command("FormatDisable", function(args)
   if args.bang then
     -- FormatDisable! will disable formatting just for this buffer
@@ -19,10 +31,28 @@ end, {
 
 
 return {
+
   {
     "stevearc/conform.nvim",
-    optional = true,
+    -- dependencies = { "mason.nvim" },
+    -- optional = true,
+      keys = {
+    {
+      "<leader>cF",
+      function()
+        require("conform").format({ formatters = { "injected" }, timeout_ms = 3000 })
+      end,
+      mode = { "n", "v" },
+      desc = "Format Injected Langs",
+    },
+  },
     opts = {
+      default_format_opts = {
+        timeout_ms = 3000,
+        async = false, -- not recommended to change
+        quiet = false, -- not recommended to change
+        lsp_format = "fallback", -- not recommended to change
+      },
       formatters_by_ft = {
         ["*"] = {
           "injected",
@@ -45,6 +75,20 @@ return {
         typescript = "ts",
       },
       lang_to_formatters = {},
+      formatters = {
+        injected = { options = { ignore_errors = true } },
+        -- # Example of using dprint only when a dprint.json file is present
+        -- dprint = {
+        --   condition = function(ctx)
+        --     return vim.fs.find({ "dprint.json" }, { path = ctx.filename, upward = true })[1]
+        --   end,
+        -- },
+        --
+        -- # Example of using shfmt with extra args
+        -- shfmt = {
+        --   prepend_args = { "-i", "2", "-ci" },
+        -- },
+      },
 
       -- -- if format_on_save is a function, it will be called during BufWritePre
       -- format_on_save = function(bufnr)

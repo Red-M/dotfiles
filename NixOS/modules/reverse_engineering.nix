@@ -19,7 +19,7 @@
       cgdb
       seer
       xxgdb
-      pwndbg
+      # pwndbg
       gef
       kdbg
       radare2

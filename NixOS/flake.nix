@@ -14,7 +14,7 @@
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
 
     lix-module = {
-      url = "https://git.lix.systems/lix-project/nixos-module/archive/2.92.0.tar.gz";
+      url = "https://git.lix.systems/lix-project/nixos-module/archive/2.92.0-2.tar.gz";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -49,7 +49,7 @@
     mkNixOS = {host_modules, system, ...}: nixpkgs.lib.nixosSystem rec {
       inherit system;
       modules = [
-        lix-module.nixosModules.lixFromNixpkgs
+        lix-module.nixosModules.default
       ] ++ host_modules;
       specialArgs = {
         inherit inputs system nixos-hardware outoftree;
@@ -149,6 +149,7 @@
       wlx-overlay-s = outoftree.pkgs.${pkgs.system}.wlx-overlay-s;
       vr_start = outoftree.pkgs.${pkgs.system}.vr_start;
       argbColors = outoftree.pkgs.${pkgs.system}.argbColors;
+      resolute = outoftree.pkgs.${pkgs.system}.resolute;
     });
 
   };

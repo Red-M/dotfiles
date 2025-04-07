@@ -32,8 +32,11 @@
       mpvpaper
 
       krita
-      gimp-with-plugins
+      unstable.gimp-with-plugins
       kdePackages.kdenlive
+      kdePackages.partitionmanager
+      gsmartcontrol
+      unstable.blender
 
       libreoffice-qt6-fresh
 

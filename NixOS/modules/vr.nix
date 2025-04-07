@@ -13,10 +13,10 @@
         inputs.fenix.packages.${pkgs.system}.default.toolchain
       ] ++ final.xrizer.nativeBuildInputs;
       patches = [
-        # ./patching/patches/xrizer/67.patch
         # ./patching/patches/xrizer/68.patch
         ./patching/patches/xrizer/69.patch
-        # ./patching/patches/xrizer/72.patch
+        ./patching/patches/xrizer/82.patch
+        # ./patching/patches/xrizer/rin_xdevs.patch
       ] ++ outoftree.pkgs.${pkgs.system}.xrizer.patches;
       doCheck = false;
     };
@@ -25,7 +25,6 @@
         inputs.fenix.packages.${pkgs.system}.default.toolchain
       ] ++ outoftree.pkgs.${pkgs.system}.xrizer.nativeBuildInputs;
       patches = [
-        # ./patching/patches/xrizer/72.patch
       ] ++ outoftree.pkgs.${pkgs.system}.xrizer.patches;
       doCheck = false;
     };
@@ -36,8 +35,8 @@
   users.users.redm = {
     packages = with pkgs; [
       # opencomposite
-      xrizer-patched
-      # xrizer-patched2
+      # xrizer-patched
+      xrizer-patched2
       # outoftree.pkgs.${pkgs.system}.xrizer
       motoc
       index_camera_passthrough
@@ -49,6 +48,7 @@
       outoftree.pkgs.${pkgs.system}.vrcadvert
       outoftree.pkgs.${pkgs.system}.oscavmgr
       outoftree.pkgs.${pkgs.system}.vr_start
+      outoftree.pkgs.${pkgs.system}.resolute
       # outoftree.pkgs.${pkgs.system}.monado-vulkan-layers
     ];
   };

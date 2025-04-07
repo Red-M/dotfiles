@@ -24,7 +24,7 @@
 
       bottles
 
-      xboxdrv
+      # xboxdrv
     ];
   };
 

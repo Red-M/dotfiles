@@ -52,6 +52,7 @@
         zig = unstable_pkgs.zig;
         sdl3 = unstable_pkgs.sdl3;
       };
+      resolute = pkgs.callPackage ./resolute {};
 
       vr_start = pkgs.callPackage ./vr_start {
         vrcadvert = self.pkgs.${system}.vrcadvert;
