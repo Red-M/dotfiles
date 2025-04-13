@@ -8,6 +8,16 @@
     ./patching/monado.nix
   ];
   nixpkgs.overlays = [(final: prev: {
+    wlx-overlay-s_patched = final.wlx-overlay-s.overrideAttrs rec {
+      nativeBuildInputs = with pkgs; [
+        inputs.fenix.packages.${pkgs.system}.default.toolchain
+      ] ++ final.wlx-overlay-s.nativeBuildInputs;
+    };
+    wlx-overlay-s_patched2 = outoftree.pkgs.${pkgs.system}.wlx-overlay-s.overrideAttrs rec {
+      nativeBuildInputs = with pkgs; [
+        inputs.fenix.packages.${pkgs.system}.default.toolchain
+      ] ++ outoftree.pkgs.${pkgs.system}.wlx-overlay-s.nativeBuildInputs;
+    };
     xrizer-patched = final.xrizer.overrideAttrs rec {
       nativeBuildInputs = with pkgs; [
         inputs.fenix.packages.${pkgs.system}.default.toolchain
@@ -40,16 +50,19 @@
       # outoftree.pkgs.${pkgs.system}.xrizer
       motoc
       index_camera_passthrough
-      wlx-overlay-s
+      # unstable.wlx-overlay-s
+      # wlx-overlay-s_patched
+      outoftree.pkgs.${pkgs.system}.wlx-overlay-s
       libsurvive
       # wayvr-dashboard
       outoftree.pkgs.${pkgs.system}.wayvr-dashboard
       outoftree.pkgs.${pkgs.system}.lovr-playspace
       outoftree.pkgs.${pkgs.system}.vrcadvert
       outoftree.pkgs.${pkgs.system}.oscavmgr
-      outoftree.pkgs.${pkgs.system}.vr_start
+      # outoftree.pkgs.${pkgs.system}.vr_start
       outoftree.pkgs.${pkgs.system}.resolute
       # outoftree.pkgs.${pkgs.system}.monado-vulkan-layers
+      outoftree.pkgs.${pkgs.system}.xrbinder
     ];
   };
 

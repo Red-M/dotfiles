@@ -217,7 +217,7 @@ plugin=org.kde.plasma.kicker
 
 [Containments][28][Applets][52][Configuration]
 PreloadWeight=100
-popupHeight=693
+popupHeight=773
 popupWidth=300
 
 [Containments][28][Applets][52][Configuration][ConfigDialog]
@@ -285,7 +285,6 @@ plugin=org.kde.plasma.volume
 PreloadWeight=100
 
 [Containments][33][Applets][35][Configuration][General]
-currentTab=streams
 migrated=true
 showVirtualDevices=true
 
@@ -356,7 +355,7 @@ immutability=1
 plugin=org.kde.plasma.networkmanagement
 
 [Containments][33][Applets][47][Configuration]
-PreloadWeight=100
+PreloadWeight=92
 
 [Containments][33][Applets][48]
 immutability=1
@@ -384,7 +383,7 @@ immutability=1
 plugin=org.kde.plasma.brightness
 
 [Containments][33][Applets][94][Configuration]
-PreloadWeight=20
+PreloadWeight=4
 
 [Containments][33][ConfigDialog]
 DialogHeight=540

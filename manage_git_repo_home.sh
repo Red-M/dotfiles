@@ -108,10 +108,10 @@ maintain_path .scite
 maintain_path .SciTEUser.properties
 
 maintain_path .local/{bin/*,etc}
-maintain_path .local/share/{bash-completion,color-schemes,konsole,plasma*,nix}
+maintain_path .local/share/{bash-completion,color-schemes,konsole,plasma*,nix,index_camera_passthrough}
 maintain_path .local/share/fonts/*.ttf
 
-maintain_path .config/{font*,htop,kdedefaults,mpv,xsettingsd}
+maintain_path .config/{font*,htop,kdedefaults,mpv,xsettingsd,index_camera_passthrough}
 maintain_path .config/{breezerc,kdeglobals,kglobalshortcutsrc,khotkeysrc,konsolerc,kscreenlockerrc,kwinrulesrc,kwinrc,touchpad*}
 
 maintain_path .fonts/*/*.{ttf,ttc}

@@ -26,12 +26,12 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "wayvr-dashboard";
-  version = "0.2.5";
+  version = "0.3.0";
   src = fetchFromGitHub rec {
     owner = "olekolek1000";
     repo = "${pname}";
-    rev = "125900a3ca55a645ca297a216e52102452604cf9";
-    hash = "sha256-5313JDxAVGamgNYpgnGY7Q4M9VMSQYqKP9wjWg02D8Q=";
+    rev = "ad82fc3fe6dcf8eb2d1a553be582d3e7fa82695b";
+    hash = "sha256-1wFxHkaUzt9iz+mMZn8vQCo8OcxT4EhqlNCJKBlVfQk=";
   };
   sourceRoot = "${src.name}/src-tauri";
 
@@ -49,7 +49,7 @@ rustPlatform.buildRustPackage rec {
 		inherit version src;
 		pname = "wayvr-dashboard-ui";
 
-		npmDepsHash = "sha256-W2X9g0LFIgkLbZBdr4OqodeN7U/h3nVfl3mKV9dsZTg=";
+		npmDepsHash = "sha256-s1Znll4FvCDjA2jIkduPFtmAwUNXPVy4XWDZfM6GROU=";
 
 		nativeBuildInputs = [
 			autoPatchelfHook

@@ -46,13 +46,14 @@
       lovr-playspace = pkgs.callPackage ./lovr-playspace { lovr = self.pkgs.${system}.lovr; };
       vrcadvert = pkgs.callPackage ./vrcadvert {};
       oscavmgr = pkgs.callPackage ./oscavmgr {};
-      wlx-overlay-s = pkgs.callPackage ./wlx-overlay-s {};
+      wlx-overlay-s = pkgs.callPackage ./wlx-overlay-s { unstable = unstable_pkgs; };
       xrizer = pkgs.callPackage ./xrizer {};
       eepyxr = pkgs.callPackage ./eepyxr {
         zig = unstable_pkgs.zig;
         sdl3 = unstable_pkgs.sdl3;
       };
       resolute = pkgs.callPackage ./resolute {};
+      xrbinder = pkgs.callPackage ./xrbinder {};
 
       vr_start = pkgs.callPackage ./vr_start {
         vrcadvert = self.pkgs.${system}.vrcadvert;

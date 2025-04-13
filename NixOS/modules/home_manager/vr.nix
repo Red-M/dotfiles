@@ -79,6 +79,8 @@
   xdg.configFile."openxr/xrizer".source = "${pkgs.xrizer-patched2}";
   xdg.configFile."openxr/1/active_runtime.json".source = "${pkgs.monado_patched}/share/openxr/1/openxr_monado.json";
   # xdg.dataFile."openxr/1/api_layers/implicit.d/VkLayer_MND_enable_timeline_semaphore.json".source = "${outoftree.pkgs.${pkgs.system}.monado-vulkan-layers}/share/vulkan/implicit_layer.d/VkLayer_MND_enable_timeline_semaphore.json";
+  xdg.dataFile."openxr/1/api_layers/implicit.d/XR_APILAYER_NOVENDOR_xr_binder.json".source = "${outoftree.pkgs.${pkgs.system}.xrbinder}/manifest.json";
+  xdg.dataFile."openxr/1/api_layers/implicit.d/libxrBinder_module.so".source = "${outoftree.pkgs.${pkgs.system}.xrbinder}/libxrBinder_module.so";
   xdg.configFile."openxr/2/active_runtime.json".text = ''
     {
       "file_format_version": "1.0.0",

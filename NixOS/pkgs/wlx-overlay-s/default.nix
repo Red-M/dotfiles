@@ -22,27 +22,29 @@
   testers,
   wayland,
   wlx-overlay-s,
+  unstable,
 }:
 
-rustPlatform.buildRustPackage rec {
+unstable.rustPlatform.buildRustPackage rec {
   pname = "wlx-overlay-s";
-  version = "25.3.0-1";
+  version = "25.4.1-1";
 
   src = fetchFromGitHub {
     owner = "galister";
     repo = "wlx-overlay-s";
     # rev = "v${version}";
-    rev = "5cf6eeedb0654362534de6f888950848f7ff8d6e";
-    hash = "sha256-UO2tsN+VUHvPJdHuhqBwsPgIpFrj0m7Dv6tyqTL6EXk=";
+    rev = "5ca634b552f643d0670bd697e050765c7999bb2a";
+    hash = "sha256-+q3mRi2DkGVxAacfevgfpknkY8ktyo8SdTO9KAF1Fe0=";
   };
 
   useFetchCargoVendor = true;
-  cargoHash = "sha256-AvWKoPD0omAE4v1RpwDuA8WJYn4ezWhnQ2W/pHdPu1Y=";
+  cargoHash = "sha256-AhASQ/5pqiPNNGQSZTdEsf1Uw4Mv5Nze1f+QaV4gaUo=";
 
   nativeBuildInputs = [
     makeWrapper
     pkg-config
     rustPlatform.bindgenHook
+    shaderc
   ];
 
   buildInputs = [
@@ -58,13 +60,17 @@ rustPlatform.buildRustPackage rec {
     openxr-loader
     pipewire
     wayland
+    shaderc
   ];
 
-  env.SHADERC_LIB_DIR = "${lib.getLib shaderc}/lib";
+  env = {
+    # LD_LIBRARY_PATH = lib.makeLibraryPath buildInputs;
+    SHADERC_LIB_DIR = lib.makeLibraryPath [ shaderc ];
+  };
 
   postPatch = ''
     substituteAllInPlace src/res/watch.yaml \
-      --replace '"pactl"' '"${lib.getExe' pulseaudio "pactl"}"'
+    --replace '"pactl"' '"${lib.getExe' pulseaudio "pactl"}"'
 
     # TODO: src/res/keyboard.yaml references 'whisper_stt'
   '';

@@ -150,6 +150,7 @@
       vr_start = outoftree.pkgs.${pkgs.system}.vr_start;
       argbColors = outoftree.pkgs.${pkgs.system}.argbColors;
       resolute = outoftree.pkgs.${pkgs.system}.resolute;
+      xrbinder = outoftree.pkgs.${pkgs.system}.xrbinder;
     });
 
   };
