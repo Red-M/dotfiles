@@ -12,6 +12,14 @@
   services.openssh = {
     package = pkgs.openssh_hpn;
   };
+  security.pam = {
+    sshAgentAuth = {
+      enable = true;
+      # authorizedKeysFiles = [
+      #   "~/.ssh/authorized_keys"
+      # ];
+    };
+  };
 
   users.users.root.openssh.authorizedKeys.keys = [
 

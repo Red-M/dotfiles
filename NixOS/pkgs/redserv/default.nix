@@ -2,7 +2,7 @@
   lib,
   stdenv,
   fetchFromGitHub,
-  python312,
+  python3,
   makeWrapper,
   openssl_3,
 
@@ -24,7 +24,7 @@ stdenv.mkDerivation rec {
 
   nativeBuildInputs = [ makeWrapper openssl_3 ];
   propagatedBuildInputs = [
-    (python312.withPackages (pythonPackages: with pythonPackages; [
+    (python3.withPackages (pythonPackages: with pythonPackages; [
       cherrypy
       requests
       watchdog
