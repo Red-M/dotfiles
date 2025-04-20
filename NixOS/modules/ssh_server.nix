@@ -4,8 +4,14 @@
 {
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
-  programs.ssh.package = pkgs.openssh_hpn;
-  services.openssh.package = pkgs.openssh_hpn;
+  programs.ssh = {
+    package = pkgs.openssh_hpn;
+    forwardX11 = true;
+    setXAuthLocation = true;
+  };
+  services.openssh = {
+    package = pkgs.openssh_hpn;
+  };
 
   users.users.root.openssh.authorizedKeys.keys = [
 

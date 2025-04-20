@@ -30,8 +30,8 @@ SlidePaths=/nix/store/kls40zsrq9dd74innawflbf4ja7ba857-breeze-6.0.5/share/wallpa
 [Containments][102]
 ItemGeometries-1920x1080=Applet-104:0,16,192,1008,0;Applet-105:1728,0,192,352,0;
 ItemGeometries-2048x1152=Applet-104:1760,0,288,1008,0;Applet-105:1856,1008,192,352,0;
-ItemGeometries-2560x1440=Applet-105:2176,0,192,352,0;Applet-104:2368,0,192,1008,0;
-ItemGeometriesHorizontal=Applet-105:2176,0,192,352,0;Applet-104:2368,0,192,1008,0;
+ItemGeometries-2560x1440=Applet-107:1984,0,192,496,0;Applet-105:2176,0,192,352,0;Applet-104:2368,0,192,1008,0;
+ItemGeometriesHorizontal=Applet-107:1984,0,192,496,0;Applet-105:2176,0,192,352,0;Applet-104:2368,0,192,1008,0;
 activityId=f16962fe-8fb8-459d-ac55-8ee109611d5f
 formfactor=0
 immutability=1
@@ -140,6 +140,59 @@ lowPrioritySensorIds=["gpu/gpu1/usedVram","gpu/gpu1/totalVram","gpu/gpu1/memoryF
 lineChartFillOpacity=5
 lineChartSmooth=false
 rangeAutoY=false
+
+[Containments][102][Applets][107]
+immutability=1
+plugin=org.kde.plasma.systemmonitor.diskactivity
+
+[Containments][102][Applets][107][Configuration]
+CurrentPreset=org.kde.plasma.systemmonitor
+UserBackgroundHints=ShadowBackground
+
+[Containments][102][Applets][107][Configuration][Appearance]
+chartFace=org.kde.ksysguard.linechart
+showTitle=false
+title=Hard Disk Activity
+updateRateLimit=500
+
+[Containments][102][Applets][107][Configuration][ConfigDialog]
+DialogHeight=540
+DialogWidth=720
+
+[Containments][102][Applets][107][Configuration][SensorColors]
+disk/(?!all).*/read=0,0,237
+disk/(?!all).*/write=237,0,142
+disk/103e7de9-2d73-490f-93da-2073b8300ff7/read=0,0,237
+disk/103e7de9-2d73-490f-93da-2073b8300ff7/write=207,0,237
+disk/1a05934b-1fd8-4c44-bfe8-19c9c9b7fdfe/read=158,237,0
+disk/1a05934b-1fd8-4c44-bfe8-19c9c9b7fdfe/write=0,148,237
+disk/all/read=0,237,237
+disk/all/write=237,0,0
+disk/cf5ea1d3-d5b2-435a-a960-23dd68302d8b/read=158,0,237
+disk/cf5ea1d3-d5b2-435a-a960-23dd68302d8b/write=237,0,178
+disk/f079d941-f710-4e48-9fc5-d0bf97830414/read=237,0,158
+disk/f079d941-f710-4e48-9fc5-d0bf97830414/write=237,0,89
+disk/nvme0n1/read=0,237,0
+disk/nvme0n1/write=0,59,237
+disk/nvme1n1/read=0,237,158
+disk/nvme1n1/write=30,0,237
+disk/nvme2n1/read=0,158,237
+disk/nvme2n1/write=119,0,237
+
+[Containments][102][Applets][107][Configuration][SensorLabels]
+disk/nvme0n1/read=nvme0n1 Read Rate
+disk/nvme0n1/write=nvme0n1 Write Rate
+disk/nvme1n1/read=nvme1n1 Read Rate
+disk/nvme1n1/write=nvme1n1 Write Rate
+disk/nvme2n1/read=nvme2n1 Read Rate
+disk/nvme2n1/write=nvme2n1 Write Rate
+lmsensors/nvme-pci-0400/temp1=990 Pro Composite
+lmsensors/nvme-pci-0400/temp2=990 Pro Sensor 1
+lmsensors/nvme-pci-0400/temp3=990 Pro Sensor 2
+
+[Containments][102][Applets][107][Configuration][Sensors]
+highPrioritySensorIds=["disk/all/write","disk/all/read","disk/nvme0n1/read","disk/nvme0n1/write","disk/nvme1n1/read","disk/nvme1n1/write","disk/nvme2n1/read","disk/nvme2n1/write"]
+lowPrioritySensorIds=["lmsensors/nvme-pci-0400/temp1","lmsensors/nvme-pci-0400/temp2","lmsensors/nvme-pci-0400/temp3","lmsensors/nvme-pci-0800/temp3","lmsensors/nvme-pci-0800/temp2","lmsensors/nvme-pci-0800/temp1","lmsensors/nvme-pci-0500/temp1","lmsensors/nvme-pci-0500/temp2","lmsensors/nvme-pci-0500/temp3"]
 
 [Containments][102][ConfigDialog]
 DialogHeight=540
@@ -266,7 +319,7 @@ immutability=1
 lastScreen=0
 location=3
 plugin=org.kde.plasma.private.systemtray
-popupHeight=448
+popupHeight=1269
 popupWidth=600
 wallpaperplugin=org.kde.image
 
@@ -285,6 +338,7 @@ plugin=org.kde.plasma.volume
 PreloadWeight=100
 
 [Containments][33][Applets][35][Configuration][General]
+currentTab=streams
 migrated=true
 showVirtualDevices=true
 
@@ -355,7 +409,7 @@ immutability=1
 plugin=org.kde.plasma.networkmanagement
 
 [Containments][33][Applets][47][Configuration]
-PreloadWeight=92
+PreloadWeight=100
 
 [Containments][33][Applets][48]
 immutability=1
@@ -383,7 +437,7 @@ immutability=1
 plugin=org.kde.plasma.brightness
 
 [Containments][33][Applets][94][Configuration]
-PreloadWeight=4
+PreloadWeight=1
 
 [Containments][33][ConfigDialog]
 DialogHeight=540

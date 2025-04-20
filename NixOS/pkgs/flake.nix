@@ -39,6 +39,8 @@
       zncModules = pkgs.callPackage ./znc/modules.nix { znc = self.pkgs.${system}.znc; };
 
       argbColors = pkgs.callPackage ./argbColors {};
+      coolercontrol = pkgs.callPackage ./coolercontrol {};
+      it87 = pkgs.callPackage ./it87 { kernel = pkgs.linuxKernel.kernels.linux_6_14; };
 
       ## VR
       wayvr-dashboard = pkgs.callPackage ./wayvr-dashboard {};

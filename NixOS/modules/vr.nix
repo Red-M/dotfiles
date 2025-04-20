@@ -7,6 +7,7 @@
     inputs.nixpkgs-xr.nixosModules.nixpkgs-xr
     ./patching/monado.nix
   ];
+
   nixpkgs.overlays = [(final: prev: {
     wlx-overlay-s_patched = final.wlx-overlay-s.overrideAttrs rec {
       nativeBuildInputs = with pkgs; [
@@ -74,16 +75,6 @@
     };
 
   };
-  # programs = {
-  #   envision = {
-  #     enable = false;
-  #     package = pkgs.envision-unwrapped;
-  #   };
-  #   git = {
-  #     enable = true;
-  #     lfs.enable = true;
-  #   };
-  # };
 
   environment.systemPackages = with pkgs; [ basalt-monado ];
 
