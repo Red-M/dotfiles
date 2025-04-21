@@ -6,11 +6,12 @@
   services.openssh.enable = true;
   programs.ssh = {
     package = pkgs.openssh_hpn;
-    forwardX11 = true;
+    # forwardX11 = true;
     setXAuthLocation = true;
   };
   services.openssh = {
     package = pkgs.openssh_hpn;
+    settings.X11Forwarding = true;
   };
   security.pam = {
     sshAgentAuth = {
