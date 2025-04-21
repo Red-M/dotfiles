@@ -24,6 +24,7 @@
     qpwgraph
     alsa-utils
     rnnoise-plugin
+    ladspaPlugins
     wireplumber
     coppwr
   ];
@@ -189,8 +190,8 @@
               "plugin" = "${pkgs.rnnoise-plugin}/lib/ladspa/librnnoise_ladspa.so";
               "label" = "noise_suppressor_mono";
               "control" = {
-                "VAD Threshold (%)" = 55.0;
-                "VAD Grace Period (ms)" = 350;
+                "VAD Threshold (%)" = 65.0;
+                "VAD Grace Period (ms)" = 80;
                 "Retroactive VAD Grace (ms)" = 30;
               };
             }];
@@ -265,6 +266,59 @@
             "node.description" = "Auto Gain Playback";
             "media.class" = "Audio/Source";
             "node.autoconnect" = false;
+          };
+        };
+      }];
+    };
+    "30-compressor" = {
+      "context.modules" = [{ # https://github.com/werman/noise-suppression-for-voice
+        "name" = "libpipewire-module-filter-chain";
+        "flags" = [ "ifexists" "nofail" ];
+        "args" = {
+          "node.description" = "Compressor Source";
+          "media.name" = "Compressor Source";
+          "filter.graph" = {
+            "nodes" = [{
+              "type" = "ladspa";
+              "name" = "module-ladspa-sink";
+              "plugin" = "${pkgs.ladspaPlugins}/lib/ladspa/sc4m_1916.so";
+              "label" = "sc4m";
+              "control" = { # https://github.com/swh/ladspa/blob/master/sc4m_1916.xml
+                "RMS/peak" = 1;
+                "Attack time (ms)" = 1.5;
+                "Release time (ms)" = 401;
+                "Threshold level (dB)" = -30;
+                "Ratio (1:n)" = 20;
+                "Knee radius (dB)" = 5;
+                "Makeup gain (dB)" = 18;
+                # "Amplitude (dB)" = 0;
+                # "Gain reduction (dB)" = -10;
+              };
+            }];
+          };
+          "capture.props" = {
+            # "node.name" = "capture.rnnoise_source";
+            # "node.passive" = true;
+            "audio.rate" = 48000;
+            "node.name" = "compressor.compressed";
+            "node.description" = "Compressor Capture";
+            "target.object" = "auto_gain.source";
+          };
+          "playback.props" = {
+            "node.name" = "compressor.playback";
+            "node.description" = "Compressor Playback";
+            "media.class" = "Audio/Source";
+            "audio.rate" = 48000;
+            "node.autoconnect" = false;
+          };
+          "source.props" = {
+            "node.name" = "compressor.source";
+            "node.description" = "Compressor Source";
+            "node.autoconnect" = false;
+          };
+          "sink.props" = {
+            "node.name" = "compressor.sink";
+            "node.description" = "Compressor Sink";
           };
         };
       }];
