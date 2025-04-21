@@ -4,7 +4,7 @@
   fetchFromGitHub,
   znc,
   python3,
-  cmake
+  cmake,
 }:
 
 let

@@ -1,25 +1,26 @@
-{ lib
-, stdenv
-, fetchurl
-, cmake
-, pkg-config
-, icu
-, openssl
-, withArgon2 ? true, libargon2
-, withI18N ?  true, boost, gettext
-, withPerl ? false, perl
-, withPython ? false, python3
-, withTcl ? false, tcl
-, withCyrus ? true, cyrus_sasl
-, withZlib ? true, zlib
-, withIPv6 ? true
+{
+  lib,
+  stdenv,
+  fetchurl,
+  fetchpatch2,
+  cmake,
+  openssl,
+  pkg-config,
+  withPerl ? false,
+  perl,
+  withPython ? false,
+  python3,
+  withTcl ? false,
+  tcl,
+  withCyrus ? true,
+  cyrus_sasl,
+  withUnicode ? true,
+  icu,
+  withZlib ? true,
+  zlib,
+  withIPv6 ? true,
+  withDebug ? false,
 }:
-
-let
-  inherit (lib)
-    cmakeBool
-  ;
-in
 
 stdenv.mkDerivation rec {
   pname = "znc";
@@ -51,27 +52,25 @@ stdenv.mkDerivation rec {
     pkg-config
   ];
 
-  buildInputs = [
-    icu
-    openssl
-  ] ++ lib.optional withArgon2 libargon2
-    ++ lib.optionals withI18N [ boost gettext ]
+  buildInputs =
+    [ openssl ]
     ++ lib.optional withPerl perl
     ++ lib.optional withPython python3
     ++ lib.optional withTcl tcl
     ++ lib.optional withCyrus cyrus_sasl
+    ++ lib.optional withUnicode icu
     ++ lib.optional withZlib zlib;
 
-  cmakeFlags = [
-    (cmakeBool "WANT_ARGON" withArgon2)
-    (cmakeBool "WANT_I18N" withI18N)
-    (cmakeBool "WANT_PERL" withPerl)
-    (cmakeBool "WANT_PYTHON" withPython)
-    (cmakeBool "WANT_TCL" withTcl)
-    (cmakeBool "WANT_CYRUS" withCyrus)
-    (cmakeBool "WANT_ZLIB" withZlib)
-    (cmakeBool "WANT_IPV6" withIPv6)
-  ];
+  configureFlags =
+    [
+      (lib.enableFeature withPerl "perl")
+      (lib.enableFeature withPython "python")
+      (lib.enableFeature withTcl "tcl")
+      (lib.withFeatureAs withTcl "tcl" "${tcl}/lib")
+      (lib.enableFeature withCyrus "cyrus")
+    ]
+    ++ lib.optionals (!withIPv6) [ "--disable-ipv6" ]
+    ++ lib.optionals withDebug [ "--enable-debug" ];
 
   enableParallelBuilding = true;
 
@@ -79,7 +78,10 @@ stdenv.mkDerivation rec {
     changelog = "https://github.com/znc/znc/blob/znc-${version}/ChangeLog.md";
     description = "Advanced IRC bouncer";
     homepage = "https://wiki.znc.in/ZNC";
-    maintainers = with maintainers; [ schneefux lnl7 ];
+    maintainers = with maintainers; [
+      schneefux
+      lnl7
+    ];
     license = licenses.asl20;
     platforms = platforms.unix;
   };
