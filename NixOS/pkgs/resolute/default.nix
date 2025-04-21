@@ -43,32 +43,32 @@ rustPlatform.buildRustPackage rec {
   useFetchCargoVendor = true;
 
   frontend = buildNpmPackage {
-		inherit version src;
-		pname = "Resolute-ui";
+    inherit version src;
+    pname = "Resolute-ui";
 
-		npmDepsHash = "sha256-X+mTF7Fc4FL/Nyt8ejvsWLwmNWIDXyYKCg00mdyEWhA=";
+    npmDepsHash = "sha256-X+mTF7Fc4FL/Nyt8ejvsWLwmNWIDXyYKCg00mdyEWhA=";
 
-		nativeBuildInputs = [
-			autoPatchelfHook
-		];
+    nativeBuildInputs = [
+      autoPatchelfHook
+    ];
 
-		dontAutoPatchelf = true;
+    dontAutoPatchelf = true;
 
-		preBuild = ''
-			autoPatchelf node_modules/sass-embedded-linux-x64/dart-sass/src/dart
-		'';
+    preBuild = ''
+      autoPatchelf node_modules/sass-embedded-linux-x64/dart-sass/src/dart
+    '';
 
-		postBuild = ''
-			cp -r ./ui/dist/ $out
-		'';
-	};
+    postBuild = ''
+      cp -r ./ui/dist/ $out
+    '';
+  };
 
-	postPatch = ''
-		substituteInPlace crates/tauri-app/tauri.conf.json \
-			--replace-warn '"frontendDist": "../../ui/dist"' '"frontendDist": "${frontend}"'
-		substituteInPlace crates/tauri-app/tauri.conf.json \
-			--replace-warn '"npm run build"' '""'
-	'';
+  postPatch = ''
+    substituteInPlace crates/tauri-app/tauri.conf.json \
+    --replace-warn '"frontendDist": "../../ui/dist"' '"frontendDist": "${frontend}"'
+    substituteInPlace crates/tauri-app/tauri.conf.json \
+    --replace-warn '"npm run build"' '""'
+  '';
 
   nativeBuildInputs = [
     cargo-tauri.hook

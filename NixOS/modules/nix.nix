@@ -90,6 +90,8 @@
     nvd
     dconf2nix
     nix-index
+    nixfmt-rfc-style
+    unstable.nvfetcher
 
     nixos-anywhere
   ];
