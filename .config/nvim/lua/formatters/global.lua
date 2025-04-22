@@ -60,19 +60,38 @@ return {
     lazy = false,
     keys = {
       {
-      "<leader>cf",
-      function()
-        require("conform").format({ timeout_ms = 3000 })
-      end,
-      mode = { "n", "v" },
-      desc = "Format file",
-      },{
-      "<leader>cF",
-      function()
-        require("conform").format({ formatters = { "injected" }, timeout_ms = 3000 })
-      end,
-      mode = { "n", "v" },
-      desc = "Format file with injected langs",
+        "<leader>ce",
+        function()
+          vim.b.enable_autoformat = true
+          vim.g.enable_autoformat = true
+        end,
+        mode = { "n", "v" },
+        desc = "Enable autoformat-on-save",
+      },
+      {
+        "<leader>cE",
+        function()
+          vim.b.enable_autoformat = false
+          vim.g.enable_autoformat = false
+        end,
+        mode = { "n", "v" },
+        desc = "Disable autoformat-on-save",
+      },
+      {
+        "<leader>cf",
+        function()
+          require("conform").format({ timeout_ms = 3000 })
+        end,
+        mode = { "n", "v" },
+        desc = "Format file",
+      },
+      {
+        "<leader>cF",
+        function()
+          require("conform").format({ formatters = { "injected" }, timeout_ms = 3000 })
+        end,
+        mode = { "n", "v" },
+        desc = "Format file with injected langs",
       },
     },
     opts = {
