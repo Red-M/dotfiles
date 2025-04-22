@@ -37,4 +37,3 @@ stdenv.mkDerivation {
     mainProgram = "coolercontrol";
   };
 }
-

@@ -1,11 +1,12 @@
-{ stdenv
-, fetchFromGitHub
-, lib
-, pipewire
-, autoreconfHook
-, pkg-config
-, nixosTests
-, gitUpdater
+{
+  stdenv,
+  fetchFromGitHub,
+  lib,
+  pipewire,
+  autoreconfHook,
+  pkg-config,
+  nixosTests,
+  gitUpdater,
 }:
 
 stdenv.mkDerivation rec {
@@ -19,18 +20,18 @@ stdenv.mkDerivation rec {
     hash = "sha256-7UspJxpxFy/W15Hz4mtLCIxx42t+vpnRxNJk67BmWJk=";
   };
 
-# installPhase = ''
-#   runHook preInstall
-#
-#   mkdir -p $out/lib/pulseaudio/modules $out/libexec/pulsaudio-xrdp-module $out/etc/xdg/autostart
-#   install -m 755 src/.libs/*${pkgs.stdenv.hostPlatform.extensions.sharedLibrary} $out/lib/pulseaudio/modules
-#
-#   install -m 755 instfiles/load_pa_modules.sh $out/libexec/pulsaudio-xrdp-module/pulseaudio_xrdp_init
-#   substituteInPlace $out/libexec/pulsaudio-xrdp-module/pulseaudio_xrdp_init \
-#     --replace pactl ${pkgs.pulseaudio}/bin/pactl
-#
-#   runHook postInstall
-# '';
+  # installPhase = ''
+  #   runHook preInstall
+  #
+  #   mkdir -p $out/lib/pulseaudio/modules $out/libexec/pulsaudio-xrdp-module $out/etc/xdg/autostart
+  #   install -m 755 src/.libs/*${pkgs.stdenv.hostPlatform.extensions.sharedLibrary} $out/lib/pulseaudio/modules
+  #
+  #   install -m 755 instfiles/load_pa_modules.sh $out/libexec/pulsaudio-xrdp-module/pulseaudio_xrdp_init
+  #   substituteInPlace $out/libexec/pulsaudio-xrdp-module/pulseaudio_xrdp_init \
+  #     --replace pactl ${pkgs.pulseaudio}/bin/pactl
+  #
+  #   runHook postInstall
+  # '';
 
   nativeBuildInputs = [
     autoreconfHook
@@ -61,10 +62,9 @@ stdenv.mkDerivation rec {
     description = "xrdp sink/source pipewire modules";
     homepage = "https://github.com/neutrinolabs/pipewire-module-xrdp";
     license = licenses.mit;
-    maintainers = with maintainers; [  ];
+    maintainers = with maintainers; [ ];
     platforms = platforms.linux;
     sourceProvenance = [ sourceTypes.fromSource ];
     pkgConfigModules = [ "pipewire" ];
   };
 }
-

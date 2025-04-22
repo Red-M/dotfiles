@@ -10,7 +10,7 @@
   qtwebsockets,
   pulseaudio,
   xorg,
-  wrapQtAppsHook
+  wrapQtAppsHook,
 }:
 
 stdenv.mkDerivation rec {
@@ -23,11 +23,22 @@ stdenv.mkDerivation rec {
     hash = "sha256-I409MD70W5+H3CD0WqmrAJRHx3ETEcmWZOJLAhhsysQ=";
   };
 
-  buildInputs = [ qtbase qtmultimedia qtwebsockets pulseaudio xorg.libXt xorg.libXtst ];
-  nativeBuildInputs = [ wrapQtAppsHook qmake gcc clang ];
+  buildInputs = [
+    qtbase
+    qtmultimedia
+    qtwebsockets
+    pulseaudio
+    xorg.libXt
+    xorg.libXtst
+  ];
+  nativeBuildInputs = [
+    wrapQtAppsHook
+    qmake
+    gcc
+    clang
+  ];
   patches = [
     ./compiler_gcc.patch
   ];
 
 }
-

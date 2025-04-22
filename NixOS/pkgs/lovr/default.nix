@@ -30,7 +30,8 @@ stdenv.mkDerivation rec {
       rev = "161856b5ed4e6db38653552f515d58b6b485bf9b"; # latest release is broken
       hash = "sha256-cO9cJH1/9hy0LmAuINXOERZ64nzwna9kPZlFGndsL+g=";
     })
-    (fetchFromGitHub { # This gets pulled in via cmake and not as a submodule, so we need to get it and tell cmake that we already have it
+    (fetchFromGitHub {
+      # This gets pulled in via cmake and not as a submodule, so we need to get it and tell cmake that we already have it
       name = "JoltPhysics";
       owner = "jrouwe";
       repo = "JoltPhysics";
@@ -59,7 +60,11 @@ stdenv.mkDerivation rec {
     curl
     git
   ];
-  nativeBuildInputs = [ cmake pkg-config wayland ];
+  nativeBuildInputs = [
+    cmake
+    pkg-config
+    wayland
+  ];
   cmakeFlags = [
     (lib.cmakeOptionType "path" "FETCHCONTENT_SOURCE_DIR_JOLTPHYSICS" "${builtins.elemAt src 1}")
     (lib.cmakeBool "GLFW_BUILD_WAYLAND" true)
@@ -78,4 +83,3 @@ stdenv.mkDerivation rec {
   '';
 
 }
-

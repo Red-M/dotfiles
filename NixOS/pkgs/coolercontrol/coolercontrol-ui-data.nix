@@ -23,4 +23,3 @@ buildNpmPackage {
     description = "${meta.description} (UI data)";
   };
 }
-

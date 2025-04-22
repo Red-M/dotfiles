@@ -21,10 +21,16 @@ stdenv.mkDerivation rec {
   };
 
   buildInputs = [
-    (SDL2.overrideAttrs (old: { dontDisableStatic = true; }))
+    (SDL2.overrideAttrs (old: {
+      dontDisableStatic = true;
+    }))
     imgui
   ];
-  nativeBuildInputs = [ cmake makeWrapper pkg-config ];
+  nativeBuildInputs = [
+    cmake
+    makeWrapper
+    pkg-config
+  ];
 
   installPhase = ''
     runHook preInstall
@@ -33,4 +39,3 @@ stdenv.mkDerivation rec {
   '';
 
 }
-

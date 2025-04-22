@@ -1,6 +1,16 @@
-{ stdenv, lib, buildFHSEnv, writeScript }:
+{
+  stdenv,
+  lib,
+  buildFHSEnv,
+  writeScript,
+}:
 
-let platforms = [ "i686-linux" "x86_64-linux" ]; in
+let
+  platforms = [
+    "i686-linux"
+    "x86_64-linux"
+  ];
+in
 
 assert lib.elem stdenv.hostPlatform.system platforms;
 
@@ -9,10 +19,12 @@ assert lib.elem stdenv.hostPlatform.system platforms;
 let
   version = "206.3.6386";
 
-  arch = {
-    x86_64-linux = "x86_64";
-    i686-linux   = "x86";
-  }.${stdenv.hostPlatform.system};
+  arch =
+    {
+      x86_64-linux = "x86_64";
+      i686-linux = "x86";
+    }
+    .${stdenv.hostPlatform.system};
 
   installer = "https://clientupdates.dropboxstatic.com/dbx-releng/client/dropbox-lnx.${arch}-${version}.tar.gz";
 
@@ -31,10 +43,13 @@ buildFHSEnv {
   # Dropbox's internal limit-to-one-instance check also relies on the PID.
   unsharePid = false;
 
-  targetPkgs = pkgs: with pkgs; [
-    curl dbus
-    procps zlib
-  ];
+  targetPkgs =
+    pkgs: with pkgs; [
+      curl
+      dbus
+      procps
+      zlib
+    ];
 
   runScript = writeScript "install-and-start-dropbox" ''
     # export BROWSER=firefox
@@ -70,11 +85,13 @@ buildFHSEnv {
 
   meta = with lib; {
     description = "Online stored folders (daemon version)";
-    homepage    = "http://www.dropbox.com/";
-    license     = licenses.gpl2;
+    homepage = "http://www.dropbox.com/";
+    license = licenses.gpl2;
     maintainers = with maintainers; [ ttuegel ];
-    platforms   = [ "i686-linux" "x86_64-linux" ];
+    platforms = [
+      "i686-linux"
+      "x86_64-linux"
+    ];
     mainProgram = "dropbox";
   };
 }
-

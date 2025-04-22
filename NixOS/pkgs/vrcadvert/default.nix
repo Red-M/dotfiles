@@ -25,7 +25,6 @@ buildDotnetModule rec {
   #   makeWrapper
   # ];
 
-
   projectFile = "VrcAdvert.sln";
   nugetDeps = ./deps.nix;
 
@@ -34,6 +33,4 @@ buildDotnetModule rec {
 
   executables = [ "VrcAdvert" ];
 
-
 }
-

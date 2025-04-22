@@ -29,7 +29,10 @@ rustPlatform.buildRustPackage rec {
     };
   };
   buildNoDefaultFeatures = true;
-  buildFeatures = [ "openxr" "babble" ];  # ALVR has a nasty bug (which doesn't swear, but its pretty aggressive), nixpkgs won't pull submodules down in cargo deps....
+  buildFeatures = [
+    "openxr"
+    "babble"
+  ]; # ALVR has a nasty bug (which doesn't swear, but its pretty aggressive), nixpkgs won't pull submodules down in cargo deps....
 
   nativeBuildInputs = [
     pkg-config
@@ -40,4 +43,3 @@ rustPlatform.buildRustPackage rec {
   ];
 
 }
-

@@ -22,22 +22,27 @@ stdenv.mkDerivation rec {
     ./rel_path.patch
   ];
 
-  nativeBuildInputs = [ makeWrapper openssl_3 ];
+  nativeBuildInputs = [
+    makeWrapper
+    openssl_3
+  ];
   propagatedBuildInputs = [
-    (python3.withPackages (pythonPackages: with pythonPackages; [
-      cherrypy
-      requests
-      watchdog
-      psutil
+    (python3.withPackages (
+      pythonPackages: with pythonPackages; [
+        cherrypy
+        requests
+        watchdog
+        psutil
 
-      pexpect
-      # ipaddress
-      distro
-      pyopenssl
-      pycrypto
-      mako
-      jinja2
-    ]))
+        pexpect
+        # ipaddress
+        distro
+        pyopenssl
+        pycrypto
+        mako
+        jinja2
+      ]
+    ))
   ];
   preferLocalBuild = true;
 
@@ -50,4 +55,3 @@ stdenv.mkDerivation rec {
   '';
 
 }
-

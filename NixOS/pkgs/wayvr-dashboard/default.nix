@@ -46,32 +46,32 @@ rustPlatform.buildRustPackage rec {
   useFetchCargoVendor = true;
 
   frontend = buildNpmPackage {
-		inherit version src;
-		pname = "wayvr-dashboard-ui";
+    inherit version src;
+    pname = "wayvr-dashboard-ui";
 
-		npmDepsHash = "sha256-s1Znll4FvCDjA2jIkduPFtmAwUNXPVy4XWDZfM6GROU=";
+    npmDepsHash = "sha256-s1Znll4FvCDjA2jIkduPFtmAwUNXPVy4XWDZfM6GROU=";
 
-		nativeBuildInputs = [
-			autoPatchelfHook
-		];
+    nativeBuildInputs = [
+      autoPatchelfHook
+    ];
 
-		dontAutoPatchelf = true;
+    dontAutoPatchelf = true;
 
-		preBuild = ''
-			autoPatchelf node_modules/sass-embedded-linux-x64/dart-sass/src/dart
-		'';
+    preBuild = ''
+      autoPatchelf node_modules/sass-embedded-linux-x64/dart-sass/src/dart
+    '';
 
-		postBuild = ''
-			cp -r dist/ $out
-		'';
-	};
+    postBuild = ''
+      cp -r dist/ $out
+    '';
+  };
 
-	postPatch = ''
-		substituteInPlace tauri.conf.json \
-			--replace-warn '"frontendDist": "../dist"' '"frontendDist": "${frontend}"'
-		substituteInPlace tauri.conf.json \
-			--replace-warn '"npm run build"' '""'
-	'';
+  postPatch = ''
+    substituteInPlace tauri.conf.json \
+    --replace-warn '"frontendDist": "../dist"' '"frontendDist": "${frontend}"'
+    substituteInPlace tauri.conf.json \
+    --replace-warn '"npm run build"' '""'
+  '';
 
   nativeBuildInputs = [
     cargo-tauri.hook
@@ -95,4 +95,3 @@ rustPlatform.buildRustPackage rec {
   # buildAndTestSubdir = cargoRoot;
 
 }
-

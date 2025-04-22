@@ -2,14 +2,20 @@
 # https://wiki.nixos.org/wiki/VR#Patching_AMDGPU_to_allow_high_priority_queues
 # https://wiki.nixos.org/wiki/Linux_kernel#Patching_a_single_In-tree_kernel_module
 # https://github.com/Frogging-Family/community-patches/blob/master/linux61-tkg/cap_sys_nice_begone.mypatch
-{ pkgs
-, lib
-, kernel ? pkgs.linuxPackages_latest.kernel
+{
+  pkgs,
+  lib,
+  kernel ? pkgs.linuxPackages_latest.kernel,
 }:
 
 pkgs.stdenv.mkDerivation {
   pname = "amdgpu-kernel-module";
-  inherit (kernel) src version postPatch nativeBuildInputs;
+  inherit (kernel)
+    src
+    version
+    postPatch
+    nativeBuildInputs
+    ;
 
   kernel_dev = kernel.dev;
   kernelVersion = kernel.modDirVersion;
@@ -40,4 +46,3 @@ pkgs.stdenv.mkDerivation {
     license = lib.licenses.gpl3;
   };
 }
-

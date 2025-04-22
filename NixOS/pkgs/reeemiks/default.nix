@@ -22,7 +22,8 @@ buildGoModule rec {
   vendorHash = "sha256-9Mu70E+x4vpsV7srClJhdMtes7imJ+ENZRTJLRENtIw=";
   proxyVendor = true;
   ldflags = [
-    "-s" "-w"
+    "-s"
+    "-w"
     "-X main.Version=${version}"
     "-X main.Commit=${version}"
     "-X main.gitCommit=${version}"
@@ -37,4 +38,3 @@ buildGoModule rec {
   '';
 
 }
-

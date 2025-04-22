@@ -36,4 +36,3 @@ rec {
 
   coolercontrol-liqctld = applySharedDetails (callPackage ./coolercontrol-liqctld.nix { });
 }
-
