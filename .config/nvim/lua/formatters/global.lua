@@ -40,16 +40,27 @@ vim.api.nvim_create_autocmd({ "BufWritePre" }, {
   group = vim.api.nvim_create_augroup("plugin_conform_format_on_save",{clear = false}),
   pattern = {"*"},
   callback = function(data)
-    if (not vim.g.enable_autoformat == false) then
-      if (not vim.b.enable_autoformat == false) then
-        local save_cursor = vim.fn.getpos(".")
-        require("conform").format({ bufnr = data.buf })
-        vim.fn.setpos(".", save_cursor)
-      end
+    if (not vim.g.enable_autoformat == false) or (vim.b.enable_autoformat == true) then
+      local save_cursor = vim.fn.getpos(".")
+      require("conform").format({ bufnr = data.buf })
+      vim.fn.setpos(".", save_cursor)
     end
   end,
 })
 
+local M = setmetatable({}, {
+  __call = function(m, ...)
+    return m.format(...)
+  end,
+})
+
+function M.invert_bool(input)
+  if input == nil then
+    return true
+  else
+    return (not input)
+  end
+end
 
 
 return {
@@ -60,22 +71,20 @@ return {
     lazy = false,
     keys = {
       {
-        "<leader>ce",
-        function()
-          vim.b.enable_autoformat = true
-          vim.g.enable_autoformat = true
-        end,
-        mode = { "n", "v" },
-        desc = "Enable autoformat-on-save",
-      },
-      {
         "<leader>cE",
         function()
-          vim.b.enable_autoformat = false
-          vim.g.enable_autoformat = false
+          vim.g.enable_autoformat = M.invert_bool(vim.g.enable_autoformat)
         end,
         mode = { "n", "v" },
-        desc = "Disable autoformat-on-save",
+        desc = "Toggle global autoformat-on-save",
+      },
+      {
+        "<leader>ce",
+        function()
+          vim.b.enable_autoformat = M.invert_bool(vim.b.enable_autoformat)
+        end,
+        mode = { "n", "v" },
+        desc = "Toggle buffer autoformat-on-save",
       },
       {
         "<leader>cf",
