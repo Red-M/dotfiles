@@ -11,41 +11,70 @@ vim.api.nvim_create_user_command("Format", function(args)
   require("conform").format({ async = true, lsp_format = "fallback", range = range })
 end, { range = true })
 
-vim.api.nvim_create_user_command("FormatDisable", function(args)
-  if args.bang then
-    -- FormatDisable! will disable formatting just for this buffer
-    vim.b.disable_autoformat = true
-  else
-    vim.g.disable_autoformat = true
-  end
-end, {
-  desc = "Disable autoformat-on-save",
-  bang = true,
+vim.api.nvim_create_user_command("FormatDisable",
+  function(args)
+    if args.bang then
+      -- FormatDisable! will disable formatting just for this buffer
+      vim.b.enable_autoformat = false
+    else
+      vim.g.enable_autoformat = false
+    end
+  end,
+  {
+    desc = "Disable autoformat-on-save",
+    bang = true,
+  }
+)
+
+vim.api.nvim_create_user_command("FormatEnable",
+  function()
+    vim.b.enable_autoformat = true
+    vim.g.enable_autoformat = true
+  end,
+  {
+    desc = "Re-enable autoformat-on-save",
+  }
+)
+
+vim.api.nvim_create_autocmd({ "BufWritePre" }, {
+  group = vim.api.nvim_create_augroup("plugin_conform_format_on_save",{clear = false}),
+  pattern = {"*"},
+  callback = function(data)
+    if (not vim.g.enable_autoformat == false) then
+      if (not vim.b.enable_autoformat == false) then
+        local save_cursor = vim.fn.getpos(".")
+        require("conform").format({ bufnr = data.buf })
+        vim.fn.setpos(".", save_cursor)
+      end
+    end
+  end,
 })
-vim.api.nvim_create_user_command("FormatEnable", function()
-  vim.b.disable_autoformat = false
-  vim.g.disable_autoformat = false
-end, {
-  desc = "Re-enable autoformat-on-save",
-})
+
 
 
 return {
-
   {
     "stevearc/conform.nvim",
     -- dependencies = { "mason.nvim" },
     -- optional = true,
-      keys = {
-    {
+    lazy = false,
+    keys = {
+      {
+      "<leader>cf",
+      function()
+        require("conform").format({ timeout_ms = 3000 })
+      end,
+      mode = { "n", "v" },
+      desc = "Format file",
+      },{
       "<leader>cF",
       function()
         require("conform").format({ formatters = { "injected" }, timeout_ms = 3000 })
       end,
       mode = { "n", "v" },
-      desc = "Format Injected Langs",
+      desc = "Format file with injected langs",
+      },
     },
-  },
     opts = {
       default_format_opts = {
         timeout_ms = 3000,
@@ -59,6 +88,7 @@ return {
           -- "trim_newlines",
           "trim_whitespace",
         },
+        nix = { "nixfmt" },
       },
       lang_to_ext = {
         bash = "sh",
@@ -120,5 +150,9 @@ return {
       -- end,
 
     },
+    config = function(_, opts)
+      require('conform').setup(opts)
+    end,
   },
 }
+

@@ -1,3 +1,14 @@
+
+vim.api.nvim_create_autocmd({ "BufWritePre" }, {
+  group = vim.api.nvim_create_augroup("plugin_whitespace-nvim",{clear = false}),
+  pattern = {"*"},
+  callback = function(data)
+    local save_cursor = vim.fn.getpos(".")
+    require('whitespace-nvim').trim()
+    vim.fn.setpos(".", save_cursor)
+  end,
+})
+
 return {
   {
     'johnfrankmorgan/whitespace.nvim',

@@ -1,3 +1,13 @@
+
+vim.api.nvim_create_autocmd("BufAdd", {
+  group = vim.api.nvim_create_augroup("plugin_bufferline",{clear = false}),
+  callback = function()
+    vim.schedule(function()
+      pcall(nvim_bufferline)
+    end)
+  end,
+})
+
 return {
   {
     'j-morano/buffer_manager.nvim',
