@@ -1,58 +1,17 @@
 
-vim.api.nvim_create_user_command("Format", function(args)
-  local range = nil
-  if args.count ~= -1 then
-    local end_line = vim.api.nvim_buf_get_lines(0, args.line2 - 1, args.line2, true)[1]
-    range = {
-      start = { args.line1, 0 },
-      ["end"] = { args.line2, end_line:len() },
-    }
-  end
-  require("conform").format({ async = true, lsp_format = "fallback", range = range })
-end, { range = true })
-
-vim.api.nvim_create_user_command("FormatDisable",
-  function(args)
-    if args.bang then
-      -- FormatDisable! will disable formatting just for this buffer
-      vim.b.enable_autoformat = false
-    else
-      vim.g.enable_autoformat = false
-    end
-  end,
-  {
-    desc = "Disable autoformat-on-save",
-    bang = true,
-  }
-)
-
-vim.api.nvim_create_user_command("FormatEnable",
-  function()
-    vim.b.enable_autoformat = true
-    vim.g.enable_autoformat = true
-  end,
-  {
-    desc = "Re-enable autoformat-on-save",
-  }
-)
-
-vim.api.nvim_create_autocmd({ "BufWritePre" }, {
-  group = vim.api.nvim_create_augroup("plugin_conform_format_on_save",{clear = false}),
-  pattern = {"*"},
-  callback = function(data)
-    if (not vim.g.enable_autoformat == false) or (vim.b.enable_autoformat == true) then
-      local save_cursor = vim.fn.getpos(".")
-      require("conform").format({ bufnr = data.buf })
-      vim.fn.setpos(".", save_cursor)
-    end
-  end,
-})
-
 local M = setmetatable({}, {
   __call = function(m, ...)
     return m.format(...)
   end,
 })
+
+function M.format_user_command(args,value)
+  if args.bang then
+    vim.b.enable_autoformat = value
+  else
+    vim.g.enable_autoformat = value
+  end
+end
 
 function M.invert_bool(input)
   if input == nil then
@@ -62,6 +21,53 @@ function M.invert_bool(input)
   end
 end
 
+vim.api.nvim_create_user_command("Format",
+  function(args)
+    local range = nil
+    if args.count ~= -1 then
+      local end_line = vim.api.nvim_buf_get_lines(0, args.line2 - 1, args.line2, true)[1]
+      range = {
+        start = { args.line1, 0 },
+        ["end"] = { args.line2, end_line:len() },
+      }
+    end
+    require("conform").format({ async = true, lsp_format = "fallback", range = range })
+  end,
+  { range = true }
+)
+
+vim.api.nvim_create_user_command("FormatDisable",
+  function(args) M.format_user_command(args,false) end,
+  {
+    desc = [[Disable autoformat-on-save globally or for this buffer with !]],
+    bang = true,
+  }
+)
+
+vim.api.nvim_create_user_command("FormatEnable",
+  function(args) M.format_user_command(args,true) end,
+  {
+    desc = [[Enable autoformat-on-save globally or for this buffer with !]],
+    bang = true,
+  }
+)
+
+vim.api.nvim_create_autocmd({ "BufWritePre" }, {
+  group = vim.api.nvim_create_augroup("plugin_conform_format_on_save",{clear = false}),
+  pattern = {"*"},
+  callback = function(data)
+    if vim.g.enable_conform == nil or vim.g.enable_conform == true then
+      local save_cursor = vim.fn.getpos(".")
+      if (not vim.g.enable_autoformat == false) or (vim.b.enable_autoformat == true) then
+        require("conform").format({ bufnr = data.buf })
+      else
+        require("conform").format({ bufnr = data.buf, formatters = { "injected" }, timeout_ms = 3000 })
+      end
+      vim.fn.setpos(".", save_cursor)
+    end
+  end,
+})
+
 
 return {
   {
@@ -70,6 +76,14 @@ return {
     -- optional = true,
     lazy = false,
     keys = {
+      {
+        "<leader>cC",
+        function()
+          vim.g.enable_conform = not M.invert_bool(vim.g.enable_autoformat)
+        end,
+        mode = { "n", "v" },
+        desc = "Toggle conform.nvim autoformat-on-save",
+      },
       {
         "<leader>cE",
         function()

@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
 
 soundcard="Sound BlasterX G6"
+gain=2
+
 cardNumbers=$(aplay -l | grep "${soundcard}" | sed -E 's#^card ([0-9]+).*#\1#g')
 for cardNumber in ${cardNumbers}; do
-  amixer -c "$cardNumber" -q set "PCM Capture Source" "External Mic"
+  amixer -c "${cardNumber}" -q set "PCM Capture Source" "External Mic"
 
   if [ $? -eq 0 ]; then
     echo "PCM Capture Source successfully changed to 'External Mic'"
@@ -11,10 +13,10 @@ for cardNumber in ${cardNumbers}; do
     echo "Failed to configure PCM Capture source for ${soundcard}"
   fi
 
-  amixer -c "${cardNumber}" -q sset 'Input Gain Control' 2
+  amixer -c "${cardNumber}" -q sset 'Input Gain Control' "${gain}"
 
   if [ $? -eq 0 ]; then
-    echo "Input Gain Control set to 3"
+    echo "Input Gain Control set to ${gain}"
   else
     echo "Failed to activate mic Boost for ${soundcard}"
   fi
@@ -30,8 +32,8 @@ done
 
 soundcard="ALC1220"
 cardNumbers=$(aplay -l | grep "${soundcard}" | sed -E 's#^card ([0-9]+).*#\1#g' | sort -h | uniq)
-for cardNumber in $cardNumbers; do
-  amixer -c "$cardNumber" -q sset 'Master' 87
+for cardNumber in ${cardNumbers}; do
+  amixer -c "${cardNumber}" -q sset 'Master' 87
 
   if [ $? -eq 0 ]; then
     echo "Set master volume for ${soundcard}"

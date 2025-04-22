@@ -164,13 +164,14 @@
           "audio.channels" = 1;
           "source.props" = {
             "node.name" = "echo_cancel.echoless";
-            "node.autoconnect" = false;
-          };
-          "sink.props" = {
-            "node.name" = "echo_cancel.sink";
+            "node.description" = "Echo-Cancel Source";
             "node.autoconnect" = false;
           };
           "playback.props" = {
+            "node.name" = "echo_cancel.playback";
+            "node.description" = "Echo Cancel Playback";
+            "media.class" = "Audio/Source";
+            "audio.rate" = 48000;
             "node.autoconnect" = false;
           };
         };
@@ -190,9 +191,9 @@
               "plugin" = "${pkgs.rnnoise-plugin}/lib/ladspa/librnnoise_ladspa.so";
               "label" = "noise_suppressor_mono";
               "control" = {
-                "VAD Threshold (%)" = 65.0;
+                "VAD Threshold (%)" = 70.0;
                 "VAD Grace Period (ms)" = 80;
-                "Retroactive VAD Grace (ms)" = 30;
+                "Retroactive VAD Grace (ms)" = 50;
               };
             }];
           };
@@ -211,15 +212,6 @@
             "audio.rate" = 48000;
             "node.autoconnect" = false;
           };
-          "source.props" = {
-            "node.name" = "noise_cancel.source";
-            "node.description" = "Noise Cancel Source";
-            "node.autoconnect" = false;
-          };
-          "sink.props" = {
-            "node.name" = "noise_cancel.sink";
-            "node.description" = "Noise Cancel Sink";
-          };
         };
       }];
     };
@@ -234,13 +226,13 @@
           "media.name" = "Auto Gain Source";
           "aec.args" = {
             "webrtc.high_pass_filter" = false;
-            "webrtc.noise_suppression" = false;
+            "webrtc.noise_suppression" = true;
             "webrtc.voice_detection" = false;
             "webrtc.extended_filter" = false;
             "webrtc.delay_agnostic" = false;
             "webrtc.gain_control" = true;
             "webrtc.experimental_agc" = true;
-            "webrtc.experimental_ns" = false;
+            "webrtc.experimental_ns" = true;
           };
           "audio.channels" = 1;
           "capture.props" = {
@@ -256,15 +248,11 @@
             "node.description" = "Auto Gain Source";
             "node.autoconnect" = false;
           };
-          "sink.props" = {
-            "node.name" = "auto_gain.sink";
-            "node.description" = "Auto Gain Sink";
-            "node.autoconnect" = false;
-          };
           "playback.props" = {
             "node.name" = "auto_gain.playback";
             "node.description" = "Auto Gain Playback";
             "media.class" = "Audio/Source";
+            "audio.rate" = 48000;
             "node.autoconnect" = false;
           };
         };
@@ -287,10 +275,10 @@
                 "RMS/peak" = 1;
                 "Attack time (ms)" = 1.5;
                 "Release time (ms)" = 401;
-                "Threshold level (dB)" = -30;
-                "Ratio (1:n)" = 20;
+                "Threshold level (dB)" = -10;
+                "Ratio (1:n)" = 5;
                 "Knee radius (dB)" = 5;
-                "Makeup gain (dB)" = 18;
+                "Makeup gain (dB)" = 10;
                 # "Amplitude (dB)" = 0;
                 # "Gain reduction (dB)" = -10;
               };
