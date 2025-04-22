@@ -88,7 +88,6 @@ return {
           -- "trim_newlines",
           "trim_whitespace",
         },
-        nix = { "nixfmt" },
       },
       lang_to_ext = {
         bash = "sh",
