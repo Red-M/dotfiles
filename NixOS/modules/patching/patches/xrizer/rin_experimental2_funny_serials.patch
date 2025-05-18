@@ -1,0 +1,2764 @@
+diff --git a/src/compositor.rs b/src/compositor.rs
+index ad1b72c..703803c 100644
+--- a/src/compositor.rs
++++ b/src/compositor.rs
+@@ -1269,7 +1269,6 @@ pub use tests::FakeGraphicsData;
+ mod tests {
+     use super::*;
+     use crate::graphics_backends::{GraphicsBackend, VulkanData};
+-    use openxr::sys::pfn::DestroySpatialGraphNodeBindingMSFT;
+     use std::cell::Cell;
+     use std::ffi::CStr;
+     use std::mem::MaybeUninit;
+diff --git a/src/input.rs b/src/input.rs
+index 2a1e3fd..3414d63 100644
+--- a/src/input.rs
++++ b/src/input.rs
+@@ -4,14 +4,21 @@ mod legacy;
+ mod profiles;
+ mod skeletal;
+ 
++pub mod devices;
++
+ #[cfg(test)]
+ mod tests;
+ 
+-use profiles::MainAxisType;
++use devices::SubactionPaths;
++use devices::TrackedDeviceCreateInfo;
++use devices::TrackedDeviceList;
++use devices::TrackedDeviceType;
++use devices::XrTrackedDevice;
+ pub use profiles::{InteractionProfile, Profiles};
+ use skeletal::FingerState;
+ use skeletal::SkeletalInputActionData;
+ 
++use crate::openxr_data::HandPath;
+ use crate::{
+     openxr_data::{self, Hand, OpenXrData, SessionData},
+     tracy_span, AtomicF32,
+@@ -19,7 +26,7 @@ use crate::{
+ use custom_bindings::{BindingData, GrabActions};
+ use legacy::{setup_legacy_bindings, LegacyActionData};
+ use log::{debug, info, trace, warn};
+-use openvr::{self as vr, space_relation_to_openvr_pose};
++use openvr as vr;
+ use openxr as xr;
+ use slotmap::{new_key_type, Key, KeyData, SecondaryMap, SlotMap};
+ use std::collections::HashMap;
+@@ -47,11 +54,11 @@ pub struct Input<C: openxr_data::Compositor> {
+     action_map: RwLock<SlotMap<ActionKey, Action>>,
+     set_map: RwLock<SlotMap<ActionSetKey, String>>,
+     loaded_actions_path: OnceLock<PathBuf>,
+-    cached_poses: Mutex<CachedSpaces>,
+     legacy_state: legacy::LegacyState,
+     skeletal_tracking_level: RwLock<vr::EVRSkeletalTrackingLevel>,
+     profile_map: HashMap<xr::Path, &'static profiles::ProfileProperties>,
+     estimated_finger_state: [Mutex<FingerState>; 2],
++    subaction_paths: SubactionPaths,
+     events: Mutex<VecDeque<InputEvent>>,
+ }
+ 
+@@ -94,6 +101,7 @@ impl<C: openxr_data::Compositor> Input<C> {
+         let mut map = SlotMap::with_key();
+         let left_hand_key = map.insert(c"/user/hand/left".into());
+         let right_hand_key = map.insert(c"/user/hand/right".into());
++        let subaction_paths = SubactionPaths::new(&openxr.instance);
+         let profile_map = Profiles::get()
+             .profiles_iter()
+             .map(|profile| {
+@@ -116,7 +124,6 @@ impl<C: openxr_data::Compositor> Input<C> {
+             loaded_actions_path: OnceLock::new(),
+             left_hand_key,
+             right_hand_key,
+-            cached_poses: Mutex::default(),
+             legacy_state: Default::default(),
+             skeletal_tracking_level: RwLock::new(vr::EVRSkeletalTrackingLevel::Estimated),
+             profile_map,
+@@ -124,17 +131,25 @@ impl<C: openxr_data::Compositor> Input<C> {
+                 Mutex::new(FingerState::new()),
+                 Mutex::new(FingerState::new()),
+             ],
++            subaction_paths,
+             events: Mutex::default(),
+         }
+     }
+ 
++    fn get_subaction_path(&self, hand: Hand) -> xr::Path {
++        match hand {
++            Hand::Left => self.subaction_paths.left,
++            Hand::Right => self.subaction_paths.right,
++        }
++    }
++
+     fn subaction_path_from_handle(&self, handle: vr::VRInputValueHandle_t) -> Option<xr::Path> {
+         if handle == vr::k_ulInvalidInputValueHandle {
+             Some(xr::Path::NULL)
+         } else {
+             match InputSourceKey::from(KeyData::from_ffi(handle)) {
+-                x if x == self.left_hand_key => Some(self.openxr.left_hand.subaction_path),
+-                x if x == self.right_hand_key => Some(self.openxr.right_hand.subaction_path),
++                x if x == self.left_hand_key => Some(self.get_subaction_path(Hand::Left)),
++                x if x == self.right_hand_key => Some(self.get_subaction_path(Hand::Right)),
+                 _ => None,
+             }
+         }
+@@ -222,6 +237,7 @@ pub struct InputSessionData {
+     loaded_actions: OnceLock<RwLock<LoadedActions>>,
+     legacy_actions: OnceLock<LegacyActionData>,
+     estimated_skeleton_actions: OnceLock<SkeletalInputActionData>,
++    devices: RwLock<TrackedDeviceList>,
+ }
+ 
+ impl InputSessionData {
+@@ -491,17 +507,27 @@ impl<C: openxr_data::Compositor> vr::IVRInput010_Interface for Input<C> {
+     fn GetSkeletalSummaryData(
+         &self,
+         action: vr::VRActionHandle_t,
+-        _: vr::EVRSummaryType,
++        summary_type: vr::EVRSummaryType,
+         data: *mut vr::VRSkeletalSummaryData_t,
+     ) -> vr::EVRInputError {
+-        crate::warn_unimplemented!("GetSkeletalSummaryData");
+-        get_action_from_handle!(self, action, session_data, _action);
+-        unsafe {
+-            data.write(vr::VRSkeletalSummaryData_t {
+-                flFingerSplay: [0.2; 4],
+-                flFingerCurl: [0.0; 5],
+-            })
++        get_action_from_handle!(self, action, session_data, action);
++
++        let ActionData::Skeleton { hand, hand_tracker } = action else {
++            return vr::EVRInputError::WrongType;
++        };
++
++        if let Some(hand_tracker) = hand_tracker.as_ref() {
++            self.get_bone_summary_from_hand_tracking(
++                &session_data,
++                summary_type,
++                data,
++                hand_tracker,
++                *hand,
++            );
++        } else {
++            self.get_estimated_bone_summary(&session_data, summary_type, data, *hand);
+         }
++
+         vr::EVRInputError::None
+     }
+     fn GetSkeletalBoneData(
+@@ -527,7 +553,6 @@ impl<C: openxr_data::Compositor> vr::IVRInput010_Interface for Input<C> {
+ 
+         if let Some(hand_tracker) = hand_tracker.as_ref() {
+             self.get_bones_from_hand_tracking(
+-                &self.openxr,
+                 &session_data,
+                 transform_space,
+                 hand_tracker,
+@@ -550,10 +575,12 @@ impl<C: openxr_data::Compositor> vr::IVRInput010_Interface for Input<C> {
+             return vr::EVRInputError::WrongType;
+         };
+ 
+-        let controller_type = self.get_controller_string_tracked_property(
+-            *hand,
+-            vr::ETrackedDeviceProperty::ControllerType_String,
+-        );
++        let Some(index) = self.get_controller_device_index(*hand) else {
++            return vr::EVRInputError::InvalidDevice;
++        };
++
++        let controller_type = self
++            .get_device_string_property(index, vr::ETrackedDeviceProperty::ControllerType_String);
+ 
+         unsafe {
+             // Make sure knuckles are always Partial
+@@ -705,28 +732,45 @@ impl<C: openxr_data::Compositor> vr::IVRInput010_Interface for Input<C> {
+             }};
+         }
+         let subaction_path = get_subaction_path!(self, restrict_to_device, action_data);
++        let session = self.openxr.session_data.get();
++        let devices = session.input_data.devices.read().unwrap();
++
++        let left_hand = devices.get_controller(Hand::Left);
++        let right_hand = devices.get_controller(Hand::Right);
++
+         let (active_origin, hand) = match loaded.try_get_action(action) {
+             Ok(ActionData::Pose) => {
+                 let (mut hand, interaction_profile) = match subaction_path {
+-                    x if x == self.openxr.left_hand.subaction_path => (
+-                        Some(Hand::Left),
+-                        Some(self.openxr.left_hand.profile_path.load()),
+-                    ),
+-                    x if x == self.openxr.right_hand.subaction_path => (
+-                        Some(Hand::Right),
+-                        Some(self.openxr.right_hand.profile_path.load()),
+-                    ),
++                    x if x == self.get_subaction_path(Hand::Left) => {
++                        if let Some(left_hand) = left_hand {
++                            (Some(Hand::Left), Some(left_hand.get_profile_path()))
++                        } else {
++                            (None, None)
++                        }
++                    }
++                    x if x == self.get_subaction_path(Hand::Right) => {
++                        if let Some(right_hand) = right_hand {
++                            (Some(Hand::Right), Some(right_hand.get_profile_path()))
++                        } else {
++                            (None, None)
++                        }
++                    }
+                     x if x == xr::Path::NULL => (None, None),
+                     _ => unreachable!(),
+                 };
+ 
+                 let get_first_bound_hand_profile = || {
+-                    loaded
+-                        .try_get_pose(action, self.openxr.left_hand.profile_path.load())
+-                        .or_else(|_| {
+-                            loaded.try_get_pose(action, self.openxr.right_hand.profile_path.load())
+-                        })
+-                        .ok()
++                    if let Some(left_hand) = left_hand {
++                        loaded
++                            .try_get_pose(action, left_hand.get_profile_path())
++                            .ok()
++                    } else if let Some(right_hand) = right_hand {
++                        loaded
++                            .try_get_pose(action, right_hand.get_profile_path())
++                            .ok()
++                    } else {
++                        None
++                    }
+                 };
+ 
+                 let Some(bound) = interaction_profile
+@@ -785,12 +829,20 @@ impl<C: openxr_data::Compositor> vr::IVRInput010_Interface for Input<C> {
+ 
+         drop(loaded);
+         drop(data);
++
+         unsafe {
+-            action_data.write(vr::InputPoseActionData_t {
+-                bActive: true,
+-                activeOrigin: active_origin,
+-                pose: self.get_controller_pose(hand, Some(origin)).expect("wtf"),
+-            })
++            if let Some(pose) = self.get_controller_pose(hand, Some(origin)) {
++                action_data.write(vr::InputPoseActionData_t {
++                    bActive: true,
++                    activeOrigin: active_origin,
++                    pose,
++                });
++            } else {
++                action_data.write(vr::InputPoseActionData_t {
++                    bActive: false,
++                    ..Default::default()
++                });
++            }
+         }
+ 
+         vr::EVRInputError::None
+@@ -1146,63 +1198,94 @@ impl<C: openxr_data::Compositor> vr::IVRInput005On006 for Input<C> {
+ }
+ 
+ impl<C: openxr_data::Compositor> Input<C> {
+-    pub fn get_poses(
+-        &self,
+-        poses: &mut [vr::TrackedDevicePose_t],
+-        origin: Option<vr::ETrackingUniverseOrigin>,
+-    ) {
+-        tracy_span!();
+-        poses[0] = self.get_hmd_pose(origin);
++    pub fn interaction_profile_changed(&self) {
++        let session = self.openxr.session_data.get();
++        let mut devices = session.input_data.devices.write().unwrap();
+ 
+-        if poses.len() > Hand::Left as usize {
+-            poses[Hand::Left as usize] = self
+-                .get_controller_pose(Hand::Left, origin)
+-                .unwrap_or_default();
+-        }
+-        if poses.len() > Hand::Right as usize {
+-            poses[Hand::Right as usize] = self
+-                .get_controller_pose(Hand::Right, origin)
+-                .unwrap_or_default();
+-        }
+-    }
++        let mut devices_to_create = vec![];
+ 
+-    fn get_hmd_pose(&self, origin: Option<vr::ETrackingUniverseOrigin>) -> vr::TrackedDevicePose_t {
+-        tracy_span!();
+-        let mut spaces = self.cached_poses.lock().unwrap();
+-        let data = self.openxr.session_data.get();
+-        spaces
+-            .get_pose_impl(
+-                &self.openxr,
+-                &data,
+-                self.openxr.display_time.get(),
+-                None,
+-                origin.unwrap_or(data.current_origin),
++        for hand in [Hand::Left, Hand::Right] {
++            let hmd = devices.get_hmd();
++            let controller = devices.get_controller(hand);
++            let subaction_path = self.get_subaction_path(hand);
++
++            let profile_path = session
++                .session
++                .current_interaction_profile(subaction_path)
++                .unwrap();
++
++            //controller.set_profile_path(profile_path);
++            if let Some(controller) = controller {
++                controller.set_profile_path(profile_path);
++            }
++
++            let profile_name = match profile_path {
++                xr::Path::NULL => {
++                    //controller.set_connected(false);
++                    if let Some(controller) = controller {
++                        controller.set_connected(false);
++                    }
++                    "<null>".to_owned()
++                }
++                path => {
++                    //controller.set_connected(true);
++                    if let Some(controller) = controller {
++                        controller.set_connected(true);
++                    }
++                    self.openxr.instance.path_to_string(path).unwrap()
++                }
++            };
++
++            let profile = Profiles::get().profile_from_name(&profile_name);
++
++            if let Some(p) = profile {
++                //controller.set_interaction_profile(p);
++                if let Some(controller) = controller {
++                    controller.set_interaction_profile(p);
++                } else {
++                    devices_to_create.push(TrackedDeviceCreateInfo {
++                        device_type: TrackedDeviceType::Controller { hand },
++                        profile_path: Some(profile_path),
++                        interaction_profile: Some(p),
++                        xdev: None,
++                    });
++                }
++                hmd.set_interaction_profile(p);
++            };
++
++            session.input_data.interaction_profile_changed();
++
++            info!(
++                "{} interaction profile changed: {}",
++                HandPath::from(hand),
++                profile_name
+             )
+-            .unwrap()
+-    }
++        }
+ 
+-    /// Returns None if legacy actions haven't been set up yet.
+-    pub fn get_controller_pose(
+-        &self,
+-        hand: Hand,
+-        origin: Option<vr::ETrackingUniverseOrigin>,
+-    ) -> Option<vr::TrackedDevicePose_t> {
+-        tracy_span!();
+-        let mut spaces = self.cached_poses.lock().unwrap();
+-        let data = self.openxr.session_data.get();
+-        spaces.get_pose_impl(
+-            &self.openxr,
+-            &data,
+-            self.openxr.display_time.get(),
+-            Some(hand),
+-            origin.unwrap_or(data.current_origin),
+-        )
++        for device_info in devices_to_create {
++            let device = XrTrackedDevice::new(device_info);
++            device.set_connected(true);
++
++            devices.push_device(device).unwrap_or_else(|e| {
++                panic!("Failed to create new controller: {:?}", e);
++            });
++        }
++
++        devices.create_generic_trackers(&self.openxr).unwrap();
+     }
+ 
+     pub fn frame_start_update(&self) {
+         tracy_span!();
+-        std::mem::take(&mut *self.cached_poses.lock().unwrap());
+         let data = self.openxr.session_data.get();
++        let devices = data.input_data.devices.read().unwrap();
++
++        devices.iter().for_each(|device| {
++            device.clear_pose_cache();
++        });
++
++        let left_hand = devices.get_controller(Hand::Left);
++        let right_hand = devices.get_controller(Hand::Right);
++
+         if let Some(loaded) = data.input_data.loaded_actions.get() {
+             // If the game has loaded actions, we shouldn't need to sync the state because the game
+             // should be doing it itself with UpdateActionState. However, some games (Tea for God)
+@@ -1210,7 +1293,9 @@ impl<C: openxr_data::Compositor> Input<C> {
+             // and interaction profiles are only updated after xrSyncActions is called. So here, we
+             // do an action sync to try and get the runtime to update the interaction profile.
+             let loaded = loaded.read().unwrap();
+-            if !self.openxr.left_hand.connected() || !self.openxr.right_hand.connected() {
++            if (left_hand.is_none() || !left_hand.unwrap().connected())
++                && (right_hand.is_none() || !right_hand.unwrap().connected())
++            {
+                 debug!("no controllers connected - syncing info set");
+                 data.session
+                     .sync_actions(&[xr::ActiveActionSet::new(&loaded.info_set)])
+@@ -1249,8 +1334,8 @@ impl<C: openxr_data::Compositor> Input<C> {
+                 }
+                 let legacy = LegacyActionData::new(
+                     &self.openxr.instance,
+-                    self.openxr.left_hand.subaction_path,
+-                    self.openxr.right_hand.subaction_path,
++                    self.get_subaction_path(Hand::Left),
++                    self.get_subaction_path(Hand::Right),
+                 );
+                 setup_legacy_bindings(&self.openxr.instance, &data.session, &legacy);
+                 data.input_data
+@@ -1261,87 +1346,6 @@ impl<C: openxr_data::Compositor> Input<C> {
+         }
+     }
+ 
+-    fn get_profile_data(&self, hand: Hand) -> Option<&profiles::ProfileProperties> {
+-        let hand = match hand {
+-            Hand::Left => &self.openxr.left_hand,
+-            Hand::Right => &self.openxr.right_hand,
+-        };
+-        let profile = hand.profile_path.load();
+-        self.profile_map.get(&profile).map(|v| &**v)
+-    }
+-
+-    pub fn get_controller_string_tracked_property(
+-        &self,
+-        hand: Hand,
+-        property: vr::ETrackedDeviceProperty,
+-    ) -> Option<&'static CStr> {
+-        self.get_profile_data(hand).and_then(|data| {
+-            match property {
+-                // Audica likes to apply controller specific tweaks via this property
+-                vr::ETrackedDeviceProperty::ControllerType_String => {
+-                    Some(data.openvr_controller_type)
+-                }
+-                // I Expect You To Die 3 identifies controllers with this property -
+-                // why it couldn't just use ControllerType instead is beyond me...
+-                // Because some controllers have different model names for each hand......
+-                vr::ETrackedDeviceProperty::ModelNumber_String => Some(*data.model.get(hand)),
+-                // Resonite won't recognize controllers without this
+-                vr::ETrackedDeviceProperty::RenderModelName_String => {
+-                    Some(*data.render_model_name.get(hand))
+-                }
+-                vr::ETrackedDeviceProperty::RegisteredDeviceType_String => {
+-                    Some(*data.registered_device_type.get(hand))
+-                }
+-                vr::ETrackedDeviceProperty::TrackingSystemName_String => {
+-                    Some(data.tracking_system_name)
+-                }
+-                // Required for controllers to be acknowledged in I Expect You To Die 3
+-                vr::ETrackedDeviceProperty::SerialNumber_String => {
+-                    Some(*data.serial_number.get(hand))
+-                }
+-                vr::ETrackedDeviceProperty::ManufacturerName_String => Some(data.manufacturer_name),
+-                _ => None,
+-            }
+-        })
+-    }
+-
+-    pub fn get_controller_int_tracked_property(
+-        &self,
+-        hand: Hand,
+-        property: vr::ETrackedDeviceProperty,
+-    ) -> Option<i32> {
+-        self.get_profile_data(hand).and_then(|data| match property {
+-            vr::ETrackedDeviceProperty::Axis0Type_Int32 => match data.main_axis {
+-                MainAxisType::Thumbstick => Some(vr::EVRControllerAxisType::Joystick as _),
+-                MainAxisType::Trackpad => Some(vr::EVRControllerAxisType::TrackPad as _),
+-            },
+-            vr::ETrackedDeviceProperty::Axis1Type_Int32 => {
+-                Some(vr::EVRControllerAxisType::Trigger as _)
+-            }
+-            vr::ETrackedDeviceProperty::Axis2Type_Int32 => {
+-                // This is actually the grip, and gets recognized as such
+-                Some(vr::EVRControllerAxisType::Trigger as _)
+-            }
+-            // TODO: report knuckles trackpad?
+-            vr::ETrackedDeviceProperty::Axis3Type_Int32
+-            | vr::ETrackedDeviceProperty::Axis4Type_Int32 => {
+-                Some(vr::EVRControllerAxisType::None as _)
+-            }
+-            _ => None,
+-        })
+-    }
+-
+-    pub fn get_controller_uint_tracked_property(
+-        &self,
+-        hand: Hand,
+-        property: vr::ETrackedDeviceProperty,
+-    ) -> Option<u64> {
+-        self.get_profile_data(hand).and_then(|data| match property {
+-            vr::ETrackedDeviceProperty::SupportedButtons_Uint64 => Some(data.legacy_buttons_mask),
+-            _ => None,
+-        })
+-    }
+-
+     pub fn post_session_restart(&self, data: &SessionData) {
+         // This function is called while a write lock is called on the session, and as such should
+         // not use self.openxr.session_data.get().
+@@ -1357,6 +1361,34 @@ impl<C: openxr_data::Compositor> Input<C> {
+             return false;
+         }
+ 
++        let session = self.openxr.session_data.get();
++        let devices = session.input_data.devices.read().unwrap();
++
++        for (i, device) in devices.iter().enumerate() {
++            let current = device.connected();
++
++            if device.compare_exchange_connected().is_ok() {
++                debug!(
++                    "sending {:?} {}connected",
++                    device.get_type(),
++                    if current { "" } else { "not " }
++                );
++
++                // VREvent_t can be different sizes depending on the OpenVR version,
++                // so we use raw pointers to avoid creating a reference, because if the
++                // size doesn't match our VREvent_t's size, we are in UB land
++                self.events.lock().unwrap().push_back(InputEvent {
++                    ty: if current {
++                        vr::EVREventType::TrackedDeviceActivated
++                    } else {
++                        vr::EVREventType::TrackedDeviceDeactivated
++                    },
++                    index: i as vr::TrackedDeviceIndex_t,
++                    data: Default::default(),
++                });
++            }
++        }
++
+         if let Some(event) = self.events.lock().unwrap().pop_front() {
+             const MIN_CONTROLLER_EVENT_SIZE: usize = std::mem::offset_of!(vr::VREvent_t, data)
+                 + std::mem::size_of::<vr::VREvent_Controller_t>();
+@@ -1364,9 +1396,7 @@ impl<C: openxr_data::Compositor> Input<C> {
+                 warn!("{FUNC}: Provided event struct size ({size}) is smaller than required ({MIN_CONTROLLER_EVENT_SIZE}).");
+                 return false;
+             }
+-            // VREvent_t can be different sizes depending on the OpenVR version,
+-            // so we use raw pointers to avoid creating a reference, because if the
+-            // size doesn't match our VREvent_t's size, we are in UB land
++
+             unsafe {
+                 (&raw mut (*out).eventType).write(event.ty as u32);
+                 (&raw mut (*out).trackedDeviceIndex).write(event.index);
+@@ -1380,71 +1410,6 @@ impl<C: openxr_data::Compositor> Input<C> {
+     }
+ }
+ 
+-#[derive(Default)]
+-struct CachedSpaces {
+-    seated: CachedPoses,
+-    standing: CachedPoses,
+-}
+-
+-#[derive(Default)]
+-struct CachedPoses {
+-    head: Option<vr::TrackedDevicePose_t>,
+-    left: Option<vr::TrackedDevicePose_t>,
+-    right: Option<vr::TrackedDevicePose_t>,
+-}
+-
+-impl CachedSpaces {
+-    fn get_pose_impl(
+-        &mut self,
+-        xr_data: &OpenXrData<impl openxr_data::Compositor>,
+-        session_data: &SessionData,
+-        display_time: xr::Time,
+-        hand: Option<Hand>,
+-        origin: vr::ETrackingUniverseOrigin,
+-    ) -> Option<vr::TrackedDevicePose_t> {
+-        tracy_span!();
+-        let space = match origin {
+-            vr::ETrackingUniverseOrigin::Seated => &mut self.seated,
+-            vr::ETrackingUniverseOrigin::Standing => &mut self.standing,
+-            vr::ETrackingUniverseOrigin::RawAndUncalibrated => unreachable!(),
+-        };
+-
+-        let pose = match hand {
+-            None => &mut space.head,
+-            Some(Hand::Left) => &mut space.left,
+-            Some(Hand::Right) => &mut space.right,
+-        };
+-
+-        if let Some(pose) = pose {
+-            return Some(*pose);
+-        }
+-
+-        let (loc, velo) = if let Some(hand) = hand {
+-            let legacy = session_data.input_data.legacy_actions.get()?;
+-            let spaces = match hand {
+-                Hand::Left => &legacy.left_spaces,
+-                Hand::Right => &legacy.right_spaces,
+-            };
+-
+-            if let Some(raw) = spaces.try_get_or_init_raw(xr_data, session_data, &legacy.actions) {
+-                raw.relate(session_data.get_space_for_origin(origin), display_time)
+-                    .unwrap()
+-            } else {
+-                trace!("failed to get raw space, making empty pose");
+-                (xr::SpaceLocation::default(), xr::SpaceVelocity::default())
+-            }
+-        } else {
+-            session_data
+-                .view_space
+-                .relate(session_data.get_space_for_origin(origin), display_time)
+-                .unwrap()
+-        };
+-
+-        let ret = space_relation_to_openvr_pose(loc, velo);
+-        Some(*pose.insert(ret))
+-    }
+-}
+-
+ struct LoadedActions {
+     sets: SecondaryMap<ActionSetKey, xr::ActionSet>,
+     actions: SecondaryMap<ActionKey, ActionData>,
+diff --git a/src/input/action_manifest.rs b/src/input/action_manifest.rs
+index e081627..06a511b 100644
+--- a/src/input/action_manifest.rs
++++ b/src/input/action_manifest.rs
+@@ -77,14 +77,17 @@ impl<C: openxr_data::Compositor> Input<C> {
+         )?;
+         debug!("Loaded {} action sets.", sets.len());
+ 
++        let left_hand_subaction_path = self.get_subaction_path(Hand::Left);
++        let right_hand_subaction_path = self.get_subaction_path(Hand::Right);
++
+         let actions = load_actions(
+             &self.openxr.instance,
+             &session_data.session,
+             english.as_ref(),
+             &mut sets,
+             manifest.actions,
+-            self.openxr.left_hand.subaction_path,
+-            self.openxr.right_hand.subaction_path,
++            left_hand_subaction_path,
++            right_hand_subaction_path,
+         )?;
+         debug!("Loaded {} actions.", actions.len());
+ 
+@@ -93,8 +96,8 @@ impl<C: openxr_data::Compositor> Input<C> {
+         let legacy = session_data.input_data.legacy_actions.get_or_init(|| {
+             LegacyActionData::new(
+                 &self.openxr.instance,
+-                self.openxr.left_hand.subaction_path,
+-                self.openxr.right_hand.subaction_path,
++                left_hand_subaction_path,
++                right_hand_subaction_path,
+             )
+         });
+ 
+@@ -104,8 +107,8 @@ impl<C: openxr_data::Compositor> Input<C> {
+             .get_or_init(|| {
+                 SkeletalInputActionData::new(
+                     &self.openxr.instance,
+-                    self.openxr.left_hand.subaction_path,
+-                    self.openxr.right_hand.subaction_path,
++                    left_hand_subaction_path,
++                    right_hand_subaction_path,
+                 )
+             });
+ 
+@@ -834,7 +837,7 @@ impl<C: openxr_data::Compositor> Input<C> {
+                     for profile in profiles {
+                         if let Some(bindings) = bindings.as_ref() {
+                             if let Some(mut context) =
+-                                context.for_profile(&self.openxr, profile, other)
++                                context.for_profile(self, &self.openxr, profile, other)
+                             {
+                                 self.load_bindings_for_profile(bindings, &mut context);
+                             }
+diff --git a/src/input/action_manifest/helpers.rs b/src/input/action_manifest/helpers.rs
+index 49a4638..2a52466 100644
+--- a/src/input/action_manifest/helpers.rs
++++ b/src/input/action_manifest/helpers.rs
+@@ -8,9 +8,9 @@ use crate::input::custom_bindings::{
+ use crate::input::legacy::LegacyActions;
+ use crate::input::skeletal::SkeletalInputActionData;
+ use crate::input::ActionData::{Bool, Vector1, Vector2};
+-use crate::input::{ActionData, BoundPose, ExtraActionData, InteractionProfile};
+-use crate::openxr_data;
++use crate::input::{ActionData, BoundPose, ExtraActionData, Input, InteractionProfile};
+ use crate::openxr_data::OpenXrData;
++use crate::openxr_data::{self, Hand};
+ use log::{info, trace, warn};
+ use openxr as xr;
+ use std::collections::HashMap;
+@@ -50,6 +50,7 @@ impl<'a> BindingsLoadContext<'a> {
+ impl BindingsLoadContext<'_> {
+     pub fn for_profile<'a, 'b: 'a, C: openxr_data::Compositor>(
+         &'b mut self,
++        input: &'a Input<C>,
+         openxr: &'a OpenXrData<C>,
+         profile: &'a dyn InteractionProfile,
+         controller_type: &'a ControllerType,
+@@ -61,8 +62,8 @@ impl BindingsLoadContext<'_> {
+         };
+ 
+         let hands = [
+-            openxr.left_hand.subaction_path,
+-            openxr.right_hand.subaction_path,
++            input.get_subaction_path(Hand::Left),
++            input.get_subaction_path(Hand::Right),
+         ];
+ 
+         let bindings_parsed = self
+diff --git a/src/input/devices.rs b/src/input/devices.rs
+new file mode 100644
+index 0000000..a0bad00
+--- /dev/null
++++ b/src/input/devices.rs
+@@ -0,0 +1,597 @@
++use std::{
++    ffi::CStr,
++    sync::{
++        atomic::{AtomicBool, Ordering},
++        Mutex,
++    },
++};
++
++use openvr as vr;
++use openxr as xr;
++
++use crate::{input::profiles::vive_tracker::ViveTracker, tracy_span};
++use crate::{
++    openxr_data::{self, AtomicPath, Hand, OpenXrData, SessionData},
++    runtime_extensions::mndx_xdev_space::Xdev,
++};
++use log::trace;
++
++use super::{profiles::MainAxisType, Input, InteractionProfile};
++
++#[derive(Debug, Copy, Clone, PartialEq, Default)]
++pub enum TrackedDeviceType {
++    #[default]
++    Hmd,
++    Controller {
++        hand: Hand,
++    },
++    GenericTracker,
++}
++
++#[derive(Default)]
++pub struct XrTrackedDevice {
++    device_type: TrackedDeviceType,
++    interaction_profile: Mutex<Option<&'static dyn InteractionProfile>>,
++    profile_path: AtomicPath,
++    connected: AtomicBool,
++    previous_connected: AtomicBool,
++    pose_cache: Mutex<Option<vr::TrackedDevicePose_t>>,
++    xdev: Option<Xdev>,
++}
++
++pub struct TrackedDeviceCreateInfo {
++    pub device_type: TrackedDeviceType,
++    pub profile_path: Option<xr::Path>,
++    pub interaction_profile: Option<&'static dyn InteractionProfile>,
++    pub xdev: Option<Xdev>,
++}
++
++impl XrTrackedDevice {
++    pub fn new(info: TrackedDeviceCreateInfo) -> Self {
++        let profile_path = AtomicPath::new();
++
++        if let Some(path) = info.profile_path {
++            profile_path.store(path);
++        }
++
++        Self {
++            device_type: info.device_type,
++            interaction_profile: Mutex::new(info.interaction_profile),
++            profile_path,
++            connected: if info.device_type == TrackedDeviceType::Hmd {
++                true.into()
++            } else {
++                false.into()
++            },
++            previous_connected: false.into(),
++            pose_cache: Mutex::new(None),
++            xdev: info.xdev,
++        }
++    }
++
++    pub fn get_pose(
++        &self,
++        xr_data: &OpenXrData<impl crate::openxr_data::Compositor>,
++        session_data: &SessionData,
++        origin: vr::ETrackingUniverseOrigin,
++    ) -> Option<vr::TrackedDevicePose_t> {
++        let mut pose_cache = self.pose_cache.lock().ok()?;
++        if let Some(pose) = *pose_cache {
++            return Some(pose);
++        }
++
++        *pose_cache = match self.device_type {
++            TrackedDeviceType::Hmd => self.get_hmd_pose(xr_data, session_data, origin),
++            TrackedDeviceType::Controller { .. } => {
++                self.get_controller_pose(xr_data, session_data, origin)
++            }
++            TrackedDeviceType::GenericTracker => {
++                self.get_generic_tracker_pose(xr_data, session_data, origin)
++            }
++        };
++
++        *pose_cache
++    }
++
++    fn get_string_property(&self, prop: vr::ETrackedDeviceProperty) -> Option<&'static CStr> {
++        match self.device_type {
++            TrackedDeviceType::Hmd => match prop {
++                // The Unity OpenVR sample appears to have a hard requirement on these first three properties returning
++                // something to even get the game to recognize the HMD's location. However, the value
++                // itself doesn't appear to be that important.
++                vr::ETrackedDeviceProperty::SerialNumber_String
++                | vr::ETrackedDeviceProperty::ManufacturerName_String
++                | vr::ETrackedDeviceProperty::ControllerType_String => Some(c"<unknown>"),
++                _ => None,
++            },
++            TrackedDeviceType::Controller { hand } => {
++                let profile = self.interaction_profile.lock().ok()?;
++                let data = profile.as_ref()?.properties();
++
++                match prop {
++                    // Audica likes to apply controller specific tweaks via this property
++                    vr::ETrackedDeviceProperty::ControllerType_String => {
++                        Some(data.openvr_controller_type)
++                    }
++                    // I Expect You To Die 3 identifies controllers with this property -
++                    // why it couldn't just use ControllerType instead is beyond me...
++                    // Because some controllers have different model names for each hand......
++                    vr::ETrackedDeviceProperty::ModelNumber_String => Some(*data.model.get(hand)),
++                    // Resonite won't recognize controllers without this
++                    vr::ETrackedDeviceProperty::RenderModelName_String => {
++                        Some(*data.render_model_name.get(hand))
++                    }
++                    vr::ETrackedDeviceProperty::RegisteredDeviceType_String => {
++                        Some(*data.registered_device_type.get(hand))
++                    }
++                    vr::ETrackedDeviceProperty::TrackingSystemName_String => {
++                        Some(data.tracking_system_name)
++                    }
++                    // Required for controllers to be acknowledged in I Expect You To Die 3
++                    vr::ETrackedDeviceProperty::SerialNumber_String => {
++                        Some(*data.serial_number.get(hand))
++                    }
++                    vr::ETrackedDeviceProperty::ManufacturerName_String => {
++                        Some(data.manufacturer_name)
++                    }
++                    _ => None,
++                }
++            }
++            TrackedDeviceType::GenericTracker => {
++                let profile = self.interaction_profile.lock().ok()?;
++                let data = profile.as_ref()?.properties();
++
++                match prop {
++                    // Audica likes to apply controller specific tweaks via this property
++                    vr::ETrackedDeviceProperty::ControllerType_String => {
++                        Some(data.openvr_controller_type)
++                    }
++                    // I Expect You To Die 3 identifies controllers with this property -
++                    // why it couldn't just use ControllerType instead is beyond me...
++                    // Because some controllers have different model names for each hand......
++                    vr::ETrackedDeviceProperty::ModelNumber_String => {
++                        Some(*data.model.get(Hand::Left))
++                    }
++                    // Resonite won't recognize controllers without this
++                    vr::ETrackedDeviceProperty::RenderModelName_String => {
++                        Some(*data.render_model_name.get(Hand::Left))
++                    }
++                    vr::ETrackedDeviceProperty::RegisteredDeviceType_String => {
++                        Some(*data.registered_device_type.get(Hand::Left))
++                    }
++                    vr::ETrackedDeviceProperty::TrackingSystemName_String => {
++                        Some(data.tracking_system_name)
++                    }
++                    // Required for controllers to be acknowledged in I Expect You To Die 3
++                    vr::ETrackedDeviceProperty::SerialNumber_String => {
++                        Some(self.xdev.as_ref()?.serial)
++                    }
++                    vr::ETrackedDeviceProperty::ManufacturerName_String => {
++                        Some(data.manufacturer_name)
++                    }
++                    _ => None,
++                }
++            }
++        }
++    }
++
++    pub fn connected(&self) -> bool {
++        self.connected.load(Ordering::Relaxed)
++    }
++
++    pub fn set_connected(&self, connected: bool) {
++        self.connected.store(connected, Ordering::Relaxed);
++    }
++
++    pub fn set_interaction_profile(&self, profile: &'static dyn InteractionProfile) {
++        self.interaction_profile.lock().unwrap().replace(profile);
++    }
++
++    pub fn get_interaction_profile(&self) -> Option<&'static dyn InteractionProfile> {
++        self.interaction_profile.lock().unwrap().as_ref().copied()
++    }
++
++    pub fn get_profile_path(&self) -> xr::Path {
++        self.profile_path.load()
++    }
++
++    pub fn set_profile_path(&self, path: xr::Path) {
++        self.profile_path.store(path);
++    }
++
++    pub fn clear_pose_cache(&self) {
++        std::mem::take(&mut *self.pose_cache.lock().unwrap());
++    }
++
++    pub fn compare_exchange_connected(&self) -> Result<bool, bool> {
++        let current = self.connected();
++
++        self.previous_connected.compare_exchange(
++            !current,
++            current,
++            Ordering::Relaxed,
++            Ordering::Relaxed,
++        )
++    }
++
++    pub fn get_type(&self) -> TrackedDeviceType {
++        self.device_type
++    }
++
++    // Controllers
++    fn get_controller_pose(
++        &self,
++        xr_data: &OpenXrData<impl crate::openxr_data::Compositor>,
++        session_data: &SessionData,
++        origin: vr::ETrackingUniverseOrigin,
++    ) -> Option<vr::TrackedDevicePose_t> {
++        let legacy_actions = session_data.input_data.legacy_actions.get()?;
++
++        let spaces = match self.get_controller_hand()? {
++            Hand::Left => &legacy_actions.left_spaces,
++            Hand::Right => &legacy_actions.right_spaces,
++        };
++
++        let (location, velocity) = if let Some(raw) = spaces.try_get_or_init_raw(
++            &self.get_interaction_profile(),
++            session_data,
++            &legacy_actions.actions,
++        ) {
++            raw.relate(
++                session_data.get_space_for_origin(origin),
++                xr_data.display_time.get(),
++            )
++            .ok()?
++        } else {
++            trace!("Failed to get raw space, returning empty pose");
++            (xr::SpaceLocation::default(), xr::SpaceVelocity::default())
++        };
++
++        Some(vr::space_relation_to_openvr_pose(location, velocity))
++    }
++
++    pub fn get_controller_hand(&self) -> Option<Hand> {
++        match self.get_type() {
++            TrackedDeviceType::Controller { hand, .. } => Some(hand),
++            _ => None,
++        }
++    }
++
++    // HMD
++    fn get_hmd_pose(
++        &self,
++        xr_data: &OpenXrData<impl crate::openxr_data::Compositor>,
++        session_data: &SessionData,
++        origin: vr::ETrackingUniverseOrigin,
++    ) -> Option<vr::TrackedDevicePose_t> {
++        let (location, velocity) = {
++            session_data
++                .view_space
++                .relate(
++                    session_data.get_space_for_origin(origin),
++                    xr_data.display_time.get(),
++                )
++                .ok()?
++        };
++
++        Some(vr::space_relation_to_openvr_pose(location, velocity))
++    }
++
++    // Generic Trackers
++    fn get_generic_tracker_pose(
++        &self,
++        xr_data: &OpenXrData<impl crate::openxr_data::Compositor>,
++        session_data: &SessionData,
++        origin: vr::ETrackingUniverseOrigin,
++    ) -> Option<vr::TrackedDevicePose_t> {
++        let (location, velocity) = self
++            .xdev
++            .as_ref()?
++            .space
++            .as_ref()?
++            .relate(
++                session_data.get_space_for_origin(origin),
++                xr_data.display_time.get(),
++            )
++            .ok()?;
++        let mut pose = vr::space_relation_to_openvr_pose(location, velocity);
++
++        //HACK: Trackers will freeze in VRChat like this, which is more desirable when the pose is invalid.
++        pose.bDeviceIsConnected = true;
++        pose.bPoseIsValid = location.location_flags.contains(xr::SpaceLocationFlags::POSITION_VALID);
++
++        Some(pose)
++    }
++}
++
++pub struct TrackedDeviceList {
++    devices: Vec<XrTrackedDevice>,
++}
++
++impl Default for TrackedDeviceList {
++    fn default() -> Self {
++        Self::new()
++    }
++}
++
++pub struct SubactionPaths {
++    pub left: xr::Path,
++    pub right: xr::Path,
++}
++
++impl SubactionPaths {
++    pub fn new(instance: &xr::Instance) -> Self {
++        let left = instance
++            .string_to_path("/user/hand/left")
++            .expect("Failed to convert string to path");
++        let right = instance
++            .string_to_path("/user/hand/right")
++            .expect("Failed to convert string to path");
++
++        Self { left, right }
++    }
++}
++
++impl TrackedDeviceList {
++    pub(super) fn new() -> Self {
++        Self {
++            devices: vec![XrTrackedDevice::new(TrackedDeviceCreateInfo {
++                device_type: TrackedDeviceType::Hmd,
++                profile_path: None,
++                interaction_profile: None,
++                xdev: None,
++            })],
++        }
++    }
++
++    pub(super) fn get_device(
++        &self,
++        device_index: vr::TrackedDeviceIndex_t,
++    ) -> Option<&XrTrackedDevice> {
++        self.devices.get(device_index as usize)
++    }
++
++    pub(super) fn push_device(
++        &mut self,
++        device: XrTrackedDevice,
++    ) -> Result<vr::TrackedDeviceIndex_t, vr::EVRInputError> {
++        let index = self.devices.len() as vr::TrackedDeviceIndex_t;
++
++        if index >= vr::k_unMaxTrackedDeviceCount {
++            return Err(vr::EVRInputError::MaxCapacityReached);
++        }
++
++        self.devices.push(device);
++
++        Ok(index)
++    }
++
++    pub(super) fn get_hmd(&self) -> &XrTrackedDevice {
++        unsafe { self.devices.get_unchecked(0) }
++    }
++
++    pub(super) fn get_controller(&self, hand: Hand) -> Option<&XrTrackedDevice> {
++        self.get_device(self.get_controller_index(hand))
++    }
++
++    fn get_controller_index(&self, hand: Hand) -> vr::TrackedDeviceIndex_t {
++        self.iter()
++            .enumerate()
++            .find(|(_, device)| device.get_controller_hand() == Some(hand))
++            .map(|(i, _)| i as vr::TrackedDeviceIndex_t)
++            .unwrap_or(vr::k_unTrackedDeviceIndexInvalid)
++    }
++
++    pub fn create_generic_trackers(
++        &mut self,
++        xr_data: &OpenXrData<impl crate::openxr_data::Compositor>,
++    ) -> xr::Result<()> {
++        let Some(xdev_extension) = xr_data.xdev_extension.as_ref() else {
++            return Ok(());
++        };
++
++        self.devices
++            .retain(|device| device.get_type() != TrackedDeviceType::GenericTracker);
++
++        let max_generic_trackers = vr::k_unMaxTrackedDeviceCount as usize - self.devices.len();
++        log::info!("Creating generic trackers");
++
++        let session = xr_data.session_data.get();
++
++        let xdevs: Vec<Xdev> = xdev_extension
++            .enumerate_xdevs(&session.session, max_generic_trackers)?
++            .into_iter()
++            .filter(|device| {
++                device.space.is_some()
++                    && device.properties.name().to_lowercase().contains("tracker")
++            })
++            .collect();
++
++        log::info!("Found {} generic trackers", xdevs.len());
++
++        xdevs.into_iter().for_each(|xdev| {
++            let tracker = XrTrackedDevice::new(TrackedDeviceCreateInfo {
++                device_type: TrackedDeviceType::GenericTracker,
++                profile_path: None,
++                interaction_profile: Some(&ViveTracker),
++                xdev: Some(xdev),
++            });
++
++            tracker.set_connected(true);
++
++            let res = self.push_device(tracker);
++
++            if res.is_err() {
++                log::error!("Failed to add generic tracker: {:?}", res.unwrap_err());
++                return;
++            }
++        });
++
++        Ok(())
++    }
++
++    pub fn iter(&self) -> std::slice::Iter<'_, XrTrackedDevice> {
++        self.devices.iter()
++    }
++}
++
++impl<C: openxr_data::Compositor> Input<C> {
++    pub fn get_poses(
++        &self,
++        poses: &mut [vr::TrackedDevicePose_t],
++        origin: Option<vr::ETrackingUniverseOrigin>,
++    ) {
++        tracy_span!();
++        let session = self.openxr.session_data.get();
++        let devices = session.input_data.devices.read().unwrap();
++        let session_data = self.openxr.session_data.get();
++
++        poses.iter_mut().enumerate().for_each(|(i, pose)| {
++            let device = devices.get_device(i as u32);
++
++            if let Some(device) = device {
++                *pose = device
++                    .get_pose(
++                        &self.openxr,
++                        &session_data,
++                        origin.unwrap_or(session_data.current_origin),
++                    )
++                    .unwrap_or_default();
++            }
++        });
++    }
++
++    pub fn get_device_string_property(
++        &self,
++        index: vr::TrackedDeviceIndex_t,
++        property: vr::ETrackedDeviceProperty,
++    ) -> Option<&'static CStr> {
++        let session = self.openxr.session_data.get();
++        let devices = session.input_data.devices.read().ok()?;
++        let device = devices.get_device(index)?;
++
++        device.get_string_property(property)
++    }
++
++    pub fn get_controller_pose(
++        &self,
++        hand: Hand,
++        origin: Option<vr::ETrackingUniverseOrigin>,
++    ) -> Option<vr::TrackedDevicePose_t> {
++        let session = self.openxr.session_data.get();
++        let devices = session.input_data.devices.read().ok()?;
++        let controller_index = devices.get_controller_index(hand);
++
++        self.get_device_pose(controller_index, origin)
++    }
++
++    pub fn get_device_pose(
++        &self,
++        index: vr::TrackedDeviceIndex_t,
++        origin: Option<vr::ETrackingUniverseOrigin>,
++    ) -> Option<vr::TrackedDevicePose_t> {
++        tracy_span!();
++
++        let session = self.openxr.session_data.get();
++        let devices = session.input_data.devices.read().ok()?;
++
++        devices.get_device(index)?.get_pose(
++            &self.openxr,
++            &session,
++            origin.unwrap_or(session.current_origin),
++        )
++    }
++
++    pub fn is_device_connected(&self, index: vr::TrackedDeviceIndex_t) -> bool {
++        let session = self.openxr.session_data.get();
++        let devices = session.input_data.devices.read();
++
++        let Some(devices) = devices.ok() else {
++            return false;
++        };
++
++        let Some(device) = devices.get_device(index) else {
++            return false;
++        };
++
++        device.connected()
++    }
++
++    pub fn device_index_to_device_type(
++        &self,
++        index: vr::TrackedDeviceIndex_t,
++    ) -> Option<TrackedDeviceType> {
++        let session = self.openxr.session_data.get();
++        let devices = session.input_data.devices.read().ok()?;
++        let device = devices.get_device(index)?;
++
++        Some(device.get_type())
++    }
++
++    pub fn device_index_to_hand(&self, index: vr::TrackedDeviceIndex_t) -> Option<Hand> {
++        let session = self.openxr.session_data.get();
++        let devices = session.input_data.devices.read().ok()?;
++        let device = devices.get_device(index)?;
++
++        device.get_controller_hand()
++    }
++
++    pub fn get_controller_device_index(&self, hand: Hand) -> Option<vr::TrackedDeviceIndex_t> {
++        let session = self.openxr.session_data.get();
++        let devices = session.input_data.devices.read().ok()?;
++        let controller_index = devices.get_controller_index(hand);
++
++        if controller_index == vr::k_unTrackedDeviceIndexInvalid {
++            return None;
++        }
++
++        Some(controller_index)
++    }
++
++    fn get_profile_data(&self, hand: Hand) -> Option<&super::profiles::ProfileProperties> {
++        let session = self.openxr.session_data.get();
++        let devices = session.input_data.devices.read().ok()?;
++        let controller = devices.get_controller(hand)?;
++
++        self.profile_map
++            .get(&controller.get_profile_path())
++            .map(|v| &**v)
++    }
++
++    pub fn get_controller_int_tracked_property(
++        &self,
++        hand: Hand,
++        property: vr::ETrackedDeviceProperty,
++    ) -> Option<i32> {
++        self.get_profile_data(hand).and_then(|data| match property {
++            vr::ETrackedDeviceProperty::Axis0Type_Int32 => match data.main_axis {
++                MainAxisType::Thumbstick => Some(vr::EVRControllerAxisType::Joystick as _),
++                MainAxisType::Trackpad => Some(vr::EVRControllerAxisType::TrackPad as _),
++            },
++            vr::ETrackedDeviceProperty::Axis1Type_Int32 => {
++                Some(vr::EVRControllerAxisType::Trigger as _)
++            }
++            vr::ETrackedDeviceProperty::Axis2Type_Int32 => {
++                // This is actually the grip, and gets recognized as such
++                Some(vr::EVRControllerAxisType::Trigger as _)
++            }
++            // TODO: report knuckles trackpad?
++            vr::ETrackedDeviceProperty::Axis3Type_Int32
++            | vr::ETrackedDeviceProperty::Axis4Type_Int32 => {
++                Some(vr::EVRControllerAxisType::None as _)
++            }
++            _ => None,
++        })
++    }
++
++    pub fn get_controller_uint_tracked_property(
++        &self,
++        hand: Hand,
++        property: vr::ETrackedDeviceProperty,
++    ) -> Option<u64> {
++        self.get_profile_data(hand).and_then(|data| match property {
++            vr::ETrackedDeviceProperty::SupportedButtons_Uint64 => Some(data.legacy_buttons_mask),
++            _ => None,
++        })
++    }
++}
+diff --git a/src/input/legacy.rs b/src/input/legacy.rs
+index 84e86e4..7bb8ece 100644
+--- a/src/input/legacy.rs
++++ b/src/input/legacy.rs
+@@ -1,5 +1,5 @@
+-use super::{Input, Profiles};
+-use crate::openxr_data::{self, Hand, OpenXrData, SessionData};
++use super::{Input, InteractionProfile, Profiles};
++use crate::openxr_data::{self, Hand, SessionData};
+ use glam::Quat;
+ use log::{debug, trace, warn};
+ use openvr as vr;
+@@ -60,16 +60,12 @@ impl<C: openxr_data::Compositor> Input<C> {
+         };
+         let actions = &legacy.actions;
+ 
+-        let Ok(hand) = Hand::try_from(device_index) else {
+-            debug!("requested controller state for invalid device index: {device_index}");
++        let Some(hand) = self.device_index_to_hand(device_index) else {
++            debug!("tried getting controller state, but device index {device_index} is invalid or not a controller!");
+             return false;
+         };
+ 
+-        let hand_info = match hand {
+-            Hand::Left => &self.openxr.left_hand,
+-            Hand::Right => &self.openxr.right_hand,
+-        };
+-        let hand_path = hand_info.subaction_path;
++        let hand_path = self.get_subaction_path(hand);
+ 
+         let data = self.openxr.session_data.get();
+ 
+@@ -314,7 +310,7 @@ impl Deref for SpaceReadGuard<'_> {
+ impl HandSpaces {
+     pub fn try_get_or_init_raw(
+         &self,
+-        xr_data: &OpenXrData<impl crate::openxr_data::Compositor>,
++        hand_profile: &Option<&dyn InteractionProfile>,
+         session_data: &SessionData,
+         actions: &LegacyActions,
+     ) -> Option<SpaceReadGuard> {
+@@ -324,14 +320,7 @@ impl HandSpaces {
+                 return Some(SpaceReadGuard(raw));
+             }
+         }
+-
+         {
+-            let hand_profile = match self.hand {
+-                Hand::Right => &xr_data.right_hand.profile,
+-                Hand::Left => &xr_data.left_hand.profile,
+-            };
+-
+-            let hand_profile = hand_profile.lock().unwrap();
+             let Some(profile) = hand_profile.as_ref() else {
+                 trace!("no hand profile, no raw space will be created");
+                 return None;
+@@ -544,7 +533,10 @@ mod tests {
+         };
+ 
+         let hands = [LeftHand, RightHand];
+-        // Initial state
++
++        while let Some(event) = get_event() {
++            assert_eq!(event.ty, vr::EVREventType::TrackedDeviceActivated as u32);
++        }
+ 
+         for hand in hands {
+             let state = get_state(hand);
+diff --git a/src/input/profiles.rs b/src/input/profiles.rs
+index d43294f..f693e57 100644
+--- a/src/input/profiles.rs
++++ b/src/input/profiles.rs
+@@ -2,6 +2,7 @@ pub mod knuckles;
+ pub mod oculus_touch;
+ pub mod simple_controller;
+ pub mod vive_controller;
++pub mod vive_tracker;
+ 
+ use super::{
+     action_manifest::ControllerType, legacy::LegacyBindings, skeletal::SkeletalInputBindings,
+diff --git a/src/input/profiles/knuckles.rs b/src/input/profiles/knuckles.rs
+index c817b91..2347578 100644
+--- a/src/input/profiles/knuckles.rs
++++ b/src/input/profiles/knuckles.rs
+@@ -32,8 +32,8 @@ impl InteractionProfile for Knuckles {
+                 right: c"valve/index_controllerLHR-FFFFFFF2",
+             },
+             serial_number: Property::PerHand {
+-                left: c"LHR-FFFFFFF1",
+-                right: c"LHR-FFFFFFF2",
++                left: c"LHR-D34DB33F",
++                right: c"LHR-B33FD34D"
+             },
+             tracking_system_name: c"lighthouse",
+             manufacturer_name: c"Valve",
+@@ -139,6 +139,8 @@ impl InteractionProfile for Knuckles {
+                 .leftright("input/thumbstick/touch")
+                 .into_iter()
+                 .chain(stp.leftright("input/trackpad/touch"))
++                .chain(stp.leftright("input/a/touch"))
++                .chain(stp.leftright("input/b/touch"))
+                 .collect(),
+             index_touch: stp.leftright("input/trigger/touch"),
+             index_curl: stp.leftright("input/trigger/value"),
+diff --git a/src/input/profiles/vive_tracker.rs b/src/input/profiles/vive_tracker.rs
+new file mode 100644
+index 0000000..777923c
+--- /dev/null
++++ b/src/input/profiles/vive_tracker.rs
+@@ -0,0 +1,65 @@
++use glam::Mat4;
++
++use super::{
++    InteractionProfile, MainAxisType, PathTranslation, ProfileProperties, Property,
++    SkeletalInputBindings, StringToPath,
++};
++use crate::input::legacy::LegacyBindings;
++use crate::openxr_data::Hand;
++
++pub struct ViveTracker;
++
++impl InteractionProfile for ViveTracker {
++    fn properties(&self) -> &'static ProfileProperties {
++        &ProfileProperties {
++            model: Property::BothHands(c"Vive Tracker Handheld Object"),
++            openvr_controller_type: c"vive_tracker_handheld_object",
++            render_model_name: Property::BothHands(c"vive_tracker"),
++            main_axis: MainAxisType::Thumbstick,
++            registered_device_type: Property::BothHands(c"vive_tracker"),
++            serial_number: Property::BothHands(c"vive_tracker"), // This gets replaced
++            tracking_system_name: c"lighthouse",
++            manufacturer_name: c"HTC",
++            legacy_buttons_mask: 0u64, // This is the closest thing I could think of to NOOP this
++        }
++    }
++    fn profile_path(&self) -> &'static str {
++        "/interaction_profiles/htc/vive_tracker_htcx"
++    }
++    fn translate_map(&self) -> &'static [PathTranslation] {
++        &[]
++    }
++
++    fn legacy_bindings(&self, _stp: &dyn StringToPath) -> LegacyBindings {
++        LegacyBindings {
++            grip_pose: vec![],
++            aim_pose: vec![],
++            trigger: vec![],
++            trigger_click: vec![],
++            app_menu: vec![],
++            a: vec![],
++            squeeze: vec![],
++            squeeze_click: vec![],
++            main_xy: vec![],
++            main_xy_click: vec![],
++            main_xy_touch: vec![],
++        }
++    }
++
++    fn skeletal_input_bindings(&self, _stp: &dyn StringToPath) -> SkeletalInputBindings {
++        SkeletalInputBindings {
++            thumb_touch: Vec::new(),
++            index_touch: Vec::new(),
++            index_curl: Vec::new(),
++            rest_curl: Vec::new(),
++        }
++    }
++
++    fn legal_paths(&self) -> Box<[String]> {
++        [].into()
++    }
++
++    fn offset_grip_pose(&self, _: Hand) -> Mat4 {
++        Mat4::IDENTITY
++    }
++}
+diff --git a/src/input/skeletal.rs b/src/input/skeletal.rs
+index 380554a..da000e6 100644
+--- a/src/input/skeletal.rs
++++ b/src/input/skeletal.rs
+@@ -2,7 +2,7 @@
+ mod gen;
+ 
+ use super::Input;
+-use crate::openxr_data::{self, Hand, OpenXrData, SessionData};
++use crate::openxr_data::{self, Hand, SessionData};
+ use glam::{Affine3A, Quat, Vec3};
+ use log::debug;
+ use openvr as vr;
+@@ -17,7 +17,6 @@ impl<C: openxr_data::Compositor> Input<C> {
+     /// Returns false if hand tracking data couldn't be generated for some reason.
+     pub(super) fn get_bones_from_hand_tracking(
+         &self,
+-        xr_data: &OpenXrData<C>,
+         session_data: &SessionData,
+         space: vr::EVRSkeletalTransformSpace,
+         hand_tracker: &xr::HandTracker,
+@@ -28,11 +27,22 @@ impl<C: openxr_data::Compositor> Input<C> {
+ 
+         let legacy = session_data.input_data.legacy_actions.get().unwrap();
+         let display_time = self.openxr.display_time.get();
++        let devices = session_data.input_data.devices.read().unwrap();
++
++        let Some(controller) = devices.get_controller(hand) else {
++            self.get_estimated_bones(session_data, space, hand, transforms);
++            return;
++        };
++
+         let Some(raw) = match hand {
+             Hand::Left => &legacy.left_spaces,
+             Hand::Right => &legacy.right_spaces,
+         }
+-        .try_get_or_init_raw(xr_data, session_data, &legacy.actions) else {
++        .try_get_or_init_raw(
++            &controller.get_interaction_profile(),
++            session_data,
++            &legacy.actions,
++        ) else {
+             self.get_estimated_bones(session_data, space, hand, transforms);
+             return;
+         };
+@@ -159,6 +169,140 @@ impl<C: openxr_data::Compositor> Input<C> {
+         *self.skeletal_tracking_level.write().unwrap() = vr::EVRSkeletalTrackingLevel::Full;
+     }
+ 
++    pub(super) fn get_bone_summary_from_hand_tracking(
++        &self,
++        session_data: &SessionData,
++        summary_type: vr::EVRSummaryType,
++        summary_data: *mut vr::VRSkeletalSummaryData_t,
++        hand_tracker: &xr::HandTracker,
++        hand: Hand,
++    ) {
++        let legacy = session_data.input_data.legacy_actions.get().unwrap();
++        let display_time = self.openxr.display_time.get();
++        let devices = session_data.input_data.devices.read().unwrap();
++
++        let Some(controller) = devices.get_controller(hand) else {
++            self.get_estimated_bone_summary(session_data, summary_type, summary_data, hand);
++            return;
++        };
++        let Some(raw) = match hand {
++            Hand::Left => &legacy.left_spaces,
++            Hand::Right => &legacy.right_spaces,
++        }
++        .try_get_or_init_raw(&controller.get_interaction_profile(), session_data, &legacy.actions) else {
++            self.get_estimated_bone_summary(session_data, summary_type, summary_data, hand);
++            return;
++        };
++
++        let Some(joints) = raw.locate_hand_joints(hand_tracker, display_time).unwrap() else {
++            self.get_estimated_bone_summary(session_data, summary_type, summary_data, hand);
++            return;
++        };
++
++        let joints: Box<[_]> = joints
++            .into_iter()
++            .map(|joint_location| {
++                let position = joint_location.pose.position;
++                let orientation = joint_location.pose.orientation;
++                Affine3A::from_rotation_translation(
++                    Quat::from_xyzw(orientation.x, orientation.y, orientation.z, orientation.w),
++                    Vec3::from_array([position.x, position.y, position.z]),
++                )
++            })
++            .collect();
++
++        let mut finger_curls = [0.0; 5];
++        let finger_splay = [0.2; 4];
++
++        for (i, curl_value) in finger_curls.iter_mut().enumerate() {
++            let (metacarpal, proximal, tip) = match i {
++                0 => (
++                    joints[xr::HandJoint::THUMB_METACARPAL],
++                    joints[xr::HandJoint::THUMB_PROXIMAL],
++                    joints[xr::HandJoint::THUMB_TIP],
++                ),
++                1 => (
++                    joints[xr::HandJoint::INDEX_METACARPAL],
++                    joints[xr::HandJoint::INDEX_PROXIMAL],
++                    joints[xr::HandJoint::INDEX_TIP],
++                ),
++                2 => (
++                    joints[xr::HandJoint::MIDDLE_METACARPAL],
++                    joints[xr::HandJoint::MIDDLE_PROXIMAL],
++                    joints[xr::HandJoint::MIDDLE_TIP],
++                ),
++                3 => (
++                    joints[xr::HandJoint::RING_METACARPAL],
++                    joints[xr::HandJoint::RING_PROXIMAL],
++                    joints[xr::HandJoint::RING_TIP],
++                ),
++                4 => (
++                    joints[xr::HandJoint::LITTLE_METACARPAL],
++                    joints[xr::HandJoint::LITTLE_PROXIMAL],
++                    joints[xr::HandJoint::LITTLE_TIP],
++                ),
++                _ => unreachable!(),
++            };
++
++            let metacarpal_proximal_delta = metacarpal.translation - proximal.translation;
++            let tip_proxiimal_delta = tip.translation - proximal.translation;
++
++            let dot = metacarpal_proximal_delta.dot(tip_proxiimal_delta);
++            let a = metacarpal_proximal_delta.length();
++            let b = tip_proxiimal_delta.length();
++
++            let curl = if a == 0.0 || b == 0.0 {
++                1.0
++            } else {
++                let ang_cos = (dot / (a * b)).clamp(-1.0, 1.0);
++                let ang = ang_cos.acos();
++
++                1.0 - (ang / PI)
++            };
++
++            *curl_value = curl;
++
++            let legacy_hand_state = self.get_finger_state(session_data, hand);
++
++            // HACK: use estimated thumb on index to fix gestures
++            if i == 0 && controller.get_interaction_profile().unwrap().profile_path() == "/interaction_profiles/valve/index_controller" {
++                *curl_value = legacy_hand_state.thumb;
++            } else {
++                *curl_value = curl;
++            }
++        }
++
++        unsafe {
++            summary_data.write(vr::VRSkeletalSummaryData_t {
++                flFingerSplay: finger_splay,
++                flFingerCurl: finger_curls,
++            })
++        }
++    }
++
++    pub(super) fn get_estimated_bone_summary(
++        &self,
++        session_data: &SessionData,
++        _: vr::EVRSummaryType,
++        summary_data: *mut vr::VRSkeletalSummaryData_t,
++        hand: Hand,
++    ) {
++        let legacy = self.get_finger_state(session_data, hand);
++
++        unsafe {
++            summary_data.write(vr::VRSkeletalSummaryData_t {
++                flFingerSplay: [0.2; 4],
++                flFingerCurl: [
++                    legacy.thumb,
++                    legacy.index,
++                    legacy.middle,
++                    legacy.ring,
++                    legacy.pinky,
++                ],
++            })
++        }
++    }
++
+     pub(super) fn get_estimated_bones(
+         &self,
+         session_data: &SessionData,
+@@ -214,10 +358,8 @@ impl<C: openxr_data::Compositor> Input<C> {
+             .get()
+             .unwrap()
+             .actions;
+-        let subaction = match hand {
+-            Hand::Left => self.openxr.left_hand.subaction_path,
+-            Hand::Right => self.openxr.right_hand.subaction_path,
+-        };
++
++        let subaction = self.get_subaction_path(hand);
+ 
+         let thumb_touch = actions
+             .thumb_touch
+diff --git a/src/input/tests.rs b/src/input/tests.rs
+index 21f6a3a..b4c6128 100644
+--- a/src/input/tests.rs
++++ b/src/input/tests.rs
+@@ -431,6 +431,24 @@ fn raw_pose_waitgetposes_and_skeletal_pose_identical() {
+     let skel_handle = f.get_action_handle(c"/actions/set1/in/skellyl");
+     f.load_actions(c"actions.json");
+     f.set_interaction_profile(&Knuckles, LeftHand);
++
++    let frame = || {
++        f.input.openxr.poll_events();
++        f.input.frame_start_update();
++    };
++
++    // we need to wait two frames for the controller to be connected.
++    frame();
++    assert!(f
++        .input
++        .get_controller_device_index(super::Hand::Left)
++        .is_none());
++    frame();
++    assert!(f
++        .input
++        .get_controller_device_index(super::Hand::Left)
++        .is_some());
++
+     let rot = Quat::from_rotation_x(-FRAC_PI_4);
+     let pose = xr::Posef {
+         position: xr::Vector3f {
+@@ -878,13 +896,14 @@ fn detect_controller_after_manifest_load() {
+     };
+ 
+     frame();
+-    assert!(!f.input.openxr.left_hand.connected());
++    assert!(f.input.get_controller_device_index(Hand::Left).is_none());
+ 
+     f.set_interaction_profile(&Knuckles, fakexr::UserPath::LeftHand);
+     frame();
+     // Profile won't be set for this frame - we call sync after events have already been polled
+-    assert!(!f.input.openxr.left_hand.connected());
++    assert!(f.input.get_controller_device_index(Hand::Left).is_none());
+ 
+     frame();
+-    assert!(f.input.openxr.left_hand.connected());
++    let index = f.input.get_controller_device_index(Hand::Left);
++    assert!(index.is_some_and(|i| f.input.is_device_connected(i)));
+ }
+diff --git a/src/lib.rs b/src/lib.rs
+index ab8a5c0..6b204fd 100644
+--- a/src/lib.rs
++++ b/src/lib.rs
+@@ -11,6 +11,7 @@ mod openxr_data;
+ mod overlay;
+ mod overlayview;
+ mod rendermodels;
++mod runtime_extensions;
+ mod screenshots;
+ mod settings;
+ mod system;
+diff --git a/src/openxr_data.rs b/src/openxr_data.rs
+index 2f540cb..91e7e2b 100644
+--- a/src/openxr_data.rs
++++ b/src/openxr_data.rs
+@@ -1,7 +1,7 @@
+ use crate::{
+     clientcore::{Injected, Injector},
+     graphics_backends::{supported_apis_enum, GraphicsBackend, VulkanData},
+-    input::{InteractionProfile, Profiles},
++    runtime_extensions::mndx_xdev_space::{XdevSpaceExtension, XR_MNDX_XDEV_SPACE_EXTENSION_NAME},
+ };
+ use derive_more::{Deref, From, TryInto};
+ use glam::f32::{Quat, Vec3};
+@@ -10,8 +10,8 @@ use openvr as vr;
+ use openxr as xr;
+ use std::mem::ManuallyDrop;
+ use std::sync::{
+-    atomic::{AtomicBool, AtomicI64, AtomicU64, Ordering},
+-    Mutex, RwLock,
++    atomic::{AtomicI64, AtomicU64, Ordering},
++    RwLock,
+ };
+ 
+ pub trait Compositor: vr::InterfaceImpl {
+@@ -35,9 +35,8 @@ pub struct OpenXrData<C: Compositor> {
+     pub system_id: xr::SystemId,
+     pub session_data: SessionReadGuard,
+     pub display_time: AtomicXrTime,
+-    pub left_hand: HandInfo,
+-    pub right_hand: HandInfo,
+     pub enabled_extensions: xr::ExtensionSet,
++    pub xdev_extension: Option<XdevSpaceExtension>,
+ 
+     /// should only be externally accessed for testing
+     pub(crate) input: Injected<crate::input::Input<C>>,
+@@ -92,6 +91,14 @@ impl<C: Compositor> OpenXrData<C> {
+         exts.khr_composition_layer_color_scale_bias =
+             supported_exts.khr_composition_layer_color_scale_bias;
+ 
++        if supported_exts
++            .other
++            .contains(&XR_MNDX_XDEV_SPACE_EXTENSION_NAME.to_string())
++        {
++            exts.other
++                .push(XR_MNDX_XDEV_SPACE_EXTENSION_NAME.to_string());
++        }
++
+         let instance = entry
+             .create_instance(
+                 &xr::ApplicationInfo {
+@@ -118,8 +125,7 @@ impl<C: Compositor> OpenXrData<C> {
+             .0,
+         )));
+ 
+-        let left_hand = HandInfo::new(&instance, "/user/hand/left");
+-        let right_hand = HandInfo::new(&instance, "/user/hand/right");
++        let xdev_extension = XdevSpaceExtension::new(&instance).ok();
+ 
+         Ok(Self {
+             _entry: entry,
+@@ -127,9 +133,8 @@ impl<C: Compositor> OpenXrData<C> {
+             system_id,
+             session_data,
+             display_time: AtomicXrTime(1.into()),
+-            left_hand,
+-            right_hand,
+             enabled_extensions: exts,
++            xdev_extension,
+             input: injector.inject(),
+             compositor: injector.inject(),
+         })
+@@ -144,33 +149,8 @@ impl<C: Compositor> OpenXrData<C> {
+                     info!("OpenXR session state changed: {:?}", event.state());
+                 }
+                 xr::Event::InteractionProfileChanged(_) => {
+-                    let session = self.session_data.get();
+-                    for info in [&self.left_hand, &self.right_hand] {
+-                        let profile_path = session
+-                            .session
+-                            .current_interaction_profile(info.subaction_path)
+-                            .unwrap();
+-
+-                        info.profile_path.store(profile_path);
+-                        let profile = match profile_path {
+-                            xr::Path::NULL => {
+-                                info.connected.store(false, Ordering::Relaxed);
+-                                "<null>".to_owned()
+-                            }
+-                            path => {
+-                                info.connected.store(true, Ordering::Relaxed);
+-                                self.instance.path_to_string(path).unwrap()
+-                            }
+-                        };
+-
+-                        *info.profile.lock().unwrap() = Profiles::get().profile_from_name(&profile);
+-
+-                        session.input_data.interaction_profile_changed();
+-
+-                        info!(
+-                            "{} interaction profile changed: {}",
+-                            info.path_name, profile
+-                        );
++                    if let Some(input) = self.input.get() {
++                        input.interaction_profile_changed();
+                     }
+                 }
+                 _ => {
+@@ -574,42 +554,22 @@ impl SessionData {
+     }
+ }
+ 
++#[derive(Default)]
+ pub struct AtomicPath(AtomicU64);
+ impl AtomicPath {
++    pub(crate) fn new() -> Self {
++        Self(0.into())
++    }
++
+     pub(crate) fn load(&self) -> xr::Path {
+         xr::Path::from_raw(self.0.load(Ordering::Relaxed))
+     }
+ 
+-    fn store(&self, path: xr::Path) {
++    pub(crate) fn store(&self, path: xr::Path) {
+         self.0.store(path.into_raw(), Ordering::Relaxed);
+     }
+ }
+ 
+-pub struct HandInfo {
+-    path_name: &'static str,
+-    connected: AtomicBool,
+-    pub subaction_path: xr::Path,
+-    pub profile_path: AtomicPath,
+-    pub profile: Mutex<Option<&'static dyn InteractionProfile>>,
+-}
+-
+-impl HandInfo {
+-    #[inline]
+-    pub fn connected(&self) -> bool {
+-        self.connected.load(Ordering::Relaxed)
+-    }
+-
+-    fn new(instance: &xr::Instance, path_name: &'static str) -> Self {
+-        Self {
+-            path_name,
+-            connected: false.into(),
+-            subaction_path: instance.string_to_path(path_name).unwrap(),
+-            profile_path: AtomicPath(0.into()),
+-            profile: Mutex::default(),
+-        }
+-    }
+-}
+-
+ #[repr(u32)]
+ #[derive(Copy, Clone, Debug, PartialEq)]
+ pub enum Hand {
+@@ -617,18 +577,38 @@ pub enum Hand {
+     Right,
+ }
+ 
+-impl TryFrom<vr::TrackedDeviceIndex_t> for Hand {
++pub type HandPath = &'static str;
++
++impl From<Hand> for HandPath {
++    fn from(value: Hand) -> Self {
++        match value {
++            Hand::Left => "/user/hand/left",
++            Hand::Right => "/user/hand/right",
++        }
++    }
++}
++
++impl TryFrom<vr::ETrackedControllerRole> for Hand {
+     type Error = ();
+     #[inline]
+-    fn try_from(value: vr::TrackedDeviceIndex_t) -> Result<Self, Self::Error> {
++    fn try_from(value: vr::ETrackedControllerRole) -> Result<Self, Self::Error> {
+         match value {
+-            x if x == Hand::Left as u32 => Ok(Hand::Left),
+-            x if x == Hand::Right as u32 => Ok(Hand::Right),
++            vr::ETrackedControllerRole::LeftHand => Ok(Hand::Left),
++            vr::ETrackedControllerRole::RightHand => Ok(Hand::Right),
+             _ => Err(()),
+         }
+     }
+ }
+ 
++impl From<Hand> for vr::ETrackedControllerRole {
++    fn from(hand: Hand) -> Self {
++        match hand {
++            Hand::Left => vr::ETrackedControllerRole::LeftHand,
++            Hand::Right => vr::ETrackedControllerRole::RightHand,
++        }
++    }
++}
++
+ /// Taken from: https://github.com/bitshifter/glam-rs/issues/536
+ /// Decompose the rotation on to 2 parts.
+ ///
+diff --git a/src/runtime_extensions.rs b/src/runtime_extensions.rs
+new file mode 100644
+index 0000000..124f019
+--- /dev/null
++++ b/src/runtime_extensions.rs
+@@ -0,0 +1 @@
++pub mod mndx_xdev_space;
+diff --git a/src/runtime_extensions/mndx_xdev_space.rs b/src/runtime_extensions/mndx_xdev_space.rs
+new file mode 100644
+index 0000000..1214d37
+--- /dev/null
++++ b/src/runtime_extensions/mndx_xdev_space.rs
+@@ -0,0 +1,120 @@
++mod sys;
++
++use std::{ffi::CStr, ptr::addr_of_mut};
++
++use sys::{
++    XrCreateXDevListInfoMNDX, XrCreateXDevSpaceInfoMNDX, XrGetXDevInfoMNDX, XrXDevIdMNDX,
++    XrXDevListMNDX, XrXDevPropertiesMNDX,
++};
++
++use openxr as xr;
++
++pub const XR_MNDX_XDEV_SPACE_EXTENSION_NAME: &str = "XR_MNDX_xdev_space";
++
++pub struct XdevSpaceExtension {
++    xr_mndx_xdev_space: sys::XdevSpaceExtension,
++}
++
++pub struct Xdev {
++    pub _id: XrXDevIdMNDX,
++    pub properties: XrXDevPropertiesMNDX,
++    pub space: Option<xr::Space>,
++    pub serial: &'static CStr,
++}
++
++impl PartialEq for Xdev {
++    fn eq(&self, other: &Self) -> bool {
++        self._id == other._id
++    }
++}
++
++impl Xdev {
++    pub fn new(
++        _id: XrXDevIdMNDX,
++        properties: XrXDevPropertiesMNDX,
++        space: Option<xr::Space>,
++    ) -> Self {
++        Self {
++            _id,
++            properties,
++            space,
++            serial: unsafe { CStr::from_ptr(properties.serial.as_ptr()) },
++        }
++    }
++}
++
++impl XdevSpaceExtension {
++    pub fn new(instance: &xr::Instance) -> xr::Result<Self> {
++        Ok(Self {
++            xr_mndx_xdev_space: sys::XdevSpaceExtension::new(instance.as_raw())?,
++        })
++    }
++
++    pub fn enumerate_xdevs(
++        &self,
++        session: &xr::Session<xr::AnyGraphics>,
++        max_generic_trackers: usize,
++    ) -> xr::Result<Vec<Xdev>> {
++        let mut xdev_list = XrXDevListMNDX::default();
++        let create_info = XrCreateXDevListInfoMNDX::default();
++
++        let mut xdev_ids = vec![0; max_generic_trackers];
++        let mut xdev_id_count = 0;
++
++        log::info!("Create XDev List");
++
++        self.xr_mndx_xdev_space
++            .create_xdev_list(session.as_raw(), &create_info, &mut xdev_list)?;
++
++        log::info!("Enumerate XDevs");
++
++        self.xr_mndx_xdev_space.enumerate_xdevs(
++            xdev_list,
++            max_generic_trackers as u32,
++            addr_of_mut!(xdev_id_count),
++            xdev_ids.as_mut_ptr(),
++        )?;
++
++        xdev_ids.truncate(xdev_id_count as usize);
++
++        let mut current_properties = XrXDevPropertiesMNDX::default();
++        let mut current_get_info = XrGetXDevInfoMNDX::default();
++        let mut space_create_info =
++            XrCreateXDevSpaceInfoMNDX::new(xdev_list, 0, xr::Posef::IDENTITY);
++
++        let xdevs = xdev_ids
++            .iter()
++            .map(|&id| {
++                current_get_info.id = id;
++                space_create_info.id = id;
++
++                self.xr_mndx_xdev_space.get_xdev_properties(
++                    xdev_list,
++                    &current_get_info,
++                    &mut current_properties,
++                )?;
++
++                if current_properties.can_create_space() {
++                    let mut raw_space = xr::sys::Space::default();
++
++                    self.xr_mndx_xdev_space.create_xdev_space(
++                        session.as_raw(),
++                        &space_create_info,
++                        &mut raw_space,
++                    )?;
++
++                    let space =
++                        unsafe { xr::Space::reference_from_raw(session.to_owned(), raw_space) };
++
++                    Ok(Xdev::new(id, current_properties, Some(space)))
++                } else {
++                    Ok(Xdev::new(id, current_properties, None))
++                }
++            })
++            .collect::<xr::Result<Vec<Xdev>>>();
++
++        self.xr_mndx_xdev_space.destroy_xdev_list(xdev_list)?;
++
++        xdevs
++    }
++}
+diff --git a/src/runtime_extensions/mndx_xdev_space/sys.rs b/src/runtime_extensions/mndx_xdev_space/sys.rs
+new file mode 100644
+index 0000000..ca0d487
+--- /dev/null
++++ b/src/runtime_extensions/mndx_xdev_space/sys.rs
+@@ -0,0 +1,301 @@
++use openxr as xr;
++
++#[repr(C)]
++#[derive(Debug, Default, Copy, Clone)]
++pub(super) struct XrXDevListMNDX(u64);
++pub type XrXDevIdMNDX = u64;
++
++#[repr(transparent)]
++#[derive(Copy, Clone, Eq, PartialEq)]
++pub(super) struct CustomStructureType(i32);
++impl CustomStructureType {
++    pub const XR_TYPE_SYSTEM_XDEV_SPACE_PROPERTIES_MNDX: CustomStructureType = Self(1000444001);
++    pub const XR_TYPE_CREATE_XDEV_LIST_INFO_MNDX: CustomStructureType = Self(1000444002);
++    pub const XR_TYPE_GET_XDEV_INFO_MNDX: CustomStructureType = Self(1000444003);
++    pub const XR_TYPE_XDEV_PROPERTIES_MNDX: CustomStructureType = Self(1000444004);
++    pub const XR_TYPE_CREATE_XDEV_SPACE_INFO_MNDX: CustomStructureType = Self(1000444005);
++}
++
++impl Into<xr::sys::StructureType> for CustomStructureType {
++    fn into(self) -> xr::sys::StructureType {
++        unsafe { std::mem::transmute(self) }
++    }
++}
++
++#[repr(C)]
++#[derive(Debug, Copy, Clone)]
++pub(super) struct XrSystemXDevSpacePropertiesMNDX {
++    ty: xr::sys::StructureType,
++    next: usize,
++    supports_xdev_space: xr::sys::Bool32,
++}
++
++impl Default for XrSystemXDevSpacePropertiesMNDX {
++    fn default() -> Self {
++        Self {
++            ty: CustomStructureType::XR_TYPE_SYSTEM_XDEV_SPACE_PROPERTIES_MNDX.into(),
++            next: 0,
++            supports_xdev_space: xr::sys::FALSE,
++        }
++    }
++}
++
++#[repr(C)]
++#[derive(Debug, Copy, Clone)]
++pub(super) struct XrCreateXDevListInfoMNDX {
++    ty: xr::sys::StructureType,
++    next: usize,
++}
++
++impl Default for XrCreateXDevListInfoMNDX {
++    fn default() -> Self {
++        Self {
++            ty: CustomStructureType::XR_TYPE_CREATE_XDEV_LIST_INFO_MNDX.into(),
++            next: 0,
++        }
++    }
++}
++
++#[repr(C)]
++#[derive(Debug, Copy, Clone)]
++pub(super) struct XrGetXDevInfoMNDX {
++    ty: xr::sys::StructureType,
++    next: usize,
++    pub id: XrXDevIdMNDX,
++}
++
++impl Default for XrGetXDevInfoMNDX {
++    fn default() -> Self {
++        Self {
++            ty: CustomStructureType::XR_TYPE_GET_XDEV_INFO_MNDX.into(),
++            next: 0,
++            id: 0,
++        }
++    }
++}
++
++#[repr(C)]
++#[derive(Debug, Clone, Copy, PartialEq)]
++pub struct XrXDevPropertiesMNDX {
++    ty: xr::sys::StructureType,
++    next: usize,
++    name: [i8; 256],
++    pub serial: [i8; 256],
++    can_create_space: xr::sys::Bool32,
++}
++
++impl XrXDevPropertiesMNDX {
++    pub fn name(&self) -> String {
++        let name = unsafe { std::ffi::CStr::from_ptr(self.name.as_ptr()) };
++
++        name.to_string_lossy().to_string()
++    }
++
++    pub fn can_create_space(&self) -> bool {
++        self.can_create_space != openxr::sys::FALSE
++    }
++}
++
++impl Default for XrXDevPropertiesMNDX {
++    fn default() -> Self {
++        Self {
++            ty: CustomStructureType::XR_TYPE_XDEV_PROPERTIES_MNDX.into(),
++            next: 0,
++            name: [0; 256],
++            serial: [0; 256],
++            can_create_space: xr::sys::FALSE,
++        }
++    }
++}
++
++#[repr(C)]
++#[derive(Debug, Copy, Clone)]
++pub(super) struct XrCreateXDevSpaceInfoMNDX {
++    ty: xr::sys::StructureType,
++    next: usize,
++    pub xdev_list: XrXDevListMNDX,
++    pub id: XrXDevIdMNDX,
++    offset: xr::sys::Posef,
++}
++
++impl XrCreateXDevSpaceInfoMNDX {
++    pub fn new(xdev_list: XrXDevListMNDX, id: XrXDevIdMNDX, offset: xr::Posef) -> Self {
++        Self {
++            ty: CustomStructureType::XR_TYPE_CREATE_XDEV_SPACE_INFO_MNDX.into(),
++            next: 0,
++            xdev_list,
++            id,
++            offset,
++        }
++    }
++}
++
++impl Default for XrCreateXDevSpaceInfoMNDX {
++    fn default() -> Self {
++        Self {
++            ty: CustomStructureType::XR_TYPE_CREATE_XDEV_SPACE_INFO_MNDX.into(),
++            next: 0,
++            xdev_list: XrXDevListMNDX(0),
++            id: 0,
++            offset: xr::sys::Posef::IDENTITY,
++        }
++    }
++}
++
++pub type XrCreateXdevListMndx = unsafe extern "system" fn(
++    session: xr::sys::Session,
++    create_info: *const XrCreateXDevListInfoMNDX,
++    xdev_list: *mut XrXDevListMNDX,
++) -> xr::sys::Result;
++
++pub type XrGetXdevListGenerationNumberMndx = unsafe extern "system" fn(
++    xdev_list: XrXDevListMNDX,
++    out_generation: *mut u64,
++) -> xr::sys::Result;
++
++pub type XrEnumerateXdevsMndx = unsafe extern "system" fn(
++    xdev_list: XrXDevListMNDX,
++    count_input: u32,
++    count_output: *mut u32,
++    xdevs: *mut XrXDevIdMNDX,
++) -> xr::sys::Result;
++
++pub type XrGetXdevPropertiesMndx = unsafe extern "system" fn(
++    xdev_list: XrXDevListMNDX,
++    info: *const XrGetXDevInfoMNDX,
++    properties: *mut XrXDevPropertiesMNDX,
++) -> xr::sys::Result;
++
++pub type XrDestroyXdevListMndx =
++    unsafe extern "system" fn(xdev_list: XrXDevListMNDX) -> xr::sys::Result;
++
++pub type XrCreateXdevSpaceMndx = unsafe extern "system" fn(
++    session: xr::sys::Session,
++    create_info: *const XrCreateXDevSpaceInfoMNDX,
++    space: *mut xr::sys::Space,
++) -> xr::sys::Result;
++
++#[derive(Debug, Copy, Clone)]
++pub(super) struct XdevSpaceExtension {
++    create_xdev_list_fn: Option<XrCreateXdevListMndx>,
++    get_xdev_list_generation_number_fn: Option<XrGetXdevListGenerationNumberMndx>,
++    enumerate_xdevs_fn: Option<XrEnumerateXdevsMndx>,
++    get_xdev_properties_fn: Option<XrGetXdevPropertiesMndx>,
++    destroy_xdev_list_fn: Option<XrDestroyXdevListMndx>,
++    create_xdev_space_fn: Option<XrCreateXdevSpaceMndx>,
++}
++
++macro_rules! xr_bind {
++    ($instance:expr, $name:expr, $function:expr) => {
++        let res = xr::sys::get_instance_proc_addr(
++            $instance,
++            std::ffi::CStr::from_bytes_until_nul($name)
++                .unwrap()
++                .as_ptr(),
++            std::mem::transmute(std::ptr::addr_of_mut!($function)),
++        );
++        if res != xr::sys::Result::SUCCESS {
++            return Err(res);
++        }
++    };
++}
++
++macro_rules! xr_call {
++    ($function:expr, $($args:expr),*) => {
++        if $function.is_none() {
++            return Err(xr::sys::Result::ERROR_EXTENSION_NOT_PRESENT);
++        }
++
++        let res = unsafe { $function.unwrap()($($args),*) };
++
++        if res != xr::sys::Result::SUCCESS {
++            return Err(res);
++        }
++
++        return Ok(());
++    };
++}
++
++impl XdevSpaceExtension {
++    pub fn new(instance: xr::sys::Instance) -> xr::Result<Self> {
++        unsafe {
++            let mut s = Self {
++                create_xdev_list_fn: None,
++                get_xdev_list_generation_number_fn: None,
++                enumerate_xdevs_fn: None,
++                get_xdev_properties_fn: None,
++                destroy_xdev_list_fn: None,
++                create_xdev_space_fn: None,
++            };
++
++            xr_bind!(instance, b"xrCreateXDevListMNDX\0", s.create_xdev_list_fn);
++
++            xr_bind!(
++                instance,
++                b"xrGetXDevListGenerationNumberMNDX\0",
++                s.get_xdev_list_generation_number_fn
++            );
++
++            xr_bind!(instance, b"xrEnumerateXDevsMNDX\0", s.enumerate_xdevs_fn);
++
++            xr_bind!(
++                instance,
++                b"xrGetXDevPropertiesMNDX\0",
++                s.get_xdev_properties_fn
++            );
++
++            xr_bind!(instance, b"xrDestroyXDevListMNDX\0", s.destroy_xdev_list_fn);
++
++            xr_bind!(instance, b"xrCreateXDevSpaceMNDX\0", s.create_xdev_space_fn);
++
++            Ok(s)
++        }
++    }
++
++    pub fn create_xdev_list(
++        &self,
++        session: xr::sys::Session,
++        create_info: *const XrCreateXDevListInfoMNDX,
++        xdev_list: &mut XrXDevListMNDX,
++    ) -> xr::Result<()> {
++        xr_call!(self.create_xdev_list_fn, session, create_info, xdev_list);
++    }
++
++    pub fn enumerate_xdevs(
++        &self,
++        xdev_list: XrXDevListMNDX,
++        count_input: u32,
++        count_output: *mut u32,
++        xdevs: *mut XrXDevIdMNDX,
++    ) -> xr::Result<()> {
++        xr_call!(
++            self.enumerate_xdevs_fn,
++            xdev_list,
++            count_input,
++            count_output,
++            xdevs
++        );
++    }
++
++    pub fn get_xdev_properties(
++        &self,
++        xdev_list: XrXDevListMNDX,
++        info: *const XrGetXDevInfoMNDX,
++        properties: *mut XrXDevPropertiesMNDX,
++    ) -> xr::Result<()> {
++        xr_call!(self.get_xdev_properties_fn, xdev_list, info, properties);
++    }
++
++    pub fn destroy_xdev_list(&self, xdev_list: XrXDevListMNDX) -> xr::Result<()> {
++        xr_call!(self.destroy_xdev_list_fn, xdev_list);
++    }
++
++    pub fn create_xdev_space(
++        &self,
++        session: xr::sys::Session,
++        create_info: *const XrCreateXDevSpaceInfoMNDX,
++        space: *mut xr::sys::Space,
++    ) -> xr::Result<()> {
++        xr_call!(self.create_xdev_space_fn, session, create_info, space);
++    }
++}
+diff --git a/src/system.rs b/src/system.rs
+index 647652f..e083b68 100644
+--- a/src/system.rs
++++ b/src/system.rs
+@@ -1,6 +1,6 @@
+ use crate::{
+     clientcore::{Injected, Injector},
+-    input::Input,
++    input::{devices::TrackedDeviceType, Input},
+     openxr_data::{Hand, RealOpenXrData, SessionData},
+     tracy_span,
+ };
+@@ -9,16 +9,7 @@ use log::{debug, trace, warn};
+ use openvr as vr;
+ use openxr as xr;
+ use std::ffi::CStr;
+-use std::sync::{
+-    atomic::{AtomicBool, Ordering},
+-    Arc, Mutex,
+-};
+-
+-#[derive(Default)]
+-struct ConnectedHands {
+-    left: AtomicBool,
+-    right: AtomicBool,
+-}
++use std::sync::{Arc, Mutex};
+ 
+ #[derive(Copy, Clone)]
+ pub struct ViewData {
+@@ -74,7 +65,6 @@ pub struct System {
+     openxr: Arc<RealOpenXrData>, // We don't need to test session restarting.
+     input: Injected<Input<crate::compositor::Compositor>>,
+     vtables: Vtables,
+-    last_connected_hands: ConnectedHands,
+     views: Mutex<ViewCache>,
+ }
+ 
+@@ -88,7 +78,6 @@ impl System {
+             openxr,
+             input: injector.inject(),
+             vtables: Default::default(),
+-            last_connected_hands: Default::default(),
+             views: Mutex::default(),
+         }
+     }
+@@ -258,13 +247,21 @@ impl vr::IVRSystem022_Interface for System {
+         state_size: u32,
+         pose: *mut vr::TrackedDevicePose_t,
+     ) -> bool {
++        let Some(input) = self.input.get() else {
++            return false;
++        };
++
++        let Some(hand) = input.device_index_to_hand(device_index) else {
++            return false;
++        };
++
+         if self.GetControllerState(device_index, state, state_size) {
+             unsafe {
+                 *pose.as_mut().unwrap() = self
+                     .input
+                     .get()
+                     .unwrap()
+-                    .get_controller_pose(Hand::try_from(device_index).unwrap(), Some(origin))
++                    .get_controller_pose(hand, Some(origin))
+                     .unwrap_or_default();
+             }
+             true
+@@ -357,66 +354,18 @@ impl vr::IVRSystem022_Interface for System {
+         size: u32,
+         pose: *mut vr::TrackedDevicePose_t,
+     ) -> bool {
+-        for (current, prev, hand) in [
+-            (
+-                self.openxr.left_hand.connected(),
+-                &self.last_connected_hands.left,
+-                Hand::Left,
+-            ),
+-            (
+-                self.openxr.right_hand.connected(),
+-                &self.last_connected_hands.right,
+-                Hand::Right,
+-            ),
+-        ] {
+-            if prev
+-                .compare_exchange(!current, current, Ordering::Relaxed, Ordering::Relaxed)
+-                .is_ok()
+-            {
+-                debug!(
+-                    "sending {hand:?} {}connected",
+-                    if current { "" } else { "not " }
+-                );
+-
+-                // Since the VREvent_t struct can be a variable size, it seems a little dangerous to
+-                // create a reference to it, so we'll just operate through pointers.
+-                // The eventType, trackedDeviceIndex, and eventAgeSeconds fields have always existed.
+-                unsafe {
+-                    (&raw mut (*event).eventType).write(if current {
+-                        vr::EVREventType::TrackedDeviceActivated as u32
+-                    } else {
+-                        vr::EVREventType::TrackedDeviceDeactivated as u32
+-                    });
+-
+-                    (&raw mut (*event).trackedDeviceIndex).write(hand as u32);
+-                    (&raw mut (*event).eventAgeSeconds).write(0.0);
+-                    if !pose.is_null() {
+-                        pose.write(
+-                            self.input
+-                                .force(|_| Input::new(self.openxr.clone()))
+-                                .get_controller_pose(hand, Some(origin))
+-                                .unwrap_or_default(),
+-                        );
+-                    }
+-                }
+-                return true;
+-            }
+-        }
++        let Some(input) = self.input.get() else {
++            return false;
++        };
+ 
+-        self.input.get().is_some_and(|input| {
+-            let got_event = input.get_next_event(size, event);
+-            if got_event && !pose.is_null() {
+-                unsafe {
+-                    let index = (&raw const (*event).trackedDeviceIndex).read();
+-                    pose.write(
+-                        input
+-                            .get_controller_pose(Hand::try_from(index).unwrap(), None)
+-                            .unwrap(),
+-                    );
+-                }
++        let got_event = input.get_next_event(size, event);
++        if got_event && !pose.is_null() {
++            unsafe {
++                let index = (&raw const (*event).trackedDeviceIndex).read();
++                pose.write(input.get_device_pose(index, Some(origin)).unwrap());
+             }
+-            got_event
+-        })
++        }
++        got_event
+     }
+ 
+     fn PollNextEvent(&self, event: *mut vr::VREvent_t, size: u32) -> bool {
+@@ -451,6 +400,13 @@ impl vr::IVRSystem022_Interface for System {
+             return 0;
+         }
+ 
++        let Some(input) = self.input.get() else {
++            if let Some(error) = unsafe { error.as_mut() } {
++                *error = vr::ETrackedPropertyError::InvalidDevice;
++            }
++            return 0;
++        };
++
+         if let Some(error) = unsafe { error.as_mut() } {
+             *error = vr::ETrackedPropertyError::Success;
+         }
+@@ -461,21 +417,7 @@ impl vr::IVRSystem022_Interface for System {
+             &mut []
+         };
+ 
+-        let data = match device_index {
+-            vr::k_unTrackedDeviceIndex_Hmd => match prop {
+-                // The Unity OpenVR sample appears to have a hard requirement on these first three properties returning
+-                // something to even get the game to recognize the HMD's location. However, the value
+-                // itself doesn't appear to be that important.
+-                vr::ETrackedDeviceProperty::SerialNumber_String
+-                | vr::ETrackedDeviceProperty::ManufacturerName_String
+-                | vr::ETrackedDeviceProperty::ControllerType_String => Some(c"<unknown>"),
+-                _ => None,
+-            },
+-            x if Hand::try_from(x).is_ok() => self.input.get().and_then(|i| {
+-                i.get_controller_string_tracked_property(Hand::try_from(x).unwrap(), prop)
+-            }),
+-            _ => None,
+-        };
++        let data = input.get_device_string_property(device_index, prop);
+ 
+         let Some(data) = data else {
+             if let Some(error) = unsafe { error.as_mut() } {
+@@ -527,13 +469,23 @@ impl vr::IVRSystem022_Interface for System {
+                 *err = vr::ETrackedPropertyError::InvalidDevice;
+             }
+         }
++
++        let Some(input) = self.input.get() else {
++            if let Some(err) = unsafe { err.as_mut() } {
++                *err = vr::ETrackedPropertyError::InvalidDevice;
++            }
++            return 0;
++        };
++
+         if let Some(err) = unsafe { err.as_mut() } {
+-            *err = vr::ETrackedPropertyError::UnknownProperty;
++            *err = vr::ETrackedPropertyError::Success;
+         }
+-
+         match device_index {
+-            x if Hand::try_from(x).is_ok() => self.input.get().and_then(|input| {
+-                input.get_controller_uint_tracked_property(Hand::try_from(x).unwrap(), prop)
++            x if input.device_index_to_hand(x).is_some() => self.input.get().and_then(|input| {
++                input.get_controller_uint_tracked_property(
++                    input.device_index_to_hand(x).unwrap(),
++                    prop,
++                )
+             }),
+             _ => None,
+         }
+@@ -557,12 +509,22 @@ impl vr::IVRSystem022_Interface for System {
+             }
+         }
+ 
++        let Some(input) = self.input.get() else {
++            if let Some(err) = unsafe { err.as_mut() } {
++                *err = vr::ETrackedPropertyError::InvalidDevice;
++            }
++            return 0;
++        };
++
+         if let Some(err) = unsafe { err.as_mut() } {
+             *err = vr::ETrackedPropertyError::Success;
+         }
+         match device_index {
+-            x if Hand::try_from(x).is_ok() => self.input.get().and_then(|input| {
+-                input.get_controller_int_tracked_property(Hand::try_from(x).unwrap(), prop)
++            x if input.device_index_to_hand(x).is_some() => self.input.get().and_then(|input| {
++                input.get_controller_int_tracked_property(
++                    input.device_index_to_hand(x).unwrap(),
++                    prop,
++                )
+             }),
+             _ => None,
+         }
+@@ -615,62 +577,52 @@ impl vr::IVRSystem022_Interface for System {
+     }
+ 
+     fn IsTrackedDeviceConnected(&self, device_index: vr::TrackedDeviceIndex_t) -> bool {
+-        match device_index {
+-            vr::k_unTrackedDeviceIndex_Hmd => true,
+-            x if Hand::try_from(x).is_ok() => match Hand::try_from(x).unwrap() {
+-                Hand::Left => self.openxr.left_hand.connected(),
+-                Hand::Right => self.openxr.right_hand.connected(),
+-            },
+-            _ => false,
+-        }
++        self.input
++            .get()
++            .is_some_and(|input| input.is_device_connected(device_index))
+     }
+ 
+     fn GetTrackedDeviceClass(&self, index: vr::TrackedDeviceIndex_t) -> vr::ETrackedDeviceClass {
+-        match index {
+-            vr::k_unTrackedDeviceIndex_Hmd => vr::ETrackedDeviceClass::HMD,
+-            x if Hand::try_from(x).is_ok() => {
+-                if self.IsTrackedDeviceConnected(x) {
+-                    vr::ETrackedDeviceClass::Controller
+-                } else {
+-                    vr::ETrackedDeviceClass::Invalid
++        self.input
++            .get()
++            .and_then(|input| match input.device_index_to_device_type(index) {
++                Some(TrackedDeviceType::Hmd) => Some(vr::ETrackedDeviceClass::HMD),
++                Some(TrackedDeviceType::Controller { .. }) => {
++                    Some(vr::ETrackedDeviceClass::Controller)
+                 }
+-            }
+-            _ => vr::ETrackedDeviceClass::Invalid,
+-        }
++                Some(TrackedDeviceType::GenericTracker) => {
++                    Some(vr::ETrackedDeviceClass::GenericTracker)
++                }
++                _ => None,
++            })
++            .unwrap_or(vr::ETrackedDeviceClass::Invalid)
+     }
++
+     fn GetControllerRoleForTrackedDeviceIndex(
+         &self,
+         index: vr::TrackedDeviceIndex_t,
+     ) -> vr::ETrackedControllerRole {
+-        match index {
+-            x if Hand::try_from(x).is_ok() => match Hand::try_from(x).unwrap() {
+-                Hand::Left => vr::ETrackedControllerRole::LeftHand,
+-                Hand::Right => vr::ETrackedControllerRole::RightHand,
+-            },
+-            _ => vr::ETrackedControllerRole::Invalid,
+-        }
++        let Some(input) = self.input.get() else {
++            return vr::ETrackedControllerRole::Invalid;
++        };
++        input
++            .device_index_to_hand(index)
++            .map_or(vr::ETrackedControllerRole::Invalid, |hand| hand.into())
+     }
++
+     fn GetTrackedDeviceIndexForControllerRole(
+         &self,
+         role: vr::ETrackedControllerRole,
+     ) -> vr::TrackedDeviceIndex_t {
+-        match role {
+-            vr::ETrackedControllerRole::LeftHand => {
+-                if self.openxr.left_hand.connected() {
+-                    Hand::Left as u32
+-                } else {
+-                    vr::k_unTrackedDeviceIndexInvalid
+-                }
+-            }
+-            vr::ETrackedControllerRole::RightHand => {
+-                if self.openxr.right_hand.connected() {
+-                    Hand::Right as u32
+-                } else {
+-                    vr::k_unTrackedDeviceIndexInvalid
+-                }
+-            }
+-            _ => vr::k_unTrackedDeviceIndexInvalid,
+-        }
++        let Some(input) = self.input.get() else {
++            return vr::k_unTrackedDeviceIndexInvalid;
++        };
++
++        Hand::try_from(role).map_or(vr::k_unTrackedDeviceIndexInvalid, |hand| {
++            input
++                .get_controller_device_index(hand)
++                .unwrap_or(vr::k_unTrackedDeviceIndexInvalid)
++        })
+     }
+     fn ApplyTransform(
+         &self,
+@@ -684,9 +636,13 @@ impl vr::IVRSystem022_Interface for System {
+         &self,
+         device_index: vr::TrackedDeviceIndex_t,
+     ) -> vr::EDeviceActivityLevel {
++        let Some(input) = self.input.get() else {
++            return vr::EDeviceActivityLevel::Unknown;
++        };
++
+         match device_index {
+             vr::k_unTrackedDeviceIndex_Hmd => vr::EDeviceActivityLevel::UserInteraction,
+-            x if Hand::try_from(x).is_ok() => {
++            x if input.device_index_to_device_type(x).is_some() => {
+                 if self.IsTrackedDeviceConnected(x) {
+                     vr::EDeviceActivityLevel::UserInteraction
+                 } else {
+@@ -819,16 +775,19 @@ impl vr::IVRSystem014On015 for System {
+ #[cfg(test)]
+ mod tests {
+     use super::*;
+-    use crate::clientcore::Injector;
++    use crate::{clientcore::Injector, openxr_data::OpenXrData};
+     use std::ffi::CStr;
+     use vr::IVRSystem022_Interface;
+ 
+     #[test]
+     fn unity_required_properties() {
+-        let xr = Arc::new(RealOpenXrData::new(&Injector::default()).unwrap());
++        let xr = Arc::new(OpenXrData::new(&Injector::default()).unwrap());
+         let injector = Injector::default();
++        let input = Arc::new(Input::new(xr.clone()));
+         let system = System::new(xr, &injector);
+ 
++        system.input.set(Arc::downgrade(&input));
++
+         let test_prop = |property| {
+             let mut err = vr::ETrackedPropertyError::Success;
+             let len = system.GetStringTrackedDeviceProperty(

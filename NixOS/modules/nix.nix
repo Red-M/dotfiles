@@ -2,6 +2,17 @@
 { config, lib, pkgs, nixalt, unstable, outoftree, inputs, ... }:
 
 {
+
+  nixpkgs.overlays = [(final: prev: {
+    python3Optimized.pkgs = lib.trivial.mergeAttrs prev.python3Optimized.pkgs {
+      watchdog = prev.python3Optimized.pkgs.watchdog.override rec {
+        disabledTestPaths = [
+          "tests/test_inotify_c.py"
+        ] ++ prev.python3Optimized.pkgs.watchdog.disabledTestPaths;
+      };
+    };
+  })];
+
   # Allow unfree packages
   nixpkgs.config = {
     allowUnfree = true;

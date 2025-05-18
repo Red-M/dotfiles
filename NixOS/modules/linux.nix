@@ -17,6 +17,8 @@
         libsodium
         libssh
         libxml2
+        libGLU
+        libGL
         openssl
         stdenv.cc.cc
         systemd
@@ -84,8 +86,16 @@
 
     dbus
 
-    python3Optimized
+    # python3Optimized
   ];
+
+  console = {
+    font = "ter-powerline-v24b";
+    packages = [
+      pkgs.terminus_font
+      pkgs.powerline-fonts
+    ];
+  };
 
 }
 

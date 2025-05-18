@@ -177,6 +177,7 @@ AnimationDurationFactor=0.000000
 ColorScheme=Breeze
 DoubleClickInterval=400
 LookAndFeelPackage=org.kde.breezedark.desktop
+ShowDeleteCommand=false
 ShowIconsInMenuItems=true
 ShowIconsOnPushButtons=true
 SingleClick=true
@@ -189,7 +190,7 @@ widgetStyle=Breeze
 [KFileDialog Settings]
 Allow Expansion=false
 Automatically select filename extension=true
-Breadcrumb Navigation=true
+Breadcrumb Navigation=false
 Decoration position=2
 LocationCombo Completionmode=5
 PathCombo Completionmode=5
@@ -216,6 +217,10 @@ Size=22
 
 [PanelIcons]
 Size=32
+
+[PreviewSettings]
+EnableRemoteFolderThumbnail=false
+MaximumRemoteSize=0
 
 [Shortcuts]
 AboutApp=

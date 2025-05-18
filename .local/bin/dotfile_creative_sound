@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 soundcard="Sound BlasterX G6"
-gain=2
+gain=3
 
 cardNumbers=$(aplay -l | grep "${soundcard}" | sed -E 's#^card ([0-9]+).*#\1#g')
 for cardNumber in ${cardNumbers}; do

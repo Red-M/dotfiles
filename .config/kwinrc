@@ -1,6 +1,9 @@
 [$Version]
 update_info=kwin.upd:replace-scalein-with-scale,kwin.upd:port-minimizeanimation-effect-to-js,kwin.upd:port-scale-effect-to-js,kwin.upd:port-dimscreen-effect-to-js,kwin.upd:auto-bordersize,kwin.upd:animation-speed,kwin.upd:desktop-grid-click-behavior,kwin.upd:no-swap-encourage,kwin.upd:make-translucency-effect-disabled-by-default,kwin.upd:remove-flip-switch-effect,kwin.upd:remove-cover-switch-effect,kwin.upd:remove-cubeslide-effect,kwin.upd:remove-xrender-backend,kwin.upd:enable-scale-effect-by-default,kwin.upd:overview-group-plugin-id,kwin.upd:animation-speed-cleanup,kwin.upd:replace-cascaded-zerocornered
 
+[Activities][LastVirtualDesktop]
+f16962fe-8fb8-459d-ac55-8ee109611d5f=64c3f3ac-fa9c-4dbf-9d4d-be4d6ed03351
+
 [Compositing]
 Enabled=true
 GLColorCorrection=false
@@ -92,7 +95,7 @@ DesktopLayout=org.kde.breeze.desktop
 DesktopListLayout=org.kde.breeze.desktop
 DesktopMode=0
 HighlightWindows=true
-LayoutName=org.kde.breeze.desktop
+LayoutName=compact
 MinimizedMode=0
 MultiScreenMode=0
 ShowDesktopMode=0
@@ -115,6 +118,9 @@ SwitchingMode=0
 padding=4
 
 [Tiling][0b28d414-c861-58e3-bdfd-cbe4ffb3eba9]
+tiles={"layoutDirection":"horizontal","tiles":[{"width":0.25},{"width":0.5},{"width":0.25}]}
+
+[Tiling][0e83ef5c-9507-5a89-9792-c6a09b66e342]
 tiles={"layoutDirection":"horizontal","tiles":[{"width":0.25},{"width":0.5},{"width":0.25}]}
 
 [Tiling][20bfce99-aeb5-5dbd-b439-f2f33639411c]
@@ -151,6 +157,9 @@ tiles={"layoutDirection":"horizontal","tiles":[{"width":0.25},{"width":0.5},{"wi
 tiles={"layoutDirection":"horizontal","tiles":[{"width":0.25},{"width":0.5},{"width":0.25}]}
 
 [Tiling][767dc43c-ce0e-5ad2-a352-15a3fc7d810c]
+tiles={"layoutDirection":"horizontal","tiles":[{"width":0.25},{"width":0.5},{"width":0.25}]}
+
+[Tiling][81fee03e-db9e-5058-bfbf-cbcd229da794]
 tiles={"layoutDirection":"horizontal","tiles":[{"width":0.25},{"width":0.5},{"width":0.25}]}
 
 [Tiling][867458d5-5ae7-5a0a-8da6-1a54d255864a]

@@ -14,7 +14,7 @@
         obs-studio-plugins.obs-teleport
         obs-studio-plugins.obs-source-clone
         obs-studio-plugins.obs-shaderfilter
-        obs-studio-plugins.looking-glass-obs
+        # obs-studio-plugins.looking-glass-obs
         obs-studio-plugins.obs-pipewire-audio-capture
         obs-studio-plugins.wlrobs
       ]; }) # obs-studio and plugins

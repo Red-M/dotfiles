@@ -3,19 +3,21 @@
 
 {
   # Enable sound with pipewire.
-  hardware.pulseaudio.enable = false;
-  # services.pulseaudio.enable = false;
+  # hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-    # If you want to use JACK applications, uncomment this
-    jack.enable = true;
+  services = {
+    pipewire = {
+      enable = true;
+      alsa.enable = true;
+      alsa.support32Bit = true;
+      pulse.enable = true;
+      # If you want to use JACK applications, uncomment this
+      jack.enable = true;
 
-    # This allows automatic noise reduction from microphones
-    extraLv2Packages = [ pkgs.lsp-plugins ];
+      # This allows automatic noise reduction from microphones
+      extraLv2Packages = [ pkgs.lsp-plugins ];
+    };
+    pulseaudio.enable = false;
   };
 
   # sound.mediaKeys.enable = true;
@@ -102,7 +104,7 @@
           };
         }{
           "name" = "libpipewire-module-loopback";
-            "flags" = [ "ifexists" "nofail" ];
+          "flags" = [ "ifexists" "nofail" ];
           "args" = {
             "node.name" = "loopback_group_voice";
             "node.description" = "Voice";
@@ -191,15 +193,15 @@
               "plugin" = "${pkgs.rnnoise-plugin}/lib/ladspa/librnnoise_ladspa.so";
               "label" = "noise_suppressor_mono";
               "control" = {
-                "VAD Threshold (%)" = 70.0;
-                "VAD Grace Period (ms)" = 80;
-                "Retroactive VAD Grace (ms)" = 50;
+                "VAD Threshold (%)" = 35.0;
+                "VAD Grace Period (ms)" = 500;
+                "Retroactive VAD Grace (ms)" = 30;
               };
             }];
           };
           "capture.props" = {
             # "node.name" = "capture.rnnoise_source";
-            # "node.passive" = true;
+            "node.passive" = true;
             "audio.rate" = 48000;
             "node.name" = "noise_cancel.cancel";
             "node.description" = "Noise Cancel Capture";
@@ -225,10 +227,10 @@
           "node.description" = "Auto Gain Source";
           "media.name" = "Auto Gain Source";
           "aec.args" = {
-            "webrtc.high_pass_filter" = false;
+            "webrtc.high_pass_filter" = true;
             "webrtc.noise_suppression" = true;
             "webrtc.voice_detection" = false;
-            "webrtc.extended_filter" = false;
+            "webrtc.extended_filter" = true;
             "webrtc.delay_agnostic" = false;
             "webrtc.gain_control" = true;
             "webrtc.experimental_agc" = true;
@@ -239,7 +241,8 @@
             # "node.name" = "capture.rnnoise_source";
             # "node.passive" = true;
             "node.name" = "auto_gain.auto_gain";
-            "target.object" = "noise_cancel.playback";
+            # "target.object" = "noise_cancel.playback";
+            "target.object" = "echo_cancel.echoless";
             "node.description" = "Auto Gain Capture";
             # "node.autoconnect" = false;
           };

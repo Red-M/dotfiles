@@ -7,8 +7,8 @@
   };
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
-    nixpkgs-alt.url = "github:NixOS/nixpkgs/nixos-24.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs-alt.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-xr.url = "github:nix-community/nixpkgs-xr";
 
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -19,7 +19,7 @@
     };
 
     home-manager = {
-      url = "github:nix-community/home-manager/release-24.11";
+      url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 

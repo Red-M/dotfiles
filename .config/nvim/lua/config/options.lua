@@ -39,7 +39,7 @@ vim.opt.fixendofline = true
 vim.opt.fixeol = true
 vim.opt.eol = true
 
-vim.opt.clipboard = ""
+vim.opt.clipboard = nil
 vim.opt.conceallevel = 0
 
 -- LazyVim

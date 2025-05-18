@@ -20,6 +20,9 @@ wallpaperplugin=org.kde.image
 DialogHeight=540
 DialogWidth=720
 
+[Containments][101][General]
+positions={"640x480":[]}
+
 [Containments][101][Wallpaper][org.kde.image][General]
 Color=0,0,0
 FillMode=1
@@ -199,6 +202,7 @@ DialogWidth=720
 ToolBoxButtonState=topcenter
 ToolBoxButtonX=716
 ToolBoxButtonY=40
+positions={"2560x1440":[]}
 
 [Containments][102][Wallpaper][org.kde.image][General]
 Color=0,0,0
@@ -221,6 +225,9 @@ wallpaperplugin=org.kde.image
 [Containments][103][ConfigDialog]
 DialogHeight=540
 DialogWidth=720
+
+[Containments][103][General]
+positions={"2560x1440":[]}
 
 [Containments][103][Wallpaper][org.kde.image][General]
 Color=0,0,0
@@ -398,14 +405,14 @@ immutability=1
 plugin=org.kde.plasma.battery
 
 [Containments][33][Applets][46][Configuration]
-PreloadWeight=5
+PreloadWeight=0
 
 [Containments][33][Applets][47]
 immutability=1
 plugin=org.kde.plasma.networkmanagement
 
 [Containments][33][Applets][47][Configuration]
-PreloadWeight=100
+PreloadWeight=51
 
 [Containments][33][Applets][48]
 immutability=1
@@ -419,7 +426,7 @@ immutability=1
 plugin=org.kde.plasma.mediacontroller
 
 [Containments][33][Applets][55][Configuration]
-PreloadWeight=5
+PreloadWeight=0
 
 [Containments][33][Applets][88]
 immutability=1
@@ -433,7 +440,7 @@ immutability=1
 plugin=org.kde.plasma.brightness
 
 [Containments][33][Applets][94][Configuration]
-PreloadWeight=1
+PreloadWeight=0
 
 [Containments][33][ConfigDialog]
 DialogHeight=540

@@ -2,6 +2,10 @@
 { config, lib, pkgs, nixalt, unstable, outoftree, inputs, ... }:
 
 {
+  # nixpkgs.overlays = [(final: prev: {
+  #   mesa = unstable.mesa;
+  # })];
+
   hardware = {
     amdgpu = {
       initrd.enable = true;

@@ -56,7 +56,7 @@
     qdirstat
     gparted
     ntfs3g
-    ventoy-full
+    # ventoy-full # upstream marked as insecure
     xwayland
     libsForQt5.qt5.qtwayland
     mono

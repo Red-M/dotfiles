@@ -34,7 +34,7 @@
     ];
     libpurple_plugins = with pkgs; [
       pidginPackages.purple-matrix
-      pidginPackages.purple-signald
+      # pidginPackages.purple-signald
     ];
   };
 

@@ -20,14 +20,24 @@
       ] ++ outoftree.pkgs.${pkgs.system}.wlx-overlay-s.nativeBuildInputs;
     };
     xrizer-patched = final.xrizer.overrideAttrs rec {
+      src = pkgs.fetchgit {
+        url = "https://github.com/Supreeeme/xrizer.git";
+        rev = "acbcd1c0ee85ec94025ec3c6b07d372b2d34961c";
+        fetchSubmodules = false;
+        deepClone = false;
+        leaveDotGit = false;
+        sparseCheckout = [ ];
+        sha256 = "sha256-IT35x+LV+G7cegMUjIrHocp1jSopRe2CYSGLzlbWx4o=";
+      };
       nativeBuildInputs = with pkgs; [
         inputs.fenix.packages.${pkgs.system}.default.toolchain
       ] ++ final.xrizer.nativeBuildInputs;
       patches = [
         # ./patching/patches/xrizer/68.patch
-        ./patching/patches/xrizer/69.patch
-        ./patching/patches/xrizer/82.patch
-        # ./patching/patches/xrizer/rin_xdevs.patch
+        # ./patching/patches/xrizer/69.patch
+        # ./patching/patches/xrizer/82.patch
+        # ./patching/patches/xrizer/funny_serial_numbers.patch
+        ./patching/patches/xrizer/rin_experimental2_funny_serials.patch
       ] ++ outoftree.pkgs.${pkgs.system}.xrizer.patches;
       doCheck = false;
     };
@@ -46,8 +56,8 @@
   users.users.redm = {
     packages = with pkgs; [
       # opencomposite
-      # xrizer-patched
-      xrizer-patched2
+      xrizer-patched
+      # xrizer-patched2
       # outoftree.pkgs.${pkgs.system}.xrizer
       motoc
       index_camera_passthrough

@@ -7,6 +7,7 @@
   pkg-config,
   SDL2,
   imgui,
+  xorg,
 }:
 
 stdenv.mkDerivation rec {
@@ -30,12 +31,14 @@ stdenv.mkDerivation rec {
     cmake
     makeWrapper
     pkg-config
+    xorg.libX11.dev
+    xorg.libXft
   ];
 
   installPhase = ''
     runHook preInstall
     cp -r ./XR_APILAYER_NOVENDOR_xr_binder $out/
     runHook postInstall
-  '';
+    '';
 
 }
