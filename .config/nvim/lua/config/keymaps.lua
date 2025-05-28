@@ -94,15 +94,15 @@ local config_keymap = {
   {"v", [[<leader>FB]], [[c<c-r>=system("base64 -d", @")<cr>]], {desc = "Base64 decode"}},
 
   -- Neotree
-  {"n", [[\]], "<cmd>Neotree reveal<cr>", {desc = "Neotree reveal",}},
-  {{"i","n"}, [[<C-\>]], "<cmd>Neotree reveal<cr>", {desc = "Neotree reveal",}},
+  -- {"n", [[\]], "<cmd>Neotree reveal<cr>", {desc = "Neotree reveal",}},
+  -- {{"i","n"}, [[<C-\>]], "<cmd>Neotree reveal<cr>", {desc = "Neotree reveal",}},
 
   -- Guess Indent
   {"n", [[<leader>Gi]], "<cmd>GuessIndent<cr>", {desc = "Guess Indent",}},
   {"n", [[<leader>Ga]], "<cmd>IndentAuto<cr>", {desc = "Guess Indent and then reindent entire file",}},
 
   -- Buffer manager UI
-  {"n", [[,]], [[<cmd>lua require("buffer_manager.ui").toggle_quick_menu()<cr>]], {desc='Toggle buffer manager UI'}},
+  -- {"n", [[,]], [[<cmd>lua require("buffer_manager.ui").toggle_quick_menu()<cr>]], {desc='Toggle buffer manager UI'}},
 
   -- Img-clip
   {"n", [[<leader>P]], [[<cmd>lua require("img-clip").pasteImage({ embed_image_as_base64 = true })<cr>]], {desc="Paste image in clipboard as base64"},},

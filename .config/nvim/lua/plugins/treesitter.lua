@@ -1,6 +1,8 @@
 return {
 {
   "nvim-treesitter/nvim-treesitter",
+  -- branch = "main",
+  branch = "master", -- a rewrite is happening, check the main branch if this disappears
   lazy = false,
   --priority = 500,
   build = ":TSUpdate",

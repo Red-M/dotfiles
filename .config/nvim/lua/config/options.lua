@@ -100,6 +100,7 @@ local utils_ft = {
   ["misc"] = {
     "qf",
     "alpha",
+    "buffer_manager",
     "dashboard",
     "DressingInput",
     'help',
@@ -107,6 +108,7 @@ local utils_ft = {
     "mason",
     'neo-tree',
     "noice",
+    'NvimTree',
     "prompt",
     'TelescopePrompt',
     'Trouble',

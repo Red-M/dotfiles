@@ -26,6 +26,15 @@ return {
         },
         plugins = {
           indent_blankline = { context_highlight = "pro" },
+          scrollbar = { context_highlight = "pro" },
+          notify = { context_highlight = "pro" },
+          lazy = { context_highlight = "pro" },
+          gitsign = { context_highlight = "pro" },
+          mini = { context_highlight = "pro" },
+          bufferline = { context_highlight = "pro" },
+          noice = { context_highlight = "pro" },
+          ['nvim-tree'] = { context_highlight = "pro" },
+          ['which-key'] = { context_highlight = "pro" },
         },
         overridePalette = function(name)
           return {
@@ -349,8 +358,8 @@ return {
             NeoTreeTabActive = { bold = false },
             NoiceFormatProgressDone = { bold = false },
             NoiceFormatProgressTodo = { bold = false },
-            NvimTreeOpenedFolderName = { bold = false },
-            NvimTreeEmptyFolderName = { bold = false },
+            NvimTreeOpenedFolderName = { italic = false },
+            NvimTreeEmptyFolderName = { italic = false },
             NvimTreeRootFolder = { bold = false },
             RenamerTitle = { bold = false },
             TelescopeSelection = { bold = false },

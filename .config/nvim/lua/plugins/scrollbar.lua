@@ -1,5 +1,6 @@
 return {
   "petertriho/nvim-scrollbar",
+  lazy = false,
   event = { "BufReadPost", "BufNewFile" },
   opts = {
     set_highlights = false,
