@@ -42,6 +42,8 @@
 **.log
 **/logs/
 
+.config/wlxoverlay/conf.d/pw_tokens.yaml
+
 .config/fontconfig/conf.d/*-hm-*.conf
 .local/share/nix/repl-history
 NixOS/result

@@ -76,12 +76,12 @@ function _maintain_path() {
       maintain_permissions "${script_target}"
       if [[ -L "${home_target}" && $(readlink -f -- "${home_target}") != "${script_target}" ]]; then
         \rm "${home_target}"
-        echo "Updating symblink: ${home_target}"
+        echo "Updating symlink: ${home_target}"
       fi
       if [ ! -e "${home_target}" ]; then
         # \cp -r "${script_target}" "${home_target}"
         ln -s "${script_target}" "${home_target}"
-        echo "Created symblink: ${target}"
+        echo "Created symlink: ${target}"
       fi
     fi
   done
@@ -148,6 +148,7 @@ maintain_path .local/share/nvim
 maintain_path .config/yamlfmt
 maintain_path .config/alacritty
 maintain_path .config/steamtinkerlaunch
+maintain_path .config/wlxoverlay
 
 maintain_path_optional .ssh
 maintain_path_optional .config/gtk-*/*

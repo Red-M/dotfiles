@@ -40,7 +40,7 @@
 
       argbColors = pkgs.callPackage ./argbColors {};
       coolercontrol = pkgs.callPackage ./coolercontrol {};
-      it87 = pkgs.callPackage ./it87 { kernel = pkgs.linuxKernel.kernels.linux_6_14; };
+      it87 = pkgs.callPackage ./it87 { kernel = pkgs.linuxKernel.kernels.linux_6_15; };
 
       ## VR
       wayvr-dashboard = pkgs.callPackage ./wayvr-dashboard {};

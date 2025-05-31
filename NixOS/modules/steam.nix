@@ -104,7 +104,7 @@
       extraPackages32 = config.hardware.graphics.extraPackages;
     };
 
-    xone.enable = true;
+    # xone.enable = true;
     xpadneo.enable = true;
     steam-hardware.enable = true;
   };

@@ -21,13 +21,15 @@
   #     options amdgpu ppfeaturemask=0xffffffff
   #   '';
   # };
-  programs.corectrl = {
-    enable = true;
-    gpuOverclock = {
+
+  hardware.amdgpu = {
+    overdrive = {
       enable = true;
       ppfeaturemask = "0xffffffff";
     };
   };
+
+  programs.corectrl.enable = true;
 
   users.users.redm = {
     extraGroups = [ "corectrl" ];
