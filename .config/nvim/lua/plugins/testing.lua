@@ -1,12 +1,5 @@
 return {
   {
-    "dariogliendo/project.nvim",
-    config = function()
-      require("project_nvim").setup {
-      }
-    end
-  },
-  {
     'smoka7/hop.nvim',
     version = "*",
     opts = {},
