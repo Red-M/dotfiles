@@ -11,7 +11,7 @@
     ../../modules/nix.nix
     ../../modules/langs/python.nix
 
-    ../../modules/servers/ssh_server.nix
+    ../../modules/ssh_server.nix
     ../../modules/servers/mail_relay_out.nix
   ];
 

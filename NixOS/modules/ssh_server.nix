@@ -2,16 +2,18 @@
 { config, lib, pkgs, nixalt, unstable, outoftree, inputs, ... }:
 
 {
-  # Enable the OpenSSH daemon.
-  services.openssh.enable = true;
   programs.ssh = {
     package = pkgs.openssh_hpn;
     # forwardX11 = true;
     setXAuthLocation = true;
   };
   services.openssh = {
+    enable = true;
     package = pkgs.openssh_hpn;
-    settings.X11Forwarding = true;
+    settings = {
+      X11Forwarding = true;
+      PermitRootLogin = "prohibit-password";
+    };
   };
   security.pam = {
     sshAgentAuth = {

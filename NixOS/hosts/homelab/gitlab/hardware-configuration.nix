@@ -32,11 +32,6 @@
       options = [ "fmask=0077" "dmask=0077" ];
     };
 
-  fileSystems."/root/tmp/gitlab_mnt" =
-    { device = "/dev/disk/by-uuid/4901992c-7395-4d78-83f3-6cc95f940a45";
-      fsType = "ext4";
-    };
-
   swapDevices = [ ];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking

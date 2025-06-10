@@ -16,6 +16,7 @@
   systemd.services = {
   };
 
+  services.gitlab.host = "gitlab.baphomet.moe";
 
   # disko.devices = {
   #   disk.disk1 = {

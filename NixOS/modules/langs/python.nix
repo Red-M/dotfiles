@@ -7,6 +7,15 @@
   ];
 
   users.users.redm = {
+    packages = with pkgs; [
+      python3
+
+      python3.pkgs.pip
+      python3.pkgs.cython
+      python3.pkgs.virtualenvwrapper
+      python3.pkgs.dbus-python
+
+    ];
     # packages = with pkgs; [
     #   python3Optimized
     #

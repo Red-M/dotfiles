@@ -9,7 +9,6 @@
   services = {
     openssh.settings  = {
       PasswordAuthentication = false;
-      PermitRootLogin = "prohibit-password";
     };
     sslh = {
       enable = true;

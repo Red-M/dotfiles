@@ -10,8 +10,8 @@
       databaseCreateLocally = false; # we need to do this ourselves
       databasePasswordFile = "/var/keys/gitlab/db_password";
       initialRootPasswordFile = "/var/keys/gitlab/root_password";
-      https = false;
-      host = "gitlab.bubble-berry";
+      https = true;
+      # host = "gitlab.bubble-berry";
       port = 443;
       user = "git";
       group = "git";
@@ -21,7 +21,7 @@
         address = "mail-relay.red-m.net";
         port = 25;
         authentication = "none";
-        domain = "gitlab.bubble-berry";
+        domain = config.services.gitlab.host;
       };
       secrets = {
         dbFile = "/var/keys/gitlab/db";
@@ -37,12 +37,12 @@
       };
       extraConfig = {
         gitlab = {
-          email_from = "gitlab@gitlab.bubble-berry";
+          email_from = "gitlab@${config.services.gitlab.host}";
           email_display_name = "Personal Gitlab";
-          email_reply_to = "noreply@gitlab.bubble-berry";
+          email_reply_to = "noreply@${config.services.gitlab.host}";
         };
         gitlab_rails = {
-          db_username = "gitlab";
+          db_username = config.services.gitlab.databaseUsername;
         };
       };
     };
@@ -52,11 +52,19 @@
       recommendedGzipSettings = false;
       recommendedOptimisation = true;
       recommendedProxySettings = true;
-      recommendedTlsSettings = false;
+      recommendedTlsSettings = true;
       virtualHosts."${config.services.gitlab.host}" = {
-        enableACME = false;
-        forceSSL = false;
-        locations."/".proxyPass = "http://unix:/run/gitlab/gitlab-workhorse.socket";
+        forceSSL = true;
+        sslCertificate = "/var/www/cert/cert.pem";
+        sslCertificateKey = "/var/www/cert/privkey.pem";
+        sslTrustedCertificate = "/var/www/cert/chain.pem";
+        locations."/" = {
+          proxyPass = "http://unix:/run/gitlab/gitlab-workhorse.socket";
+          extraConfig = ''
+            add_header X-Forwarded-Proto "https";
+            add_header X-Forwarded-Ssl "on";
+          '';
+        };
       };
     };
 
