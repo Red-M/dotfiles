@@ -9,11 +9,7 @@
     ../../servers
   ];
 
-  boot.tmp.cleanOnBoot = true;
-  zramSwap.enable = true;
   networking.hostName = "gir5";
-  networking.domain = "red-m.net";
-  services.openssh.enable = true;
   system.stateVersion = "24.11";
 
 }

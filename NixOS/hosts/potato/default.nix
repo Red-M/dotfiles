@@ -17,7 +17,7 @@
     ../../modules/fonts.nix
     ../../modules/graphical_display.nix
     ../../modules/graphical_display_extras.nix
-    ../../modules/grub.nix
+    ../../modules/grub_uefi.nix
     ../../modules/hm.nix
     ../../modules/keepass.nix
     ../../modules/kernel.nix

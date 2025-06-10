@@ -12,8 +12,8 @@
       relayHost = "mail-relay.red-m.net";
       relayPort = 25;
       destination = [ "" ];
-      origin = "${config.networking.hostName}.red-m.net";
-      hostname = "${config.networking.hostName}.red-m.net";
+      origin = "${config.networking.hostName}.${config.networking.domain}";
+      hostname = "${config.networking.hostName}.${config.networking.domain}";
     };
   };
 

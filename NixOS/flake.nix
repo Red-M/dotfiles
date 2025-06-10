@@ -129,6 +129,14 @@
           ./hosts/servers/gir8
         ];
       };
+
+      gitlab = mkNixOS rec {
+        system = "x86_64-linux";
+        host_modules = [
+          ./hosts/homelab/gitlab
+        ];
+      };
+
     };
 
     packages = forAllSys (system: let

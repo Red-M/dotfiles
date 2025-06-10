@@ -10,7 +10,7 @@
     ../../modules/firmware.nix
     ../../modules/fonts.nix
     ../../modules/graphical_display.nix
-    ../../modules/grub.nix
+    ../../modules/grub_uefi.nix
     ../../modules/hyperv.nix
     ../../modules/kernel.nix
     ../../modules/kvm.nix
