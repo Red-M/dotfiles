@@ -22,6 +22,11 @@
   ];
 
   services = {
+    journald = {
+      extraConfig = ''
+        SystemMaxUse=512M
+      '';
+    };
   };
 
   boot.tmp.cleanOnBoot = true;

@@ -29,6 +29,11 @@
 
   services = {
     openssh.enable = true;
+    journald = {
+      extraConfig = ''
+        SystemMaxUse=512M
+      '';
+    };
   };
 
   boot.tmp.cleanOnBoot = true;

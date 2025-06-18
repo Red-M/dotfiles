@@ -18,8 +18,12 @@ export SCRCPY_SERVER_PATH=~/.local/bin/scrcpy-server
 #export SciTE_USERHOME=~
 #export SciTE_HOME=$(readlink -f ~/.scite || echo ~/.scite)
 
-if [[ -f ~/ssh_keys.sh && (-S /run/user/1000/keyring/ssh || -n $DISPLAY) ]]; then
-  export SSH_AUTH_SOCK=/run/user/1000/keyring/ssh
+if [ -f ~/ssh_keys.sh ]; then
+  if [ -S ${XDG_RUNTIME_DIR}/keyring/ssh ]; then
+    export SSH_AUTH_SOCK=${XDG_RUNTIME_DIR}/keyring/ssh
+  elif [[ -S ${XDG_RUNTIME_DIR}/gcr/ssh || -n ${DISPLAY} ]]; then
+    export SSH_AUTH_SOCK=${XDG_RUNTIME_DIR}/gcr/ssh
+  fi
 fi
 
 if [ -n "$(command -v mise 2>&1 >/dev/null)" ]; then

@@ -22,12 +22,12 @@
     xrizer-patched = final.xrizer.overrideAttrs rec {
       src = pkgs.fetchgit {
         url = "https://github.com/Supreeeme/xrizer.git";
-        rev = "acbcd1c0ee85ec94025ec3c6b07d372b2d34961c";
+        rev = "898d41051d33f9404ea9a9e599f0c1118c82cc54";
         fetchSubmodules = false;
         deepClone = false;
         leaveDotGit = false;
         sparseCheckout = [ ];
-        sha256 = "sha256-IT35x+LV+G7cegMUjIrHocp1jSopRe2CYSGLzlbWx4o=";
+        sha256 = "sha256-quCljMhsx1sy385NgQl6oPuJe44CuyoO3FWcmS005Wk=";
       };
       nativeBuildInputs = with pkgs; [
         inputs.fenix.packages.${pkgs.system}.default.toolchain
@@ -40,6 +40,8 @@
         ./patching/patches/xrizer/rin_experimental2_funny_serials.patch
       ] ++ outoftree.pkgs.${pkgs.system}.xrizer.patches;
       doCheck = false;
+      # target = "i686-unknown-linux-gnu";
+      # target = "x86_64-unknown-linux-gnu";
     };
     xrizer-patched2 = outoftree.pkgs.${pkgs.system}.xrizer.overrideAttrs rec {
       nativeBuildInputs = with pkgs; [
