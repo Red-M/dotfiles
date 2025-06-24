@@ -31,6 +31,9 @@ stdenv.mkDerivation rec {
     "KERNEL_MODULES=${kernel.dev}/lib/modules/${kernel.modDirVersion}"
     "MODDESTDIR=$(out)/lib/modules/${kernel.modDirVersion}/kernel/drivers/hwmon"
   ];
+  patches = [
+    ./58.patch
+  ];
 
   meta = with lib; {
     description = "Patched module for IT87xx superio chip sensors support";

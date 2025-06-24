@@ -2,6 +2,9 @@
 { config, lib, pkgs, nixalt, unstable, outoftree, inputs, ... }:
 
 {
+  imports = [
+    ./patching/linux-firmware.nix
+  ];
   system = {
     modulesTree = lib.mkForce [(
       (pkgs.aggregateModules

@@ -1,0 +1,76 @@
+From 428d0f945efcf5077603927f1039debcc9eb1954 Mon Sep 17 00:00:00 2001
+From: Stephen Fluin <stephen.fluin@gmail.com>
+Date: Tue, 17 Jun 2025 23:29:11 -0500
+Subject: [PATCH] feat: add X870E Aorus Master
+
+---
+ Sensors configs/GA-X870E-AORUS-MASTER.conf | 45 ++++++++++++++++++++++
+ it87.c                                     |  2 +
+ 2 files changed, 47 insertions(+)
+ create mode 100644 Sensors configs/GA-X870E-AORUS-MASTER.conf
+
+diff --git a/Sensors configs/GA-X870E-AORUS-MASTER.conf b/Sensors configs/GA-X870E-AORUS-MASTER.conf
+new file mode 100644
+index 0000000..4bd86e7
+--- /dev/null
++++ b/Sensors configs/GA-X870E-AORUS-MASTER.conf
+@@ -0,0 +1,45 @@
++# Gigabyte X870E AORUS MASTER
++#
++# dmi: Board Manufacturer: Gigabyte Technology Co., Ltd.
++# dmi: Board Product Name: X870E AORUS MASTER
++# dmi: BIOS Version: F7
++#
++# 2025-06-17
++# based on
++# Gigabyte X870 GAMING WIFI6
++# 2022-02-13 Frank Crawford
++#
++#
++
++# ITE IT8696E
++chip "it8696-*"
++
++	label in0 "CPU VCORE"
++	label in1 "+3.3V"
++	compute in1 @*((6.49/10)+1), @/((6.49/10)+1)
++	label in2 "+12V"
++	compute in2 @*((50/10)+1), @/((50/10)+1)
++	label in3 "+5V"
++	compute in3 @*((15/10)+1), @/((15/10)+1)
++	label in4 "CPU VCORE SoC"
++	label in5 "CPU VCORE Misc"
++	label in6 "CPU VDDIO Memory"
++	label in7 "+3VSB"
++	label in8 "CMOS Battery"
++
++
++	label fan1 "CPU_FAN"
++	label fan2 "SYS_FAN1"
++	label fan3 "SYS_FAN2"
++	label fan4 "SYS_FAN3"
++	label fan5 "CPU_OPT"
++	label fan6 "SYS_FAN4"
++
++	label temp1 "System 1"
++	label temp2 "PCH"
++	label temp3 "CPU"
++	label temp4 "PCIEX16"
++	label temp5 "VRM MOS"
++	#label temp6 "External #1" # Will show -55C if open circuit (no thermistor plugged in)
++	ignore temp6
++	ignore intrusion0
+\ No newline at end of file
+diff --git a/it87.c b/it87.c
+index b8cbb47..fa730cf 100644
+--- a/it87.c
++++ b/it87.c
+@@ -4617,6 +4617,8 @@ static const struct dmi_system_id it87_dmi_table[] __initconst = {
+ 		/* IT8696E*/
+ 	IT87_DMI_MATCH_GBT("X870 GAMING WIFI6", it87_dmi_cb, &it87_acpi_ignore),
+ 		/* IT8696E*/
++	IT87_DMI_MATCH_GBT("X870E AORUS MASTER", it87_dmi_cb, &it87_acpi_ignore),
++		/* IT8696E*/
+ 	IT87_DMI_MATCH_VND("nVIDIA", "FN68PT", it87_dmi_cb, &nvidia_fn68pt),
+ 	{ }
+ };

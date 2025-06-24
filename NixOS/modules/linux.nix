@@ -2,7 +2,6 @@
 { config, lib, pkgs, nixalt, unstable, outoftree, inputs, ... }:
 
 {
-  services.envfs.enable = true;
 
   programs = {
     # This fixes issues with libraries not being found to be more linux compatiable
@@ -30,7 +29,15 @@
     };
   };
 
-  services.gnome.gnome-keyring.enable = true;
+  services = {
+    envfs.enable = true;
+    gnome.gnome-keyring.enable = true;
+    journald = {
+      extraConfig = ''
+        SystemMaxUse=512M
+      '';
+    };
+  };
 
   environment.systemPackages = with pkgs; [
     unstable.neovim

@@ -30,9 +30,18 @@
   services = {
     openssh.enable = true;
     journald = {
-      extraConfig = ''
-        SystemMaxUse=512M
+      extraConfig = lib.mkForce ''
+        SystemMaxUse=256M
       '';
+    };
+  };
+
+  nix = {
+    settings = {
+      keep-outputs = lib.mkForce false;
+      keep-derivations = lib.mkForce false;
+      keep-failed = lib.mkForce false;
+      keep-going = lib.mkForce true;
     };
   };
 

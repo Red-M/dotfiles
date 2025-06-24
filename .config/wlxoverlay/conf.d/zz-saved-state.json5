@@ -1,8 +1,8 @@
 {
   "show_screens": [
-    "DP-2",
     "kbd",
-    "DP-1"
+    "DP-1",
+    "DP-2"
   ],
   "curve_values": [
     [

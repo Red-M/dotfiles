@@ -11,8 +11,8 @@ export HISTFILESIZE=32768
 
 export PATH="~/.local/bin:${PATH}"
 export EDITOR=nvim
-export LC_ALL=en_US.UTF-8
-export LANG=en_US.UTF-8
+export LC_ALL=en_AU.UTF-8
+export LANG=en_AU.UTF-8
 export SCRCPY_SERVER_PATH=~/.local/bin/scrcpy-server
 
 #export SciTE_USERHOME=~

@@ -24,7 +24,7 @@
   services = {
     journald = {
       extraConfig = ''
-        SystemMaxUse=512M
+        SystemMaxUse=256M
       '';
     };
   };
