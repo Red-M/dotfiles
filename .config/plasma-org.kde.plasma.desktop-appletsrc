@@ -192,7 +192,7 @@ disk/nvme2n1/write=nvme2n1 Write Rate
 
 [Containments][102][Applets][107][Configuration][Sensors]
 highPrioritySensorIds=["disk/all/write","disk/all/read","disk/nvme0n1/read","disk/nvme0n1/write","disk/nvme1n1/read","disk/nvme1n1/write","disk/nvme2n1/read","disk/nvme2n1/write"]
-lowPrioritySensorIds=["lmsensors/nvme-pci-0400/temp1","lmsensors/nvme-pci-0400/temp2","lmsensors/nvme-pci-0400/temp3","lmsensors/nvme-pci-0500/temp1","lmsensors/nvme-pci-0500/temp2","lmsensors/nvme-pci-0500/temp3","lmsensors/nvme-pci-0600/temp1","lmsensors/nvme-pci-0600/temp2","lmsensors/nvme-pci-0600/temp3","lmsensors/nvme-pci-0600/temp9"]
+lowPrioritySensorIds=["lmsensors/nvme-pci-0400/temp1","lmsensors/nvme-pci-0400/temp2","lmsensors/nvme-pci-0500/temp1","lmsensors/nvme-pci-0500/temp2","lmsensors/nvme-pci-0500/temp3","lmsensors/nvme-pci-0500/temp9","lmsensors/nvme-pci-0800/temp1","lmsensors/nvme-pci-0800/temp2","lmsensors/nvme-pci-0800/temp3"]
 
 [Containments][102][ConfigDialog]
 DialogHeight=540
@@ -360,21 +360,21 @@ immutability=1
 plugin=org.kde.plasma.networkmanagement
 
 [Containments][28][Applets][32][Applets][47][Configuration]
-PreloadWeight=65
+PreloadWeight=57
 
 [Containments][28][Applets][32][Applets][48]
 immutability=1
 plugin=org.kde.plasma.bluetooth
 
 [Containments][28][Applets][32][Applets][48][Configuration]
-PreloadWeight=92
+PreloadWeight=89
 
 [Containments][28][Applets][32][Applets][55]
 immutability=1
 plugin=org.kde.plasma.mediacontroller
 
 [Containments][28][Applets][32][Applets][55][Configuration]
-PreloadWeight=7
+PreloadWeight=9
 
 [Containments][28][Applets][32][Applets][88]
 immutability=1

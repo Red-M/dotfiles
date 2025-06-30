@@ -1,22 +1,7 @@
 [tools]
 # neovim = "stable"
 usage = "latest"
-sops = "latest"
-yq = "latest"
-jq = "latest"
-# git = "latest"
-# pipx = "1.7.1"
-# pnpm = "latest"
-# node = "latest"
 asdf-plugin-manager = "latest"
-helm = "3.16.2"
-kind = "0.24.0"
-kubectl = "1.31.2"
-kompose = "latest"
-krew = "latest"
-kustomize = "latest"
-kubent = "latest"
-opentofu = "latest"
 
 # [plugins]
 # git = "https://gitlab.com/jcaigitlab/asdf-git"

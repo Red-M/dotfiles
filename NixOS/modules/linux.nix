@@ -103,6 +103,11 @@
       pkgs.powerline-fonts
     ];
   };
+  systemd.services.systemd-vconsole-setup = { # https://github.com/NixOS/nixpkgs/issues/312452#issuecomment-2611908384  be aware of https://github.com/NixOS/nixpkgs/issues/312452#issuecomment-2612016529
+    unitConfig = {
+      After = "local-fs.target";
+    };
+  };
 
 }
 

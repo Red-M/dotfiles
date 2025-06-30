@@ -22,12 +22,12 @@
     xrizer-patched = final.xrizer.overrideAttrs rec {
       src = pkgs.fetchgit {
         url = "https://github.com/Supreeeme/xrizer.git";
-        rev = "898d41051d33f9404ea9a9e599f0c1118c82cc54";
+        rev = "83be788ff4b353030320155dcb36825011269f2d";
         fetchSubmodules = false;
         deepClone = false;
         leaveDotGit = false;
         sparseCheckout = [ ];
-        sha256 = "sha256-quCljMhsx1sy385NgQl6oPuJe44CuyoO3FWcmS005Wk=";
+        sha256 = "sha256-ORusG6ja1JL26KFBz65rSmIHksEgicUaVGOtoYsFaJs=";
       };
       nativeBuildInputs = with pkgs; [
         inputs.fenix.packages.${pkgs.system}.default.toolchain
@@ -37,7 +37,7 @@
         # ./patching/patches/xrizer/69.patch
         # ./patching/patches/xrizer/82.patch
         # ./patching/patches/xrizer/funny_serial_numbers.patch
-        ./patching/patches/xrizer/rin_experimental2_funny_serials.patch
+        # ./patching/patches/xrizer/rin_experimental2_funny_serials.patch
       ] ++ outoftree.pkgs.${pkgs.system}.xrizer.patches;
       doCheck = false;
       # target = "i686-unknown-linux-gnu";
@@ -92,7 +92,8 @@
 
   systemd.user.services.monado = {
     environment = {
-      AMD_VULKAN_ICD="RADV";
+      XRT_LOG = "error";
+      AMD_VULKAN_ICD = "RADV";
       XRT_COMPOSITOR_COMPUTE = "1";
       STEAMVR_LH_ENABLE = "1";
       VIT_SYSTEM_LIBRARY_PATH = "${pkgs.basalt-monado}/lib/libbasalt.so";
