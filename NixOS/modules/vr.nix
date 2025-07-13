@@ -22,12 +22,12 @@
     xrizer-patched = final.xrizer.overrideAttrs rec {
       src = pkgs.fetchgit {
         url = "https://github.com/Supreeeme/xrizer.git";
-        rev = "83be788ff4b353030320155dcb36825011269f2d";
+        rev = "17a152d333de8493bdafe7f51c491e93e9e4e9e2";
         fetchSubmodules = false;
         deepClone = false;
         leaveDotGit = false;
         sparseCheckout = [ ];
-        sha256 = "sha256-ORusG6ja1JL26KFBz65rSmIHksEgicUaVGOtoYsFaJs=";
+        sha256 = "sha256-A+kN2wfn4ohGZnhzqDBowVsdYw7Vkmi5wshkPxxbGks=";
       };
       nativeBuildInputs = with pkgs; [
         inputs.fenix.packages.${pkgs.system}.default.toolchain
@@ -58,6 +58,7 @@
   users.users.redm = {
     packages = with pkgs; [
       # opencomposite
+      # xrizer
       xrizer-patched
       # xrizer-patched2
       # outoftree.pkgs.${pkgs.system}.xrizer

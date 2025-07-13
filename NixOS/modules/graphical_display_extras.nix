@@ -41,6 +41,8 @@
       libreoffice-qt6-fresh
 
       winbox4
+
+      audacity
     ];
   };
 

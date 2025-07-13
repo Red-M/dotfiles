@@ -1,0 +1,74 @@
+From c5a261cdd362b3aa689ada7964f99b1ac10caab1 Mon Sep 17 00:00:00 2001
+From: Korcan Hussein <korcan.hussein@collabora.com>
+Date: Wed, 9 Jul 2025 17:51:30 +0100
+Subject: [PATCH 1/2] t/libmonado: fix replace old hand-tracking role name
+ strings
+
+---
+ src/xrt/targets/libmonado/monado.h  | 3 +--
+ src/xrt/targets/libmonado/monado.py | 2 +-
+ 2 files changed, 2 insertions(+), 3 deletions(-)
+
+diff --git a/src/xrt/targets/libmonado/monado.h b/src/xrt/targets/libmonado/monado.h
+index 4863549af9..f0d937fe98 100644
+--- a/src/xrt/targets/libmonado/monado.h
++++ b/src/xrt/targets/libmonado/monado.h
+@@ -361,8 +361,7 @@ mnd_root_get_device_info(mnd_root_t *root, uint32_t device_index, uint32_t *out_
+  *
+  * @param root           The libmonado state.
+  * @param role_name      Name of the role, one-of: "head", "left", "right",
+- *                       "gamepad", "eyes", "hand-tracking-left", and,
+- *                       "hand-tracking-right":
++ *                       "gamepad", "eyes", "hand-tracking-[unobstructed|conforming]-[left|right]"
+  * @param[out] out_index Pointer to value to populate with the device index
+  *                       associated with given role name, -1 if not role is set.
+  *
+diff --git a/src/xrt/targets/libmonado/monado.py b/src/xrt/targets/libmonado/monado.py
+index 0fea43e0cf..cecd798a9e 100644
+--- a/src/xrt/targets/libmonado/monado.py
++++ b/src/xrt/targets/libmonado/monado.py
+@@ -210,7 +210,7 @@ class Monado:
+     def get_device_roles(self):
+         role_map = dict()
+         device_int_id_ptr = self.ffi.new("int32_t *")
+-        for role_name in ["head", "left", "right", "gamepad", "eyes", "hand-tracking-left", "hand-tracking-right"]:
++        for role_name in ["head", "left", "right", "gamepad", "eyes", "hand-tracking-unobstructed-left", "hand-tracking-unobstructed-right", "hand-tracking-conforming-left", "hand-tracking-conforming-right"]:
+             crole_name = role_name.encode('utf-8')
+             ret = self.lib.mnd_root_get_device_from_role(self.root, crole_name, device_int_id_ptr)
+             if ret != 0:
+-- 
+GitLab
+
+
+From 212984a5bb6336d83223ee19e5caaefe0ae1f620 Mon Sep 17 00:00:00 2001
+From: Korcan Hussein <korcan.hussein@collabora.com>
+Date: Wed, 9 Jul 2025 17:55:57 +0100
+Subject: [PATCH 2/2] doc: Document !2522
+
+---
+ doc/changes/big/mr.2509.md        | 1 +
+ doc/changes/misc_fixes/mr.2522.md | 1 +
+ 2 files changed, 2 insertions(+)
+ create mode 100644 doc/changes/misc_fixes/mr.2522.md
+
+diff --git a/doc/changes/big/mr.2509.md b/doc/changes/big/mr.2509.md
+index 71cd02eb43..86632abdee 100644
+--- a/doc/changes/big/mr.2509.md
++++ b/doc/changes/big/mr.2509.md
+@@ -1,5 +1,6 @@
+ ---
+ - mr.2521
++- mr.2522
+ ---
+ ### Added
+ - Support for the `XR_EXT_hand_tracking_data_source` extension.
+diff --git a/doc/changes/misc_fixes/mr.2522.md b/doc/changes/misc_fixes/mr.2522.md
+new file mode 100644
+index 0000000000..849987a989
+--- /dev/null
++++ b/doc/changes/misc_fixes/mr.2522.md
+@@ -0,0 +1 @@
++fix replace old hand-tracking role name strings with new ones.
+-- 
+GitLab
+

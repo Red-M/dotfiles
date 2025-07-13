@@ -3,7 +3,7 @@
 
 {
   imports = [
-    ./patching/linux-firmware.nix
+    # ./patching/linux-firmware.nix
   ];
   system = {
     modulesTree = lib.mkForce [(

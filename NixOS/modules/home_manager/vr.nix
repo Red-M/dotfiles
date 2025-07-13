@@ -75,6 +75,7 @@
   '';
 
   xdg.configFile."openxr/opencomposite".source = "${pkgs.opencomposite-vendored}";
+  # xdg.configFile."openxr/xrizer".source = "${pkgs.xrizer}";
   xdg.configFile."openxr/xrizer".source = "${pkgs.xrizer-patched}";
   # xdg.configFile."openxr/xrizer".source = "${pkgs.xrizer-patched2}";
   xdg.configFile."openxr/1/active_runtime.json".source = "${pkgs.monado_patched}/share/openxr/1/openxr_monado.json";

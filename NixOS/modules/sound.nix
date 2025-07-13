@@ -241,8 +241,8 @@
             # "node.name" = "capture.rnnoise_source";
             # "node.passive" = true;
             "node.name" = "auto_gain.auto_gain";
-            # "target.object" = "noise_cancel.playback";
-            "target.object" = "echo_cancel.echoless";
+            "target.object" = "noise_cancel.playback";
+            # "target.object" = "echo_cancel.echoless";
             "node.description" = "Auto Gain Capture";
             # "node.autoconnect" = false;
           };

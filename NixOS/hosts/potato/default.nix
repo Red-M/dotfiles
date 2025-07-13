@@ -4,6 +4,7 @@
 {
   imports = [
     ./hardware-configuration.nix
+    ../../modules/motherboards/msi.nix
 
     ../../modules/amd_ucode.nix
     ../../modules/amdgpu.nix
@@ -63,32 +64,18 @@
 
   boot = {
     # kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
-    kernelParams = [ "acpi_enforce_resources=lax" ];
+    # kernelParams = [ "acpi_enforce_resources=lax" ];
     # kernelParams = [
-    #   "acpi_enforce_resources=lax"
+    #   # "acpi_enforce_resources=lax"
     #   "nvme_core.default_ps_max_latency_us=0"
     #   "pcie_aspm=off"
     #   "pcie_pm=off"
     # ];
     extraModulePackages = with config.boot.kernelPackages; [
-      # (it87.overrideAttrs (super: {
-      #   postInstall = (super.postInstall or "") + ''
-      #     find $out -name '*.ko' -exec xz {} \;
-      #   '';
-      # })) # it87
-      (outoftree.pkgs.${pkgs.system}.it87.overrideAttrs (super: { # Updates to newer version, needed by X870E aorus master mobo https://github.com/NixOS/nixpkgs/pull/399927
-        postInstall = (super.postInstall or "") + ''
-          find $out -name '*.ko' -exec xz {} \;
-        '';
-      })) # it87
     ];
     kernelModules = with config.boot.kernelPackages; [
-      "it87"
       "i2c-piix4"
     ];
-    extraModprobeConfig = ''
-      options it87 ignore_resource_conflict=1 mmio=1
-    '';
   };
 
   hardware = {
