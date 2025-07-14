@@ -84,7 +84,7 @@
   };
 
   systemd.services = {
-    gitlab-postgresql = {
+    gitlab-postgresql = { # /var/lib/postgresql# sudo -u postgres pg_upgrade -b "$(nix build --no-link --print-out-paths nixpkgs#postgresql_17.out)/bin" -B /run/current-system/sw/bin -d /var/lib/postgresql/17 -D /var/lib/postgresql/18
       after = [ "postgresql.service" ];
       bindsTo = [ "postgresql.service" ];
       wantedBy = [ "gitlab.target" ];

@@ -31,6 +31,10 @@
 
   services = {
     envfs.enable = true;
+    scx = { # experimental
+      enable = true;
+      scheduler = "scx_bpfland";
+    };
     gnome.gnome-keyring.enable = true;
     journald = {
       extraConfig = ''
