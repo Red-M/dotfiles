@@ -40,10 +40,9 @@
 
 return {
   {
-    "dariogliendo/project.nvim", -- This makes the cwd of the tree move to the git repo the file is in.
-    config = function()
-      require("project_nvim").setup {
-      }
+    "DrKJeff16/project.nvim", -- This makes the cwd of the tree move to the git repo the file is in.
+    config = function(_, opts)
+      require("project_nvim").setup(opts)
     end
   },
   {

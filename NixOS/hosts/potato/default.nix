@@ -4,17 +4,17 @@
 {
   imports = [
     ./hardware-configuration.nix
-    ../../modules/motherboards/msi.nix
+    ../../modules/hardware/motherboards/asus.nix
 
-    ../../modules/amd_ucode.nix
-    ../../modules/amdgpu.nix
-    ../../modules/amdgpu_oc.nix
+    ../../modules/hardware/cpu/amd_ucode.nix
+    ../../modules/hardware/gpu/amdgpu.nix
+    ../../modules/hardware/gpu/amdgpu_oc.nix
     ../../modules/cad
     ../../modules/distrobox.nix
     ../../modules/dropbox.nix
-    ../../modules/fans.nix
-    ../../modules/fingerprint.nix
-    ../../modules/firmware.nix
+    ../../modules/hardware/fans.nix
+    ../../modules/hardware/fingerprint.nix
+    ../../modules/hardware/firmware.nix
     ../../modules/fonts.nix
     ../../modules/graphical_display.nix
     ../../modules/graphical_display_extras.nix
@@ -27,19 +27,19 @@
     ../../modules/linux.nix
     ../../modules/locale.nix
     ../../modules/messaging.nix
-    ../../modules/mice.nix
+    ../../modules/hardware/mice.nix
     ../../modules/my_user.nix
     ../../modules/nix.nix
     ../../modules/obs.nix
     ../../modules/patching/qdoled.nix
-    ../../modules/reeemiks.nix
+    ../../modules/hardware/reeemiks.nix
     ../../modules/reverse_engineering.nix
-    ../../modules/rgb.nix
-    ../../modules/serial_devices.nix
-    ../../modules/sound.nix
+    ../../modules/hardware/rgb.nix
+    ../../modules/hardware/serial_devices.nix
+    ../../modules/hardware/sound.nix
     ../../modules/ssh_server.nix
     ../../modules/steam.nix
-    ../../modules/vr.nix
+    ../../modules/hardware/vr.nix
   ];
 
   networking.hostName = "potato"; # Define your hostname.
@@ -65,12 +65,12 @@
   boot = {
     # kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
     # kernelParams = [ "acpi_enforce_resources=lax" ];
-    # kernelParams = [
-    #   # "acpi_enforce_resources=lax"
-    #   "nvme_core.default_ps_max_latency_us=0"
-    #   "pcie_aspm=off"
-    #   "pcie_pm=off"
-    # ];
+    kernelParams = [
+      "acpi_enforce_resources=lax"
+      # "nvme_core.default_ps_max_latency_us=0"
+      # "pcie_aspm=off"
+      # "pcie_pm=off"
+    ];
     extraModulePackages = with config.boot.kernelPackages; [
     ];
     kernelModules = with config.boot.kernelPackages; [

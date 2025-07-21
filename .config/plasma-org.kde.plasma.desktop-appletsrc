@@ -33,8 +33,8 @@ SlidePaths=/nix/store/kls40zsrq9dd74innawflbf4ja7ba857-breeze-6.0.5/share/wallpa
 [Containments][102]
 ItemGeometries-1920x1080=Applet-104:0,16,192,1008,0;Applet-105:1728,0,192,352,0;
 ItemGeometries-2048x1152=Applet-104:1760,0,288,1008,0;Applet-105:1856,1008,192,352,0;
-ItemGeometries-2560x1440=Applet-107:1936,0,240,528,0;Applet-105:2176,0,192,352,0;Applet-104:2368,0,192,1008,0;
-ItemGeometriesHorizontal=Applet-107:1936,0,240,528,0;Applet-105:2176,0,192,352,0;Applet-104:2368,0,192,1008,0;
+ItemGeometries-2560x1440=Applet-107:1936,0,240,528,0;Applet-105:2176,0,192,352,0;Applet-104:2368,0,192,1056,0;
+ItemGeometriesHorizontal=Applet-107:1936,0,240,528,0;Applet-105:2176,0,192,352,0;Applet-104:2368,0,192,1056,0;
 activityId=f16962fe-8fb8-459d-ac55-8ee109611d5f
 formfactor=0
 immutability=1
@@ -99,7 +99,7 @@ cpu/cpu9/usage=74,237,0
 
 [Containments][102][Applets][104][Configuration][Sensors]
 highPrioritySensorIds=["cpu/cpu\\\\d+/usage"]
-lowPrioritySensorIds=["cpu/all/usage","cpu/all/averageFrequency","memory/physical/usedPercent","memory/physical/total","cpu/all/averageFrequency","cpu/all/maximumTemperature","cpu/all/averageTemperature","os/kernel/version"]
+lowPrioritySensorIds=["cpu/all/averageFrequency","cpu/all/usage","memory/physical/total","memory/physical/usedPercent","cpu/all/maximumTemperature","cpu/all/averageTemperature","os/kernel/version","os/system/uptime","os/system/name","os/system/version"]
 
 [Containments][102][Applets][104][Configuration][org.kde.ksysguard.linechart][General]
 lineChartFillOpacity=5
@@ -192,7 +192,7 @@ disk/nvme2n1/write=nvme2n1 Write Rate
 
 [Containments][102][Applets][107][Configuration][Sensors]
 highPrioritySensorIds=["disk/all/write","disk/all/read","disk/nvme0n1/read","disk/nvme0n1/write","disk/nvme1n1/read","disk/nvme1n1/write","disk/nvme2n1/read","disk/nvme2n1/write"]
-lowPrioritySensorIds=["lmsensors/nvme-pci-0e00/temp1","lmsensors/nvme-pci-0e00/temp2","lmsensors/nvme-pci-0e00/temp3","lmsensors/nvme-pci-0400/temp1","lmsensors/nvme-pci-0400/temp2","lmsensors/nvme-pci-0700/temp1","lmsensors/nvme-pci-0700/temp2","lmsensors/nvme-pci-0700/temp3","lmsensors/nvme-pci-0700/temp9"]
+lowPrioritySensorIds=["lmsensors/nvme-pci-0a00/temp1","lmsensors/nvme-pci-0a00/temp2","lmsensors/nvme-pci-0a00/temp3","lmsensors/nvme-pci-0400/temp1","lmsensors/nvme-pci-0400/temp2","lmsensors/nvme-pci-0400/temp3","lmsensors/nvme-pci-0700/temp1","lmsensors/nvme-pci-0700/temp2","lmsensors/nvme-pci-0700/temp3","lmsensors/nvme-pci-0700/temp9"]
 
 [Containments][102][ConfigDialog]
 DialogHeight=540
@@ -290,7 +290,6 @@ plugin=org.kde.plasma.volume
 PreloadWeight=100
 
 [Containments][28][Applets][32][Applets][35][Configuration][General]
-currentTab=streams
 migrated=true
 showVirtualDevices=true
 
@@ -361,21 +360,21 @@ immutability=1
 plugin=org.kde.plasma.networkmanagement
 
 [Containments][28][Applets][32][Applets][47][Configuration]
-PreloadWeight=84
+PreloadWeight=86
 
 [Containments][28][Applets][32][Applets][48]
 immutability=1
 plugin=org.kde.plasma.bluetooth
 
 [Containments][28][Applets][32][Applets][48][Configuration]
-PreloadWeight=100
+PreloadWeight=68
 
 [Containments][28][Applets][32][Applets][55]
 immutability=1
 plugin=org.kde.plasma.mediacontroller
 
 [Containments][28][Applets][32][Applets][55][Configuration]
-PreloadWeight=11
+PreloadWeight=22
 
 [Containments][28][Applets][32][Applets][88]
 immutability=1
@@ -473,6 +472,7 @@ DialogWidth=720
 groupPopups=false
 launchers=preferred://filemanager,preferred://browser,applications:Alacritty.desktop
 showOnlyCurrentScreen=true
+unhideOnAttention=false
 
 [Containments][50][ConfigDialog]
 DialogHeight=84

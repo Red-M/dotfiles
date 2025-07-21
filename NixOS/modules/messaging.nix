@@ -27,7 +27,7 @@
   ]; # For the bitlbee libpurple matrix plugin
 
   services.bitlbee = {
-    enable = true;
+    # enable = true;
     plugins = with pkgs; [
       bitlbee-facebook
       bitlbee-mastodon

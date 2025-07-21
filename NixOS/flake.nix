@@ -14,7 +14,7 @@
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
 
     lix-module = {
-      url = "https://git.lix.systems/lix-project/nixos-module/archive/2.93.1.tar.gz";
+      url = "https://git.lix.systems/lix-project/nixos-module/archive/2.93.2-1.tar.gz";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -49,7 +49,7 @@
     mkNixOS = {host_modules, system, ...}: nixpkgs.lib.nixosSystem rec {
       inherit system;
       modules = [
-        lix-module.nixosModules.default
+        # lix-module.nixosModules.default
       ] ++ host_modules;
       specialArgs = {
         inherit inputs system nixos-hardware outoftree;

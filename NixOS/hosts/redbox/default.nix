@@ -6,23 +6,23 @@
     ./hardware-configuration.nix
 
     ../../modules/distrobox.nix
-    ../../modules/fingerprint.nix
-    ../../modules/firmware.nix
+    ../../modules/hardware/fingerprint.nix
+    ../../modules/hardware/firmware.nix
     ../../modules/fonts.nix
     ../../modules/graphical_display.nix
     ../../modules/grub_uefi.nix
     ../../modules/hyperv.nix
     ../../modules/kernel.nix
     ../../modules/kvm.nix
-    ../../modules/laptop.nix
+    ../../modules/hardware/laptop.nix
     ../../modules/langs
     ../../modules/linux.nix
     ../../modules/locale.nix
     ../../modules/my_user.nix
     ../../modules/nix.nix
     ../../modules/obs.nix
-    ../../modules/serial_devices.nix
-    ../../modules/sound.nix
+    ../../modules/hardware/serial_devices.nix
+    ../../modules/hardware/sound.nix
     ../../modules/ssh_server.nix
   ];
 

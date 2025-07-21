@@ -23,7 +23,7 @@
 
       r2modman
       r2mod_cli
-      unstable.nexusmods-app-unfree
+      # unstable.nexusmods-app-unfree # I'm sick of building this, wait for a while
 
       bottles
 

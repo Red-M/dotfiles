@@ -6,12 +6,12 @@
     ./hardware-configuration.nix
     inputs.disko.nixosModules.disko
 
-    ../../modules/amd_ucode.nix
-    ../../modules/amdgpu.nix
+    ../../modules/hardware/cpu/amd_ucode.nix
+    ../../modules/hardware/gpu/amdgpu.nix
     ../../modules/distrobox.nix
-    ../../modules/fans.nix
-    ../../modules/fingerprint.nix
-    ../../modules/firmware.nix
+    ../../modules/hardware/fans.nix
+    ../../modules/hardware/fingerprint.nix
+    ../../modules/hardware/firmware.nix
     ../../modules/fonts.nix
     ../../modules/graphical_display.nix
     ../../modules/graphical_display_extras.nix
@@ -19,18 +19,18 @@
     ../../modules/keepass.nix
     ../../modules/kernel.nix
     ../../modules/kvm.nix
-    ../../modules/laptop.nix
+    ../../modules/hardware/laptop.nix
     ../../modules/langs
     ../../modules/linux.nix
     ../../modules/locale.nix
     ../../modules/messaging.nix
-    ../../modules/mice.nix
+    ../../modules/hardware/mice.nix
     ../../modules/my_user.nix
     ../../modules/nix.nix
     ../../modules/obs.nix
     ../../modules/reverse_engineering.nix
-    ../../modules/serial_devices.nix
-    ../../modules/sound.nix
+    ../../modules/hardware/serial_devices.nix
+    ../../modules/hardware/sound.nix
     ../../modules/ssh_server.nix
     ../../modules/steam.nix
   ];

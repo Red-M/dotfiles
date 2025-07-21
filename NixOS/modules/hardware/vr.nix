@@ -5,7 +5,7 @@
 
   imports = [
     inputs.nixpkgs-xr.nixosModules.nixpkgs-xr
-    ./patching/monado.nix
+    ../patching/monado.nix
   ];
 
   nixpkgs.overlays = [(final: prev: {
@@ -64,12 +64,13 @@
       # outoftree.pkgs.${pkgs.system}.xrizer
       motoc
       index_camera_passthrough
+      wlx-overlay-s
       # unstable.wlx-overlay-s
       # wlx-overlay-s_patched
-      outoftree.pkgs.${pkgs.system}.wlx-overlay-s
+      # outoftree.pkgs.${pkgs.system}.wlx-overlay-s
       libsurvive
-      # wayvr-dashboard
-      outoftree.pkgs.${pkgs.system}.wayvr-dashboard
+      wayvr-dashboard
+      # outoftree.pkgs.${pkgs.system}.wayvr-dashboard
       outoftree.pkgs.${pkgs.system}.lovr-playspace
       outoftree.pkgs.${pkgs.system}.vrcadvert
       outoftree.pkgs.${pkgs.system}.oscavmgr
@@ -111,7 +112,7 @@
   boot.extraModulePackages = [
     (outoftree.pkgs.${pkgs.system}.amdgpu-kernel-module.overrideAttrs (_: {
       kernel = config.boot.kernelPackages.kernel;
-      patches = [ ./patching/patches/amdgpu-kernel-module/cap_sys_nice_begone.patch ];
+      patches = [ ../patching/patches/amdgpu-kernel-module/cap_sys_nice_begone.patch ];
     }))
   ];
 
