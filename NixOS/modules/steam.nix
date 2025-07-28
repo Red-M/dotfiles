@@ -112,6 +112,7 @@
   boot = {
     kernelModules = with config.boot.kernelPackages; [
       "hid-xpadneo"
+      "ntsync"
     ];
     extraModulePackages = with config.boot.kernelPackages; [
       xpadneo

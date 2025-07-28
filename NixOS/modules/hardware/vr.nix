@@ -22,12 +22,12 @@
     xrizer-patched = final.xrizer.overrideAttrs rec {
       src = pkgs.fetchgit {
         url = "https://github.com/Supreeeme/xrizer.git";
-        rev = "17a152d333de8493bdafe7f51c491e93e9e4e9e2";
         fetchSubmodules = false;
         deepClone = false;
         leaveDotGit = false;
         sparseCheckout = [ ];
-        sha256 = "sha256-A+kN2wfn4ohGZnhzqDBowVsdYw7Vkmi5wshkPxxbGks=";
+        rev = "74c3462d27ce3bdeeee70011746c9cfdf83cb49b";
+        sha256 = "sha256-Up4Qk3IvppjdT11VG0LBsn2EJo+TGPM6j2h/VLjJBxs=";
       };
       nativeBuildInputs = with pkgs; [
         inputs.fenix.packages.${pkgs.system}.default.toolchain
@@ -57,6 +57,8 @@
 
   users.users.redm = {
     packages = with pkgs; [
+      v4l-utils # cameras
+      xrgears # testing, just in case
       # opencomposite
       # xrizer
       xrizer-patched
@@ -92,18 +94,85 @@
 
   environment.systemPackages = with pkgs; [ basalt-monado ];
 
-  systemd.user.services.monado = {
-    environment = {
-      XRT_LOG = "error";
-      AMD_VULKAN_ICD = "RADV";
-      XRT_COMPOSITOR_COMPUTE = "1";
-      STEAMVR_LH_ENABLE = "1";
-      VIT_SYSTEM_LIBRARY_PATH = "${pkgs.basalt-monado}/lib/libbasalt.so";
-      XRT_COMPOSITOR_SCALE_PERCENTAGE="130";
-      U_PACING_COMP_MIN_TIME_MS = "3";
-      # U_PACING_APP_IMMEDIATE_WAIT_FRAME_RETURN = "on";
-      # LH_HANDTRACKING = "on";
-      # IPC_EXIT_ON_DISCONNECT = "on"; # kill when a client disconnects
+  systemd.user.services = {
+    monado = {
+      environment = {
+        XRT_LOG = "error";
+        AMD_VULKAN_ICD = "RADV";
+        XRT_COMPOSITOR_COMPUTE = "1";
+        STEAMVR_LH_ENABLE = "1";
+        VIT_SYSTEM_LIBRARY_PATH = "${pkgs.basalt-monado}/lib/libbasalt.so";
+        XRT_COMPOSITOR_SCALE_PERCENTAGE="130";
+        U_PACING_COMP_MIN_TIME_MS = "3";
+        # U_PACING_APP_IMMEDIATE_WAIT_FRAME_RETURN = "on";
+        # LH_HANDTRACKING = "on";
+        # IPC_EXIT_ON_DISCONNECT = "on"; # kill when a client disconnects
+      };
+    };
+
+    wlx-overlay-s = {
+      description = "VR wlx-overlay-s";
+      serviceConfig = {
+        ExecStart = "${pkgs.wlx-overlay-s}/bin/wlx-overlay-s";
+        Restart = "on-abnormal";
+      };
+      bindsTo = [ "monado.service" ];
+      partOf = [ "monado.service" ];
+      after = [ "monado.service" ];
+      upheldBy = [ "monado.service" ];
+      unitConfig.ConditionUser = "!root";
+    };
+    index_camera_passthrough = {
+      description = "VR index_camera_passthrough";
+      serviceConfig = {
+        ExecStart = "${pkgs.index_camera_passthrough}/bin/index_camera_passthrough";
+        Restart = "on-abnormal";
+      };
+      bindsTo = [ "monado.service" ];
+      partOf = [ "monado.service" ];
+      after = [ "monado.service" ];
+      upheldBy = [ "wlx-overlay-s.service" ];
+      unitConfig.ConditionUser = "!root";
+    };
+    lovr-playspace = {
+      description = "VR lovr-playspace";
+      serviceConfig = {
+        ExecStart = "${outoftree.pkgs.${pkgs.system}.lovr-playspace}/bin/lovr-playspace";
+        Restart = "on-abnormal";
+      };
+      bindsTo = [ "monado.service" ];
+      partOf = [ "monado.service" ];
+      after = [ "monado.service" ];
+      upheldBy = [ "monado.service" ];
+      unitConfig.ConditionUser = "!root";
+    };
+    motoc = {
+      description = "VR motoc";
+      serviceConfig = {
+        Restart = "on-abnormal";
+      };
+      script = ''
+        ${pkgs.motoc}/bin/motoc monitor &> /dev/null
+      '';
+      bindsTo = [ "monado.service" ];
+      partOf = [ "monado.service" ];
+      after = [ "monado.service" ];
+      upheldBy = [ "monado.service" ];
+      unitConfig.ConditionUser = "!root";
+    };
+    oscavmgr = {
+      description = "VR oscavmgr";
+      serviceConfig = {
+        Restart = "on-abnormal";
+      };
+      script = ''
+        ${outoftree.pkgs.${pkgs.system}.oscavmgr}/bin/oscavmgr openxr &> /dev/null
+      '';
+      bindsTo = [ "monado.service" ];
+      partOf = [ "monado.service" ];
+      after = [ "monado.service" ];
+      upheldBy = [ "monado.service" ];
+      unitConfig.ConditionUser = "!root";
     };
   };
 
@@ -115,6 +184,10 @@
       patches = [ ../patching/patches/amdgpu-kernel-module/cap_sys_nice_begone.patch ];
     }))
   ];
+
+
+
+
 
 }
 

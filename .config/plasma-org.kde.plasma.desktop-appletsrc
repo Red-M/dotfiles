@@ -58,8 +58,8 @@ title=
 updateRateLimit=500
 
 [Containments][102][Applets][104][Configuration][ConfigDialog]
-DialogHeight=540
-DialogWidth=720
+DialogHeight=625
+DialogWidth=1181
 
 [Containments][102][Applets][104][Configuration][SensorColors]
 cpu/cpu\requency=237,119,0
@@ -99,7 +99,7 @@ cpu/cpu9/usage=74,237,0
 
 [Containments][102][Applets][104][Configuration][Sensors]
 highPrioritySensorIds=["cpu/cpu\\\\d+/usage"]
-lowPrioritySensorIds=["cpu/all/averageFrequency","cpu/all/usage","memory/physical/total","memory/physical/usedPercent","cpu/all/maximumTemperature","cpu/all/averageTemperature","os/kernel/version","os/system/uptime","os/system/name","os/system/version"]
+lowPrioritySensorIds=["cpu/all/averageFrequency","cpu/all/usage","memory/physical/total","memory/physical/usedPercent","cpu/all/maximumTemperature","cpu/all/averageTemperature","os/system/uptime","os/kernel/version","os/system/name","os/system/version"]
 
 [Containments][102][Applets][104][Configuration][org.kde.ksysguard.linechart][General]
 lineChartFillOpacity=5
@@ -290,6 +290,7 @@ plugin=org.kde.plasma.volume
 PreloadWeight=100
 
 [Containments][28][Applets][32][Applets][35][Configuration][General]
+currentTab=streams
 migrated=true
 showVirtualDevices=true
 
@@ -360,21 +361,21 @@ immutability=1
 plugin=org.kde.plasma.networkmanagement
 
 [Containments][28][Applets][32][Applets][47][Configuration]
-PreloadWeight=86
+PreloadWeight=96
 
 [Containments][28][Applets][32][Applets][48]
 immutability=1
 plugin=org.kde.plasma.bluetooth
 
 [Containments][28][Applets][32][Applets][48][Configuration]
-PreloadWeight=68
+PreloadWeight=88
 
 [Containments][28][Applets][32][Applets][55]
 immutability=1
 plugin=org.kde.plasma.mediacontroller
 
 [Containments][28][Applets][32][Applets][55][Configuration]
-PreloadWeight=22
+PreloadWeight=19
 
 [Containments][28][Applets][32][Applets][88]
 immutability=1

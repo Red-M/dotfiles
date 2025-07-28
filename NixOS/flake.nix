@@ -14,8 +14,13 @@
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
 
     lix-module = {
-      url = "https://git.lix.systems/lix-project/nixos-module/archive/2.93.2-1.tar.gz";
+      url = "https://git.lix.systems/lix-project/nixos-module/archive/2.93.3-1.tar.gz";
+      # url = "https://git.lix.systems/lix-project/nixos-module/archive/release-2.93.tar.gz";
       inputs.nixpkgs.follows = "nixpkgs";
+      # inputs.lix = {
+      #   url = "git+https://git.lix.systems/lix-project/lix?ref=refs/tags/2.93.3";
+      #   inputs.nixpkgs.follows = "nixpkgs";
+      # };
     };
 
     home-manager = {
@@ -49,7 +54,7 @@
     mkNixOS = {host_modules, system, ...}: nixpkgs.lib.nixosSystem rec {
       inherit system;
       modules = [
-        # lix-module.nixosModules.default
+        lix-module.nixosModules.default
       ] ++ host_modules;
       specialArgs = {
         inherit inputs system nixos-hardware outoftree;

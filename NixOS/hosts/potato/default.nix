@@ -64,13 +64,13 @@
 
   boot = {
     # kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
-    # kernelParams = [ "acpi_enforce_resources=lax" ];
-    kernelParams = [
-      "acpi_enforce_resources=lax"
-      # "nvme_core.default_ps_max_latency_us=0"
-      # "pcie_aspm=off"
-      # "pcie_pm=off"
-    ];
+    kernelParams = [ "acpi_enforce_resources=lax" ];
+    # kernelParams = [
+    #   "acpi_enforce_resources=lax"
+    #   # "nvme_core.default_ps_max_latency_us=0"
+    #   # "pcie_aspm=off"
+    #   # "pcie_pm=off"
+    # ];
     extraModulePackages = with config.boot.kernelPackages; [
     ];
     kernelModules = with config.boot.kernelPackages; [
