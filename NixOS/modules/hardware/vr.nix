@@ -107,6 +107,8 @@
         # U_PACING_APP_IMMEDIATE_WAIT_FRAME_RETURN = "on";
         # LH_HANDTRACKING = "on";
         # IPC_EXIT_ON_DISCONNECT = "on"; # kill when a client disconnects
+        IPC_EXIT_WHEN_IDLE = "on"; # kill on idle! :)
+        IPC_EXIT_WHEN_IDLE_DELAY_MS = "10000";
       };
     };
 
