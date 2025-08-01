@@ -18,12 +18,17 @@
 
   boot = {
     kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
-    kernelModules = [ "tcp_bbr" ];
+    kernelModules = with config.boot.kernelPackages; [
+      "tcp_bbr"
+      "sch_cake"
+      "sch_fq_codel"
+      "shufflecake"
+    ];
 
     kernel = {
       sysctl."net.ipv4.tcp_congestion_control" = "bbr";
       sysctl."net.ipv6.tcp_congestion_control" = "bbr";
-      sysctl."net.core.default_qdisc" = "fq";
+      sysctl."net.core.default_qdisc" = "fq_codel";
 
     # Increase TCP window sizes for high-bandwidth WAN connections, assuming
     # 10 GBit/s Internet over 200ms latency as worst case.
