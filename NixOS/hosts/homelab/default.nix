@@ -12,6 +12,7 @@
     ../../modules/langs/python.nix
 
     ../../modules/ssh_server.nix
+    ../../modules/servers/kvm_guest.nix
     ../../modules/servers/mail_relay_out.nix
   ];
 

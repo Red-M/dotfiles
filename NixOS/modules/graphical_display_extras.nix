@@ -42,7 +42,7 @@
 
       winbox4
 
-      audacity
+      # audacity # broken
       playerctl
     ];
   };
