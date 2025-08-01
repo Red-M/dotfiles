@@ -10,6 +10,7 @@
     ../../modules/my_user.nix
     ../../modules/nix.nix
     ../../modules/langs/python.nix
+    ../../modules/zram.nix
 
     ../../modules/ssh_server.nix
     ../../modules/servers/kvm_guest.nix

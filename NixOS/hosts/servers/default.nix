@@ -10,6 +10,7 @@
     ../../modules/nix.nix
     ../../modules/langs/python.nix
     ../../modules/dropbox.nix
+    ../../modules/zram.nix
 
     ../../modules/servers/ssh_server.nix
     ../../modules/servers/redserv.nix

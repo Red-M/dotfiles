@@ -33,6 +33,7 @@
     ../../modules/hardware/sound.nix
     ../../modules/ssh_server.nix
     ../../modules/steam.nix
+    ../../modules/zram.nix
   ];
 
   networking.hostName = "redm"; # Define your hostname.
