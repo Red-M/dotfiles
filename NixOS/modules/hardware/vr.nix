@@ -5,54 +5,8 @@
 
   imports = [
     inputs.nixpkgs-xr.nixosModules.nixpkgs-xr
-    ../patching/monado.nix
+    ../patching/vr.nix
   ];
-
-  nixpkgs.overlays = [(final: prev: {
-    wlx-overlay-s_patched = final.wlx-overlay-s.overrideAttrs rec {
-      nativeBuildInputs = with pkgs; [
-        inputs.fenix.packages.${pkgs.system}.default.toolchain
-      ] ++ final.wlx-overlay-s.nativeBuildInputs;
-    };
-    wlx-overlay-s_patched2 = outoftree.pkgs.${pkgs.system}.wlx-overlay-s.overrideAttrs rec {
-      nativeBuildInputs = with pkgs; [
-        inputs.fenix.packages.${pkgs.system}.default.toolchain
-      ] ++ outoftree.pkgs.${pkgs.system}.wlx-overlay-s.nativeBuildInputs;
-    };
-    xrizer-patched = final.xrizer.overrideAttrs rec {
-      src = pkgs.fetchgit {
-        url = "https://github.com/Supreeeme/xrizer.git";
-        fetchSubmodules = false;
-        deepClone = false;
-        leaveDotGit = false;
-        sparseCheckout = [ ];
-        rev = "74c3462d27ce3bdeeee70011746c9cfdf83cb49b";
-        sha256 = "sha256-Up4Qk3IvppjdT11VG0LBsn2EJo+TGPM6j2h/VLjJBxs=";
-      };
-      nativeBuildInputs = with pkgs; [
-        inputs.fenix.packages.${pkgs.system}.default.toolchain
-      ] ++ final.xrizer.nativeBuildInputs;
-      patches = [
-        # ./patching/patches/xrizer/68.patch
-        # ./patching/patches/xrizer/69.patch
-        # ./patching/patches/xrizer/82.patch
-        # ./patching/patches/xrizer/funny_serial_numbers.patch
-        # ./patching/patches/xrizer/rin_experimental2_funny_serials.patch
-      ] ++ outoftree.pkgs.${pkgs.system}.xrizer.patches;
-      doCheck = false;
-      # target = "i686-unknown-linux-gnu";
-      # target = "x86_64-unknown-linux-gnu";
-    };
-    xrizer-patched2 = outoftree.pkgs.${pkgs.system}.xrizer.overrideAttrs rec {
-      nativeBuildInputs = with pkgs; [
-        inputs.fenix.packages.${pkgs.system}.default.toolchain
-      ] ++ outoftree.pkgs.${pkgs.system}.xrizer.nativeBuildInputs;
-      patches = [
-      ] ++ outoftree.pkgs.${pkgs.system}.xrizer.patches;
-      doCheck = false;
-    };
-  })];
-
   home-manager.users.redm = import ./home_manager/vr.nix;
 
   users.users.redm = {
@@ -60,14 +14,13 @@
       v4l-utils # cameras
       xrgears # testing, just in case
       # opencomposite
-      # xrizer
-      xrizer-patched
+      xrizer
+      # xrizer-patched
       # xrizer-patched2
       # outoftree.pkgs.${pkgs.system}.xrizer
       motoc
       index_camera_passthrough
       wlx-overlay-s
-      # unstable.wlx-overlay-s
       # wlx-overlay-s_patched
       # outoftree.pkgs.${pkgs.system}.wlx-overlay-s
       libsurvive
@@ -75,8 +28,8 @@
       # outoftree.pkgs.${pkgs.system}.wayvr-dashboard
       outoftree.pkgs.${pkgs.system}.lovr-playspace
       outoftree.pkgs.${pkgs.system}.vrcadvert
-      outoftree.pkgs.${pkgs.system}.oscavmgr
-      # outoftree.pkgs.${pkgs.system}.vr_start
+      oscavmgr
+      # outoftree.pkgs.${pkgs.system}.oscavmgr
       outoftree.pkgs.${pkgs.system}.resolute
       # outoftree.pkgs.${pkgs.system}.monado-vulkan-layers
       outoftree.pkgs.${pkgs.system}.xrbinder

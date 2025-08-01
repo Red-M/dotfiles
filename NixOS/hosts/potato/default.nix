@@ -40,6 +40,7 @@
     ../../modules/ssh_server.nix
     ../../modules/steam.nix
     ../../modules/hardware/vr.nix
+    ../../modules/zram.nix
   ];
 
   networking.hostName = "potato"; # Define your hostname.

@@ -160,7 +160,6 @@
       oscavmgr = outoftree.pkgs.${pkgs.system}.oscavmgr;
       wayvr-dashboard = outoftree.pkgs.${pkgs.system}.wayvr-dashboard;
       wlx-overlay-s = outoftree.pkgs.${pkgs.system}.wlx-overlay-s;
-      vr_start = outoftree.pkgs.${pkgs.system}.vr_start;
       argbColors = outoftree.pkgs.${pkgs.system}.argbColors;
       resolute = outoftree.pkgs.${pkgs.system}.resolute;
       xrbinder = outoftree.pkgs.${pkgs.system}.xrbinder;

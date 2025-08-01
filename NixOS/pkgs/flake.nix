@@ -57,15 +57,6 @@
       resolute = pkgs.callPackage ./resolute {};
       xrbinder = pkgs.callPackage ./xrbinder {};
 
-      vr_start = pkgs.callPackage ./vr_start {
-        vrcadvert = self.pkgs.${system}.vrcadvert;
-        oscavmgr = self.pkgs.${system}.oscavmgr;
-        lovr-playspace = self.pkgs.${system}.lovr-playspace;
-        motoc = pkgs.motoc;
-        wlx-overlay-s = nixpkgs-xr.outputs.packages.${system}.wlx-overlay-s;
-        index_camera_passthrough = nixpkgs-xr.outputs.packages.${system}.index_camera_passthrough;
-      };
-
     });
 
   };
