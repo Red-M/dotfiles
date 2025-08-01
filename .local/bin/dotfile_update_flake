@@ -1,0 +1,16 @@
+#!/bin/bash
+
+if [ "$(whoami)" == "root" ]; then
+  echo "No root pls"
+  exit 1
+fi
+
+if [ -d /home/redm/git/dotfiles ];  then
+  nixos_conf=/home/redm/git/dotfiles
+else
+  nixos_conf=~/git/dotfiles
+fi
+
+nix flake update --flake "${nixos_conf}/NixOS/" --commit-lock-file
+exit "${?}"
+
