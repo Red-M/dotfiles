@@ -435,7 +435,7 @@
       },
       "locked": {
         "lastModified": 1,
-        "narHash": "sha256-2geIYmNnqcU2LLBrquNswy4ssczA+C4fL7xLSC0WfUg=",
+        "narHash": "sha256-mnJPT0bdPSLN+7mILjJTt6p8QaxlTMePHBA07p7e0P4=",
         "path": "./pkgs",
         "type": "path"
       },
