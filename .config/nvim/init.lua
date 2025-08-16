@@ -60,21 +60,6 @@ require("config.autocmds")
 require("lazy").setup({
   spec = {
     { import = "themes" },
-    -- {
-    --   "LazyVim/LazyVim",
-    --   -- import = "lazyvim.plugins",
-    --   opts = {
-    --     colorscheme = "monokai-pro",
-    --     news = {
-    --       -- When enabled, NEWS.md will be shown when changed.
-    --       -- This only contains big new features and breaking changes.
-    --       lazyvim = true,
-    --       -- Same but for Neovim's news.txt
-    --       neovim = true,
-    --     },
-    --   },
-    -- },
-    --{ import = "lazyvim_extras" },
     { import = "languages" },
     { import = "formatters" },
     { import = "plugins" },

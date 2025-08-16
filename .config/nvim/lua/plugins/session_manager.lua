@@ -28,7 +28,9 @@ return {
   -- }) end,
 
   {
-    "stevearc/resession.nvim",
+    -- "stevearc/resession.nvim",
+    "Dom324/resession.nvim",
+    version = "fix-gitsigns-lsp",
     lazy = false,
     priority = -2000,
     dependencies = {
@@ -50,13 +52,19 @@ return {
       },
       buf_filter = function(bufnr)
         local buftype = vim.bo[bufnr].buftype
+        local bufft = vim.bo[bufnr].filetype
+        local bufname = vim.api.nvim_buf_get_name(bufnr)
+
         if buftype == 'help' then
           return true
+        end
+        if string.match(bufname,"buffer_manager%-menu$") or buftype == "buffer_manager" then
+          return false
         end
         if buftype ~= "" and buftype ~= "acwrite" then
           return false
         end
-        if vim.api.nvim_buf_get_name(bufnr) == "" then
+        if bufname == "" then
           return false
         end
 

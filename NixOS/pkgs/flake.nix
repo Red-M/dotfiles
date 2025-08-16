@@ -28,11 +28,17 @@
       };
       pyPkgs = self.pkgs.${system}.python3Optimized.pkgs;
 
+      redserv = pkgs.callPackage ./redserv {};
+      redlibssh = pkgs.python3Packages.callPackage ./redlibssh {};
+      redlibssh2 = pkgs.python3Packages.callPackage ./redlibssh2 {};
+      redssh = pkgs.python3Packages.callPackage ./redssh { redlibssh2 = self.pkgs.${system}.redlibssh2; redlibssh = self.pkgs.${system}.redlibssh; };
+      redexpect = pkgs.python3Packages.callPackage ./redexpect { redssh = self.pkgs.${system}.redssh; };
+      serial_portal = pkgs.python3Packages.callPackage ./serial_portal { redexpect = self.pkgs.${system}.redexpect; };
+
       pipewire-module-xrdp = pkgs.callPackage ./pipewire-module-xrdp {};
 
       dropbox = pkgs.callPackage ./dropbox {};
       dropbox-cli = pkgs.callPackage ./dropbox/cli.nix { dropbox = self.pkgs.${system}.dropbox; };
-      redserv = pkgs.callPackage ./redserv {};
       reeemiks = pkgs.callPackage ./reeemiks {};
 
       znc = pkgs.callPackage ./znc {};
@@ -56,6 +62,7 @@
       };
       resolute = pkgs.callPackage ./resolute {};
       xrbinder = pkgs.callPackage ./xrbinder {};
+
 
     });
 

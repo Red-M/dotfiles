@@ -32,7 +32,7 @@
       mpvpaper
 
       krita
-      # unstable.gimp-with-plugins # builds are broken
+      unstable.gimp-with-plugins
       kdePackages.kdenlive
       kdePackages.partitionmanager
       gsmartcontrol
@@ -42,7 +42,7 @@
 
       winbox4
 
-      # audacity # broken
+      audacity
       playerctl
     ];
   };

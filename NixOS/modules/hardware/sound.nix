@@ -82,69 +82,68 @@
           };
         };
       }{
-          "name" = "libpipewire-module-loopback";
-          "flags" = [ "ifexists" "nofail" ];
-          "args" = {
-            "node.name" = "loopback_group_music";
-            "node.description" = "Music";
-            "source_dont_move" = false;
-            "remix" = false;
-            "stream.dont-remix" = true;
-            "node.passive" = true;
-            "capture.props" = {
-              "device.intended-roles" = "Music";
-              "media.class" = "Audio/Sink";
-              "audio.position" = [ "FL" "FR" ];
-            };
-            "playback.props" = {
-              "audio.position" = [ "FL" "FR" ];
-              "node.passive" = true;
-              "node.dont-remix" = true;
-            };
+        "name" = "libpipewire-module-loopback";
+        "flags" = [ "ifexists" "nofail" ];
+        "args" = {
+          "node.name" = "loopback_group_music";
+          "node.description" = "Music";
+          "source_dont_move" = false;
+          "remix" = false;
+          "stream.dont-remix" = true;
+          "node.passive" = true;
+          "capture.props" = {
+            "device.intended-roles" = "Music";
+            "media.class" = "Audio/Sink";
+            "audio.position" = [ "FL" "FR" ];
           };
-        }{
-          "name" = "libpipewire-module-loopback";
-          "flags" = [ "ifexists" "nofail" ];
-          "args" = {
-            "node.name" = "loopback_group_voice";
-            "node.description" = "Voice";
-            "source_dont_move" = false;
-            "remix" = false;
-            "stream.dont-remix" = true;
+          "playback.props" = {
+            "audio.position" = [ "FL" "FR" ];
             "node.passive" = true;
-            "capture.props" = {
-              "device.intended-roles" = "Communication";
-              "media.class" = "Audio/Sink";
-              "audio.position" = [ "FL" "FR" ];
-            };
-            "playback.props" = {
-              "audio.position" = [ "FL" "FR" ];
-              "node.passive" = true;
-              "node.dont-remix" = true;
-            };
+            "node.dont-remix" = true;
           };
-        }{
-          "name" = "libpipewire-module-loopback";
-          "flags" = [ "ifexists" "nofail" ];
-          "args" = {
-            "node.name" = "loopback_group_low_prio_games";
-            "node.description" = "Low Priority";
-            "source_dont_move" = false;
-            "remix" = false;
-            "stream.dont-remix" = true;
+        };
+      }{
+        "name" = "libpipewire-module-loopback";
+        "flags" = [ "ifexists" "nofail" ];
+        "args" = {
+          "node.name" = "loopback_group_voice";
+          "node.description" = "Voice";
+          "source_dont_move" = false;
+          "remix" = false;
+          "stream.dont-remix" = true;
+          "node.passive" = true;
+          "capture.props" = {
+            "device.intended-roles" = "Communication";
+            "media.class" = "Audio/Sink";
+            "audio.position" = [ "FL" "FR" ];
+          };
+          "playback.props" = {
+            "audio.position" = [ "FL" "FR" ];
             "node.passive" = true;
-            "capture.props" = {
-              "media.class" = "Audio/Sink";
-              "audio.position" = [ "FL" "FR" ];
-            };
-            "playback.props" = {
-              "audio.position" = [ "FL" "FR" ];
-              "node.passive" = true;
-              "node.dont-remix" = true;
-            };
+            "node.dont-remix" = true;
           };
-        }
-      ];
+        };
+      }{
+        "name" = "libpipewire-module-loopback";
+        "flags" = [ "ifexists" "nofail" ];
+        "args" = {
+          "node.name" = "loopback_group_low_prio_games";
+          "node.description" = "Low Priority";
+          "source_dont_move" = false;
+          "remix" = false;
+          "stream.dont-remix" = true;
+          "node.passive" = true;
+          "capture.props" = {
+            "media.class" = "Audio/Sink";
+            "audio.position" = [ "FL" "FR" ];
+          };
+          "playback.props" = {
+            "audio.position" = [ "FL" "FR" ];
+            "node.passive" = true;
+            "node.dont-remix" = true;
+          };
+        };
+      }];
     };
     "15-echo-cancel" = {
       "context.modules" = [{
@@ -163,18 +162,23 @@
             "webrtc.experimental_agc" = false;
             "webrtc.experimental_ns" = true;
           };
-          "audio.channels" = 1;
+          # "audio.channels" = 1;
           "source.props" = {
             "node.name" = "echo_cancel.echoless";
             "node.description" = "Echo-Cancel Source";
             "node.autoconnect" = false;
+            "node.passive" = true;
+            "node.dont-remix" = true;
+            "audio.rate" = 48000;
           };
           "playback.props" = {
             "node.name" = "echo_cancel.playback";
             "node.description" = "Echo Cancel Playback";
             "media.class" = "Audio/Source";
-            "audio.rate" = 48000;
             "node.autoconnect" = false;
+            "node.passive" = true;
+            "node.dont-remix" = true;
+            "audio.rate" = 48000;
           };
         };
       }];
@@ -193,12 +197,13 @@
               "plugin" = "${pkgs.rnnoise-plugin}/lib/ladspa/librnnoise_ladspa.so";
               "label" = "noise_suppressor_mono";
               "control" = {
-                "VAD Threshold (%)" = 35.0;
-                "VAD Grace Period (ms)" = 500;
+                "VAD Threshold (%)" = 45.0;
+                "VAD Grace Period (ms)" = 120;
                 "Retroactive VAD Grace (ms)" = 30;
               };
             }];
           };
+          "audio.channels" = 1;
           "capture.props" = {
             # "node.name" = "capture.rnnoise_source";
             "node.passive" = true;
@@ -211,8 +216,10 @@
             "node.name" = "noise_cancel.playback";
             "node.description" = "Noise Cancel Playback";
             "media.class" = "Audio/Source";
-            "audio.rate" = 48000;
             "node.autoconnect" = false;
+            "node.passive" = true;
+            "node.dont-remix" = true;
+            "audio.rate" = 48000;
           };
         };
       }];
@@ -227,19 +234,19 @@
           "node.description" = "Auto Gain Source";
           "media.name" = "Auto Gain Source";
           "aec.args" = {
-            "webrtc.high_pass_filter" = true;
-            "webrtc.noise_suppression" = true;
+            "webrtc.high_pass_filter" = false;
+            "webrtc.noise_suppression" = false;
             "webrtc.voice_detection" = false;
-            "webrtc.extended_filter" = true;
+            "webrtc.extended_filter" = false;
             "webrtc.delay_agnostic" = false;
-            "webrtc.gain_control" = true;
-            "webrtc.experimental_agc" = true;
-            "webrtc.experimental_ns" = true;
+            "webrtc.gain_control" = false;
+            "webrtc.experimental_agc" = false;
+            "webrtc.experimental_ns" = false;
           };
           "audio.channels" = 1;
           "capture.props" = {
             # "node.name" = "capture.rnnoise_source";
-            # "node.passive" = true;
+            "node.passive" = true;
             "node.name" = "auto_gain.auto_gain";
             "target.object" = "noise_cancel.playback";
             # "target.object" = "echo_cancel.echoless";
@@ -255,8 +262,10 @@
             "node.name" = "auto_gain.playback";
             "node.description" = "Auto Gain Playback";
             "media.class" = "Audio/Source";
-            "audio.rate" = 48000;
             "node.autoconnect" = false;
+            "node.passive" = true;
+            "node.dont-remix" = true;
+            "audio.rate" = 48000;
           };
         };
       }];
@@ -289,7 +298,7 @@
           };
           "capture.props" = {
             # "node.name" = "capture.rnnoise_source";
-            # "node.passive" = true;
+            "node.passive" = true;
             "audio.rate" = 48000;
             "node.name" = "compressor.compressed";
             "node.description" = "Compressor Capture";
@@ -299,8 +308,10 @@
             "node.name" = "compressor.playback";
             "node.description" = "Compressor Playback";
             "media.class" = "Audio/Source";
-            "audio.rate" = 48000;
             "node.autoconnect" = false;
+            "node.passive" = true;
+            "node.dont-remix" = true;
+            "audio.rate" = 48000;
           };
           "source.props" = {
             "node.name" = "compressor.source";

@@ -50,8 +50,8 @@
         deepClone = false;
         leaveDotGit = false;
         sparseCheckout = [ ];
-        rev = "74c3462d27ce3bdeeee70011746c9cfdf83cb49b";
-        sha256 = "sha256-Up4Qk3IvppjdT11VG0LBsn2EJo+TGPM6j2h/VLjJBxs=";
+        rev = "0997ff68d0e43d6ee3215f3ecb294a38e0b05485";
+        sha256 = "sha256-o6/uGbczYp5t6trjFIltZAMSM61adn+BvNb1fBhBSsk=";
       };
       nativeBuildInputs = with pkgs; [
         inputs.fenix.packages.${pkgs.system}.default.toolchain

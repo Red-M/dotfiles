@@ -59,7 +59,7 @@ return {
           --   },
         },
       },
-      show_buffer_icons = true,
+      -- show_buffer_icons = true,
     },
     keys = {
       { "<leader>bp", "<Cmd>BufferLineTogglePin<CR>", desc = "Toggle Pin" },

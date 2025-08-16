@@ -64,6 +64,13 @@
     gnupg
     unzip
     unrar-wrapper
+    peazip
+    p7zip
+    gzip
+    bzip2
+    gnutar
+    arj
+    unar
     pwgen
     dig
     tree
@@ -71,8 +78,6 @@
     mise
     usage
 
-    gnumake
-    pkg-config
     # gnome.gnome-keyring
     coreutils-full
     procps
@@ -85,11 +90,13 @@
     likwid
     dmidecode
 
-    libgcc
+    gnumake
     clang_multi
     cmake
+    pkg-config
     glib
     glibc
+    libgcc
     libglibutil
     libsecret
 

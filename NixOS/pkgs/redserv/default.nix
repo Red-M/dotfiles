@@ -33,6 +33,7 @@ stdenv.mkDerivation rec {
         requests
         watchdog
         psutil
+        legacy-cgi
 
         pexpect
         # ipaddress

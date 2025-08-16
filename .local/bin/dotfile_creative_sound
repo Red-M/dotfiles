@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
 
-systemctl --user stop reeemiks.service pipewire wireplumber.service
-sleep 5.5
-systemctl --user start pipewire wireplumber.service reeemiks.service
+if [ "${1}" == "service" ]; then
+  systemctl --user stop reeemiks.service pipewire wireplumber.service
+  sleep 5.5
+  systemctl --user start pipewire wireplumber.service reeemiks.service
+fi
 
 soundcard="Sound BlasterX G6"
 gain=3

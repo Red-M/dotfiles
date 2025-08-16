@@ -9,11 +9,14 @@
   services = {
     postfix = {
       enable = true;
-      relayHost = "mail-relay.red-m.net";
-      relayPort = 25;
-      destination = [ "" ];
-      origin = "${config.networking.hostName}.${config.networking.domain}";
-      hostname = "${config.networking.hostName}.${config.networking.domain}";
+      settings.main= {
+        relayhost = [
+          "mail-relay.red-m.net:25"
+        ];
+        destination = [ "" ];
+        origin = "${config.networking.hostName}.${config.networking.domain}";
+        hostname = "${config.networking.hostName}.${config.networking.domain}";
+      };
     };
   };
 

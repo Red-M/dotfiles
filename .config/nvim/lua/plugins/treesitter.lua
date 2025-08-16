@@ -31,6 +31,7 @@ return {
       "go",
       -- "gotmpl",
       "hcl",
+      "helm",
       "html",
       "ini",
       "javascript",

@@ -10,17 +10,19 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-alt.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-xr.url = "github:nix-community/nixpkgs-xr";
+    # nixpkgs-xr.url = "github:nix-community/nixpkgs-xr/58aeae5249afc3cbfe690768392fcd504e1e914a";
 
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
 
     lix-module = {
-      url = "https://git.lix.systems/lix-project/nixos-module/archive/2.93.3-1.tar.gz";
-      # url = "https://git.lix.systems/lix-project/nixos-module/archive/release-2.93.tar.gz";
+      url = "https://git.lix.systems/lix-project/nixos-module/archive/main.tar.gz";
+      # url = "https://git.lix.systems/lix-project/nixos-module/archive/2.93.3-1.tar.gz";
       inputs.nixpkgs.follows = "nixpkgs";
-      # inputs.lix = {
-      #   url = "git+https://git.lix.systems/lix-project/lix?ref=refs/tags/2.93.3";
-      #   inputs.nixpkgs.follows = "nixpkgs";
-      # };
+      inputs.lix = {
+        url = "git+https://git.lix.systems/lix-project/lix";
+        # url = "git+https://git.lix.systems/lix-project/lix?ref=release-2.93";
+        inputs.nixpkgs.follows = "nixpkgs";
+      };
     };
 
     home-manager = {
@@ -141,6 +143,18 @@
           ./hosts/homelab/gitlab
         ];
       };
+      mqtt = mkNixOS rec {
+        system = "x86_64-linux";
+        host_modules = [
+          ./hosts/homelab/mqtt
+        ];
+      };
+      home-assistant = mkNixOS rec {
+        system = "x86_64-linux";
+        host_modules = [
+          ./hosts/homelab/home-assistant
+        ];
+      };
 
     };
 
@@ -151,6 +165,12 @@
       };
     in {
       redserv = outoftree.pkgs.${pkgs.system}.redserv;
+
+      redlibssh = outoftree.pkgs.${pkgs.system}.redlibssh;
+      redlibssh2 = outoftree.pkgs.${pkgs.system}.redlibssh2;
+      redssh = outoftree.pkgs.${pkgs.system}.redssh;
+      redexpect = outoftree.pkgs.${pkgs.system}.redexpect;
+
       reeemiks = outoftree.pkgs.${pkgs.system}.reeemiks;
       znc = outoftree.pkgs.${pkgs.system}.znc;
       znc_clientaway = outoftree.pkgs.${pkgs.system}.zncModules.clientaway;
