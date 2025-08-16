@@ -41,9 +41,7 @@
 return {
   {
     "DrKJeff16/project.nvim", -- This makes the cwd of the tree move to the git repo the file is in.
-    config = function(_, opts)
-      require("project_nvim").setup(opts)
-    end
+    lazy = false,
   },
   {
     "nvim-tree/nvim-tree.lua",
