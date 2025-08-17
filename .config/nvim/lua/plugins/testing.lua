@@ -6,12 +6,6 @@ return {
     opts = {},
   },
   {
-    "gbprod/yanky.nvim",
-    enabled = false,
-    opts = {
-    },
-  },
-  {
     'anuvyklack/hydra.nvim',
     enabled = false,
   },
