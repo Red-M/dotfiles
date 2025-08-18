@@ -456,7 +456,7 @@
       "inputs": {
         "flake-compat": "flake-compat_3",
         "flake-utils": "flake-utils_3",
-        "nixpkgs": "nixpkgs_4",
+        "nixpkgs": "nixpkgs_3",
         "treefmt-nix": "treefmt-nix_2"
       },
       "locked": {
@@ -493,22 +493,6 @@
       "locked": {
         "lastModified": 1755186698,
         "narHash": "sha256-wNO3+Ks2jZJ4nTHMuks+cxAiVBGNuEBXsT29Bz6HASo=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "fbcf476f790d8a217c3eab4e12033dc4a0f6d23c",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nixos",
-        "ref": "nixos-unstable",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
-    "nixpkgs_4": {
-      "locked": {
-        "lastModified": 1755186698,
-        "narHash": "sha256-wNO3+Ks2jZJ4nTHMuks+cxAiVBGNuEBXsT29Bz6HASo=",
         "owner": "NixOS",
         "repo": "nixpkgs",
         "rev": "fbcf476f790d8a217c3eab4e12033dc4a0f6d23c",
@@ -524,7 +508,9 @@
     "nur": {
       "inputs": {
         "flake-parts": "flake-parts_2",
-        "nixpkgs": "nixpkgs_3"
+        "nixpkgs": [
+          "nixpkgs"
+        ]
       },
       "locked": {
         "lastModified": 1755535738,
