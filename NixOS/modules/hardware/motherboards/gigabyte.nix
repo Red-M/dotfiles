@@ -2,7 +2,12 @@
 { config, lib, pkgs, nixalt, unstable, outoftree, inputs, ... }:
 
 {
+  imports = [
+    ./amd.nix
+  ];
+
   boot = {
+    kernelParams = [ "acpi_enforce_resources=lax" ];
     extraModulePackages = with config.boot.kernelPackages; [
       # (it87.overrideAttrs (super: {
       #   postInstall = (super.postInstall or "") + ''

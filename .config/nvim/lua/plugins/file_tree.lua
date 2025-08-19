@@ -42,6 +42,7 @@ return {
   {
     "DrKJeff16/project.nvim", -- This makes the cwd of the tree move to the git repo the file is in.
     lazy = false,
+    opts = {},
   },
   {
     "nvim-tree/nvim-tree.lua",

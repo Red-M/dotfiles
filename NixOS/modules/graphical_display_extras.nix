@@ -8,6 +8,7 @@
 
       kdePackages.kcalc
       kdePackages.kate
+      kdePackages.kcolorchooser
 
       # mpv
       open-in-mpv

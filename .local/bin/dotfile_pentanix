@@ -1,0 +1,5 @@
+#!/bin/bash
+
+nix run github:cab404/genix7000#to-image -- pentanix.svg --num 5 --offset '37,-16' --gaps '3,-5' --angle 36 --clipr 100 --cliprot 10 --clipinv true colors "\#9c0000" "\#9c0000" "\#9c0000" "\#9c0000" "\#9c0000"
+nix run github:cab404/genix7000#to-image -- pentanix.png --num 5 --offset '37,-16' --gaps '3,-5' --angle 36 --clipr 100 --cliprot 10 --clipinv true colors "\#9c0000" "\#9c0000" "\#9c0000" "\#9c0000" "\#9c0000"
+

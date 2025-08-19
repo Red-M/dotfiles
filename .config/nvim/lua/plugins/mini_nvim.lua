@@ -18,6 +18,9 @@ local opts = {
       },
     }
   end,
+  -- Active indent guide and indent text objects. When you're browsing
+  -- code, this highlights the current level of indentation, and animates
+  -- the highlighting.
   ["indentscope"] = function(plugin)
     return {
       symbol = "┊",
@@ -46,24 +49,24 @@ return {
         { surround.mappings.replace, desc = "Replace Surrounding" },
         { surround.mappings.update_n_lines, desc = "Update `MiniSurround.config.n_lines`" },
         {
-         "<leader>bd",
-         function()
-           local bd = require("mini.bufremove").delete
-           if vim.bo.modified then
-             local choice = vim.fn.confirm(("Save changes to %q?"):format(vim.fn.bufname()), "&Yes\n&No\n&Cancel")
-             if choice == 1 then -- Yes
-               vim.cmd.write()
-               bd(0)
-             elseif choice == 2 then -- No
-               bd(0, true)
-             end
-           else
-             bd(0)
-           end
-         end,
-         desc = "Delete Buffer",
-       },
-       { "<leader>bD", function() require("mini.bufremove").delete(0, true) end, desc = "Delete Buffer (Force)" },
+          "<leader>bd",
+          function()
+            local bd = require("mini.bufremove").delete
+            if vim.bo.modified then
+              local choice = vim.fn.confirm(("Save changes to %q?"):format(vim.fn.bufname()), "&Yes\n&No\n&Cancel")
+              if choice == 1 then -- Yes
+                vim.cmd.write()
+                bd(0)
+              elseif choice == 2 then -- No
+                bd(0, true)
+              end
+            else
+              bd(0)
+            end
+          end,
+          desc = "Delete Buffer",
+        },
+        { "<leader>bD", function() require("mini.bufremove").delete(0, true) end, desc = "Delete Buffer (Force)" },
       }
       mappings = vim.tbl_filter(function(m)
         return m[1] and #m[1] > 0

@@ -2,6 +2,10 @@
 { config, lib, pkgs, nixalt, unstable, outoftree, inputs, ... }:
 
 {
+  imports = [
+    ./amd.nix
+  ];
+
   boot = {
     extraModulePackages = with config.boot.kernelPackages; [
       (nct6687d.overrideAttrs (super: {

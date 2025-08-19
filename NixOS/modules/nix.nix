@@ -99,7 +99,7 @@
     dconf2nix
     nix-index
     nixfmt-rfc-style
-    unstable.nvfetcher
+    nvfetcher
 
     nixos-anywhere
   ];

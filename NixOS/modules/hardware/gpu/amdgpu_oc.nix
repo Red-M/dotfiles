@@ -2,6 +2,10 @@
 { config, lib, pkgs, nixalt, unstable, outoftree, inputs, ... }:
 
 {
+  imports = [
+    ./amdgpu.nix
+  ];
+
   # systemd.services.lact = {
   #   description = "AMDGPU Control Daemon";
   #   after = ["multi-user.target"];
