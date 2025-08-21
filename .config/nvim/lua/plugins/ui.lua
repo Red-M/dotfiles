@@ -61,7 +61,7 @@ return {
       require("noice").setup(opts)
     end,
   },
-  { "snacks.nvim",
+  { "folke/snacks.nvim",
     lazy = false,
     opts = {
       bigfile = { enabled = true },
