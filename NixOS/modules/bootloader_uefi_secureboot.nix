@@ -3,15 +3,9 @@
 
 {
   imports = [
+    ./bootloader_uefi.nix
     inputs.lanzaboote.nixosModules.lanzaboote
   ];
-
-  boot = {
-    loader = {
-      efi.canTouchEfiVariables = true;
-    };
-  };
-
 
   environment.systemPackages = [
     # For debugging and troubleshooting Secure Boot.

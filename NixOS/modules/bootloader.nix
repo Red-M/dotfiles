@@ -9,6 +9,10 @@
         devices = [ "nodev" ];
         useOSProber = true;
         theme = "${pkgs.kdePackages.breeze-grub}/grub/themes/breeze";
+        zfsSupport = true;
+        enableCryptodisk = true;
+        efiSupport = lib.mkDefault true;
+        efiInstallAsRemovable = lib.mkDefault true;
       };
     };
   };

@@ -15,11 +15,11 @@
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
 
     lix-module = {
-      url = "https://git.lix.systems/lix-project/nixos-module/archive/main.tar.gz";
-      # url = "https://git.lix.systems/lix-project/nixos-module/archive/2.93.3-1.tar.gz";
+      # url = "https://git.lix.systems/lix-project/nixos-module/archive/main.tar.gz";
+      url = "https://git.lix.systems/lix-project/nixos-module/archive/2.93.3-1.tar.gz";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.lix = {
-        url = "git+https://git.lix.systems/lix-project/lix";
+        # url = "git+https://git.lix.systems/lix-project/lix";
         # url = "git+https://git.lix.systems/lix-project/lix?ref=release-2.93";
         inputs.nixpkgs.follows = "nixpkgs";
       };
@@ -68,7 +68,7 @@
     mkNixOS = {host_modules, system, ...}: nixpkgs.lib.nixosSystem rec {
       inherit system;
       modules = [
-        lix-module.nixosModules.default
+        # lix-module.nixosModules.default # I am tired of broken builds, constantly rebuilding lix and never getting it from the cache even when on stable releases from lix themselves, they can have a timeout.
       ] ++ host_modules;
       specialArgs = {
         inherit inputs system nixos-hardware outoftree;

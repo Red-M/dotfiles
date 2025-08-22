@@ -3,7 +3,10 @@
 return {
   {
     "nvim-lualine/lualine.nvim",
-    --lazy = false,
+    lazy = false,
+    dependencies = {
+      { "folke/noice.nvim", }
+    },
     opts = {
       options = {
         globalstatus = false,

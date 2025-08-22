@@ -4,7 +4,6 @@
 {
   imports = [
     ./hardware-configuration.nix
-    inputs.disko.nixosModules.disko
 
     ../../modules/hardware/cpu/amd_ucode.nix
     ../../modules/hardware/gpu/amdgpu.nix
@@ -15,7 +14,7 @@
     ../../modules/fonts.nix
     ../../modules/graphical_display.nix
     ../../modules/graphical_display_extras.nix
-    ../../modules/grub_uefi.nix
+    ../../modules/bootloader_uefi.nix
     ../../modules/keepass.nix
     ../../modules/kernel.nix
     ../../modules/kvm.nix

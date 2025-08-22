@@ -84,10 +84,10 @@
     activationScripts.report-changes = ''
       PATH=$PATH:${lib.makeBinPath [ pkgs.nvd pkgs.nix ]}
       echo " ---  Changes since boot  ---"
-      nvd diff /run/booted-system $(ls -dv /nix/var/nix/profiles/system-*-link | tail -1)
+      nvd diff /run/booted-system $(ls -dv /nix/var/nix/profiles/system-*-link | tail -1) || true
       echo " --- Changes from rebuild ---"
-      nix --extra-experimental-features 'nix-command' store diff-closures /run/current-system "$systemConfig"
-      nvd diff /run/current-system $(ls -dv /nix/var/nix/profiles/system-*-link | tail -1)
+      nix --extra-experimental-features 'nix-command' store diff-closures /run/current-system "$systemConfig" || true
+      nvd diff /run/current-system $(ls -dv /nix/var/nix/profiles/system-*-link | tail -1) || true
       echo " ____________________________"
     '';
   };

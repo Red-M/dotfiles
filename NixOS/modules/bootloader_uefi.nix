@@ -3,15 +3,14 @@
 
 {
   imports = [
-    ./grub.nix
+    ./bootloader.nix
   ];
 
   boot = {
     loader = {
       efi.canTouchEfiVariables = true;
       grub = {
-        # efiInstallAsRemovable = true;
-        efiSupport = true;
+        efiInstallAsRemovable = false;
       };
     };
   };

@@ -3,7 +3,9 @@
 
 {
   imports = [
-    ../../modules/grub.nix
+    inputs.disko.nixosModules.disko
+
+    ../../modules/bootloader.nix
     ../../modules/kernel.nix
     ../../modules/linux.nix
     ../../modules/locale.nix

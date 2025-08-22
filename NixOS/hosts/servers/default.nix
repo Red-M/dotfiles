@@ -3,6 +3,9 @@
 
 {
   imports = [
+    inputs.disko.nixosModules.disko
+
+    ../../modules/bootloader.nix
     ../../modules/kernel.nix
     ../../modules/linux.nix
     ../../modules/locale.nix
@@ -22,6 +25,15 @@
   environment.systemPackages = with pkgs; [
     ipset
   ];
+
+  boot = {
+    loader = {
+      grub = {
+        efiSupport = false;
+        efiInstallAsRemovable = false;
+      };
+    };
+  };
 
   systemd.services = {
     dropbox.enable = true;

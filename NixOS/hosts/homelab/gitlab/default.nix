@@ -4,7 +4,6 @@
 {
   imports = [
     ./hardware-configuration.nix
-    inputs.disko.nixosModules.disko
 
     ../../homelab
     ../../../modules/servers/gitlab.nix

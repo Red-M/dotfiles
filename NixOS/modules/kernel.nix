@@ -8,7 +8,7 @@
   system = {
     modulesTree = lib.mkForce [(
       (pkgs.aggregateModules
-        ( config.boot.extraModulePackages ++ [ config.boot.kernelPackages.kernel ])
+        ( config.boot.extraModulePackages ++ [ (lib.getOutput "modules" config.boot.kernelPackages.kernel) ]) # https://github.com/NixOS/nixpkgs/blob/master/nixos/modules/system/boot/kernel.nix search for the modulesTree option
       ).overrideAttrs {
         # earlier items in the list above override the contents of later items
         ignoreCollisions = true;
