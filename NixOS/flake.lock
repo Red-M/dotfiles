@@ -111,6 +111,20 @@
         "rev": "ff81ac966bb2cae68946d5ed5fc4994f96d0ffec",
         "revCount": 69,
         "type": "tarball",
+        "url": "https://api.flakehub.com/f/pinned/edolstra/flake-compat/1.1.0/01948eb7-9cba-704f-bbf3-3fa956735b52/source.tar.gz?rev=ff81ac966bb2cae68946d5ed5fc4994f96d0ffec&revCount=69"
+      },
+      "original": {
+        "type": "tarball",
+        "url": "https://flakehub.com/f/edolstra/flake-compat/1.tar.gz"
+      }
+    },
+    "flake-compat_4": {
+      "locked": {
+        "lastModified": 1733328505,
+        "narHash": "sha256-NeCCThCEP3eCl2l/+27kNNK7QrwZB1IJCrXfrbv5oqU=",
+        "rev": "ff81ac966bb2cae68946d5ed5fc4994f96d0ffec",
+        "revCount": 69,
+        "type": "tarball",
         "url": "https://api.flakehub.com/f/pinned/edolstra/flake-compat/1.1.0/01948eb7-9cba-704f-bbf3-3fa956735b52/source.tar.gz"
       },
       "original": {
@@ -452,7 +466,7 @@
     },
     "nixpkgs-xr_2": {
       "inputs": {
-        "flake-compat": "flake-compat_3",
+        "flake-compat": "flake-compat_4",
         "flake-utils": "flake-utils_3",
         "nixpkgs": "nixpkgs_3",
         "treefmt-nix": "treefmt-nix_2"
@@ -526,6 +540,7 @@
     },
     "outoftree": {
       "inputs": {
+        "flake-compat": "flake-compat_3",
         "nixpkgs": [
           "nixpkgs"
         ],
@@ -534,7 +549,7 @@
       },
       "locked": {
         "lastModified": 1,
-        "narHash": "sha256-49kzDxPG/ObljVNYi5OADSmZQanxNUfAKo569mhye9A=",
+        "narHash": "sha256-YWZuvjYzouxSTq1ySlawY9PxCWLy65gGMjgJhWV5dHM=",
         "path": "./pkgs",
         "type": "path"
       },
