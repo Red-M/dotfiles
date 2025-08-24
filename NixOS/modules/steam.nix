@@ -11,9 +11,9 @@
       unstable.gamescope
       steamtinkerlaunch
       yad
-      # winetricks
-      # wineWow64Packages.waylandFull
-      # wineWowPackages.waylandFull
+      winetricks
+      wineWow64Packages.waylandFull
+      wineWowPackages.waylandFull
 
       moonlight-qt
 

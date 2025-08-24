@@ -64,7 +64,6 @@
     gnupg
     unzip
     unrar-wrapper
-    peazip
     p7zip
     gzip
     bzip2

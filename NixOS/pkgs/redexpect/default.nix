@@ -9,22 +9,19 @@
 
 buildPythonPackage rec {
   pname = "redexpect";
-  version = "2.0.3-3";
+  version = "2.0.4";
 
   src = fetchFromGitHub {
     owner = "Red-M";
     repo = "RedExpect";
-    rev = "c96ab7361bd5cad79a3b9fd96e006b3ca068a60c";
-    hash = "sha256-XFw+WFj8B1I1W8bp6I+D/bgmJGbexmv0lAtU2V4sSXM=";
+    rev = "1f7a3edebacf590555e79db8868ad9c5a7a157e2";
+    hash = "sha256-qOSdKODzA+wnLx4fBZZ4N0iIgNZTZ/s8+gfXMgfEE+A=";
   };
 
   build-system = [
     setuptools
   ];
   pyproject = true;
-  patches = [
-    ./version.patch
-  ];
 
   dependencies = [
     redssh

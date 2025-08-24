@@ -45,8 +45,13 @@
 
       audacity
       playerctl
+
     ];
   };
+
+  environment.systemPackages = with pkgs; [
+    peazip
+  ];
 
 }
 

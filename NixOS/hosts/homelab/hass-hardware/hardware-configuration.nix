@@ -18,7 +18,7 @@
       fsType = "ext4";
     };
 
-  boot.initrd.luks.devices."OS-crypted".device = "/dev/disk/by-uuid/0b718c3f-e749-42b8-8f20-4ab54319e17a";
+  boot.initrd.luks.devices."OS-crypted".device = "/dev/disk/by-uuid/0e215d5b-e2c9-4337-8dc2-3e1ab9e31326";
 
   fileSystems."/bin" =
     { device = "/usr/bin";
@@ -27,7 +27,7 @@
     };
 
   fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/BC39-6C16";
+    { device = "/dev/disk/by-uuid/8E30-AC86";
       fsType = "vfat";
       options = [ "fmask=0077" "dmask=0077" ];
     };
@@ -40,8 +40,6 @@
   # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
   networking.useDHCP = lib.mkDefault true;
   # networking.interfaces.ens18.useDHCP = lib.mkDefault true;
-  # networking.interfaces.ens19.useDHCP = lib.mkDefault true;
-  # networking.interfaces.ens20.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 }

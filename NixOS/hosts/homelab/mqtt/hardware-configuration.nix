@@ -14,7 +14,7 @@
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/aaa34680-8e14-4eb2-9226-d7a0cd6bd813";
+    { device = "/dev/mapper/OS-crypted";
       fsType = "ext4";
     };
 

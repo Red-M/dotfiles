@@ -10,12 +10,12 @@ WHEELHOUSE="${TMP_FOLDER}/wheelhouse"
 
 PIPELINE_ID="${2}"
 STAGE_NAME="${3}"
-JOB_IDS=$(curl "http://gitlab.bubble-berry/Red_M/${PROJECT_NAME}/-/pipelines/${PIPELINE_ID}.json" | jq '.details.stages[] | select( .name == "'"${STAGE_NAME}"'" ) | .groups[].jobs[0].id')
+JOB_IDS=$(curl "https://gitlab.baphomet.moe/Red_M/${PROJECT_NAME}/-/pipelines/${PIPELINE_ID}.json" | jq '.details.stages[] | select( .name == "'"${STAGE_NAME}"'" ) | .groups[].jobs[0].id')
 
 
 cd "${TMP_FOLDER}"
 for JOB_ID in ${JOB_IDS[@]}; do
-    wget -O "${ZIP_TARGET}" http://gitlab.bubble-berry/Red_M/"${PROJECT_NAME}"/-/jobs/"${JOB_ID}"/artifacts/download
+    wget -O "${ZIP_TARGET}" https://gitlab.baphomet.moe/Red_M/"${PROJECT_NAME}"/-/jobs/"${JOB_ID}"/artifacts/download
     unzip "${FILENAME_ZIP}"
     \rm "${ZIP_TARGET}"
 done

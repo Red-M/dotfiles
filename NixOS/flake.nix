@@ -18,11 +18,11 @@
       # url = "https://git.lix.systems/lix-project/nixos-module/archive/main.tar.gz";
       url = "https://git.lix.systems/lix-project/nixos-module/archive/2.93.3-1.tar.gz";
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.lix = {
-        # url = "git+https://git.lix.systems/lix-project/lix";
-        # url = "git+https://git.lix.systems/lix-project/lix?ref=release-2.93";
-        inputs.nixpkgs.follows = "nixpkgs";
-      };
+      # inputs.lix = {
+      #   # url = "git+https://git.lix.systems/lix-project/lix";
+      #   # url = "git+https://git.lix.systems/lix-project/lix?ref=release-2.93";
+      #   inputs.nixpkgs.follows = "nixpkgs";
+      # };
     };
 
     home-manager = {
@@ -161,10 +161,10 @@
           ./hosts/homelab/mqtt
         ];
       };
-      home-assistant = mkNixOS rec {
+      hass-hardware = mkNixOS rec {
         system = "x86_64-linux";
         host_modules = [
-          ./hosts/homelab/home-assistant
+          ./hosts/homelab/hass-hardware
         ];
       };
 
@@ -182,6 +182,7 @@
       redlibssh2 = outoftree.pkgs.${pkgs.system}.redlibssh2;
       redssh = outoftree.pkgs.${pkgs.system}.redssh;
       redexpect = outoftree.pkgs.${pkgs.system}.redexpect;
+      serial_portal = outoftree.pkgs.${pkgs.system}.serial_portal;
 
       reeemiks = outoftree.pkgs.${pkgs.system}.reeemiks;
       znc = outoftree.pkgs.${pkgs.system}.znc;
@@ -195,6 +196,26 @@
       argbColors = outoftree.pkgs.${pkgs.system}.argbColors;
       resolute = outoftree.pkgs.${pkgs.system}.resolute;
       xrbinder = outoftree.pkgs.${pkgs.system}.xrbinder;
+    });
+
+    devShell = forAllSys (system: let
+      pkgs = import nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+      };
+      unstable_pkgs = import inputs.nixpkgs-unstable {
+        inherit system;
+        config.allowUnfree = true;
+      };
+      outoftree = import inputs.outoftree {
+        inherit system;
+        config.allowUnfree = true;
+      };
+    in
+    pkgs.mkShell {
+      buildInputs = with pkgs; [
+        outoftree.pkgs.${pkgs.system}.redexpect
+      ];
     });
 
   };
