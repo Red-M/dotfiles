@@ -3,17 +3,17 @@
     "cpu-microcodes": {
       "flake": false,
       "locked": {
-        "lastModified": 1754087349,
-        "narHash": "sha256-wbzJEX3Gg7DZu1GNfTyMajOADiMahmKg7tl2w3DpNds=",
+        "lastModified": 1755530631,
+        "narHash": "sha256-UgxIj/P3GTrGJsL9l1AFWR9CTPOcedh7dHuOWliokjg=",
         "owner": "platomav",
         "repo": "CPUMicrocodes",
-        "rev": "4258581016fbf0dca81ec0a4d33327198a34776a",
+        "rev": "bd84791c6ee695a5ed1f92abf6fb90ce2e45f8a4",
         "type": "github"
       },
       "original": {
         "owner": "platomav",
         "repo": "CPUMicrocodes",
-        "rev": "4258581016fbf0dca81ec0a4d33327198a34776a",
+        "rev": "bd84791c6ee695a5ed1f92abf6fb90ce2e45f8a4",
         "type": "github"
       }
     },
@@ -451,11 +451,11 @@
         "treefmt-nix": "treefmt-nix"
       },
       "locked": {
-        "lastModified": 1755999779,
-        "narHash": "sha256-bVo3YZX9/p8rtots/lHzvb8YqNEMs8Cz5lP0o4ONzhg=",
+        "lastModified": 1756085375,
+        "narHash": "sha256-GQ63gG1vHRS4RJcDQiyYhb4mCeNNQ6AEkEwxJ7z3ppo=",
         "owner": "nix-community",
         "repo": "nixpkgs-xr",
-        "rev": "75eb61c890bafb219c78a7a855476e387c35de72",
+        "rev": "c6f1e26065df9a035935a3f1b02ef01860f7e38d",
         "type": "github"
       },
       "original": {
@@ -525,11 +525,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1756068343,
-        "narHash": "sha256-A9oegMNEvmlMYGiEP8n6gUTKOIVsIkhBjMep5E3lYxg=",
+        "lastModified": 1756112112,
+        "narHash": "sha256-sZNmd0w8aH3/DCBDq8xbmHVDp90KhLCSf6bGFiMWfC4=",
         "owner": "nix-community",
         "repo": "NUR",
-        "rev": "52f74f1fac9a23ef7364bb47edcdcfa6fa7f20f4",
+        "rev": "dd2d02cb1c8f6f14d83d223963bb7c51b8ccf865",
         "type": "github"
       },
       "original": {
@@ -549,7 +549,7 @@
       },
       "locked": {
         "lastModified": 1,
-        "narHash": "sha256-1ydBkxim0tfMck/vFVML9s0Za0air9PsqPad66f/Eoc=",
+        "narHash": "sha256-GoVP8J5+tNcoJDNeIp7lMMwskGLSccOhZPjiWaNXF/g=",
         "path": "./pkgs",
         "type": "path"
       },
@@ -733,11 +733,11 @@
         "cpu-microcodes": "cpu-microcodes"
       },
       "locked": {
-        "lastModified": 1754273604,
-        "narHash": "sha256-UOYeysPqCVO9jsu+gjGpWn+JvpPFO5hS9CChP049w6k=",
+        "lastModified": 1756114024,
+        "narHash": "sha256-0So3s6FF/oHiKK87tNSSgtLEapU/SCq68T/qAwr/PJw=",
         "owner": "e-tho",
         "repo": "ucodenix",
-        "rev": "98c0b8ec151ee6495711d2dd902112b4f2a30ceb",
+        "rev": "0cb44462e23e9d6dfe31ae90fa55c0f859ca739c",
         "type": "github"
       },
       "original": {
