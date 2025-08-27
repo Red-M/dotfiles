@@ -7,6 +7,7 @@
     ./networking.nix # generated at runtime by nixos-infect
 
     ../../servers
+    ../../../modules/servers/mail_relay.nix
   ];
 
   networking.hostName = "gir8";
