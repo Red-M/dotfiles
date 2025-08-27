@@ -138,14 +138,6 @@ local config_keymap = {
   {"v", "<A-j>", ":<C-u>execute \"'<,'>move '>+\" . v:count1<cr>gv=gv", { desc = "Move Down" }},
   {"v", "<A-k>", ":<C-u>execute \"'<,'>move '<-\" . (v:count1 + 1)<cr>gv=gv", { desc = "Move Up" }},
 
-  -- buffers
-  {"n", "<S-h>", "<cmd>bprevious<cr>", { desc = "Prev Buffer" }},
-  {"n", "<S-l>", "<cmd>bnext<cr>", { desc = "Next Buffer" }},
-  {"n", "[b", "<cmd>bprevious<cr>", { desc = "Prev Buffer" }},
-  {"n", "]b", "<cmd>bnext<cr>", { desc = "Next Buffer" }},
-  {"n", "<leader>bb", "<cmd>e #<cr>", { desc = "Switch to Other Buffer" }},
-  {"n", "<leader>`", "<cmd>e #<cr>", { desc = "Switch to Other Buffer" }},
-
   -- Clear search and stop snippet on escape
   {{ "i", "n", "s" }, "<esc>", function()
     vim.cmd("noh")
@@ -154,7 +146,7 @@ local config_keymap = {
 
   -- Clear search, diff update and redraw
   -- taken from runtime/lua/_editor.lua
-  {"n", "<leader>ur", "<Cmd>nohlsearch<Bar>diffupdate<Bar>normal! <C-L><CR>", { desc = "Redraw / Clear hlsearch / Diff Update" }},
+  {"n", "<leader>ur", "<cmd>nohlsearch<Bar>diffupdate<Bar>normal! <C-L><cr>", { desc = "Redraw / Clear hlsearch / Diff Update" }},
 
   -- https://github.com/mhinz/vim-galore#saner-behavior-of-n-and-n
   {"n", "n", "'Nn'[v:searchforward].'zv'", { expr = true, desc = "Next Search Result" }},
@@ -191,6 +183,14 @@ local config_keymap = {
   {"n", "<leader>ui", vim.show_pos, { desc = "Inspect Pos" }},
   {"n", "<leader>uI", function() vim.treesitter.inspect_tree() vim.api.nvim_input("I") end, { desc = "Inspect Tree" }},
 
+  -- buffers
+  {"n", "<S-h>", "<cmd>bprevious<cr>", { desc = "Prev Buffer" }},
+  {"n", "<S-l>", "<cmd>bnext<cr>", { desc = "Next Buffer" }},
+  {"n", "[b", "<cmd>bprevious<cr>", { desc = "Prev Buffer" }},
+  {"n", "]b", "<cmd>bnext<cr>", { desc = "Next Buffer" }},
+  {"n", "<leader>bb", "<cmd>e #<cr>", { desc = "Switch to Other Buffer" }},
+  {"n", "<leader>`", "<cmd>e #<cr>", { desc = "Switch to Other Buffer" }},
+
   -- windows
   {"n", "<leader>-", "<C-W>s", { desc = "Split Window Below", remap = true }},
   {"n", "<leader>|", "<C-W>v", { desc = "Split Window Right", remap = true }},
@@ -205,8 +205,10 @@ local config_keymap = {
   {"n", "<leader><tab>d", "<cmd>tabclose<cr>", { desc = "Close Tab" }},
   {"n", "<leader><tab>[", "<cmd>tabprevious<cr>", { desc = "Previous Tab" }},
 
-}
+  -- because I'm not sure why you'd want a gj and I use S-j for buffer management
+  {"n", "gj", "<S-j>", { desc = "Join" }},
 
+}
 for i,v in ipairs(config_keymap) do
   keymap.set(unpack(v))
 end

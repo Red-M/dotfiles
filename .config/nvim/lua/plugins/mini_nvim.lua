@@ -1,10 +1,14 @@
 local opts = {
-  ["operators"] = function(plugin)
-    return {}
-  end,
   ["bufremove"] = function(plugin)
     return {}
   end,
+  ["splitjoin"] = function(plugin)
+    return {}
+  end,
+  ["operators"] = function(plugin)
+    return {}
+  end,
+  -- This handles i and a operators, eg, dii (delete inside indent)
   ["surround"] = function(plugin)
     return {
       mappings = {

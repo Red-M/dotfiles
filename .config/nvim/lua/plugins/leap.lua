@@ -11,6 +11,8 @@ return {
     },
     opts = {
       create_default_mappings = false,
+      safe_labels = {},
+      equivalence_classes = { ' \t\r\n', '([{', ')]}', '\'"`' },
     },
     config = function(_, opts)
       local leap = require("leap")

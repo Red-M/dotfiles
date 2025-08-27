@@ -2,7 +2,7 @@
   lib,
   stdenv,
   fetchFromGitHub,
-  python,
+  python3,
   makeWrapper,
   openssl_3,
 
@@ -27,7 +27,7 @@ stdenv.mkDerivation rec {
     openssl_3
   ];
   propagatedBuildInputs = [
-    (python.withPackages (
+    (python3.withPackages (
       pythonPackages: with pythonPackages; [
         cherrypy
         requests

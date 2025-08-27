@@ -9,7 +9,7 @@
     ../../servers
   ];
 
-  networking.hostName = "gir3";
+  networking.hostName = "gir2";
   system.stateVersion = "24.11";
 
   # TODO fix me <3

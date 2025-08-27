@@ -7,12 +7,12 @@
     ./networking.nix # generated at runtime by nixos-infect
 
     ../../servers
+    ../../../modules/servers/mail_relay.nix
   ];
 
-  networking.hostName = "gir3";
+  networking.hostName = "gir4";
   system.stateVersion = "24.11";
 
-  # TODO fix me <3
   users.motd = ''
                .-
                  /

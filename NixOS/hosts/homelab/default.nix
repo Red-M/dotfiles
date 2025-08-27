@@ -19,7 +19,7 @@
     ../../modules/servers/mail_relay_out.nix
   ];
 
-  networking.domain = "bubble-berry";
+  networking.domain = "baphomet.moe";
 
   environment.systemPackages = with pkgs; [
     ipset

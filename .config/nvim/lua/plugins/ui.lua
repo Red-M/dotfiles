@@ -18,6 +18,7 @@ return {
               { find = "%d+L, %d+B" },
               { find = "; after #%d+" },
               { find = "; before #%d+" },
+              { find = "lines <ed %d+ time" },
             },
           },
           view = "mini",
@@ -25,10 +26,10 @@ return {
       },
       presets = {
         bottom_search = true, -- use a classic bottom cmdline for search
-        --command_palette = true, -- position the cmdline and popupmenu together
+        -- command_palette = true, -- position the cmdline and popupmenu together
         long_message_to_split = true, -- long messages will be sent to a split
-        inc_rename = false, -- enables an input dialog for inc-rename.nvim
-        lsp_doc_border = false, -- add a border to hover docs and signature help
+        inc_rename = true, -- enables an input dialog for inc-rename.nvim
+        lsp_doc_border = true, -- add a border to hover docs and signature help
       },
     },
     dependencies = {
@@ -37,7 +38,7 @@ return {
       -- OPTIONAL:
       --   `nvim-notify` is only needed, if you want to use the notification view.
       --   If not available, we use `mini` as the fallback
-      "rcarriga/nvim-notify",
+      -- "rcarriga/nvim-notify",
     },
     -- stylua: ignore
     --   keys = {
@@ -61,16 +62,17 @@ return {
       require("noice").setup(opts)
     end,
   },
-  { "folke/snacks.nvim",
+  {
+    "folke/snacks.nvim",
     lazy = false,
     opts = {
-      bigfile = { enabled = true },
+      bigfile = { enabled = false },
       dashboard = { enabled = false },
       explorer = { enabled = true },
       indent = { enabled = false },
-      input = { enabled = false },
+      input = { enabled = true },
       notifier = {
-        enabled = false,
+        enabled = true,
         timeout = 3000,
       },
       picker = { enabled = true },
@@ -93,6 +95,7 @@ return {
       { "<leader>fg", function() require("snacks").picker.git_files() end, desc = "Find Git Files" },
       { "<leader>fp", function() require("snacks").picker.projects() end, desc = "Projects" },
       { "<leader>fr", function() require("snacks").picker.recent() end, desc = "Recent" },
+
       -- git
       { "<leader>gb", function() require("snacks").picker.git_branches() end, desc = "Git Branches" },
       { "<leader>gl", function() require("snacks").picker.git_log() end, desc = "Git Log" },
@@ -101,13 +104,11 @@ return {
       { "<leader>gS", function() require("snacks").picker.git_stash() end, desc = "Git Stash" },
       { "<leader>gd", function() require("snacks").picker.git_diff() end, desc = "Git Diff (Hunks)" },
       { "<leader>gf", function() require("snacks").picker.git_log_file() end, desc = "Git Log File" },
+      { "<leader>gB", function() require("snacks").gitbrowse() end, desc = "Git Browse", mode = { "n", "v" } },
 
       -- Other
-      { "<leader>.",  function() require("snacks").scratch() end, desc = "Toggle Scratch Buffer" },
-      { "<leader>S",  function() require("snacks").scratch.select() end, desc = "Select Scratch Buffer" },
       { "<leader>n",  function() require("snacks").notifier.show_history() end, desc = "Notification History" },
       { "<leader>cR", function() require("snacks").rename.rename_file() end, desc = "Rename File" },
-      { "<leader>gB", function() require("snacks").gitbrowse() end, desc = "Git Browse", mode = { "n", "v" } },
 
       {
         "<leader>N",

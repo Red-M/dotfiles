@@ -67,6 +67,7 @@
 
     wlx-overlay-s = {
       description = "VR wlx-overlay-s";
+      path = [ pkgs.wayvr-dashboard ];
       serviceConfig = {
         ExecStart = "${pkgs.wlx-overlay-s}/bin/wlx-overlay-s";
         Restart = "on-abnormal";

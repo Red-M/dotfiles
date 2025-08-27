@@ -32,7 +32,7 @@
   services = {
     envfs.enable = true;
     scx = { # experimental
-      enable = true;
+      enable = false;
       scheduler = "scx_bpfland";
     };
     gnome.gnome-keyring.enable = true;
