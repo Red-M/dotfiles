@@ -27,8 +27,8 @@
             "127.0.0.0/8"
             # TODO add dynamically generated file of safe havens
           ];
-          virtual_alias_domains = "pcre:/etc/postfix/virtual";
-          virtual_mailbox_maps = "pcre:/etc/postfix/virtual";
+          # virtual_alias_domains = "pcre:/etc/postfix/virtual";
+          # virtual_mailbox_maps = "pcre:/etc/postfix/virtual";
           recipient_delimiter = "+";
         };
       };
