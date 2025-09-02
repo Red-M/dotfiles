@@ -27,16 +27,16 @@
           { address="fe80::78de:cbff:fe5a:93c1"; prefixLength=64; }
         ];
         ipv4.routes = [ { address = "143.198.224.1"; prefixLength = 32; } ];
-        ipv6.routes = [ { address = ""; prefixLength = 128; } ];
+        # ipv6.routes = [ { address = ""; prefixLength = 128; } ];
       };
-            eth1 = {
+      eth1 = {
         ipv4.addresses = [
           { address="10.124.0.2"; prefixLength=20; }
         ];
         ipv6.addresses = [
           { address="fe80::103b:c8ff:fe4e:9fc7"; prefixLength=64; }
         ];
-        };
+      };
     };
   };
   services.udev.extraRules = ''

@@ -162,22 +162,23 @@
             "webrtc.experimental_agc" = false;
             "webrtc.experimental_ns" = true;
           };
-          # "audio.channels" = 1;
+          "audio.channels" = 1;
           "source.props" = {
             "node.name" = "echo_cancel.echoless";
             "node.description" = "Echo-Cancel Source";
             "node.autoconnect" = false;
-            "node.passive" = true;
-            "node.dont-remix" = true;
+            # "node.passive" = true;
+            # "node.dont-remix" = true;
             "audio.rate" = 48000;
+            "target.object" = "noise_cancel.playback";
           };
           "playback.props" = {
             "node.name" = "echo_cancel.playback";
             "node.description" = "Echo Cancel Playback";
             "media.class" = "Audio/Source";
             "node.autoconnect" = false;
-            "node.passive" = true;
-            "node.dont-remix" = true;
+            # "node.passive" = true;
+            # "node.dont-remix" = true;
             "audio.rate" = 48000;
           };
         };
@@ -197,28 +198,28 @@
               "plugin" = "${pkgs.rnnoise-plugin}/lib/ladspa/librnnoise_ladspa.so";
               "label" = "noise_suppressor_mono";
               "control" = {
-                "VAD Threshold (%)" = 45.0;
-                "VAD Grace Period (ms)" = 120;
-                "Retroactive VAD Grace (ms)" = 30;
+                "VAD Threshold (%)" = 1.0;
+                "VAD Grace Period (ms)" = 200;
+                "Retroactive VAD Grace (ms)" = 0;
               };
             }];
           };
           "audio.channels" = 1;
           "capture.props" = {
             # "node.name" = "capture.rnnoise_source";
-            "node.passive" = true;
+            # "node.passive" = true;
             "audio.rate" = 48000;
             "node.name" = "noise_cancel.cancel";
             "node.description" = "Noise Cancel Capture";
-            "target.object" = "echo_cancel.echoless";
+            "target.object" = "compressor.playback";
           };
           "playback.props" = {
             "node.name" = "noise_cancel.playback";
             "node.description" = "Noise Cancel Playback";
             "media.class" = "Audio/Source";
             "node.autoconnect" = false;
-            "node.passive" = true;
-            "node.dont-remix" = true;
+            # "node.passive" = true;
+            # "node.dont-remix" = true;
             "audio.rate" = 48000;
           };
         };
@@ -234,21 +235,22 @@
           "node.description" = "Auto Gain Source";
           "media.name" = "Auto Gain Source";
           "aec.args" = {
-            "webrtc.high_pass_filter" = false;
-            "webrtc.noise_suppression" = false;
-            "webrtc.voice_detection" = false;
-            "webrtc.extended_filter" = false;
+            "webrtc.high_pass_filter" = true;
+            "webrtc.noise_suppression" = true;
+            "webrtc.voice_detection" = true;
+            "webrtc.extended_filter" = true;
             "webrtc.delay_agnostic" = false;
-            "webrtc.gain_control" = false;
-            "webrtc.experimental_agc" = false;
-            "webrtc.experimental_ns" = false;
+            "webrtc.gain_control" = true;
+            "webrtc.experimental_agc" = true;
+            "webrtc.experimental_ns" = true;
           };
           "audio.channels" = 1;
           "capture.props" = {
             # "node.name" = "capture.rnnoise_source";
-            "node.passive" = true;
+            # "node.passive" = true;
             "node.name" = "auto_gain.auto_gain";
-            "target.object" = "noise_cancel.playback";
+            # "target.object" = "noise_cancel.playback";
+            "target.object" = "echo_cancel.echoless";
             # "target.object" = "echo_cancel.echoless";
             "node.description" = "Auto Gain Capture";
             # "node.autoconnect" = false;
@@ -263,8 +265,8 @@
             "node.description" = "Auto Gain Playback";
             "media.class" = "Audio/Source";
             "node.autoconnect" = false;
-            "node.passive" = true;
-            "node.dont-remix" = true;
+            # "node.passive" = true;
+            # "node.dont-remix" = true;
             "audio.rate" = 48000;
           };
         };
@@ -298,7 +300,7 @@
           };
           "capture.props" = {
             # "node.name" = "capture.rnnoise_source";
-            "node.passive" = true;
+            # "node.passive" = true;
             "audio.rate" = 48000;
             "node.name" = "compressor.compressed";
             "node.description" = "Compressor Capture";
@@ -309,8 +311,8 @@
             "node.description" = "Compressor Playback";
             "media.class" = "Audio/Source";
             "node.autoconnect" = false;
-            "node.passive" = true;
-            "node.dont-remix" = true;
+            # "node.passive" = true;
+            # "node.dont-remix" = true;
             "audio.rate" = 48000;
           };
           "source.props" = {

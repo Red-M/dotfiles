@@ -25,6 +25,7 @@
     ../../modules/messaging.nix
     ../../modules/hardware/mice.nix
     ../../modules/my_user.nix
+    ../../modules/my_user_extras.nix
     ../../modules/nix.nix
     ../../modules/obs.nix
     ../../modules/reverse_engineering.nix

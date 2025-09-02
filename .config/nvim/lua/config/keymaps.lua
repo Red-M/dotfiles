@@ -63,10 +63,10 @@ local config_keymap = {
   -- {"i", "<C-S-?>", [[<C-o>?]], {desc = "Search",}},
 
   -- Indent
-  {"n", [[<Tab>]], [[_i<tab><C-c>_]], {desc = "Indent current line",}},
+  {"n", [[<Tab>]], [[_i<Tab><C-c>_]], {desc = "Indent current line",}},
   {"n", [[<S-Tab>]], [[_<<_]], {desc = "De-indent current line",}},
-  {"i", [[<Tab>]], [[<C-o>_<tab><C-o>_]], {desc = "Indent current line",}},
-  {{"i","s"}, [[<S-Tab>]], [[<C-o>_<C-o><<<C-o>_]], {desc = "De-indent current line",}},
+  {{"i","s"}, [[<Tab>]], [[a<BS><C-o>_<Tab><C-o>_]], {desc = "Indent current line",}},
+  {{"i","s"}, [[<S-Tab>]], [[a<BS><C-o>_<C-o><<<C-o>_]], {desc = "De-indent current line",}},
 
   -- Delete line into the void
   -- {"n", [[<S-d><S-d>]], [["_dd:let @"=@0<cr>]], {desc = "Void-Delete the current line",}},

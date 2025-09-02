@@ -18,7 +18,7 @@
       })
       betterdiscordctl
       unstable.telegram-desktop
-      teamspeak_client
+      # teamspeak_client
     ];
   };
 

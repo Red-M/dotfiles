@@ -65,7 +65,7 @@ return {
     },
     sync_install = false,
     highlight = { enable = true, use_languagetree = true, },
-    indent = { enable = true },
+    -- indent = { enable = true },
     context_commentstring = { enable = true },
     incremental_selection = {
         enable = true,

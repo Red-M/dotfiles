@@ -360,7 +360,7 @@ immutability=1
 plugin=org.kde.plasma.networkmanagement
 
 [Containments][28][Applets][32][Applets][47][Configuration]
-PreloadWeight=84
+PreloadWeight=89
 
 [Containments][28][Applets][32][Applets][48]
 immutability=1
@@ -409,7 +409,7 @@ plugin=org.kde.plasma.kicker
 
 [Containments][28][Applets][52][Configuration]
 PreloadWeight=100
-popupHeight=789
+popupHeight=749
 popupWidth=300
 
 [Containments][28][Applets][52][Configuration][ConfigDialog]
@@ -723,7 +723,7 @@ plugin=org.kde.plasma.kicker
 
 [Containments][59][Applets][80][Configuration]
 PreloadWeight=100
-popupHeight=789
+popupHeight=749
 popupWidth=300
 
 [Containments][59][Applets][80][Configuration][ConfigDialog]

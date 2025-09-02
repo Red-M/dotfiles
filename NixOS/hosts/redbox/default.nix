@@ -19,6 +19,7 @@
     ../../modules/linux.nix
     ../../modules/locale.nix
     ../../modules/my_user.nix
+    ../../modules/my_user_extras.nix
     ../../modules/nix.nix
     ../../modules/obs.nix
     ../../modules/hardware/serial_devices.nix

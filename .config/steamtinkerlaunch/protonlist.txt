@@ -17,3 +17,5 @@
 /home/redm/.config/steamtinkerlaunch/proton/custom/GE-Proton10-11/proton
 /home/redm/.config/steamtinkerlaunch/proton/custom/GE-Proton10-12/proton
 /home/redm/.config/steamtinkerlaunch/proton/custom/GE-Proton10-13/proton
+/home/redm/.config/steamtinkerlaunch/proton/custom/GE-Proton10-14/proton
+/home/redm/.config/steamtinkerlaunch/proton/custom/GE-Proton10-15/proton

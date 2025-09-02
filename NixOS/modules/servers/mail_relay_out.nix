@@ -9,7 +9,7 @@
   services = {
     postfix = {
       enable = true;
-      rootAlias = "mail-relay"+"@"+"wiznerd.net";
+      rootAlias = "mail_relay"+"@"+"wiznerd.net";
       settings = {
         master = {
         };
