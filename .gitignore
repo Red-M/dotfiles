@@ -4,6 +4,7 @@
 .ssh/*
 .ssh/controlmasters/*
 .config/nvim/lazy/*
+.config/nvimpager/lazy/*
 .local/share/nvim/**
 .config/nvim/sessions/*
 **/lazy-lock.json

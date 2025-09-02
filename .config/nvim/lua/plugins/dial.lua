@@ -11,6 +11,7 @@ end
 return {
   {
     "monaqa/dial.nvim",
+    enabled = not vim.g.nvimpager,
     recommended = true,
     desc = "Increment and decrement numbers, dates, and more",
     -- stylua: ignore

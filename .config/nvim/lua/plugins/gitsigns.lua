@@ -1,6 +1,7 @@
 return {
   {
     "lewis6991/gitsigns.nvim",
+    enabled = not vim.g.nvimpager,
     --event = { "BufReadPost", "BufNewFile", "LazyFile" },
     -- event = {"BufReadPost", "BufNewFile", "BufWritePre"},
     lazy = false,

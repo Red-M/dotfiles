@@ -1,6 +1,7 @@
 return {
   {
     "gbprod/substitute.nvim",
+    enabled = not vim.g.nvimpager,
     branch = "main",
     lazy = false,
     config = function(_, opts)

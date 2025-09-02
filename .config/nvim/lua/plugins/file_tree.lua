@@ -41,11 +41,13 @@
 return {
   {
     "DrKJeff16/project.nvim", -- This makes the cwd of the tree move to the git repo the file is in.
+    enabled = not vim.g.nvimpager,
     lazy = false,
     opts = {},
   },
   {
     "nvim-tree/nvim-tree.lua",
+    enabled = not vim.g.nvimpager,
     version = false,
     lazy = false,
     dependencies = {

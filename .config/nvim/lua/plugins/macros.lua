@@ -1,7 +1,7 @@
 return {
   {
     "ecthelionvi/NeoComposer.nvim",
-    -- enabled = false,
+    enabled = not vim.g.nvimpager,
     dependencies = { "kkharji/sqlite.lua" },
     opts = {
       notify = true,

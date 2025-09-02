@@ -12,6 +12,7 @@ vim.api.nvim_create_autocmd({ "BufWritePre" }, {
 return {
   {
     'johnfrankmorgan/whitespace.nvim',
+    enabled = not vim.g.nvimpager,
     config = function ()
       require('whitespace-nvim').setup({
         -- configuration options and their defaults

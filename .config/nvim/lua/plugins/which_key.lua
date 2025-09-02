@@ -1,7 +1,7 @@
 return {
   {
     "folke/which-key.nvim",
-    -- enabled = false,
+    enabled = not vim.g.nvimpager,
   -- },
   -- {
     -- "njhoffman/which-key.nvim",

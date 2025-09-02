@@ -9,6 +9,7 @@ return {
     -- "stevearc/resession.nvim",
     "Dom324/resession.nvim",
     version = "fix-gitsigns-lsp",
+    enabled = not vim.g.nvimpager,
     lazy = false,
     priority = -2000,
     dependencies = {

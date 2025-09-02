@@ -157,6 +157,7 @@ maintain_path .inputrc
 
 maintain_path .config/nvim
 maintain_path .local/share/nvim
+maintain_path .config/nvimpager
 maintain_path .config/yamlfmt
 maintain_path .config/alacritty
 maintain_path .config/steamtinkerlaunch

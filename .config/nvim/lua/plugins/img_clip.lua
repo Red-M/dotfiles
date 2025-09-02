@@ -1,6 +1,7 @@
 return {
   {
     "HakonHarnes/img-clip.nvim",
+    enabled = not vim.g.nvimpager,
     event = "BufEnter",
     opts = {
       max_base64_size = 6000, -- max size of base64 string in KB

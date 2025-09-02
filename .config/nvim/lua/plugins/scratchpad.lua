@@ -1,6 +1,7 @@
 return {
   {
     "folke/snacks.nvim",
+    enabled = not vim.g.nvimpager,
     opts = {
       scratch = {
         filekey = {

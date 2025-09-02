@@ -1,9 +1,5 @@
--- vim.cmd([[
--- call plug#begin(has('nvim') ? stdpath('data') . '/plugged' : '~/.vim/plugged')
--- " Plug 'tpope/vim-scriptease'
--- " Plug 'tpope/vim-repeat'
--- call plug#end()
--- ]])
+
+vim.g.nvimpager = type(nvimpager) == "table"
 
 vim.opt.rtp:prepend(vim.fn.stdpath("config") .. "/lazy/base46")
 
@@ -60,11 +56,11 @@ require("config.autocmds")
 require("lazy").setup({
   spec = {
     { import = "themes" },
-    { import = "languages" },
-    { import = "formatters" },
+    vim.g.nvimpager and { import = "languages" } or {},
+    vim.g.nvimpager and { import = "formatters" } or {},
     { import = "plugins" },
     { import = "plugs" },
-    { import = "games" },
+    vim.g.nvimpager and { import = "games" } or {},
   },
   defaults = {
     -- By default, only LazyVim plugins will be lazy-loaded. Your custom plugins will load during startup.

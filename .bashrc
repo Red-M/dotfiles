@@ -6,17 +6,18 @@
 #   . /etc/bashrc # --> Read /etc/bashrc, if present.
 # fi
 
-export HISTSIZE=4096
+export HISTSIZE=8192
 export HISTFILESIZE=32768
 
 export PATH="~/.local/bin:${PATH}"
 export EDITOR=nvim
+export PAGER=nvimpager
 export LC_ALL=en_AU.UTF-8
 export LANG=en_AU.UTF-8
-export SCRCPY_SERVER_PATH=~/.local/bin/scrcpy-server
+# export SCRCPY_SERVER_PATH=~/.local/bin/scrcpy-server
 
-#export SciTE_USERHOME=~
-#export SciTE_HOME=$(readlink -f ~/.scite || echo ~/.scite)
+export SciTE_USERHOME=~
+export SciTE_HOME=$(readlink -f ~/.scite || echo ~/.scite)
 
 if [ -f ~/ssh_keys.sh ]; then
   if [ -S ${XDG_RUNTIME_DIR}/keyring/ssh ]; then
@@ -28,7 +29,6 @@ fi
 
 if [ -n "$(command -v mise 2>&1 >/dev/null)" ]; then
   export PATH="${HOME}/.local/share/mise/shims:${PATH}"
-  . <(mise completion bash)
 fi
 
 export KREW_ROOT=${KREW_ROOT:-${HOME}/.krew}
@@ -51,21 +51,15 @@ function dotfile_xpaste() { xclip -sel clip -o; }
 function mkdircd() { mkdir -p "${1}" && cd "${1}"; }
 function prepend() { while read line; do echo "${1}${line}"; done; }
 
-if [ -f /usr/share/bash-completion/completions/quilt ]; then
-  alias dquilt="quilt --quiltrc=${HOME}/.quiltrc-dpkg"
-  . /usr/share/bash-completion/completions/quilt
-  complete -F _quilt_completion $_quilt_complete_opt dquilt
-
-  export DEBUILD_DPKG_BUILDPACKAGE_OPTS="-i -I -us -uc"
-  export DEBUILD_LINTIAN_OPTS="-i -I --show-overrides"
-  #export DEBSIGN_KEYID="Your_GPG_keyID"
-fi
-
 export PATH="~/.local/bin:${PATH}"
 # export MANGOHUD=1
 
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
+
+if [ -n "$(command -v mise 2>&1 >/dev/null)" ]; then
+  . <(mise completion bash)
+fi
 
 #--------------------------------------------------------------
 #  Automatic setting of $DISPLAY (if not set already).
@@ -456,36 +450,6 @@ alias la='ll -A'           #  Show hidden files.
 alias tree='tree -Csuh'    #  Nice alternative to 'recursive ls' ...
 
 #-------------------------------------------------------------
-# Tailoring 'less'
-#-------------------------------------------------------------
-
-alias more='less'
-export PAGER=less
-export LESSCHARSET='latin1'
-export LESSOPEN='|/usr/bin/lesspipe.sh %s 2>&-'
-# Use this if lesspipe.sh exists.
-export LESS='-i -N -w  -z-4 -g -e -M -X -F -R -P%t?f%f :stdin .?pb%pb\%:?lbLine %lb:?bbByte %bb:-...'
-
-# LESS man page colors (makes Man pages more readable).
-export LESS_TERMCAP_mb=$'\E[01;31m'
-export LESS_TERMCAP_md=$'\E[01;31m'
-export LESS_TERMCAP_me=$'\E[0m'
-export LESS_TERMCAP_se=$'\E[0m'
-export LESS_TERMCAP_so=$'\E[01;44;33m'
-export LESS_TERMCAP_ue=$'\E[0m'
-export LESS_TERMCAP_us=$'\E[01;32m'
-
-#-------------------------------------------------------------
-# Spelling typos - highly personnal and keyboard-dependent :-)
-#-------------------------------------------------------------
-
-alias xs='cd'
-alias vf='cd'
-alias moer='more'
-alias moew='more'
-alias kk='ll'
-
-#-------------------------------------------------------------
 # A few fun ones
 #-------------------------------------------------------------
 
@@ -500,29 +464,17 @@ function xtitle() {
   esac
 }
 
-# Aliases that use xtitle
-alias top='xtitle Processes on $HOST && top'
-alias make='xtitle Making $(basename $PWD) ; make'
-
-# .. and functions
-function man() {
-  for i; do
-    xtitle The $(basename $1 | tr -d .[:digit:]) manual
-    command man -a "$i"
-  done
-}
-
-#-------------------------------------------------------------
-# Make the following commands run in background automatically:
-#-------------------------------------------------------------
-
-function te() { # wrapper around xemacs/gnuserv
-  if [ "$(gnuclient -batch -eval t 2>&-)" == "t" ]; then
-    gnuclient -q "$@"
-  else
-    (xemacs "$@" &)
-  fi
-}
+# # Aliases that use xtitle
+# alias top='xtitle Processes on $HOST && top'
+# alias make='xtitle Making $(basename $PWD) ; make'
+#
+# # .. and functions
+# function man() {
+#   for i; do
+#     xtitle The $(basename $1 | tr -d .[:digit:]) manual
+#     command man -a "$i"
+#   done
+# }
 
 #-------------------------------------------------------------
 # File & strings related functions:
@@ -944,7 +896,3 @@ _killall() {
 
 complete -F _killall killall killps
 
-# Local Variables:
-# mode:shell-script
-# sh-shell:bash
-# End:

@@ -15,6 +15,7 @@
     initialPassword = "a"; # Very secure :^)
     packages = with pkgs; [
       unstable.neovim
+      unstable.nvimpager
 
       rclone
       curl
