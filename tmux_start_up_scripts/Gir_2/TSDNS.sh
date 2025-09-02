@@ -1,1 +1,0 @@
-/bin/bash -i -c 'cd /home/redm/Dropbox/TSserv/gir2/tsdns/; ./tsdnsserver';/bin/bash -i

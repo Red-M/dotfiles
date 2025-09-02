@@ -95,6 +95,17 @@ function maintain_path() {
   _maintain_path true $@
 }
 
+function unmaintain_path() {
+  for target in "${@}"; do
+    script_target="${script_dir_path}/${target}"
+    home_target="${home_path}/${target}"
+    if [[ -L "${home_target}" && $(readlink -f -- "${home_target}") == "${script_target}" ]]; then
+      echo "Cleaned up ${home_target}"
+      \rm -rf "${home_target}"
+    fi
+  done
+}
+
 cd "${script_dir_path}" # We do this to allow for shell globbing the paths
 
 maintain_path .bashrc
@@ -104,6 +115,7 @@ maintain_path .irssi
 maintain_path .proxychains
 maintain_path .tmux
 maintain_path .tmux.conf
+maintain_path .config/tmuxp
 maintain_path .scite
 maintain_path .SciTEUser.properties
 
@@ -136,7 +148,7 @@ maintain_path .config/MangoHud
 maintain_path .config/gamemode.ini
 maintain_path .quiltrc-dpkg
 
-maintain_path tmux_start_up_scripts
+unmaintain_path tmux_start_up_scripts
 maintain_path Pictures/*
 maintain_path .face{,.icon}
 maintain_path *.sh

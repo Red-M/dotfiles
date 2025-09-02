@@ -1,0 +1,29 @@
+session_name: '0'
+start_directory: "~"
+windows:
+- panes:
+  - shell_command: htop
+- panes:
+  - focus: 'true'
+    shell_command: su -
+- panes:
+  - ""
+- panes:
+  - focus: 'true'
+    shell_command: nvim
+  - ""
+  layout: main-horizontal
+  focus: 'true'
+  options:
+    main-pane-height: 95%
+  start_directory: "~/git/dotfiles"
+- panes:
+  - ""
+- panes:
+  - ""
+- panes:
+  - ""
+- panes:
+  - ""
+- panes:
+  - ""

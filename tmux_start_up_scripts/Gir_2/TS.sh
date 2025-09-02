@@ -1,1 +1,0 @@
-/bin/bash -i -c 'rm -rf /home/redm/Dropbox/TSserv/gir2/ts3server.pid;/home/redm/Dropbox/TSserv/gir2/ts3server_startscript.sh start';/bin/bash -i

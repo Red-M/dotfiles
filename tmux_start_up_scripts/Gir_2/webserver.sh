@@ -1,1 +1,0 @@
-/bin/bash -i -c 'cd /home/redm/Dropbox/webserv; ./webserver.py';/bin/bash -i
