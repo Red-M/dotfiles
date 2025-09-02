@@ -14,22 +14,18 @@
     extraGroups = [ "networkmanager" "wheel" ];
     initialPassword = "a"; # Very secure :^)
     packages = with pkgs; [
-      unstable.neovim
-      unstable.nvimpager
+      neovim
+      nvimpager
 
-      rclone
-      curl
-      mise
       complete-alias
+      curl
       unixtools.xxd
       wget
       inetutils
       ipcalc
-      irssi_plugins
       yq-go
       jq
       openssl_3
-      proxychains
     ];
     openssh.authorizedKeys.keys = [
 

@@ -7,6 +7,10 @@
 
   users.users.redm = {
     packages = with pkgs; [
+      irssi_plugins
+      mise
+      proxychains
+      rclone
       tmuxp
     ];
   };

@@ -38,7 +38,7 @@ local opts = {
 
 return {
   {
-    'echasnovski/mini.nvim',
+    'nvim-mini/mini.nvim',
     enabled = true,
     lazy = false,
     priority = 1000,
