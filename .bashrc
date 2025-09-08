@@ -9,7 +9,7 @@
 export HISTSIZE=8192
 export HISTFILESIZE=32768
 
-export PATH="~/.local/bin:${PATH}"
+export PATH="${HOME}/.local/bin:${PATH}"
 export EDITOR=nvim
 export PAGER=nvimpager
 export LC_ALL=en_AU.UTF-8
@@ -17,9 +17,9 @@ export LANG=en_AU.UTF-8
 # export SCRCPY_SERVER_PATH=~/.local/bin/scrcpy-server
 
 export SciTE_USERHOME=~
-export SciTE_HOME=$(readlink -f ~/.scite || echo ~/.scite)
+export SciTE_HOME=$(readlink -f "${HOME}/.scite" || echo "${HOME}/.scite")
 
-if [ -f ~/ssh_keys.sh ]; then
+if [ -f "${HOME}/ssh_keys.sh" ]; then
   if [ -S ${XDG_RUNTIME_DIR}/keyring/ssh ]; then
     export SSH_AUTH_SOCK=${XDG_RUNTIME_DIR}/keyring/ssh
   elif [[ -S ${XDG_RUNTIME_DIR}/gcr/ssh || -n ${DISPLAY} ]]; then
@@ -27,7 +27,7 @@ if [ -f ~/ssh_keys.sh ]; then
   fi
 fi
 
-if [ -n "$(command -v mise 2>&1 >/dev/null)" ]; then
+if [[ -n "$(command -v mise 2>&1 >/dev/null)" || -d "${HOME}/.local/share/mise" ]]; then
   export PATH="${HOME}/.local/share/mise/shims:${PATH}"
 fi
 
@@ -51,7 +51,7 @@ function dotfile_xpaste() { xclip -sel clip -o; }
 function mkdircd() { mkdir -p "${1}" && cd "${1}"; }
 function prepend() { while read line; do echo "${1}${line}"; done; }
 
-export PATH="~/.local/bin:${PATH}"
+export PATH="${HOME}/.local/bin:${PATH}"
 # export MANGOHUD=1
 
 # If not running interactively, don't do anything

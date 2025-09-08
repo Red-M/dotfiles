@@ -134,12 +134,12 @@
 
   # https://github.com/NixOS/nixpkgs/issues/217119
   # https://github.com/Frogging-Family/community-patches/blob/master/linux61-tkg/cap_sys_nice_begone.mypatch
-  boot.extraModulePackages = [
-    (outoftree.pkgs.${pkgs.system}.amdgpu-kernel-module.overrideAttrs (_: {
-      kernel = config.boot.kernelPackages.kernel;
-      patches = [ ../patching/patches/amdgpu-kernel-module/cap_sys_nice_begone.patch ];
-    }))
-  ];
+  # boot.extraModulePackages = [
+  #   (outoftree.pkgs.${pkgs.system}.amdgpu-kernel-module.overrideAttrs (_: {
+  #     kernel = config.boot.kernelPackages.kernel;
+  #     patches = [ ../patching/patches/amdgpu-kernel-module/cap_sys_nice_begone.patch ];
+  #   }))
+  # ];
 
 
 

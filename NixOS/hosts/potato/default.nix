@@ -9,6 +9,8 @@
     ../../modules/hardware/gpu/amdgpu_oc.nix
     ../../modules/hardware/motherboards/asus.nix
 
+    ../../modules/decrypt_over_network.nix
+
     ../../modules/hardware/fans.nix
     ../../modules/hardware/fingerprint.nix
     ../../modules/hardware/firmware.nix

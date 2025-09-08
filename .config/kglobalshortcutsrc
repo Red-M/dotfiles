@@ -9,6 +9,40 @@ Switch to Last-Used Keyboard Layout=Meta+Alt+L,Meta+Alt+L,Switch to Last-Used Ke
 Switch to Next Keyboard Layout=Meta+Alt+K,Meta+Alt+K,Switch to Next Keyboard Layout
 _k_friendly_name=Keyboard Layout Switcher
 
+[com.google.Chrome]
+1FF647C64ACC1EF6E76628C0F7FD7FB6-generate-password=none,none,Generate a Random Password
+1FF647C64ACC1EF6E76628C0F7FD7FB6-open-embedded=none,none,Open credentials in the embedded mode (useful for popup windows) (does not yet work in Firefox browser)
+1FF647C64ACC1EF6E76628C0F7FD7FB6-save-form=none,none,Save a new Login Form in KeePass
+20A4CE0FFC1C3AD3331F688D4553960A-enter-picker-mode=none,none,Create a custom filter
+20A4CE0FFC1C3AD3331F688D4553960A-enter-zapper-mode=none,none,Remove an element
+4A04D17E61C42111309389E4021C4878-choose_credential_fields=none,none,Choose Custom Login Fields
+4A04D17E61C42111309389E4021C4878-fill_password=none,none,Fill Password Only
+4A04D17E61C42111309389E4021C4878-fill_totp=none,none,Fill TOTP
+4A04D17E61C42111309389E4021C4878-fill_username_password=none,none,Fill Username and Password
+4A04D17E61C42111309389E4021C4878-redetect_fields=none,none,Redetect login fields
+4A04D17E61C42111309389E4021C4878-reload_extension=none,none,Reload
+4A04D17E61C42111309389E4021C4878-request_autotype=none,none,Request Global Auto-Type
+4A04D17E61C42111309389E4021C4878-retrive_credentials_forced=none,none,Reopen database
+4A04D17E61C42111309389E4021C4878-save_credentials=none,none,Save Credentials
+4A04D17E61C42111309389E4021C4878-show_password_generator=none,none,Show Password Generator
+6F9FC1676F9FEB71B733F36847B44B67-open-dashboard=none,none,Open dashboard
+6F9FC1676F9FEB71B733F36847B44B67-open-dashboard-with-running-scripts=none,none,Open dashboard with the current tab's URL used as filter
+6F9FC1676F9FEB71B733F36847B44B67-open-new-script=none,none,Open new script tab
+6F9FC1676F9FEB71B733F36847B44B67-toggle-enable=none,none,Toggle enable state
+BAF1F1F9ADE4852B7AB18C7C1CF2BE18-clear-item-selections=none,none,Clear selection
+BAF1F1F9ADE4852B7AB18C7C1CF2BE18-save-session=none,none,Save tabs
+C04D3FF2E4471A8432A44514DB34D35D-close=none,none,Close Tab
+C04D3FF2E4471A8432A44514DB34D35D-discard-lefts=none,none,Discard Tabs to the Left
+C04D3FF2E4471A8432A44514DB34D35D-discard-other-windows=none,none,Discard Tabs in Other Windows
+C04D3FF2E4471A8432A44514DB34D35D-discard-rights=none,none,Discard Tabs to the Right
+C04D3FF2E4471A8432A44514DB34D35D-discard-tab=none,none,Discard Tab
+C04D3FF2E4471A8432A44514DB34D35D-discard-tabs=none,none,Discard All Other Tabs
+C04D3FF2E4471A8432A44514DB34D35D-discard-tree=none,none,Discard Tab Group
+C04D3FF2E4471A8432A44514DB34D35D-discard-window=none,none,Discard Other Tabs in This Window
+C04D3FF2E4471A8432A44514DB34D35D-move-next=none,none,Go to the Right Tab
+C04D3FF2E4471A8432A44514DB34D35D-move-previous=none,none,Go to the Left Tab
+_k_friendly_name=Google Chrome
+
 [kaccess]
 Toggle Screen Reader On and Off=Meta+Alt+S,Meta+Alt+S,Toggle Screen Reader On and Off
 _k_friendly_name=Accessibility

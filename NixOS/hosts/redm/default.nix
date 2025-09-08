@@ -5,6 +5,7 @@
   imports = [
     ./hardware-configuration.nix
 
+    ../../modules/decrypt_over_network.nix
     ../../modules/hardware/cpu/amd_ucode.nix
     ../../modules/hardware/gpu/amdgpu.nix
     ../../modules/distrobox.nix
