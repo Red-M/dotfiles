@@ -3,15 +3,27 @@
 
 {
 
-  nixpkgs.overlays = [(final: prev: {
-    python3Optimized.pkgs = lib.trivial.mergeAttrs prev.python3Optimized.pkgs {
-      watchdog = prev.python3Optimized.pkgs.watchdog.override rec {
-        disabledTestPaths = [
-          "tests/test_inotify_c.py"
-        ] ++ prev.python3Optimized.pkgs.watchdog.disabledTestPaths;
+  nixpkgs.overlays = [
+    (final: prev: {
+      python3Optimized.pkgs = lib.trivial.mergeAttrs prev.python3Optimized.pkgs {
+        watchdog = prev.python3Optimized.pkgs.watchdog.override rec {
+          disabledTestPaths = [
+            "tests/test_inotify_c.py"
+          ] ++ prev.python3Optimized.pkgs.watchdog.disabledTestPaths;
+        };
       };
-    };
-  })];
+    })
+
+    (final: prev: {
+      inherit (final.lixPackageSets.stable)
+        nixpkgs-review
+        nix-direnv
+        nix-eval-jobs
+        nix-fast-build
+        colmena;
+    })
+
+  ];
 
   # Allow unfree packages
   nixpkgs.config = {
@@ -20,13 +32,13 @@
   };
 
   nix = {
-    package = pkgs.lix;
+    package = pkgs.lixPackageSets.stable.lix;
     daemonCPUSchedPolicy = "idle";
     daemonIOSchedClass = "idle";
     settings = {
       auto-optimise-store = true;
-      keep-outputs = true;
-      keep-derivations = true;
+      keep-outputs = false;
+      keep-derivations = false;
       keep-failed = false;
       keep-going = true;
       # Enable flakes and 'nix' command
@@ -46,8 +58,8 @@
     };
     gc = {
       automatic = true;
-      dates = "weekly";
-      # options = "--delete-older-than=7d";
+      dates = "daily";
+      options = "--delete-older-than=7d";
     };
     optimise.automatic = true;
 

@@ -304,7 +304,12 @@ toggle do not disturb=none,,Toggle do not disturb
 _launch=Search\tAlt+F2
 
 [services][org.kde.spectacle.desktop]
+FullScreenScreenShot=none
+RecordRegion=Ctrl+Print\tMeta+R\tMeta+Shift+R
 RecordWindow=none
+RectangularRegionScreenShot=Print
+WindowUnderCursorScreenShot=none
+_launch=Meta+Shift+S
 
 [services][org.kde.touchpadshortcuts.desktop]
 ToggleTouchpad=Touchpad Toggle\tMeta+Ctrl+Zenkaku Hankaku

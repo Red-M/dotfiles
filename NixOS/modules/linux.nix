@@ -32,8 +32,9 @@
   services = {
     envfs.enable = true;
     scx = { # experimental
-      enable = false;
+      enable = true;
       scheduler = "scx_bpfland";
+      package = pkgs.scx.rustscheds;
     };
     gnome.gnome-keyring.enable = true;
     journald = {

@@ -43,7 +43,7 @@ rustPlatform.buildRustPackage rec {
       "wayvr_ipc-0.1.0" = "sha256-ieQaY08Ogl/F3t/p825LBp1lAO3SWH1F8206IPXEgTc=";
     };
   };
-  useFetchCargoVendor = true;
+  # useFetchCargoVendor = true;
 
   frontend = buildNpmPackage {
     inherit version src;

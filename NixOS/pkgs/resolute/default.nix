@@ -40,7 +40,7 @@ rustPlatform.buildRustPackage rec {
     outputHashes = {
     };
   };
-  useFetchCargoVendor = true;
+  # useFetchCargoVendor = true;
 
   frontend = buildNpmPackage {
     inherit version src;

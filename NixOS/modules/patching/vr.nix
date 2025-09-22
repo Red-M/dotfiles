@@ -5,6 +5,7 @@
   nixpkgs.overlays = [(final: prev: {
       monado_patched = final.monado.overrideAttrs (old : {
         version = old.version+"3";
+        __intentionallyOverridingVersion = true;
         # src = pkgs.fetchgit {
         #   url = "https://gitlab.freedesktop.org/monado/monado.git";
         #   rev = "3eda5cbf1efcf075d5a0594991944639541b5dfa";

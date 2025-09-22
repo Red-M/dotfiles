@@ -37,7 +37,7 @@ unstable.rustPlatform.buildRustPackage rec {
     hash = "sha256-+q3mRi2DkGVxAacfevgfpknkY8ktyo8SdTO9KAF1Fe0=";
   };
 
-  useFetchCargoVendor = true;
+  # useFetchCargoVendor = true;
   cargoHash = "sha256-AhASQ/5pqiPNNGQSZTdEsf1Uw4Mv5Nze1f+QaV4gaUo=";
 
   nativeBuildInputs = [

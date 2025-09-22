@@ -29,6 +29,7 @@
     ladspaPlugins
     wireplumber
     coppwr
+    # raysession
   ];
 
 
@@ -151,12 +152,12 @@
         "flags" = [ "ifexists" "nofail" ];
         "args" = {
           "library.name" = "aec/libspa-aec-webrtc";
-          # "monitor.mode" = true;
+          "monitor.mode" = true;
           "aec.args" = {
             "webrtc.high_pass_filter" = true;
             "webrtc.noise_suppression" = true;
             "webrtc.voice_detection" = true;
-            "webrtc.extended_filter" = true;
+            "webrtc.extended_filter" = false;
             "webrtc.delay_agnostic" = true;
             "webrtc.gain_control" = false; # AGC seems to mess up with Agnostic Delay Detection, especially with speech, result in very poor performance, disable by default
             "webrtc.experimental_agc" = false;
@@ -176,7 +177,15 @@
             "node.name" = "echo_cancel.playback";
             "node.description" = "Echo Cancel Playback";
             "media.class" = "Audio/Source";
-            "node.autoconnect" = false;
+            "node.autoconnect" = true;
+            # "node.passive" = true;
+            # "node.dont-remix" = true;
+            "audio.rate" = 48000;
+          };
+          "sink.props" = {
+            "node.name" = "echo_cancel.sink";
+            "node.description" = "Echo Cancel Sink";
+            "node.autoconnect" = true;
             # "node.passive" = true;
             # "node.dont-remix" = true;
             "audio.rate" = 48000;
@@ -231,17 +240,17 @@
         "flags" = [ "ifexists" "nofail" ];
         "args" = {
           "library.name" = "aec/libspa-aec-webrtc";
-          # "monitor.mode" = true;
+          "monitor.mode" = true;
           "node.description" = "Auto Gain Source";
           "media.name" = "Auto Gain Source";
           "aec.args" = {
             "webrtc.high_pass_filter" = true;
             "webrtc.noise_suppression" = true;
             "webrtc.voice_detection" = true;
-            "webrtc.extended_filter" = true;
-            "webrtc.delay_agnostic" = false;
-            "webrtc.gain_control" = true;
-            "webrtc.experimental_agc" = true;
+            "webrtc.extended_filter" = false;
+            "webrtc.delay_agnostic" = true;
+            "webrtc.gain_control" = false;
+            "webrtc.experimental_agc" = false;
             "webrtc.experimental_ns" = true;
           };
           "audio.channels" = 1;
@@ -269,6 +278,14 @@
             # "node.dont-remix" = true;
             "audio.rate" = 48000;
           };
+          "sink.props" = {
+            "node.name" = "auto_gain.sink";
+            "node.description" = "Auto gain Sink";
+            "node.autoconnect" = true;
+            # "node.passive" = true;
+            # "node.dont-remix" = true;
+            "audio.rate" = 48000;
+          };
         };
       }];
     };
@@ -290,9 +307,9 @@
                 "Attack time (ms)" = 1.5;
                 "Release time (ms)" = 401;
                 "Threshold level (dB)" = -10;
-                "Ratio (1:n)" = 5;
-                "Knee radius (dB)" = 5;
-                "Makeup gain (dB)" = 10;
+                "Ratio (1:n)" = 10;
+                "Knee radius (dB)" = 10;
+                "Makeup gain (dB)" = 20;
                 # "Amplitude (dB)" = 0;
                 # "Gain reduction (dB)" = -10;
               };

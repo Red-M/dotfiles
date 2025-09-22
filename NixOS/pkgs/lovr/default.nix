@@ -56,6 +56,7 @@ stdenv.mkDerivation rec {
     xorg.libXcursor
     xorg.xinput
     xorg.libXi
+    xorg.libxcb.dev
     python3
     curl
     git

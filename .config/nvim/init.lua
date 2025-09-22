@@ -56,11 +56,11 @@ require("config.autocmds")
 require("lazy").setup({
   spec = {
     { import = "themes" },
-    vim.g.nvimpager and { import = "languages" } or {},
-    vim.g.nvimpager and { import = "formatters" } or {},
+    vim.g.nvimpager and {} or { import = "languages" },
+    vim.g.nvimpager and {} or { import = "formatters" },
     { import = "plugins" },
     { import = "plugs" },
-    vim.g.nvimpager and { import = "games" } or {},
+    vim.g.nvimpager and {} or { import = "games" },
   },
   defaults = {
     -- By default, only LazyVim plugins will be lazy-loaded. Your custom plugins will load during startup.

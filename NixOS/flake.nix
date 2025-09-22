@@ -14,16 +14,16 @@
 
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
 
-    lix-module = {
-      # url = "https://git.lix.systems/lix-project/nixos-module/archive/main.tar.gz";
-      url = "https://git.lix.systems/lix-project/nixos-module/archive/2.93.3-1.tar.gz";
-      inputs.nixpkgs.follows = "nixpkgs";
-      # inputs.lix = {
-      #   # url = "git+https://git.lix.systems/lix-project/lix";
-      #   # url = "git+https://git.lix.systems/lix-project/lix?ref=release-2.93";
-      #   inputs.nixpkgs.follows = "nixpkgs";
-      # };
-    };
+
+    # lix-module = { # waiting until this is "stable" from lix
+    #   url = "https://git.lix.systems/lix-project/nixos-module/archive/main.tar.gz";
+    #   # url = "https://git.lix.systems/lix-project/nixos-module/archive/2.93.3-1.tar.gz";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    #   inputs.lix = {
+    #     url = "https://git.lix.systems/lix-project/lix/archive/main.tar.gz";
+    #     flake = false;
+    #   };
+    # };
 
     home-manager = {
       url = "github:nix-community/home-manager/master";
@@ -41,7 +41,6 @@
 
     nixos-hardware = {
       url = "github:NixOS/nixos-hardware/master";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     disko = {
@@ -50,7 +49,6 @@
     };
     ucodenix = {
       url = "github:e-tho/ucodenix";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
     lanzaboote = {
       url = "github:nix-community/lanzaboote/v0.4.2";
@@ -63,12 +61,12 @@
     };
   };
 
-  outputs = { self, nixpkgs, nixpkgs-alt, nixpkgs-unstable, lix-module, home-manager, nixos-hardware, nur, fenix, lanzaboote, outoftree, ... }@inputs:
+  outputs = { self, nixpkgs, nixpkgs-alt, nixpkgs-unstable, home-manager, nixos-hardware, nur, fenix, lanzaboote, outoftree, ... }@inputs:
     let inherit (self);
     mkNixOS = {host_modules, system, ...}: nixpkgs.lib.nixosSystem rec {
       inherit system;
       modules = [
-        # lix-module.nixosModules.default # I am tired of broken builds, constantly rebuilding lix and never getting it from the cache even when on stable releases from lix themselves, they can have a timeout.
+        # lix-module.nixosModules.default
       ] ++ host_modules;
       specialArgs = {
         inherit inputs system nixos-hardware outoftree;
