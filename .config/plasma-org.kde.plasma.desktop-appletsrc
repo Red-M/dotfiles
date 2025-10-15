@@ -175,6 +175,8 @@ disk/cf5ea1d3-d5b2-435a-a960-23dd68302d8b/read=158,0,237
 disk/cf5ea1d3-d5b2-435a-a960-23dd68302d8b/write=237,0,178
 disk/f079d941-f710-4e48-9fc5-d0bf97830414/read=237,0,158
 disk/f079d941-f710-4e48-9fc5-d0bf97830414/write=237,0,89
+disk/f74a7854-69ae-461e-bd83-bbfba973da90/read=0,79,237
+disk/f74a7854-69ae-461e-bd83-bbfba973da90/write=237,0,79
 disk/nvme0n1/read=0,237,0
 disk/nvme0n1/write=0,59,237
 disk/nvme1n1/read=0,237,158
@@ -183,6 +185,8 @@ disk/nvme2n1/read=0,158,237
 disk/nvme2n1/write=119,0,237
 
 [Containments][102][Applets][107][Configuration][SensorLabels]
+disk/f74a7854-69ae-461e-bd83-bbfba973da90/read=nvme2n1 Read Rate
+disk/f74a7854-69ae-461e-bd83-bbfba973da90/write=nvme2n1 Write Rate
 disk/nvme0n1/read=nvme0n1 Read Rate
 disk/nvme0n1/write=nvme0n1 Write Rate
 disk/nvme1n1/read=nvme1n1 Read Rate
@@ -191,7 +195,7 @@ disk/nvme2n1/read=nvme2n1 Read Rate
 disk/nvme2n1/write=nvme2n1 Write Rate
 
 [Containments][102][Applets][107][Configuration][Sensors]
-highPrioritySensorIds=["disk/all/read","disk/all/write","disk/nvme0n1/read","disk/nvme0n1/write","disk/nvme1n1/read","disk/nvme1n1/write"]
+highPrioritySensorIds=["disk/all/read","disk/all/write","disk/nvme0n1/read","disk/nvme0n1/write","disk/nvme1n1/read","disk/nvme1n1/write","disk/f74a7854-69ae-461e-bd83-bbfba973da90/read","disk/f74a7854-69ae-461e-bd83-bbfba973da90/write"]
 lowPrioritySensorIds=["lmsensors/nvme-pci-0a00/temp1","lmsensors/nvme-pci-0a00/temp2","lmsensors/nvme-pci-0a00/temp3","lmsensors/nvme-pci-0400/temp1","lmsensors/nvme-pci-0400/temp2","lmsensors/nvme-pci-0400/temp3","lmsensors/nvme-pci-0700/temp1","lmsensors/nvme-pci-0700/temp2","lmsensors/nvme-pci-0700/temp3","lmsensors/nvme-pci-0700/temp9"]
 
 [Containments][102][ConfigDialog]
@@ -290,6 +294,7 @@ plugin=org.kde.plasma.volume
 PreloadWeight=100
 
 [Containments][28][Applets][32][Applets][35][Configuration][General]
+currentTab=streams
 migrated=true
 showVirtualDevices=true
 
@@ -330,6 +335,9 @@ PreloadWeight=100
 immutability=1
 plugin=org.kde.kscreen
 
+[Containments][28][Applets][32][Applets][42][Configuration]
+PreloadWeight=55
+
 [Containments][28][Applets][32][Applets][43]
 immutability=1
 plugin=org.kde.plasma.notifications
@@ -353,21 +361,21 @@ immutability=1
 plugin=org.kde.plasma.battery
 
 [Containments][28][Applets][32][Applets][46][Configuration]
-PreloadWeight=0
+PreloadWeight=5
 
 [Containments][28][Applets][32][Applets][47]
 immutability=1
 plugin=org.kde.plasma.networkmanagement
 
 [Containments][28][Applets][32][Applets][47][Configuration]
-PreloadWeight=68
+PreloadWeight=99
 
 [Containments][28][Applets][32][Applets][48]
 immutability=1
 plugin=org.kde.plasma.bluetooth
 
 [Containments][28][Applets][32][Applets][48][Configuration]
-PreloadWeight=84
+PreloadWeight=94
 
 [Containments][28][Applets][32][Applets][55]
 immutability=1
@@ -388,7 +396,7 @@ immutability=1
 plugin=org.kde.plasma.brightness
 
 [Containments][28][Applets][32][Applets][94][Configuration]
-PreloadWeight=0
+PreloadWeight=7
 
 [Containments][28][Applets][32][ConfigDialog]
 DialogHeight=540
@@ -600,6 +608,7 @@ plugin=org.kde.plasma.volume
 PreloadWeight=100
 
 [Containments][59][Applets][62][Applets][65][Configuration][General]
+currentTab=streams
 migrated=true
 showVirtualDevices=true
 
@@ -667,7 +676,7 @@ immutability=1
 plugin=org.kde.plasma.bluetooth
 
 [Containments][59][Applets][62][Applets][76][Configuration]
-PreloadWeight=5
+PreloadWeight=0
 
 [Containments][59][Applets][62][Applets][77]
 immutability=1

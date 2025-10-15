@@ -7,6 +7,7 @@
     fstrim.enable = true;
     hardware.bolt.enable = true;
   };
+  hardware.enableAllFirmware = true;
 
 }
 

@@ -16,8 +16,8 @@ export LC_ALL=en_AU.UTF-8
 export LANG=en_AU.UTF-8
 # export SCRCPY_SERVER_PATH=~/.local/bin/scrcpy-server
 
-export SciTE_USERHOME=~
-export SciTE_HOME=$(readlink -f "${HOME}/.scite" || echo "${HOME}/.scite")
+# export SciTE_USERHOME=~
+# export SciTE_HOME=$(readlink -f "${HOME}/.scite" || echo "${HOME}/.scite")
 
 if [ -f "${HOME}/ssh_keys.sh" ]; then
   if [ -S ${XDG_RUNTIME_DIR}/keyring/ssh ]; then

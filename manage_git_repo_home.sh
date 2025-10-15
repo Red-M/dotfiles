@@ -132,23 +132,10 @@ maintain_path .local/share/fonts/*.{ttf,ttc}
 maintain_path .kde/share/config/breezerc
 maintain_path .kde/share/apps/color-schemes
 
-if [ $(grep -E '^NAME=' /etc/os-release) == "NAME=NixOS" ]; then
-  if [ -L ~/".config/mise" ]; then
-    \rm ~/".config/mise"
-  fi
-  maintain_path .config/mise/nixos_config.toml
-  if [ ! -L ~/".config/mise/config.toml" ]; then
-    ln -s "${script_dir_path}/.config/mise/nixos_config.toml" ~/.config/mise/config.toml
-  fi
-else
-  maintain_path .config/mise
-fi
-maintain_path .tool-versions
 maintain_path .config/MangoHud
 maintain_path .config/gamemode.ini
 maintain_path .quiltrc-dpkg
 
-unmaintain_path tmux_start_up_scripts
 maintain_path Pictures/*
 maintain_path .face{,.icon}
 maintain_path *.sh
@@ -172,6 +159,10 @@ if [ "${hostname}" == "potato" ]; then
   maintain_path .config/OpenRGB
   maintain_path .local/share/cura
 fi
+
+unmaintain_path .config/mise
+unmaintain_path .tool-versions
+unmaintain_path tmux_start_up_scripts
 
 # ls -alh "${home_path}"
 # echo "${!permissions_paths_visited[*]}"

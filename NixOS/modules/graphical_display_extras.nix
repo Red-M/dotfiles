@@ -10,6 +10,7 @@
       kdePackages.kate
       kdePackages.kcolorchooser
 
+      jellyfin-tui
       # mpv
       open-in-mpv
       # play-with-mpv

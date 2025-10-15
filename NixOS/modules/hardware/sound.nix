@@ -36,7 +36,8 @@
   services.pipewire.extraConfig.pipewire = {
     "5-rates" = {
       "context.properties" = {
-        "clock.force-rate" = 384000;
+        "default.clock.quantum" = 256;
+        "default.clock.max-quantum" = 1024;
         "default.clock.rate" = 384000;
         "default.clock.allowed-rates" = [
           44100
@@ -347,34 +348,34 @@
   };
 
   services.pipewire.wireplumber.extraConfig = {
-    "10-creative-soundcard" = {
-      "monitor.alsa.rules" = [{
-        matches = [
-          { "node.name" = "*output.usb-Creative_Technology_Ltd_Sound_BlasterX_G6*"; }
-        ];
-        actions = {
-          update-props = {
-            "audio.rate" = 384000;
-            "alsa.rate" = 384000;
-            "alsa.resolution_bits" = 32;
-            "node.max-latency" = "32768/384000";
-            "audio.format" = "S32LE";
-          };
-        };
-      }];
-    };
-    "10-music-soundcard" = {
-      "monitor.alsa.rules" = [{
-        matches = [
-          { "node.name" = "*usb-Creative_Technology_Ltd_Sound_BlasterX_G6_2C00*"; }
-        ];
-        actions = {
-          update-props = {
-            "node.description" = "Music SoundBlasterX G6";
-          };
-        };
-      }];
-    };
+    # "10-creative-soundcard" = {
+    #   "monitor.alsa.rules" = [{
+    #     matches = [
+    #       { "node.name" = "*output.usb-Creative_Technology_Ltd_Sound_BlasterX_G6*"; }
+    #     ];
+    #     actions = {
+    #       update-props = {
+    #         "audio.rate" = 384000;
+    #         "alsa.rate" = 384000;
+    #         "alsa.resolution_bits" = 32;
+    #         "node.max-latency" = "32768/384000";
+    #         "audio.format" = "S32LE";
+    #       };
+    #     };
+    #   }];
+    # };
+    # "10-music-soundcard" = {
+    #   "monitor.alsa.rules" = [{
+    #     matches = [
+    #       { "node.name" = "*usb-Creative_Technology_Ltd_Sound_BlasterX_G6_2C00*"; }
+    #     ];
+    #     actions = {
+    #       update-props = {
+    #         "node.description" = "Music SoundBlasterX G6";
+    #       };
+    #     };
+    #   }];
+    # };
     # "10-bluez" = {
     #   "monitor.bluez.properties" = {
     #     "bluez5.enable-sbc-xq" = true;

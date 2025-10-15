@@ -15,26 +15,56 @@ return {
       require("monokai-pro").setup({
         filter = "classic",
         styles = {
-          comment = { italic = false },
-          keyword = { italic = false }, -- any other keyword
-          type = { italic = false }, -- (preferred) int, long, char, etc
-          storageclass = { italic = false }, -- static, register, volatile, etc
-          structure = { italic = false }, -- struct, union, enum, etc
-          parameter = { italic = false }, -- parameter pass in function
-          annotation = { italic = false },
-          tag_attribute = { italic = false }, -- attribute of tag in reactjs
+          comment = { italic = false, bold = false },
+          keyword = { italic = false, bold = false }, -- any other keyword
+          type = { italic = false, bold = false }, -- (preferred) int, long, char, etc
+          storageclass = { italic = false, bold = false }, -- static, register, volatile, etc
+          structure = { italic = false, bold = false }, -- struct, union, enum, etc
+          parameter = { italic = false, bold = false }, -- parameter pass in function
+          annotation = { italic = false, bold = false },
+          tag_attribute = { italic = false, bold = false }, -- attribute of tag in reactjs
         },
         plugins = {
-          indent_blankline = { context_highlight = "pro" },
-          scrollbar = { context_highlight = "pro" },
-          notify = { context_highlight = "pro" },
-          lazy = { context_highlight = "pro" },
-          gitsign = { context_highlight = "pro" },
-          mini = { context_highlight = "pro" },
-          bufferline = { context_highlight = "pro" },
-          noice = { context_highlight = "pro" },
-          ['nvim-tree'] = { context_highlight = "pro" },
-          ['which-key'] = { context_highlight = "pro" },
+          indent_blankline = {
+            context_highlight = "pro",
+            bold = false,
+          },
+          scrollbar = {
+            context_highlight = "pro",
+            bold = false,
+          },
+          notify = {
+            context_highlight = "pro",
+            bold = false,
+          },
+          lazy = {
+            context_highlight = "pro",
+            bold = false,
+          },
+          gitsign = {
+            context_highlight = "pro",
+            bold = false,
+          },
+          mini = {
+            context_highlight = "pro",
+            bold = false,
+          },
+          bufferline = {
+            context_highlight = "pro",
+            bold = false,
+          },
+          noice = {
+            context_highlight = "pro",
+            bold = false,
+          },
+          ['nvim-tree'] = {
+            context_highlight = "pro",
+            bold = false,
+          },
+          ['which-key'] = {
+            context_highlight = "pro",
+            bold = false,
+          },
         },
         overridePalette = function(name)
           return {

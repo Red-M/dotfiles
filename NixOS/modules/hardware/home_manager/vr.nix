@@ -79,6 +79,7 @@
   # xdg.configFile."openxr/xrizer".source = "${pkgs.xrizer-patched}";
   # xdg.configFile."openxr/xrizer".source = "${pkgs.xrizer-patched2}";
   xdg.configFile."openxr/1/active_runtime.json".source = "${pkgs.monado_patched}/share/openxr/1/openxr_monado.json";
+  # xdg.configFile."openxr/1/active_runtime.json".source = "${pkgs.monado}/share/openxr/1/openxr_monado.json";
   xdg.dataFile."openxr/1/api_layers/implicit.d/XR_APILAYER_NOVENDOR_xr_binder.json".source = "${outoftree.pkgs.${pkgs.system}.xrbinder}/manifest.json";
   xdg.dataFile."openxr/1/api_layers/implicit.d/libxrBinder_module.so".source = "${outoftree.pkgs.${pkgs.system}.xrbinder}/libxrBinder_module.so";
 
@@ -93,8 +94,8 @@
       "${config.xdg.dataHome}/Steam/logs"
     ],
     "runtime": [
-      "/home/redm/.config/openxr/xrizer/lib/xrizer",
-      "/home/redm/.local/share/Steam/steamapps/common/SteamVR"
+      "${config.xdg.configHome}/openxr/xrizer/lib/xrizer",
+      "${config.home.homeDirectory}/.local/share/Steam/steamapps/common/SteamVR"
     ],
     "version": 1
   }

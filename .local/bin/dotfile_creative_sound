@@ -7,7 +7,7 @@ if [ "${1}" == "service" ]; then
 fi
 
 soundcard="Sound BlasterX G6"
-gain=3
+gain=1
 
 cardNumbers=$(aplay -l | grep "${soundcard}" | sed -E 's#^card ([0-9]+).*#\1#g')
 for cardNumber in ${cardNumbers}; do

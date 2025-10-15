@@ -4,7 +4,7 @@
 {
   nixpkgs.overlays = [(final: prev: {
       monado_patched = final.monado.overrideAttrs (old : {
-        version = old.version+"3";
+        version = old.version+"1337";
         __intentionallyOverridingVersion = true;
         # src = pkgs.fetchgit {
         #   url = "https://gitlab.freedesktop.org/monado/monado.git";
@@ -17,6 +17,9 @@
         # };
         cmakeFlags = old.cmakeFlags ++ [
           (lib.cmakeBool "XRT_HAVE_OPENCV" false)
+        ];
+        nativeBuildInputs = old.nativeBuildInputs ++ [
+          final.opencv4
         ];
         patches = (old.patches or []) ++ [
           # ./patches/monado/2253.patch # solarxr

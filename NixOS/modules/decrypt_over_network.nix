@@ -8,7 +8,6 @@
       availableKernelModules = [ "r8169" ];
       network = {
         enable = true;
-        flushBeforeStage2 = true;
         ssh = {
           enable = true;
           port = 2222;

@@ -10,13 +10,3 @@ index 37e6e458a..9a136214d 100644
 +#define IPC_MAX_CLIENTS 32
  #define IPC_MAX_RAW_VIEWS 32 // Max views that we can get, artificial limit.
  #define IPC_EVENT_QUEUE_SIZE 32
- 
-@@ -319,7 +319,7 @@ struct ipc_client_list
- 	uint32_t id_count;
- };
- 
--static_assert(sizeof(struct ipc_client_list) == 36,
-+static_assert(sizeof(struct ipc_client_list) == sizeof(struct ipc_client_list),
-               "invalid structure size, maybe different 32/64 bits sizes or padding");
- 
- /*!

@@ -55,10 +55,10 @@
         XRT_COMPOSITOR_COMPUTE = "1";
         STEAMVR_LH_ENABLE = "1";
         VIT_SYSTEM_LIBRARY_PATH = "${pkgs.basalt-monado}/lib/libbasalt.so";
-        XRT_COMPOSITOR_SCALE_PERCENTAGE="130";
-        U_PACING_COMP_MIN_TIME_MS = "3";
+        XRT_COMPOSITOR_SCALE_PERCENTAGE="160";
+        # U_PACING_COMP_MIN_TIME_MS = "3";
         # U_PACING_APP_IMMEDIATE_WAIT_FRAME_RETURN = "on";
-        # LH_HANDTRACKING = "on";
+        LH_HANDTRACKING = "on";
         # IPC_EXIT_ON_DISCONNECT = "on"; # kill when a client disconnects
         IPC_EXIT_WHEN_IDLE = "on"; # kill on idle! :)
         IPC_EXIT_WHEN_IDLE_DELAY_MS = "10000";
@@ -102,20 +102,20 @@
       upheldBy = [ "monado.service" ];
       unitConfig.ConditionUser = "!root";
     };
-    motoc = {
-      description = "VR motoc";
-      serviceConfig = {
-        Restart = "on-abnormal";
-      };
-      script = ''
-        ${pkgs.motoc}/bin/motoc monitor &> /dev/null
-      '';
-      bindsTo = [ "monado.service" ];
-      partOf = [ "monado.service" ];
-      after = [ "monado.service" ];
-      upheldBy = [ "monado.service" ];
-      unitConfig.ConditionUser = "!root";
-    };
+    # motoc = {
+    #   description = "VR motoc";
+    #   serviceConfig = {
+    #     Restart = "on-abnormal";
+    #   };
+    #   script = ''
+    #     ${pkgs.motoc}/bin/motoc monitor &> /dev/null
+    #   '';
+    #   bindsTo = [ "monado.service" ];
+    #   partOf = [ "monado.service" ];
+    #   after = [ "monado.service" ];
+    #   upheldBy = [ "monado.service" ];
+    #   unitConfig.ConditionUser = "!root";
+    # };
     oscavmgr = {
       description = "VR oscavmgr";
       serviceConfig = {

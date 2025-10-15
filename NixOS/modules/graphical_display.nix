@@ -52,7 +52,7 @@
     kdePackages.sddm-kcm
     kdePackages.kwallet-pam
 
-    alacritty
+    alacritty-graphics
     qdirstat
     gparted
     ntfs3g
