@@ -132,12 +132,36 @@
     };
   };
 
+  services.udev.extraRules = ''
+    # Bigscreen Beyond
+    KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="35bd", ATTRS{idProduct}=="0101", MODE="0660", TAG+="uaccess"
+    # Bigscreen Bigeye
+    KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="35bd", ATTRS{idProduct}=="0202", MODE="0660", TAG+="uaccess"
+    # Bigscreen Beyond Audio Strap
+    KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="35bd", ATTRS{idProduct}=="0105", MODE="0660", TAG+="uaccess"
+    # Bigscreen Beyond Firmware Mode?
+    KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="35bd", ATTRS{idProduct}=="4004", MODE="0660", TAG+="uaccess"
+  '';
+  boot.extraModulePackages = [
+    (outoftree.pkgs.${pkgs.system}.amdgpu-kernel-module.overrideAttrs (_: {
+      kernel = config.boot.kernelPackages.kernel;
+      patches = [ ../patching/patches/amdgpu_kernel_module/BSB_drm-amd-use-fixed-dsc-bits-per-pixel-from-edid.patch ];
+    }))
+    (outoftree.pkgs.${pkgs.system}.drm-kernel-module.overrideAttrs (_: {
+      kernel = config.boot.kernelPackages.kernel;
+      patches = [ ../patching/patches/drm_kernel_module/BSB_drm-edid-parse-DRM-VESA-dsc-bpp-target.patch ];
+    }))
+  ];
+
+  # At this current point in time, I was able to get steamvr to run in the flatpak version of steam due to segfaults in nixpkgs unstable
+  # services.flatpak.enable = true;
+  # This is for steamvr
   # https://github.com/NixOS/nixpkgs/issues/217119
   # https://github.com/Frogging-Family/community-patches/blob/master/linux61-tkg/cap_sys_nice_begone.mypatch
   # boot.extraModulePackages = [
   #   (outoftree.pkgs.${pkgs.system}.amdgpu-kernel-module.overrideAttrs (_: {
   #     kernel = config.boot.kernelPackages.kernel;
-  #     patches = [ ../patching/patches/amdgpu-kernel-module/cap_sys_nice_begone.patch ];
+  #     patches = [ ../patching/patches/amdgpu_kernel_module/cap_sys_nice_begone.patch ];
   #   }))
   # ];
 

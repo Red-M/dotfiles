@@ -48,6 +48,13 @@
   environment.systemPackages = with pkgs; [
   ];
 
+  services.pipewire.extraConfig.pipewire = {
+    "5-rates" = {
+      "context.properties" = {
+        "default.clock.max-quantum" = lib.mkForce 4096;
+      };
+    };
+  };
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;

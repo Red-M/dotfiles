@@ -80,26 +80,26 @@
   # xdg.configFile."openxr/xrizer".source = "${pkgs.xrizer-patched2}";
   xdg.configFile."openxr/1/active_runtime.json".source = "${pkgs.monado_patched}/share/openxr/1/openxr_monado.json";
   # xdg.configFile."openxr/1/active_runtime.json".source = "${pkgs.monado}/share/openxr/1/openxr_monado.json";
-  xdg.dataFile."openxr/1/api_layers/implicit.d/XR_APILAYER_NOVENDOR_xr_binder.json".source = "${outoftree.pkgs.${pkgs.system}.xrbinder}/manifest.json";
-  xdg.dataFile."openxr/1/api_layers/implicit.d/libxrBinder_module.so".source = "${outoftree.pkgs.${pkgs.system}.xrbinder}/libxrBinder_module.so";
+  # xdg.dataFile."openxr/1/api_layers/implicit.d/XR_APILAYER_NOVENDOR_xr_binder.json".source = "${outoftree.pkgs.${pkgs.system}.xrbinder}/manifest.json";
+  # xdg.dataFile."openxr/1/api_layers/implicit.d/libxrBinder_module.so".source = "${outoftree.pkgs.${pkgs.system}.xrbinder}/libxrBinder_module.so";
 
   xdg.configFile."openvr/openvrpaths.vrpath".text = ''
-  {
-    "config": [
-      "${config.xdg.dataHome}/Steam/config"
-    ],
-    "external_drivers": null,
-    "jsonid": "vrpathreg",
-    "log": [
-      "${config.xdg.dataHome}/Steam/logs"
-    ],
-    "runtime": [
-      "${config.xdg.configHome}/openxr/xrizer/lib/xrizer",
-      "${config.home.homeDirectory}/.local/share/Steam/steamapps/common/SteamVR"
-    ],
-    "version": 1
-  }
-'';
+    {
+      "config": [
+        "${config.xdg.dataHome}/Steam/config"
+      ],
+      "external_drivers": null,
+      "jsonid": "vrpathreg",
+      "log": [
+        "${config.xdg.dataHome}/Steam/logs"
+      ],
+      "runtime": [
+        "${config.xdg.configHome}/openxr/xrizer/lib/xrizer",
+        "${config.home.homeDirectory}/.local/share/Steam/steamapps/common/SteamVR"
+      ],
+      "version": 1
+    }
+  '';
 
 }
 

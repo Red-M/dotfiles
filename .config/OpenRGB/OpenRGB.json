@@ -444,7 +444,7 @@
             "Corsair Commander Pro": true,
             "Corsair Dark Core RGB Pro SE (Wired)": true,
             "Corsair Dark Core RGB SE (Wired)": true,
-            "Corsair Dominator Platinum": true,
+            "Corsair Dominator Platinum": false,
             "Corsair Glaive RGB": true,
             "Corsair Glaive RGB PRO": true,
             "Corsair H100i v2": true,
@@ -1918,7 +1918,7 @@
         "dialog_no_show_hashes": [
             14306703760882907409
         ],
-        "log_console": false
+        "log_console": true
     },
     "Plugins": {
         "plugins": [

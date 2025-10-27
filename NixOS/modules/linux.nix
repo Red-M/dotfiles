@@ -108,13 +108,19 @@
   ];
 
   console = {
+    enable = true;
     font = "ter-powerline-v24b";
     packages = [
       pkgs.terminus_font
       pkgs.powerline-fonts
     ];
   };
-  systemd.services.systemd-vconsole-setup.after = [ "local-fs.target" ]; # https://github.com/NixOS/nixpkgs/issues/312452#issuecomment-2611908384  be aware of https://github.com/NixOS/nixpkgs/issues/312452#issuecomment-2612016529
+
+  services.logind.settings.Login = {
+    NAutoVTs = 6;
+    ReserveVT = 6;
+  };
+  # systemd.services.systemd-vconsole-setup.after = [ "local-fs.target" ]; # https://github.com/NixOS/nixpkgs/issues/312452#issuecomment-2611908384  be aware of https://github.com/NixOS/nixpkgs/issues/312452#issuecomment-2612016529
   # systemd.services.systemd-vconsole-setup = { # https://github.com/NixOS/nixpkgs/issues/312452#issuecomment-2611908384  be aware of https://github.com/NixOS/nixpkgs/issues/312452#issuecomment-2612016529
   #   unitConfig = {
   #     After = "local-fs.target";
