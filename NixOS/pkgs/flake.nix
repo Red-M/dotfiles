@@ -22,7 +22,6 @@
     in {
 
       amdgpu-kernel-module = pkgs.callPackage ./amdgpu-kernel-module {};
-      drm-kernel-module = pkgs.callPackage ./drm-kernel-module {};
 
       python3Optimized = pkgs.python3Full.overrideAttrs {
         enableOptimizations = true;
@@ -64,6 +63,8 @@
       };
       resolute = pkgs.callPackage ./resolute {};
       xrbinder = pkgs.callPackage ./xrbinder {};
+      go-bsb-cams = pkgs.callPackage ./go-bsb-cams {};
+      baballonia = pkgs.callPackage ./baballonia {};
 
 
     });

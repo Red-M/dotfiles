@@ -116,10 +116,6 @@ Size=48
 [DialogIcons]
 Size=32
 
-[DirSelect Dialog]
-DirSelectDialog Size=1300,780
-History Items[$e]=file:///run/media/redm/cfc11cbc-92d8-4b49-9145-79731ba2cbca/home/redm/.local/share/Steam/steamapps
-
 [Emoticons]
 emoticonsTheme=Konqi
 parseMode=2

@@ -83,6 +83,12 @@ wmclass=UltiMaker-Cura com/.https://ultimaker.UltiMaker-Cura
 wmclasscomplete=true
 wmclassmatch=1
 
+[4dc46940-b24f-426d-8494-297f8100879f]
+Description=Force focus wl-clipboard fake windows https://github.com/bugaevc/wl-clipboard/issues/268
+fsplevelrule=2
+wmclass=wl-(copy|paste)
+wmclassmatch=3
+
 [5]
 Description=Window settings for org.telegram.desktop
 desktops=\\0
@@ -165,8 +171,8 @@ wmclasscomplete=true
 wmclassmatch=2
 
 [General]
-count=9
-rules=1,2,3,4,5,6,7,8,9
+count=10
+rules=1,2,3,4,5,6,7,8,9,4dc46940-b24f-426d-8494-297f8100879f
 
 [a24e96a6-4f59-4f7c-b2f0-aa95c51ac9f6]
 Description=Application settings for teamspeak 3

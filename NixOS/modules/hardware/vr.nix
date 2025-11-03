@@ -19,7 +19,7 @@
       # xrizer-patched2
       # outoftree.pkgs.${pkgs.system}.xrizer
       motoc
-      index_camera_passthrough
+      # index_camera_passthrough
       wlx-overlay-s
       # wlx-overlay-s_patched
       # outoftree.pkgs.${pkgs.system}.wlx-overlay-s
@@ -33,6 +33,11 @@
       outoftree.pkgs.${pkgs.system}.resolute
       # outoftree.pkgs.${pkgs.system}.monado-vulkan-layers
       outoftree.pkgs.${pkgs.system}.xrbinder
+
+      steamcmd # For BSB
+      # BSB2e
+      outoftree.pkgs.${pkgs.system}.go-bsb-cams
+      outoftree.pkgs.${pkgs.system}.baballonia
     ];
   };
 
@@ -54,8 +59,9 @@
         AMD_VULKAN_ICD = "RADV";
         XRT_COMPOSITOR_COMPUTE = "1";
         STEAMVR_LH_ENABLE = "1";
-        VIT_SYSTEM_LIBRARY_PATH = "${pkgs.basalt-monado}/lib/libbasalt.so";
-        XRT_COMPOSITOR_SCALE_PERCENTAGE="160";
+        # VIT_SYSTEM_LIBRARY_PATH = "${pkgs.basalt-monado}/lib/libbasalt.so";
+        XRT_COMPOSITOR_SCALE_PERCENTAGE="140";
+        # XRT_COMPOSITOR_SCALE_PERCENTAGE="160";
         # U_PACING_COMP_MIN_TIME_MS = "3";
         # U_PACING_APP_IMMEDIATE_WAIT_FRAME_RETURN = "on";
         LH_HANDTRACKING = "on";
@@ -78,18 +84,6 @@
       upheldBy = [ "monado.service" ];
       unitConfig.ConditionUser = "!root";
     };
-    index_camera_passthrough = {
-      description = "VR index_camera_passthrough";
-      serviceConfig = {
-        ExecStart = "${pkgs.index_camera_passthrough}/bin/index_camera_passthrough";
-        Restart = "on-abnormal";
-      };
-      bindsTo = [ "monado.service" ];
-      partOf = [ "monado.service" ];
-      after = [ "monado.service" ];
-      upheldBy = [ "wlx-overlay-s.service" ];
-      unitConfig.ConditionUser = "!root";
-    };
     lovr-playspace = {
       description = "VR lovr-playspace";
       serviceConfig = {
@@ -102,6 +96,32 @@
       upheldBy = [ "monado.service" ];
       unitConfig.ConditionUser = "!root";
     };
+    # oscavmgr = {
+    #   description = "VR oscavmgr";
+    #   serviceConfig = {
+    #     Restart = "on-abnormal";
+    #   };
+    #   script = ''
+    #     ${pkgs.oscavmgr}/bin/oscavmgr openxr &> /dev/null
+    #   '';
+    #   bindsTo = [ "monado.service" ];
+    #   partOf = [ "monado.service" ];
+    #   after = [ "monado.service" ];
+    #   upheldBy = [ "monado.service" ];
+    #   unitConfig.ConditionUser = "!root";
+    # };
+    # index_camera_passthrough = {
+    #   description = "VR index_camera_passthrough";
+    #   serviceConfig = {
+    #     ExecStart = "${pkgs.index_camera_passthrough}/bin/index_camera_passthrough";
+    #     Restart = "on-abnormal";
+    #   };
+    #   bindsTo = [ "monado.service" ];
+    #   partOf = [ "monado.service" ];
+    #   after = [ "monado.service" ];
+    #   upheldBy = [ "wlx-overlay-s.service" ];
+    #   unitConfig.ConditionUser = "!root";
+    # };
     # motoc = {
     #   description = "VR motoc";
     #   serviceConfig = {
@@ -116,45 +136,40 @@
     #   upheldBy = [ "monado.service" ];
     #   unitConfig.ConditionUser = "!root";
     # };
-    oscavmgr = {
-      description = "VR oscavmgr";
-      serviceConfig = {
-        Restart = "on-abnormal";
-      };
-      script = ''
-        ${outoftree.pkgs.${pkgs.system}.oscavmgr}/bin/oscavmgr openxr &> /dev/null
-      '';
-      bindsTo = [ "monado.service" ];
-      partOf = [ "monado.service" ];
-      after = [ "monado.service" ];
-      upheldBy = [ "monado.service" ];
-      unitConfig.ConditionUser = "!root";
-    };
   };
 
   services.udev.extraRules = ''
     # Bigscreen Beyond
-    KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="35bd", ATTRS{idProduct}=="0101", MODE="0660", TAG+="uaccess"
+    KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="35bd", ATTRS{idProduct}=="0101", MODE="0660", TAG+="uaccess", GROUP="video"
     # Bigscreen Bigeye
-    KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="35bd", ATTRS{idProduct}=="0202", MODE="0660", TAG+="uaccess"
+    SUBSYSTEM=="usb", ATTRS{idVendor}=="35bd", ATTRS{idProduct}=="0202", MODE="0660", TAG+="uaccess", GROUP="video", SYMLINK+="bigeye0"
+    # SUBSYSTEM=="video4linux", SUBSYSTEMS=="usb", DRIVERS=="uvcvideo", ATTRS{idVendor}=="35bd", ATTRS{idProduct}=="0202", MODE="0660", TAG+="uaccess", GROUP="video"
     # Bigscreen Beyond Audio Strap
-    KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="35bd", ATTRS{idProduct}=="0105", MODE="0660", TAG+="uaccess"
+    KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="35bd", ATTRS{idProduct}=="0105", MODE="0660", TAG+="uaccess", GROUP="video"
     # Bigscreen Beyond Firmware Mode?
-    KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="35bd", ATTRS{idProduct}=="4004", MODE="0660", TAG+="uaccess"
+    KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="35bd", ATTRS{idProduct}=="4004", MODE="0660", TAG+="uaccess", GROUP="video"
   '';
-  boot.extraModulePackages = [
-    (outoftree.pkgs.${pkgs.system}.amdgpu-kernel-module.overrideAttrs (_: {
-      kernel = config.boot.kernelPackages.kernel;
-      patches = [ ../patching/patches/amdgpu_kernel_module/BSB_drm-amd-use-fixed-dsc-bits-per-pixel-from-edid.patch ];
-    }))
-    (outoftree.pkgs.${pkgs.system}.drm-kernel-module.overrideAttrs (_: {
-      kernel = config.boot.kernelPackages.kernel;
-      patches = [ ../patching/patches/drm_kernel_module/BSB_drm-edid-parse-DRM-VESA-dsc-bpp-target.patch ];
-    }))
+  boot.kernelPatches = [
+    {
+      name = "BSB_part1";
+      patch = ../patching/patches/amdgpu_kernel_module/BSB_drm-amd-use-fixed-dsc-bits-per-pixel-from-edid.patch;
+    }
+    {
+      name = "BSB_part2";
+      patch = ../patching/patches/amdgpu_kernel_module/BSB_drm-edid-parse-DRM-VESA-dsc-bpp-target.patch;
+    }
   ];
+  #networking.firewall.allowedTCPPorts = [ 8080 ]; # For go-bsb-cams to allow other hosts to connect to it
+
+  # boot.extraModulePackages = [
+  #   (outoftree.pkgs.${pkgs.system}.amdgpu-kernel-module.overrideAttrs (_: {
+  #     kernel = config.boot.kernelPackages.kernel;
+  #     patches = [ ../patching/patches/amdgpu_kernel_module/BSB_drm-amd-use-fixed-dsc-bits-per-pixel-from-edid.patch ../patching/patches/drm_kernel_module/BSB_drm-edid-parse-DRM-VESA-dsc-bpp-target.patch ];
+  #   }))
+  # ];
 
   # At this current point in time, I was able to get steamvr to run in the flatpak version of steam due to segfaults in nixpkgs unstable
-  # services.flatpak.enable = true;
+  services.flatpak.enable = true;
   # This is for steamvr
   # https://github.com/NixOS/nixpkgs/issues/217119
   # https://github.com/Frogging-Family/community-patches/blob/master/linux61-tkg/cap_sys_nice_begone.mypatch

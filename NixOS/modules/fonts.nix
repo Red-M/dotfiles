@@ -20,7 +20,7 @@
       ];
     };
     packages = with pkgs; [
-      ubuntu_font_family
+      ubuntu-classic
       liberation_ttf
       # Persian Font
       vazir-fonts
@@ -32,7 +32,6 @@
       emojione
       noto-fonts-color-emoji
       openmoji-color
-      noto-fonts-emoji
       liberation_ttf
       fira-code
       fira-code-symbols

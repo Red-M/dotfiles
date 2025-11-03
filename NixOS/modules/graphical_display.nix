@@ -42,7 +42,7 @@
   };
 
   environment.systemPackages = with pkgs; [
-    glxinfo
+    mesa-demos
     vulkan-tools
     clinfo
     xdg-utils
