@@ -48,11 +48,13 @@
         "https://cache.lix.systems"
         "https://cache.nixos.org/"
         "https://nix-community.cachix.org"
+        "https://nixos-raspberrypi.cachix.org"
       ];
       trusted-public-keys = [
         "cache.lix.systems:aBnZUw8zA7H35Cz2RyKFVs3H4PlGTLawyY5KRbvJR8o="
         "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
         "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+        "nixos-raspberrypi.cachix.org-1:4iMO9LXa8BqhU+Rpg6LQKiGa2lsNh/j2oiYLNOQ5sPI="
       ];
 
     };
@@ -65,7 +67,7 @@
 
     # Add each flake input as a registry, making nix3 commands consistent with flake
     # registry.nixpkgs.flake = inputs.nixpkgs;
-    registry = lib.mapAttrs (_: value: { flake = value; }) inputs;
+    registry = lib.mkForce (lib.mapAttrs (_: value: { flake = value; }) inputs);
     # Additionally, add inputs to system's legacy channels to make legacy nix commands consistent
     nixPath = lib.mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry;
   };

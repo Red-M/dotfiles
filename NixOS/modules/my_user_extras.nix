@@ -3,6 +3,7 @@
 
 {
   imports = [
+    ./extractors.nix
   ];
 
   users.users.redm = {
@@ -12,6 +13,7 @@
       proxychains
       rclone
       tmuxp
+      yt-dlp
     ];
   };
 

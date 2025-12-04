@@ -27,5 +27,11 @@
       options it87 ignore_resource_conflict=1 mmio=1
     '';
   };
+
+  # X870E Master
+  services.udev.extraRules = ''
+    SUBSYSTEM=="input", MODE="0666"
+    SUBSYSTEM=="usb", ATTRS{idVendor}=="048d", ATTRS{idProduct}=="5711", MODE="0666"
+  '';
 }
 

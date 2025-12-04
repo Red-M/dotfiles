@@ -4,7 +4,7 @@
 {
 
   nixpkgs.overlays = [(final: prev: {
-    coolercontrol = outoftree.pkgs.${pkgs.system}.coolercontrol; # Updates to newer version https://github.com/NixOS/nixpkgs/pull/394379
+    # coolercontrol = outoftree.pkgs.${pkgs.system}.coolercontrol; # Updates to newer version https://github.com/NixOS/nixpkgs/pull/394379
   })];
 
   programs = {
@@ -15,7 +15,7 @@
 
   environment.systemPackages = with pkgs; [
     coolercontrol.coolercontrold
-    coolercontrol.coolercontrol-liqctld
+    # coolercontrol.coolercontrol-liqctld
     liquidctl
     lm_sensors
 

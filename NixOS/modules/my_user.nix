@@ -14,8 +14,8 @@
     extraGroups = [ "networkmanager" "wheel" ];
     initialPassword = "a"; # Very secure :^)
     packages = with pkgs; [
-      neovim
-      nvimpager
+      unstable.neovim
+      unstable.nvimpager
 
       complete-alias
       curl

@@ -3,31 +3,56 @@
 
 {
   nixpkgs.overlays = [(final: prev: {
-      monado_patched = final.monado.overrideAttrs (old : {
-        version = old.version+"1337";
-        __intentionallyOverridingVersion = true;
-        # src = pkgs.fetchgit {
-        #   url = "https://gitlab.freedesktop.org/monado/monado.git";
-        #   rev = "3eda5cbf1efcf075d5a0594991944639541b5dfa";
-        #   fetchSubmodules = false;
-        #   deepClone = false;
-        #   leaveDotGit = false;
-        #   sparseCheckout = [ ];
-        #   sha256 = "sha256-NSOvFqIOo7QLya9ipGAdO/Vm9ryEQiPfP6ptxSfmpLc=";
-        # };
-        cmakeFlags = old.cmakeFlags ++ [
-          (lib.cmakeBool "XRT_HAVE_OPENCV" false)
-        ];
-        nativeBuildInputs = old.nativeBuildInputs ++ [
-          final.opencv4
-        ];
-        patches = (old.patches or []) ++ [
-          # ./patches/monado/2253.patch # solarxr
-          # ./patches/monado/2426.patch # index brightness
-          # ./patches/monado/2522.patch # regession fix for 2509
-          ./patches/monado/up_client_max.patch
-        ];
-      });
+    monado_patched = final.monado.overrideAttrs (old : {
+      version = old.version+"1337";
+      __intentionallyOverridingVersion = true;
+      # src = pkgs.fetchgit {
+      #   url = "https://gitlab.freedesktop.org/monado/monado.git";
+      #   rev = "3eda5cbf1efcf075d5a0594991944639541b5dfa";
+      #   fetchSubmodules = false;
+      #   deepClone = false;
+      #   leaveDotGit = false;
+      #   sparseCheckout = [ ];
+      #   sha256 = "sha256-NSOvFqIOo7QLya9ipGAdO/Vm9ryEQiPfP6ptxSfmpLc=";
+      # };
+      cmakeFlags = old.cmakeFlags ++ [
+        (lib.cmakeBool "XRT_HAVE_OPENCV" false)
+      ];
+      nativeBuildInputs = old.nativeBuildInputs ++ [
+        final.opencv4
+      ];
+      patches = (old.patches or []) ++ [
+        # ./patches/monado/2253.patch # solarxr
+        # ./patches/monado/2426.patch # index brightness
+        # ./patches/monado/2522.patch # regession fix for 2509
+        ./patches/monado/up_client_max.patch
+      ];
+    });
+    monado_matrix = final.monado.overrideAttrs (old : {
+      version = old.version+"1337";
+      __intentionallyOverridingVersion = true;
+      src = pkgs.fetchgit {
+        url = "https://tangled.org/@matrixfurry.com/monado";
+        rev = "refs/heads/next";
+        fetchSubmodules = false;
+        deepClone = false;
+        leaveDotGit = false;
+        sparseCheckout = [ ];
+        sha256 = "sha256-+Y6Y3J+UDa7UuYAlEMPwlhl2+FRxu7diXdBr5m8TIYs=";
+      };
+      # cmakeFlags = old.cmakeFlags ++ [
+      #   (lib.cmakeBool "XRT_HAVE_OPENCV" false)
+      # ];
+      # nativeBuildInputs = old.nativeBuildInputs ++ [
+      #   final.opencv4
+      # ];
+      patches = (old.patches or []) ++ [
+        # ./patches/monado/2253.patch # solarxr
+        # ./patches/monado/2426.patch # index brightness
+        # ./patches/monado/2522.patch # regession fix for 2509
+        # ./patches/monado/up_client_max.patch
+      ];
+    });
 
     wlx-overlay-s_patched = final.wlx-overlay-s.overrideAttrs rec {
       nativeBuildInputs = with pkgs; [
@@ -74,6 +99,17 @@
       ] ++ outoftree.pkgs.${pkgs.system}.xrizer.patches;
       doCheck = false;
     };
+    go-bsb-cams = outoftree.pkgs.${pkgs.system}.go-bsb-cams.overrideAttrs (old : {
+      version = old.version+"1337";
+      __intentionallyOverridingVersion = true;
+      src = pkgs.fetchFromGitHub {
+        owner = "Red-M";
+        repo = "go-bsb-cams";
+        rev = "8a2728ccf20d1a1a2a51c9ad9ebf364aa18e78cb";
+        sha256 = "sha256-iExK4l0eHX2Lm27vs84NDuHEoA50t7NB8aRE9kyidtk=";
+      };
+      vendorHash = "sha256-qFe8doA3L/77XsmIhZsqsjlCFxmlsZfvqwTPtBHgOHA=";
+    });
   })];
 
 }

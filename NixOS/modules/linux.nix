@@ -3,6 +3,27 @@
 
 {
 
+  # Lets not do that, it is silly
+  networking.firewall = {
+    logRefusedConnections = lib.mkDefault false;
+    allowPing = true;
+  };
+
+  # The notion of "online" is a broken concept
+  # https://github.com/systemd/systemd/blob/e1b45a756f71deac8c1aa9a008bd0dab47f64777/NEWS#L13
+  # https://github.com/NixOS/nixpkgs/issues/247608
+  systemd.services.NetworkManager-wait-online.enable = false;
+  systemd.network.wait-online.enable = false;
+
+  # Do not take down the network for too long when upgrading,
+  # This also prevents failures of services that are restarted instead of stopped.
+  # It will use `systemctl restart` rather than stopping it with `systemctl stop`
+  # followed by a delayed `systemctl start`.
+  systemd.services.systemd-networkd.stopIfChanged = false;
+  # Services that are only restarted might be not able to resolve when resolved is stopped before
+  systemd.services.systemd-resolved.stopIfChanged = false;
+
+
   programs = {
     # This fixes issues with libraries not being found to be more linux compatiable
     nix-ld = {
@@ -32,8 +53,9 @@
   services = {
     envfs.enable = true;
     scx = { # experimental
-      enable = true;
-      scheduler = "scx_bpfland";
+      enable = lib.mkDefault true;
+      # scheduler = "scx_bpfland";
+      scheduler = "scx_lavd";
       package = pkgs.scx.rustscheds;
     };
     gnome.gnome-keyring.enable = true;
@@ -63,14 +85,6 @@
     sysstat
     complete-alias
     gnupg
-    unzip
-    unrar-wrapper
-    p7zip
-    gzip
-    bzip2
-    gnutar
-    arj
-    unar
     pwgen
     dig
     tree
@@ -82,23 +96,11 @@
     coreutils-full
     procps
     certstrap
-    libva-utils
     psmisc
     pciutils
     usbutils
     lsof
-    likwid
     dmidecode
-
-    gnumake
-    clang_multi
-    cmake
-    pkg-config
-    glib
-    glibc
-    libgcc
-    libglibutil
-    libsecret
 
     bindfs
 

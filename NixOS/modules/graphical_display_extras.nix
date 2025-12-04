@@ -52,6 +52,7 @@
 
   environment.systemPackages = with pkgs; [
     peazip
+    likwid
   ];
 
 }

@@ -10,10 +10,10 @@
 buildGoModule rec {
   name = "go-bsb-cams";
   src = fetchFromGitHub {
-    owner = "LilliaElaine";
-    repo = "go-bsb-cams";
-    rev = "4c2912ce1d77ba8739f86708966794f2c57912f9";
-    hash = "sha256-/ce9ye+lVd20UB9l0w7jIx/kEYf48GG6Y+oHin/iY9w=";
+    owner = "Banakin";
+    repo = "go-bsb-cams-fast";
+    rev = "153c0d0e1ccc859a563a01a233a0fb5147b9301c";
+    hash = "sha256-YfVFH19B/EeSnyDL9vbEJCkZB+YTaddrdt9eViOpyCY=";
   };
   version = "${src.rev}";
 

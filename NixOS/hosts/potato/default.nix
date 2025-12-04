@@ -24,8 +24,10 @@
     ../../modules/patching/qdoled.nix
 
     ../../modules/cad
+    ../../modules/compilers.nix
     ../../modules/distrobox.nix
     ../../modules/dropbox.nix
+    ../../modules/extractors.nix
     ../../modules/fonts.nix
     ../../modules/graphical_display.nix
     ../../modules/graphical_display_extras.nix
@@ -42,7 +44,7 @@
     ../../modules/my_user_extras.nix
     ../../modules/nix.nix
     ../../modules/obs.nix
-    ../../modules/reverse_engineering.nix
+    # ../../modules/reverse_engineering.nix
     ../../modules/ssh_server.nix
     ../../modules/steam.nix
     ../../modules/zram.nix
@@ -59,6 +61,7 @@
   environment.systemPackages = with pkgs; [
 
   ];
+  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.

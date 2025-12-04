@@ -17,11 +17,9 @@
     i2c-tools
   ];
 
-
-  # X870E Master
+  # ASUS AURA
   services.udev.extraRules = ''
-    SUBSYSTEM=="input", MODE="0666"
-    SUBSYSTEM=="usb", ATTRS{idVendor}=="048d", ATTRS{idProduct}=="5711", MODE="0666"
+    KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="0b05", ATTRS{idProduct}=="1aa6", MODE="0660", TAG+="uaccess", GROUP="wheel"
   '';
 
 }

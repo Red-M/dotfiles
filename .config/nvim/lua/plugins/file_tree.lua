@@ -46,6 +46,7 @@ return {
     version = false,
     opts = {
       rocks = {enabled = false}, -- This is a lazy.nvim household
+      use_lsp = false,
     },
   },
   {

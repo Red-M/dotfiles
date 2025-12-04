@@ -26,7 +26,8 @@
       libsurvive
       wayvr-dashboard
       # outoftree.pkgs.${pkgs.system}.wayvr-dashboard
-      outoftree.pkgs.${pkgs.system}.lovr-playspace
+      lovr-playspace
+      # outoftree.pkgs.${pkgs.system}.lovr-playspace
       outoftree.pkgs.${pkgs.system}.vrcadvert
       oscavmgr
       # outoftree.pkgs.${pkgs.system}.oscavmgr
@@ -36,8 +37,11 @@
 
       steamcmd # For BSB
       # BSB2e
-      outoftree.pkgs.${pkgs.system}.go-bsb-cams
-      outoftree.pkgs.${pkgs.system}.baballonia
+      # outoftree.pkgs.${pkgs.system}.go-bsb-cams
+      go-bsb-cams
+      # mjpg-streamer_patched
+      cameractrls
+      # outoftree.pkgs.${pkgs.system}.baballonia
     ];
   };
 
@@ -45,7 +49,8 @@
     monado = {
       enable = true;
       defaultRuntime = true; # Register as default OpenXR runtime
-      package = pkgs.monado_patched;
+      # package = pkgs.monado_patched;
+      package = pkgs.monado_matrix;
     };
 
   };
@@ -60,7 +65,7 @@
         XRT_COMPOSITOR_COMPUTE = "1";
         STEAMVR_LH_ENABLE = "1";
         # VIT_SYSTEM_LIBRARY_PATH = "${pkgs.basalt-monado}/lib/libbasalt.so";
-        XRT_COMPOSITOR_SCALE_PERCENTAGE="140";
+        XRT_COMPOSITOR_SCALE_PERCENTAGE="120";
         # XRT_COMPOSITOR_SCALE_PERCENTAGE="160";
         # U_PACING_COMP_MIN_TIME_MS = "3";
         # U_PACING_APP_IMMEDIATE_WAIT_FRAME_RETURN = "on";
@@ -68,6 +73,9 @@
         # IPC_EXIT_ON_DISCONNECT = "on"; # kill when a client disconnects
         IPC_EXIT_WHEN_IDLE = "on"; # kill on idle! :)
         IPC_EXIT_WHEN_IDLE_DELAY_MS = "10000";
+      };
+      serviceConfig = {
+        TimeoutStopSec = "2";
       };
     };
 
@@ -78,6 +86,9 @@
         ExecStart = "${pkgs.wlx-overlay-s}/bin/wlx-overlay-s";
         Restart = "on-abnormal";
       };
+      environment = {
+        OXR_DEBUG_IPD_MM="67";
+      };
       bindsTo = [ "monado.service" ];
       partOf = [ "monado.service" ];
       after = [ "monado.service" ];
@@ -87,8 +98,12 @@
     lovr-playspace = {
       description = "VR lovr-playspace";
       serviceConfig = {
-        ExecStart = "${outoftree.pkgs.${pkgs.system}.lovr-playspace}/bin/lovr-playspace";
+        ExecStart = "${pkgs.lovr-playspace}/bin/lovr-playspace";
+        # ExecStart = "${outoftree.pkgs.${pkgs.system}.lovr-playspace}/bin/lovr-playspace";
         Restart = "on-abnormal";
+      };
+      environment = {
+        OXR_DEBUG_IPD_MM="67";
       };
       bindsTo = [ "monado.service" ];
       partOf = [ "monado.service" ];
@@ -116,6 +131,9 @@
     #     ExecStart = "${pkgs.index_camera_passthrough}/bin/index_camera_passthrough";
     #     Restart = "on-abnormal";
     #   };
+    #   environment = {
+    #     OXR_DEBUG_IPD_MM="67";
+    #   };
     #   bindsTo = [ "monado.service" ];
     #   partOf = [ "monado.service" ];
     #   after = [ "monado.service" ];
@@ -142,8 +160,9 @@
     # Bigscreen Beyond
     KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="35bd", ATTRS{idProduct}=="0101", MODE="0660", TAG+="uaccess", GROUP="video"
     # Bigscreen Bigeye
-    SUBSYSTEM=="usb", ATTRS{idVendor}=="35bd", ATTRS{idProduct}=="0202", MODE="0660", TAG+="uaccess", GROUP="video", SYMLINK+="bigeye0"
-    # SUBSYSTEM=="video4linux", SUBSYSTEMS=="usb", DRIVERS=="uvcvideo", ATTRS{idVendor}=="35bd", ATTRS{idProduct}=="0202", MODE="0660", TAG+="uaccess", GROUP="video"
+    KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="35bd", ATTRS{idProduct}=="0202", MODE="0660", TAG+="uaccess", GROUP="video", SYMLINK+="bigeye0"
+    SUBSYSTEM=="usb", ATTRS{idVendor}=="35bd", ATTRS{idProduct}=="0202", MODE="0660", GROUP="video", TAG+="uaccess"
+    SUBSYSTEM=="video4linux", SUBSYSTEMS=="usb", DRIVERS=="uvcvideo", ATTRS{idVendor}=="35bd", ATTRS{idProduct}=="0202", MODE="0660", TAG+="uaccess", GROUP="video"
     # Bigscreen Beyond Audio Strap
     KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="35bd", ATTRS{idProduct}=="0105", MODE="0660", TAG+="uaccess", GROUP="video"
     # Bigscreen Beyond Firmware Mode?

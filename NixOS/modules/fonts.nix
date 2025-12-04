@@ -29,7 +29,7 @@
 
       noto-fonts
       noto-fonts-cjk-sans
-      emojione
+      # emojione
       noto-fonts-color-emoji
       openmoji-color
       liberation_ttf

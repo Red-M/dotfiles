@@ -14,6 +14,7 @@
   buildDotnetModule,
   dotnetCorePackages,
   fetchFromGitHub,
+  onnxruntime,
 }:
 let
   internal = builtins.fetchurl {
@@ -33,6 +34,7 @@ let
     xorg.libX11
     xorg.libSM
     xorg.libICE
+    (callPackage ./onnxruntime.nix { rocmSupport = true; })
     (callPackage ./opencvsharp.nix { })
   ];
 in

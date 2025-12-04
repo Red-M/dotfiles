@@ -8,6 +8,7 @@
     ../../modules/bootloader.nix
     ../../modules/kernel.nix
     ../../modules/linux.nix
+    ../../modules/extractors.nix
     ../../modules/locale.nix
     ../../modules/my_user.nix
     ../../modules/nix.nix

@@ -1,9 +1,22 @@
 {
   description = "My NixOS flake";
   nixConfig = {
-    extra-substituters = "https://cache.lix.systems https://cache.nixos.org/ https://nix-community.cachix.org";
-    extra-trusted-public-keys = "cache.lix.systems:aBnZUw8zA7H35Cz2RyKFVs3H4PlGTLawyY5KRbvJR8o= cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=";
-    extra-experimental-features = "nix-command flakes";
+    extra-substituters = [
+      "https://cache.lix.systems"
+      "https://cache.nixos.org/"
+      "https://nix-community.cachix.org"
+      "https://nixos-raspberrypi.cachix.org"
+    ];
+    extra-trusted-public-keys = [
+      "cache.lix.systems:aBnZUw8zA7H35Cz2RyKFVs3H4PlGTLawyY5KRbvJR8o="
+      "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+      "nixos-raspberrypi.cachix.org-1:4iMO9LXa8BqhU+Rpg6LQKiGa2lsNh/j2oiYLNOQ5sPI="
+    ];
+    extra-experimental-features = [
+      "nix-command"
+      "flakes"
+    ];
   };
 
   inputs = {
@@ -42,9 +55,21 @@
     nixos-hardware = {
       url = "github:NixOS/nixos-hardware/master";
     };
+    nixos-raspberrypi = {
+      # url = "github:Red-M/nixos-raspberrypi/develop"; # https://github.com/nvmd/nixos-raspberrypi/issues/90
+      # url = "github:nvmd/nixos-raspberrypi/develop"; # https://github.com/nvmd/nixos-raspberrypi/issues/90
+      url = "github:nvmd/nixos-raspberrypi/update-nixos-25.11"; # https://github.com/nvmd/nixos-raspberrypi/issues/90
+      # inputs.nixpkgs.follows = "nixpkgs"; # https://github.com/NixOS/nixpkgs/pull/398456
+      # inputs.nixpkgs.url = "github:nvmd/nixpkgs/modules-with-keys-unstable"; # https://github.com/NixOS/nixpkgs/pull/398456
+    };
+    nixos-images = {
+      url = "github:nvmd/nixos-images/sdimage-installer";
+      inputs.nixos-stable.follows = "nixpkgs";
+      inputs.nixos-unstable.follows = "nixpkgs";
+    };
 
     disko = {
-      url = "github:nix-community/disko/latest";
+      url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     ucodenix = {
@@ -61,8 +86,9 @@
     };
   };
 
-  outputs = { self, nixpkgs, nixpkgs-alt, nixpkgs-unstable, home-manager, nixos-hardware, nur, fenix, lanzaboote, outoftree, ... }@inputs:
+  outputs = { self, nixpkgs, nixpkgs-alt, nixpkgs-unstable, home-manager, nixos-hardware, nixos-raspberrypi, nixos-images, nur, fenix, lanzaboote, outoftree, ... }@inputs:
     let inherit (self);
+
     mkNixOS = {host_modules, system, ...}: nixpkgs.lib.nixosSystem rec {
       inherit system;
       modules = [
@@ -85,6 +111,69 @@
       };
 
     };
+
+    mkNixOSrpi = {host_modules, system, ...}: nixos-raspberrypi.lib.nixosSystem rec {
+      system = "aarch64-linux";
+      modules = [
+        # lix-module.nixosModules.default
+      ] ++ host_modules;
+      specialArgs = {
+        inherit inputs nixos-hardware nixos-raspberrypi outoftree;
+        system = "aarch64-linux";
+        nixalt = import nixpkgs-alt {
+          inherit inputs;
+          system = "aarch64-linux";
+          config.allowUnfree = true;
+        };
+        unstable = import nixpkgs-unstable {
+          inherit inputs;
+          system = "aarch64-linux";
+          config.allowUnfree = true;
+        };
+        nur = import inputs.nur {
+          inherit inputs;
+          system = "aarch64-linux";
+          config.allowUnfree = true;
+        };
+      };
+
+    };
+
+    mkRPiImage = modules: nixos-raspberrypi.lib.nixosInstaller {
+      specialArgs = {
+        inherit inputs nixos-hardware nixos-raspberrypi outoftree;
+        system = "aarch64-linux";
+        nixalt = import nixpkgs-alt {
+          inherit inputs;
+          system = "aarch64-linux";
+          config.allowUnfree = true;
+        };
+        unstable = import nixpkgs-unstable {
+          inherit inputs;
+          system = "aarch64-linux";
+          config.allowUnfree = true;
+        };
+        nur = import inputs.nur {
+          inherit inputs;
+          system = "aarch64-linux";
+          config.allowUnfree = true;
+        };
+      };
+      modules = [
+        nixos-images.nixosModules.sdimage-installer
+        ({ config, lib, modulesPath, ... }: {
+          disabledModules = [
+            # disable the sd-image module that nixos-images uses
+            (modulesPath + "/installer/sd-card/sd-image-aarch64-installer.nix")
+          ];
+          # nixos-images sets this with `mkForce`, thus `mkOverride 40`
+          image.baseName = let
+            cfg = config.boot.loader.nixosRaspberryPi;
+          in lib.mkOverride 40 "nixos-installer-rpi${cfg.variant}-${cfg.bootloader}";
+        })
+      ] ++ modules;
+    };
+
     forAllSys = nixpkgs.lib.genAttrs nixpkgs.lib.platforms.all;
   in {
     nixosConfigurations = {
@@ -166,6 +255,63 @@
         ];
       };
 
+      rpi3-0 = mkNixOSrpi rec {
+        system = "aarch64-linux";
+        host_modules = [
+          ./hosts/homelab/rpi/3/0
+        ];
+      };
+      rpi4-0 = mkNixOSrpi rec {
+        system = "aarch64-linux";
+        host_modules = [
+          ./hosts/homelab/rpi/4/0
+        ];
+      };
+      rpi5-0 = mkNixOSrpi rec {
+        system = "aarch64-linux";
+        host_modules = [
+          ./hosts/homelab/rpi/5/0
+        ];
+      };
+      rpi5-1 = mkNixOSrpi rec {
+        system = "aarch64-linux";
+        host_modules = [
+          ./hosts/homelab/rpi/5/1
+        ];
+      };
+      rpi5-2 = mkNixOSrpi rec {
+        system = "aarch64-linux";
+        host_modules = [
+          ./hosts/homelab/rpi/5/2
+        ];
+      };
+      rpi5-3 = mkNixOSrpi rec {
+        system = "aarch64-linux";
+        host_modules = [
+          ./hosts/homelab/rpi/5/3
+        ];
+      };
+
+
+      rpi3-installer = mkRPiImage [
+        ./hosts/homelab/rpi/3/installer
+      ];
+      rpi4-installer = mkRPiImage [
+        ./hosts/homelab/rpi/4/installer
+      ];
+      rpi5-installer = mkRPiImage [
+        ./hosts/homelab/rpi/5/installer
+      ];
+
+    };
+
+    installerImages = let
+      nixos = self.nixosConfigurations;
+      mkImage = nixosConfig: nixosConfig.config.system.build.sdImage;
+    in {
+      rpi3 = mkImage nixos.rpi3-installer;
+      rpi4 = mkImage nixos.rpi4-installer;
+      rpi5 = mkImage nixos.rpi5-installer;
     };
 
     packages = forAllSys (system: let

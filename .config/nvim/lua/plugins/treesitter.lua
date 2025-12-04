@@ -24,6 +24,7 @@ return {
       "arduino",
       "bash",
       "c",
+      "c_sharp",
       "cmake",
       "cpp",
       "diff",
