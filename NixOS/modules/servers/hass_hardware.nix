@@ -6,7 +6,7 @@
   users.users.redm = {
     extraGroups = [ "zigbee2mqtt" ];
     packages = with pkgs; [
-      outoftree.pkgs.${pkgs.system}.serial_portal
+      outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.serial_portal
       socat
     ];
   };
@@ -24,7 +24,7 @@
       after = [ "network.target" ];
       path = [ pkgs.bash pkgs.socat ];
       serviceConfig = {
-        ExecStart = "${lib.getBin outoftree.pkgs.${pkgs.system}.serial_portal}/bin/serial_portal.py";
+        ExecStart = "${lib.getBin outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.serial_portal}/bin/serial_portal.py";
         WorkingDirectory = "/home/redm/raspbee";
         ProtectHome = false;
         PrivateTmp = false;

@@ -17,31 +17,31 @@
       xrizer
       # xrizer-patched
       # xrizer-patched2
-      # outoftree.pkgs.${pkgs.system}.xrizer
+      # outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.xrizer
       motoc
       # index_camera_passthrough
       wlx-overlay-s
       # wlx-overlay-s_patched
-      # outoftree.pkgs.${pkgs.system}.wlx-overlay-s
+      # outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.wlx-overlay-s
       libsurvive
       wayvr-dashboard
-      # outoftree.pkgs.${pkgs.system}.wayvr-dashboard
+      # outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.wayvr-dashboard
       lovr-playspace
-      # outoftree.pkgs.${pkgs.system}.lovr-playspace
-      outoftree.pkgs.${pkgs.system}.vrcadvert
+      # outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.lovr-playspace
+      outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.vrcadvert
       oscavmgr
-      # outoftree.pkgs.${pkgs.system}.oscavmgr
-      outoftree.pkgs.${pkgs.system}.resolute
-      # outoftree.pkgs.${pkgs.system}.monado-vulkan-layers
-      outoftree.pkgs.${pkgs.system}.xrbinder
+      # outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.oscavmgr
+      outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.resolute
+      # outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.monado-vulkan-layers
+      outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.xrbinder
 
       steamcmd # For BSB
       # BSB2e
-      # outoftree.pkgs.${pkgs.system}.go-bsb-cams
+      # outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.go-bsb-cams
       go-bsb-cams
       # mjpg-streamer_patched
       cameractrls
-      # outoftree.pkgs.${pkgs.system}.baballonia
+      # outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.baballonia
     ];
   };
 
@@ -99,7 +99,7 @@
       description = "VR lovr-playspace";
       serviceConfig = {
         ExecStart = "${pkgs.lovr-playspace}/bin/lovr-playspace";
-        # ExecStart = "${outoftree.pkgs.${pkgs.system}.lovr-playspace}/bin/lovr-playspace";
+        # ExecStart = "${outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.lovr-playspace}/bin/lovr-playspace";
         Restart = "on-abnormal";
       };
       environment = {
@@ -181,7 +181,7 @@
   #networking.firewall.allowedTCPPorts = [ 8080 ]; # For go-bsb-cams to allow other hosts to connect to it
 
   # boot.extraModulePackages = [
-  #   (outoftree.pkgs.${pkgs.system}.amdgpu-kernel-module.overrideAttrs (_: {
+  #   (outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.amdgpu-kernel-module.overrideAttrs (_: {
   #     kernel = config.boot.kernelPackages.kernel;
   #     patches = [ ../patching/patches/amdgpu_kernel_module/BSB_drm-amd-use-fixed-dsc-bits-per-pixel-from-edid.patch ../patching/patches/drm_kernel_module/BSB_drm-edid-parse-DRM-VESA-dsc-bpp-target.patch ];
   #   }))
@@ -193,7 +193,7 @@
   # https://github.com/NixOS/nixpkgs/issues/217119
   # https://github.com/Frogging-Family/community-patches/blob/master/linux61-tkg/cap_sys_nice_begone.mypatch
   # boot.extraModulePackages = [
-  #   (outoftree.pkgs.${pkgs.system}.amdgpu-kernel-module.overrideAttrs (_: {
+  #   (outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.amdgpu-kernel-module.overrideAttrs (_: {
   #     kernel = config.boot.kernelPackages.kernel;
   #     patches = [ ../patching/patches/amdgpu_kernel_module/cap_sys_nice_begone.patch ];
   #   }))

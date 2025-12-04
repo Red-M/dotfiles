@@ -12,7 +12,7 @@
     wantedBy = ["multi-user.target"];
     after = [ "network.target" config.systemd.services.sslh.name config.systemd.services.dropbox.name ];
     serviceConfig = {
-      ExecStart = "${lib.getBin outoftree.pkgs.${pkgs.system}.redserv}/bin/redserv /home/redm/Dropbox/webserv";
+      ExecStart = "${lib.getBin outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.redserv}/bin/redserv /home/redm/Dropbox/webserv";
       KillMode = "control-group";
       Restart = "on-failure";
       PrivateTmp = true;
@@ -28,7 +28,7 @@
 
   users.users.redm = {
     packages = with pkgs; [
-      outoftree.pkgs.${pkgs.system}.redserv
+      outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.redserv
     ];
   };
 

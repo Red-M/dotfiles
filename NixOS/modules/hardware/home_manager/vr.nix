@@ -81,8 +81,8 @@
   # xdg.configFile."openxr/1/active_runtime.json".source = "${pkgs.monado_patched}/share/openxr/1/openxr_monado.json";
   xdg.configFile."openxr/1/active_runtime.json".source = "${pkgs.monado_matrix}/share/openxr/1/openxr_monado.json";
   # xdg.configFile."openxr/1/active_runtime.json".source = "${pkgs.monado}/share/openxr/1/openxr_monado.json";
-  # xdg.dataFile."openxr/1/api_layers/implicit.d/XR_APILAYER_NOVENDOR_xr_binder.json".source = "${outoftree.pkgs.${pkgs.system}.xrbinder}/manifest.json";
-  # xdg.dataFile."openxr/1/api_layers/implicit.d/libxrBinder_module.so".source = "${outoftree.pkgs.${pkgs.system}.xrbinder}/libxrBinder_module.so";
+  # xdg.dataFile."openxr/1/api_layers/implicit.d/XR_APILAYER_NOVENDOR_xr_binder.json".source = "${outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.xrbinder}/manifest.json";
+  # xdg.dataFile."openxr/1/api_layers/implicit.d/libxrBinder_module.so".source = "${outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.xrbinder}/libxrBinder_module.so";
 
   xdg.configFile."openvr/openvrpaths.vrpath".text = ''
     {

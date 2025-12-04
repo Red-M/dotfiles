@@ -19,7 +19,7 @@
   environment.systemPackages = [
     config.boot.kernelPackages.hyperv-daemons.bin
 
-    outoftree.pkgs.${pkgs.system}.pipewire-module-xrdp
+    outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.pipewire-module-xrdp
 
   ];
 

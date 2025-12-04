@@ -5,7 +5,7 @@
 
   users.users.redm = {
     packages = with pkgs; [
-      outoftree.pkgs.${pkgs.system}.reeemiks
+      outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.reeemiks
     ];
   };
 

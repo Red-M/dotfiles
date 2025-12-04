@@ -320,26 +320,26 @@
         config.allowUnfree = true;
       };
     in {
-      redserv = outoftree.pkgs.${pkgs.system}.redserv;
+      redserv = outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.redserv;
 
-      redlibssh = outoftree.pkgs.${pkgs.system}.redlibssh;
-      redlibssh2 = outoftree.pkgs.${pkgs.system}.redlibssh2;
-      redssh = outoftree.pkgs.${pkgs.system}.redssh;
-      redexpect = outoftree.pkgs.${pkgs.system}.redexpect;
-      serial_portal = outoftree.pkgs.${pkgs.system}.serial_portal;
+      redlibssh = outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.redlibssh;
+      redlibssh2 = outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.redlibssh2;
+      redssh = outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.redssh;
+      redexpect = outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.redexpect;
+      serial_portal = outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.serial_portal;
 
-      reeemiks = outoftree.pkgs.${pkgs.system}.reeemiks;
-      znc = outoftree.pkgs.${pkgs.system}.znc;
-      znc_clientaway = outoftree.pkgs.${pkgs.system}.zncModules.clientaway;
-      lovr = outoftree.pkgs.${pkgs.system}.lovr;
-      lovr-playspace = outoftree.pkgs.${pkgs.system}.lovr-playspace;
-      vrcadvert = outoftree.pkgs.${pkgs.system}.vrcadvert;
-      oscavmgr = outoftree.pkgs.${pkgs.system}.oscavmgr;
-      wayvr-dashboard = outoftree.pkgs.${pkgs.system}.wayvr-dashboard;
-      wlx-overlay-s = outoftree.pkgs.${pkgs.system}.wlx-overlay-s;
-      argbColors = outoftree.pkgs.${pkgs.system}.argbColors;
-      resolute = outoftree.pkgs.${pkgs.system}.resolute;
-      xrbinder = outoftree.pkgs.${pkgs.system}.xrbinder;
+      reeemiks = outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.reeemiks;
+      znc = outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.znc;
+      znc_clientaway = outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.zncModules.clientaway;
+      lovr = outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.lovr;
+      lovr-playspace = outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.lovr-playspace;
+      vrcadvert = outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.vrcadvert;
+      oscavmgr = outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.oscavmgr;
+      wayvr-dashboard = outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.wayvr-dashboard;
+      wlx-overlay-s = outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.wlx-overlay-s;
+      argbColors = outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.argbColors;
+      resolute = outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.resolute;
+      xrbinder = outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.xrbinder;
     });
 
     devShell = forAllSys (system: let
@@ -358,7 +358,7 @@
     in
     pkgs.mkShell {
       buildInputs = with pkgs; [
-        outoftree.pkgs.${pkgs.system}.redexpect
+        outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.redexpect
       ];
     });
 

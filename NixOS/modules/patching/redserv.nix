@@ -4,8 +4,8 @@
 {
   nixpkgs.overlays = [(pkgfinal: pkgprev:
     {
-      # redserv = outoftree.pkgs.${pkgs.system}.redserv;
-      # redserv = outoftree.pkgs.${pkgs.system}.redserv.overrideAttrs (old : {
+      # redserv = outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.redserv;
+      # redserv = outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.redserv.overrideAttrs (old : {
       #   python312 = pkgs.python3Optimized;
       # });
     }

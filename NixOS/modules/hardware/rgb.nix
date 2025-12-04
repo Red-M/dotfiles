@@ -6,7 +6,7 @@
   users.users.redm = {
     packages = with pkgs; [
       openrgb-with-all-plugins
-      outoftree.pkgs.${pkgs.system}.argbColors # https://gitlab.com/CalcProgrammer1/OpenRGB/-/issues/4306
+      outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.argbColors # https://gitlab.com/CalcProgrammer1/OpenRGB/-/issues/4306
     ];
   };
 

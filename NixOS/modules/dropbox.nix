@@ -4,8 +4,8 @@
 {
   users.users.redm = {
     packages = with pkgs; [
-      outoftree.pkgs.${pkgs.system}.dropbox
-      outoftree.pkgs.${pkgs.system}.dropbox-cli
+      outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.dropbox
+      outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.dropbox-cli
     ];
   };
 
@@ -14,7 +14,7 @@
     description = "Dropbox";
     wantedBy = ["multi-user.target"];
     serviceConfig = {
-      ExecStart = "${lib.getBin outoftree.pkgs.${pkgs.system}.dropbox}/bin/dropbox";
+      ExecStart = "${lib.getBin outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.dropbox}/bin/dropbox";
       KillMode = "control-group";
       Restart = "on-failure";
       PrivateTmp = true;

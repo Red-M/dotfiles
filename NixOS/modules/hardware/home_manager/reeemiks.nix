@@ -12,7 +12,7 @@
       Wants = [ "pipewire.service" ];
     };
     Service = {
-      ExecStart = "${lib.getBin outoftree.pkgs.${pkgs.system}.reeemiks}/bin/reeemiks";
+      ExecStart = "${lib.getBin outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.reeemiks}/bin/reeemiks";
       KillMode = "control-group";
       Restart = "on-failure";
       PrivateTmp = true;

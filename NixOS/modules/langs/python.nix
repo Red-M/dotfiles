@@ -25,7 +25,7 @@
     #   python3Optimized.pkgs.dbus-python
     #
     # ];
-    # packages = with outoftree.pkgs.${pkgs.system}; [
+    # packages = with outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}; [
     #   python3Optimized
     #
     #   pyPkgs.pip
