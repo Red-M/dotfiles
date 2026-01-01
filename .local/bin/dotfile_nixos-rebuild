@@ -6,7 +6,7 @@ else
   nixos_conf=~/git/dotfiles
 fi
 
-rsync --delete -a --progress --exclude=/hardware-configuration.nix "${nixos_conf}/NixOS/" /etc/nixos/
+rsync --delete -a --progress --exclude=/result --exclude=/hardware-configuration.nix "${nixos_conf}/NixOS/" /etc/nixos/
 
 nixos-rebuild ${@}
 

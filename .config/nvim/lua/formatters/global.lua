@@ -80,6 +80,7 @@ return {
         "<leader>cC",
         function()
           vim.g.enable_conform = not M.invert_bool(vim.g.enable_autoformat)
+          print("Conform.nvim: " .. tostring(vim.g.enable_conform))
         end,
         mode = { "n", "v" },
         desc = "Toggle conform.nvim autoformat-on-save",
@@ -88,6 +89,7 @@ return {
         "<leader>cE",
         function()
           vim.g.enable_autoformat = M.invert_bool(vim.g.enable_autoformat)
+          print("Auto format(global): " .. tostring(vim.g.enable_autoformat))
         end,
         mode = { "n", "v" },
         desc = "Toggle global autoformat-on-save",
@@ -96,6 +98,7 @@ return {
         "<leader>ce",
         function()
           vim.b.enable_autoformat = M.invert_bool(vim.b.enable_autoformat)
+          print("Auto format(buffer): " .. tostring(vim.b.enable_autoformat))
         end,
         mode = { "n", "v" },
         desc = "Toggle buffer autoformat-on-save",

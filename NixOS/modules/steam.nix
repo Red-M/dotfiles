@@ -2,6 +2,10 @@
 { config, lib, pkgs, nixalt, unstable, outoftree, inputs, ... }:
 
 {
+  imports = [
+    ./patching/xpad.nix
+  ];
+
   users.users.redm = {
     extraGroups = [ "gamemode" ];
     packages = with pkgs; [
@@ -14,6 +18,8 @@
       winetricks
       wineWow64Packages.waylandFull
       wineWowPackages.waylandFull
+      evtest
+      evtest-qt
 
       moonlight-qt
 
@@ -83,7 +89,16 @@
         gamemode
         procps
         usbutils
-      ] ++ config.fonts.packages;
+      ] ++ (with pkgs.gst_all_1; [
+        gstreamer
+        gst-plugins-base
+        gst-plugins-bad
+        gst-plugins-good
+        # ffmpeg to play almost every format
+        gst-libav
+        # hardware acceleration
+        gst-vaapi
+      ]) ++ config.fonts.packages;
       extraCompatPackages = with pkgs; [
         steamtinkerlaunch
       ];
@@ -104,7 +119,7 @@
       extraPackages32 = config.hardware.graphics.extraPackages;
     };
 
-    xone.enable = true;
+    xone.enable = false;
     xpadneo.enable = true;
     steam-hardware.enable = true;
   };

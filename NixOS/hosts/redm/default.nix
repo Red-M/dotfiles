@@ -30,6 +30,7 @@
     ../../modules/extractors.nix
     ../../modules/compilers.nix
     ../../modules/nix.nix
+    ../../modules/nix_utils.nix
     ../../modules/obs.nix
     ../../modules/reverse_engineering.nix
     ../../modules/hardware/serial_devices.nix

@@ -639,7 +639,7 @@
       },
       "locked": {
         "lastModified": 1,
-        "narHash": "sha256-TXisMEQlTiDC+bZrv2DtSbDw9NZq2hvOTsopnrf8l4E=",
+        "narHash": "sha256-TNSuU7xVZLypubdlsuc+EsSLr3rTXiuRWyiqwHbo4q8=",
         "path": "./pkgs",
         "type": "path"
       },

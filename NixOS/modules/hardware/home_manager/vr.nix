@@ -74,12 +74,24 @@
   #   projection_mode = "FromEye"
   # '';
 
-  xdg.configFile."openxr/opencomposite".source = "${pkgs.opencomposite-vendored}";
-  xdg.configFile."openxr/xrizer".source = "${pkgs.xrizer}";
+  # xdg.configFile."openxr/opencomposite".source = "${pkgs.opencomposite-vendored}";
+  # xdg.configFile."openxr/xrizer".source = "${pkgs.xrizer}";
   # xdg.configFile."openxr/xrizer".source = "${pkgs.xrizer-patched}";
+  # xdg.configFile."openxr/xrizer".source = "${outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.xrizer_multiarch}";
+  xdg.configFile."openxr/xrizer".source = "${pkgs.xrizer_multiarch_oot}";
   # xdg.configFile."openxr/xrizer".source = "${pkgs.xrizer-patched2}";
   # xdg.configFile."openxr/1/active_runtime.json".source = "${pkgs.monado_patched}/share/openxr/1/openxr_monado.json";
-  xdg.configFile."openxr/1/active_runtime.json".source = "${pkgs.monado_matrix}/share/openxr/1/openxr_monado.json";
+
+  # xdg.configFile."openxr/1/active_runtime.json".source = "${pkgs.monado_matrix}/share/openxr/1/openxr_monado.json";
+  # xdg.configFile."openxr/1/active_runtime.x86_64.json".source = "${pkgs.monado_matrix}/share/openxr/1/openxr_monado.x86_64.json";
+  # xdg.configFile."openxr/1/active_runtime.i686.json".source = "${pkgs.monado_matrix}/share/openxr/1/openxr_monado.i686.json";
+  xdg.configFile."openxr/1/active_runtime.json".source = "${pkgs.monado_multiarch_oot}/share/openxr/1/openxr_monado.json";
+  xdg.configFile."openxr/1/active_runtime.x86_64.json".source = "${pkgs.monado_multiarch_oot}/share/openxr/1/openxr_monado.x86_64.json";
+  xdg.configFile."openxr/1/active_runtime.i686.json".source = "${pkgs.monado_multiarch_oot}/share/openxr/1/openxr_monado.i686.json";
+  # xdg.configFile."openxr/1/active_runtime.json".source = "${outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.monado}/share/openxr/1/openxr_monado.json";
+  # xdg.configFile."openxr/1/active_runtime.x86_64.json".source = "${outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.monado}/share/openxr/1/openxr_monado.x86_64.json";
+  # xdg.configFile."openxr/1/active_runtime.i686.json".source = "${outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.monado}/share/openxr/1/openxr_monado.i686.json";
+
   # xdg.configFile."openxr/1/active_runtime.json".source = "${pkgs.monado}/share/openxr/1/openxr_monado.json";
   # xdg.dataFile."openxr/1/api_layers/implicit.d/XR_APILAYER_NOVENDOR_xr_binder.json".source = "${outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.xrbinder}/manifest.json";
   # xdg.dataFile."openxr/1/api_layers/implicit.d/libxrBinder_module.so".source = "${outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.xrbinder}/libxrBinder_module.so";
@@ -89,6 +101,7 @@
       "config": [
         "${config.xdg.dataHome}/Steam/config"
       ],
+      "power": {"autoLaunchSteamVROnButtonPress": false},
       "external_drivers": null,
       "jsonid": "vrpathreg",
       "log": [

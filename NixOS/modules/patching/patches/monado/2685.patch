@@ -1,0 +1,183 @@
+From ec809c3c14a56833340afda10f0933deacb4ccbf Mon Sep 17 00:00:00 2001
+From: Sapphire <imsapphire0@gmail.com>
+Date: Sun, 28 Dec 2025 22:20:54 -0600
+Subject: [PATCH 1/3] st/oxr: enable parallel views for older versions of Beat
+ Saber
+
+---
+ src/xrt/state_trackers/oxr/oxr_instance.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
+
+diff --git a/src/xrt/state_trackers/oxr/oxr_instance.c b/src/xrt/state_trackers/oxr/oxr_instance.c
+index e98072ea3b..462c51a59a 100644
+--- a/src/xrt/state_trackers/oxr/oxr_instance.c
++++ b/src/xrt/state_trackers/oxr/oxr_instance.c
+@@ -197,13 +197,14 @@ detect_engine(struct oxr_logger *log, struct oxr_instance *inst, const XrInstanc
+ }
+ 
+ static void
+-apply_quirks(struct oxr_logger *log, struct oxr_instance *inst)
++apply_quirks(struct oxr_logger *log, struct oxr_instance *inst, const XrInstanceCreateInfo *create_info)
+ {
+ 	// Reset.
+ 	inst->quirks.skip_end_session = false;
+ 	inst->quirks.disable_vulkan_format_depth = false;
+ 	inst->quirks.disable_vulkan_format_depth_stencil = false;
+ 	inst->quirks.no_validation_error_in_create_ref_space = false;
++	inst->quirks.parallel_views = false;
+ 
+ 	if (starts_with("UnrealEngine", inst->appinfo.detected.engine.name) && //
+ 	    inst->appinfo.detected.engine.major == 4 &&                        //
+@@ -217,7 +218,11 @@ apply_quirks(struct oxr_logger *log, struct oxr_instance *inst)
+ 	enum debug_tristate_option parallel_view = debug_get_tristate_option_parallel_views();
+ 
+ 	// Only override hardcoded quirks when explicitly enabling or disabling, not on auto.
+-	if (parallel_view == DEBUG_TRISTATE_OFF) {
++	if (parallel_view == DEBUG_TRISTATE_AUTO) {
++		// This only works on Beat Saber <1.40.9, on newer versions
++		// the application name is "Unity Application" which is too generic.
++		inst->quirks.parallel_views = strcmp("Beat Saber", create_info->applicationInfo.applicationName) == 0;
++	} else if (parallel_view == DEBUG_TRISTATE_OFF) {
+ 		inst->quirks.parallel_views = false;
+ 	} else if (parallel_view == DEBUG_TRISTATE_ON) {
+ 		inst->quirks.parallel_views = true;
+@@ -391,7 +396,7 @@ oxr_instance_create(struct oxr_logger *log,
+ 	detect_engine(log, inst, createInfo);
+ 
+ 	// Apply any quirks
+-	apply_quirks(log, inst);
++	apply_quirks(log, inst, createInfo);
+ 
+ 	u_var_add_root((void *)inst, "XrInstance", true);
+ 
+-- 
+GitLab
+
+
+From 824f59534a05cfe671e4b38a587a4eda003d8cd7 Mon Sep 17 00:00:00 2001
+From: Sapphire <imsapphire0@gmail.com>
+Date: Sun, 28 Dec 2025 22:34:22 -0600
+Subject: [PATCH 2/3] st/oxr: add no_texture_source_alpha quirk
+
+Can be used to work around broken rendering in Beat Saber >1.40.8.
+---
+ src/xrt/state_trackers/oxr/oxr_instance.c          | 13 +++++++++++--
+ src/xrt/state_trackers/oxr/oxr_objects.h           |  7 +++++++
+ src/xrt/state_trackers/oxr/oxr_session_frame_end.c |  2 ++
+ 3 files changed, 20 insertions(+), 2 deletions(-)
+
+diff --git a/src/xrt/state_trackers/oxr/oxr_instance.c b/src/xrt/state_trackers/oxr/oxr_instance.c
+index 462c51a59a..8ef9030883 100644
+--- a/src/xrt/state_trackers/oxr/oxr_instance.c
++++ b/src/xrt/state_trackers/oxr/oxr_instance.c
+@@ -51,6 +51,7 @@ DEBUG_GET_ONCE_BOOL_OPTION(debug_spaces, "OXR_DEBUG_SPACES", false)
+ DEBUG_GET_ONCE_BOOL_OPTION(debug_bindings, "OXR_DEBUG_BINDINGS", false)
+ DEBUG_GET_ONCE_BOOL_OPTION(lifecycle_verbose, "OXR_LIFECYCLE_VERBOSE", false)
+ DEBUG_GET_ONCE_TRISTATE_OPTION(parallel_views, "OXR_PARALLEL_VIEWS")
++DEBUG_GET_ONCE_TRISTATE_OPTION(no_texture_source_alpha, "OXR_NO_TEXTURE_SOURCE_ALPHA")
+ DEBUG_GET_ONCE_BOOL_OPTION(map_stage_to_local_floor, "OXR_RECENTER_STAGE", false)
+ 
+ 
+@@ -205,6 +206,7 @@ apply_quirks(struct oxr_logger *log, struct oxr_instance *inst, const XrInstance
+ 	inst->quirks.disable_vulkan_format_depth_stencil = false;
+ 	inst->quirks.no_validation_error_in_create_ref_space = false;
+ 	inst->quirks.parallel_views = false;
++	inst->quirks.no_texture_source_alpha = false;
+ 
+ 	if (starts_with("UnrealEngine", inst->appinfo.detected.engine.name) && //
+ 	    inst->appinfo.detected.engine.major == 4 &&                        //
+@@ -216,6 +218,7 @@ apply_quirks(struct oxr_logger *log, struct oxr_instance *inst, const XrInstance
+ 	inst->quirks.no_validation_error_in_create_ref_space = true;
+ 
+ 	enum debug_tristate_option parallel_view = debug_get_tristate_option_parallel_views();
++	enum debug_tristate_option no_texture_source_alpha = debug_get_tristate_option_no_texture_source_alpha();
+ 
+ 	// Only override hardcoded quirks when explicitly enabling or disabling, not on auto.
+ 	if (parallel_view == DEBUG_TRISTATE_AUTO) {
+@@ -228,6 +231,10 @@ apply_quirks(struct oxr_logger *log, struct oxr_instance *inst, const XrInstance
+ 		inst->quirks.parallel_views = true;
+ 	}
+ 
++	if (no_texture_source_alpha == DEBUG_TRISTATE_ON) {
++		inst->quirks.no_texture_source_alpha = true;
++	}
++
+ 	inst->quirks.map_stage_to_local_floor = debug_get_bool_option_map_stage_to_local_floor();
+ }
+ 
+@@ -413,7 +420,8 @@ oxr_instance_create(struct oxr_logger *log,
+ 	        "\tquirks.disable_vulkan_format_depth_stencil: %s\n"
+ 	        "\tquirks.no_validation_error_in_create_ref_space: %s\n"
+ 	        "\tquirks.skip_end_session: %s\n"
+-	        "\tquirks.parallel_views: %s\n",
++	        "\tquirks.parallel_views: %s\n"
++	        "\tquirks.no_texture_source_alpha: %s\n",
+ 	        createInfo->applicationInfo.applicationName,                             //
+ 	        createInfo->applicationInfo.applicationVersion,                          //
+ 	        createInfo->applicationInfo.engineName,                                  //
+@@ -429,7 +437,8 @@ oxr_instance_create(struct oxr_logger *log,
+ 	        inst->quirks.disable_vulkan_format_depth_stencil ? "true" : "false",     //
+ 	        inst->quirks.no_validation_error_in_create_ref_space ? "true" : "false", //
+ 	        inst->quirks.skip_end_session ? "true" : "false",                        //
+-	        inst->quirks.parallel_views ? "true" : "false"                           //
++	        inst->quirks.parallel_views ? "true" : "false",                          //
++	        inst->quirks.no_texture_source_alpha ? "true" : "false"                  //
+ 	);                                                                               //
+ 
+ #ifdef XRT_FEATURE_RENDERDOC
+diff --git a/src/xrt/state_trackers/oxr/oxr_objects.h b/src/xrt/state_trackers/oxr/oxr_objects.h
+index 27e7e54693..cc5557938c 100644
+--- a/src/xrt/state_trackers/oxr/oxr_objects.h
++++ b/src/xrt/state_trackers/oxr/oxr_objects.h
+@@ -1825,6 +1825,13 @@ struct oxr_instance
+ 
+ 		//! For applications that use stage and don't offer recentering.
+ 		bool map_stage_to_local_floor;
++
++		/*!
++		 * Beat Saber submits its projection layer with XR_COMPOSITION_LAYER_BLEND_TEXTURE_SOURCE_ALPHA_BIT set.
++		 * This breaks rendering because the game uses the alpha texture to store data for the bloom shader,
++		 * causing most of the game to render as black, only showing glowing parts of the image.
++		 */
++		bool no_texture_source_alpha;
+ 	} quirks;
+ 
+ 	//! Debug messengers
+diff --git a/src/xrt/state_trackers/oxr/oxr_session_frame_end.c b/src/xrt/state_trackers/oxr/oxr_session_frame_end.c
+index a600bbff3c..459892e725 100644
+--- a/src/xrt/state_trackers/oxr/oxr_session_frame_end.c
++++ b/src/xrt/state_trackers/oxr/oxr_session_frame_end.c
+@@ -1311,6 +1311,8 @@ submit_projection_layer(struct oxr_session *sess,
+ #endif // OXR_HAVE_KHR_composition_layer_depth
+ 
+ 	enum xrt_layer_composition_flags flags = convert_layer_flags(proj->layerFlags);
++	if (sess->sys->inst->quirks.no_texture_source_alpha)
++		flags &= ~XRT_LAYER_COMPOSITION_BLEND_TEXTURE_SOURCE_ALPHA_BIT;
+ 
+ 	for (uint32_t i = 0; i < proj->viewCount; i++) {
+ 		scs[i] = XRT_CAST_OXR_HANDLE_TO_PTR(struct oxr_swapchain *, proj->views[i].subImage.swapchain);
+-- 
+GitLab
+
+
+From a403bae3635974dd369eab2cb451f735c3659036 Mon Sep 17 00:00:00 2001
+From: Sapphire <imsapphire0@gmail.com>
+Date: Sun, 28 Dec 2025 22:46:24 -0600
+Subject: [PATCH 3/3] doc: Document !2685
+
+---
+ doc/changes/state_trackers/mr.2685.md | 2 ++
+ 1 file changed, 2 insertions(+)
+ create mode 100644 doc/changes/state_trackers/mr.2685.md
+
+diff --git a/doc/changes/state_trackers/mr.2685.md b/doc/changes/state_trackers/mr.2685.md
+new file mode 100644
+index 0000000000..f8d3be7ed1
+--- /dev/null
++++ b/doc/changes/state_trackers/mr.2685.md
+@@ -0,0 +1,2 @@
++st/oxr: Enable parallel views for Beat Saber <1.40.9, add OXR_NO_TEXTURE_SOURCE_ALPHA environment variable
++to work around rendering bugs in newer Unity versions.
+-- 
+GitLab
+

@@ -14,10 +14,12 @@
       pkgs = import nixpkgs {
         inherit system;
         config.allowUnfree = true;
+        config.rocmSupport = true;
       };
       unstable_pkgs = import inputs.nixpkgs-unstable {
         inherit system;
         config.allowUnfree = true;
+        config.rocmSupport = true;
       };
     in {
 
@@ -56,7 +58,12 @@
       vrcadvert = pkgs.callPackage ./vrcadvert {};
       oscavmgr = pkgs.callPackage ./oscavmgr {};
       wlx-overlay-s = pkgs.callPackage ./wlx-overlay-s { unstable = unstable_pkgs; };
-      xrizer = pkgs.callPackage ./xrizer {};
+      xrizer = pkgs.callPackage ./xrizer/package.nix {};
+      xrizer_multiarch = pkgs.callPackage ./xrizer/multiarch.nix {xrizer = self.pkgs.${system}.xrizer;};
+      monado = pkgs.callPackage ./monado/package.nix {
+        inherit (pkgs.gst_all_1) gstreamer gst-plugins-base;
+      };
+      monado_multiarch = pkgs.callPackage ./monado/multiarch.nix {monado = self.pkgs.${system}.monado;};
       eepyxr = pkgs.callPackage ./eepyxr {
         zig = unstable_pkgs.zig;
         sdl3 = unstable_pkgs.sdl3;

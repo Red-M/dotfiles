@@ -17,7 +17,7 @@ buildPythonPackage rec {
     owner = "Red-M";
     repo = "Redlibssh2";
     rev = "d44e891a78b2ff74af10939b56e0f5139955e715";
-    hash = "sha256-08e73GGA4rkClifRO1de2tZkR6r+rx+I6HOrZPqha2M=";
+    hash = "sha256-vKrOXvX+I5AEIZga1dOScsGEnanIw5oo418Y0OG3MWI=";
   };
 
   build-system = [ setuptools ];

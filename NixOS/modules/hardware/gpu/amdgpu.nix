@@ -6,6 +6,8 @@
   #   mesa = unstable.mesa;
   # })];
 
+  nixpkgs.config.rocmSupport = true;
+
   hardware = {
     amdgpu = {
       initrd.enable = true;

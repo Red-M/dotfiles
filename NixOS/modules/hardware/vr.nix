@@ -13,21 +13,22 @@
     packages = with pkgs; [
       v4l-utils # cameras
       xrgears # testing, just in case
+      lighthouse-steamvr
       # opencomposite
-      xrizer
+      # xrizer
       # xrizer-patched
       # xrizer-patched2
-      # outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.xrizer
+      outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.xrizer_multiarch
       motoc
       # index_camera_passthrough
-      wlx-overlay-s
+      # wlx-overlay-s
       # wlx-overlay-s_patched
-      # outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.wlx-overlay-s
+      outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.wlx-overlay-s
       libsurvive
       wayvr-dashboard
       # outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.wayvr-dashboard
-      lovr-playspace
-      # outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.lovr-playspace
+      # lovr-playspace
+      outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.lovr-playspace
       outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.vrcadvert
       oscavmgr
       # outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.oscavmgr
@@ -39,9 +40,8 @@
       # BSB2e
       # outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.go-bsb-cams
       go-bsb-cams
-      # mjpg-streamer_patched
       cameractrls
-      # outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.baballonia
+      outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.baballonia
     ];
   };
 
@@ -50,32 +50,51 @@
       enable = true;
       defaultRuntime = true; # Register as default OpenXR runtime
       # package = pkgs.monado_patched;
-      package = pkgs.monado_matrix;
+      # package = pkgs.monado_matrix;
+      package = pkgs.monado_multiarch_oot;
+      # package = outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.monado;
+      highPriority = true;
     };
 
   };
 
-  environment.systemPackages = with pkgs; [ basalt-monado ];
+  environment.systemPackages = with pkgs; [
+    # monado-vulkan-layers
+    basalt-monado
+  ];
 
   systemd.user.services = {
     monado = {
-      environment = {
-        XRT_LOG = "error";
+      environment = let log_level = "info"; in {
+        XRT_LOG = log_level;
+        XRT_COMPOSITOR_LOG = log_level;
+        IPC_LOG = log_level;
+        PROBER_LOG = log_level;
+        LIGHTHOUSE_LOG = log_level;
+        XRT_NO_STDIN = "on";
+        XRT_DEBUG_GUI = "on";
+        # XRT_WINDOW_PEEK = "2";
+
         AMD_VULKAN_ICD = "RADV";
-        XRT_COMPOSITOR_COMPUTE = "1";
-        STEAMVR_LH_ENABLE = "1";
-        # VIT_SYSTEM_LIBRARY_PATH = "${pkgs.basalt-monado}/lib/libbasalt.so";
+        XRT_COMPOSITOR_COMPUTE = "on";
+        STEAMVR_LH_ENABLE = "on";
+        LH_HANDTRACKING = "on";
+        VIT_SYSTEM_LIBRARY_PATH = "${pkgs.basalt-monado}/lib/libbasalt.so";
         XRT_COMPOSITOR_SCALE_PERCENTAGE="120";
         # XRT_COMPOSITOR_SCALE_PERCENTAGE="160";
-        # U_PACING_COMP_MIN_TIME_MS = "3";
+        U_PACING_COMP_MIN_TIME_MS = "2";
+        # U_PACING_COMP_TIME_FRACTION_PERCENT = "80";
         # U_PACING_APP_IMMEDIATE_WAIT_FRAME_RETURN = "on";
-        LH_HANDTRACKING = "on";
+        # U_PACING_APP_ALIGN_PREDICTED_DISPLAY_TIME_TO_APP_PERIOD = "1";
+        # U_PACING_APP_USE_MIN_FRAME_PERIOD = "1";
+        # U_PACING_COMP_MIN_TIME_MS = "8";
         # IPC_EXIT_ON_DISCONNECT = "on"; # kill when a client disconnects
         IPC_EXIT_WHEN_IDLE = "on"; # kill on idle! :)
-        IPC_EXIT_WHEN_IDLE_DELAY_MS = "10000";
+        IPC_EXIT_WHEN_IDLE_DELAY_MS = "300"; # This will only work if you have the following services enabled, otherwise monado will instantly shutdown
       };
       serviceConfig = {
         TimeoutStopSec = "2";
+        # Nice = -20;
       };
     };
 
@@ -83,7 +102,7 @@
       description = "VR wlx-overlay-s";
       path = [ pkgs.wayvr-dashboard ];
       serviceConfig = {
-        ExecStart = "${pkgs.wlx-overlay-s}/bin/wlx-overlay-s";
+        ExecStart = "${outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.wlx-overlay-s}/bin/wlx-overlay-s";
         Restart = "on-abnormal";
       };
       environment = {
@@ -98,8 +117,8 @@
     lovr-playspace = {
       description = "VR lovr-playspace";
       serviceConfig = {
-        ExecStart = "${pkgs.lovr-playspace}/bin/lovr-playspace";
-        # ExecStart = "${outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.lovr-playspace}/bin/lovr-playspace";
+        # ExecStart = "${pkgs.lovr-playspace}/bin/lovr-playspace";
+        ExecStart = "${outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.lovr-playspace}/bin/lovr-playspace";
         Restart = "on-abnormal";
       };
       environment = {

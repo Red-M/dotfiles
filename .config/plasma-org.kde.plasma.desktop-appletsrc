@@ -33,8 +33,8 @@ SlidePaths=/nix/store/kls40zsrq9dd74innawflbf4ja7ba857-breeze-6.0.5/share/wallpa
 [Containments][102]
 ItemGeometries-1920x1080=Applet-104:0,16,192,1008,0;Applet-105:1728,0,192,352,0;
 ItemGeometries-2048x1152=Applet-104:1760,0,288,1008,0;Applet-105:1856,1008,192,352,0;
-ItemGeometries-2560x1440=Applet-107:1936,0,240,528,0;Applet-105:2176,0,192,352,0;Applet-104:2368,0,192,1056,0;
-ItemGeometriesHorizontal=Applet-107:1936,0,240,528,0;Applet-105:2176,0,192,352,0;Applet-104:2368,0,192,1056,0;
+ItemGeometries-2560x1440=Applet-107:1936,0,240,528,0;Applet-105:2176,0,192,368,0;Applet-104:2368,0,192,1056,0;
+ItemGeometriesHorizontal=Applet-107:1936,0,240,528,0;Applet-105:2176,0,192,368,0;Applet-104:2368,0,192,1056,0;
 activityId=f16962fe-8fb8-459d-ac55-8ee109611d5f
 formfactor=0
 immutability=1
@@ -127,6 +127,7 @@ DialogWidth=720
 [Containments][102][Applets][105][Configuration][SensorColors]
 gpu/gpu1/coreFrequency=237,83,0
 gpu/gpu1/memoryFrequency=237,0,93
+gpu/gpu1/power=237,0,96
 gpu/gpu1/power1=237,0,172
 gpu/gpu1/temp2=28,0,237
 gpu/gpu1/temp3=237,231,0
@@ -374,7 +375,7 @@ immutability=1
 plugin=org.kde.plasma.bluetooth
 
 [Containments][28][Applets][32][Applets][48][Configuration]
-PreloadWeight=66
+PreloadWeight=69
 
 [Containments][28][Applets][32][Applets][55]
 immutability=1
@@ -395,7 +396,7 @@ immutability=1
 plugin=org.kde.plasma.brightness
 
 [Containments][28][Applets][32][Applets][94][Configuration]
-PreloadWeight=0
+PreloadWeight=5
 
 [Containments][28][Applets][32][ConfigDialog]
 DialogHeight=540
@@ -531,7 +532,7 @@ plugin=org.kde.plasma.systemmonitor.diskactivity
 
 [Containments][59][Applets][106][Configuration]
 CurrentPreset=org.kde.plasma.systemmonitor
-PreloadWeight=55
+PreloadWeight=60
 popupHeight=400
 popupWidth=560
 

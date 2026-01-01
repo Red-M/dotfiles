@@ -14,6 +14,7 @@
       rclone
       tmuxp
       yt-dlp
+      sshfs
     ];
   };
 

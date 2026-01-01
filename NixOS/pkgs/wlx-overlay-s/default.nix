@@ -9,6 +9,10 @@
   libXext,
   libXrandr,
   libxkbcommon,
+  libxcb,
+  glib,
+  cairo,
+  gtk3,
   makeWrapper,
   nix-update-script,
   openvr,
@@ -33,12 +37,12 @@ unstable.rustPlatform.buildRustPackage rec {
     owner = "galister";
     repo = "wlx-overlay-s";
     # rev = "v${version}";
-    rev = "5ca634b552f643d0670bd697e050765c7999bb2a";
-    hash = "sha256-+q3mRi2DkGVxAacfevgfpknkY8ktyo8SdTO9KAF1Fe0=";
+    rev = "17165123b97d95d12093aa1f43fa96905058e2a9";
+    hash = "sha256-o3Nie97o7LJp7e7O6NrtJhMa9DrNyBGQBD8E4vWBn1k=";
   };
 
   # useFetchCargoVendor = true;
-  cargoHash = "sha256-AhASQ/5pqiPNNGQSZTdEsf1Uw4Mv5Nze1f+QaV4gaUo=";
+  cargoHash = "sha256-ISKsYwIC1R4nMzakStKrCEtOxJfne8H6TCQLpNG6owE=";
 
   nativeBuildInputs = [
     makeWrapper
@@ -56,6 +60,10 @@ unstable.rustPlatform.buildRustPackage rec {
     libXext
     libXrandr
     libxkbcommon
+    libxcb
+    glib
+    cairo
+    gtk3
     openvr
     openxr-loader
     pipewire
@@ -68,12 +76,12 @@ unstable.rustPlatform.buildRustPackage rec {
     SHADERC_LIB_DIR = lib.makeLibraryPath [ shaderc ];
   };
 
-  postPatch = ''
-    substituteAllInPlace src/res/watch.yaml \
-    --replace '"pactl"' '"${lib.getExe' pulseaudio "pactl"}"'
-
-    # TODO: src/res/keyboard.yaml references 'whisper_stt'
-  '';
+  # postPatch = ''
+  #   substituteAllInPlace src/res/watch.yaml \
+  #   --replace '"pactl"' '"${lib.getExe' pulseaudio "pactl"}"'
+  #
+  #   # TODO: src/res/keyboard.yaml references 'whisper_stt'
+  # '';
 
   passthru = {
     tests.testVersion = testers.testVersion { package = wlx-overlay-s; };

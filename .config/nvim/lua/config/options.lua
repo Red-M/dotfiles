@@ -20,6 +20,9 @@ vim.opt.termguicolors = true
 vim.opt.signcolumn = "yes"
 vim.opt.cmdheight = 0
 
+vim.g.spell = false
+vim.opt.spelllang = "en_au"
+
 vim.opt.autoindent = true
 vim.opt.smartindent = true
 

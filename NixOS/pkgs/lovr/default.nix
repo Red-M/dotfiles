@@ -20,15 +20,15 @@
 
 stdenv.mkDerivation rec {
   pname = "lovr";
-  version = "v0.17.1";
+  version = "v0.18.0";
   src = [
     (fetchFromGitHub {
       name = pname;
       owner = "bjornbytes";
       repo = pname;
       fetchSubmodules = true;
-      rev = "161856b5ed4e6db38653552f515d58b6b485bf9b"; # latest release is broken
-      hash = "sha256-cO9cJH1/9hy0LmAuINXOERZ64nzwna9kPZlFGndsL+g=";
+      tag = "v0.18.0"; # latest release is broken
+      hash = "sha256-SyKJv9FmJyLGc3CT0JBNewvjtsmXKxiqaptysWiY4co=";
     })
     (fetchFromGitHub {
       # This gets pulled in via cmake and not as a submodule, so we need to get it and tell cmake that we already have it
@@ -41,6 +41,11 @@ stdenv.mkDerivation rec {
     })
   ];
   sourceRoot = pname;
+
+  # This is due to the upgrade of GCC to GCC 15, glslang needs to be upgrade in nixpkgs
+  preBuild = ''
+    sed -e '1i #include <cstdint>' -i /build/lovr/deps/glslang/SPIRV/SpvBuilder.h
+  '';
 
   buildInputs = [
     wayland

@@ -47,6 +47,8 @@ return {
     opts = {
       rocks = {enabled = false}, -- This is a lazy.nvim household
       use_lsp = false,
+      scope_chdir = 'win',
+      historysize = 0,
     },
   },
   {
@@ -66,9 +68,13 @@ return {
         auto_open = false,
       },
       sync_root_with_cwd = true,
+      respect_buf_cwd = true,
       update_focused_file = {
         enable = true,
         update_root = true,
+      },
+      tab = {
+        sync = {open = true, close = true},
       },
       view = {
         width = 42,
@@ -89,7 +95,7 @@ return {
         indent_markers = { enable = true },
         icons = {
           git_placement = "after",
-          symlink_arrow = "  ",
+          symlink_arrow = " ",
           -- padding = {
           --   icon = "",
           -- },
@@ -199,25 +205,28 @@ return {
         end
       })
 
-      vim.api.nvim_create_autocmd({'TabEnter','VimEnter'}, {
-        group = vim.api.nvim_create_augroup("always_show_file_tree",{clear = true}),
-        once = true,
-        callback = function(data)
-
-          -- buffer is a real file on the disk
-          local real_file = vim.fn.filereadable(data.file) == 1
-
-          -- buffer is a [No Name]
-          local no_name = data.file == "" and vim.bo[data.buf].buftype == ""
-
-          if not real_file and not no_name then
-            return
-          end
-
-          -- open the tree, find the file but don't focus it
-          nt_api.tree.toggle({ focus = false, find_file = true, })
-        end
-      })
+      -- vim.api.nvim_create_autocmd({'UIEnter','TabEnter','VimEnter'}, {
+      --   group = vim.api.nvim_create_augroup("always_show_file_tree",{clear = true}),
+      --   -- once = true,
+      --   callback = function(data)
+      --
+      --     -- buffer is a real file on the disk
+      --     local real_file = vim.fn.filereadable(data.file) == 1
+      --
+      --     -- buffer is a [No Name]
+      --     local no_name = data.file == "" and vim.bo[data.buf].buftype == ""
+      --
+      --     if not real_file and not no_name then
+      --       return
+      --     end
+      --
+      --     -- open the tree, find the file but don't focus it
+      --     if not nt_api.tree.is_visible({ tabpage = vim.api.nvim_get_current_tabpage() }) then
+      --       nt_api.tree.toggle({ focus = false, find_file = true, })
+      --     end
+      --     nt_api.tree.reload()
+      --   end
+      -- })
 
       additonal_config = {
         on_attach = function (bufnr)

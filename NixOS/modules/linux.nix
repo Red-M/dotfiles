@@ -68,6 +68,7 @@
 
   environment.systemPackages = with pkgs; [
     unstable.neovim
+    unstable.nvimpager
     tmux
     rsync
 
@@ -88,6 +89,7 @@
     pwgen
     dig
     tree
+    xxd
 
     mise
     usage

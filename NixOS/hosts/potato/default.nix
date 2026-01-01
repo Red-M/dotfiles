@@ -23,6 +23,7 @@
 
     ../../modules/patching/qdoled.nix
 
+    ../../modules/3D_printing.nix
     ../../modules/cad
     ../../modules/compilers.nix
     ../../modules/distrobox.nix
@@ -43,6 +44,7 @@
     ../../modules/my_user.nix
     ../../modules/my_user_extras.nix
     ../../modules/nix.nix
+    ../../modules/nix_utils.nix
     ../../modules/obs.nix
     # ../../modules/reverse_engineering.nix
     ../../modules/ssh_server.nix

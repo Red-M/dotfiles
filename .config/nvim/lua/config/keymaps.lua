@@ -208,6 +208,13 @@ local config_keymap = {
   -- because I'm not sure why you'd want a gj and I use S-j for buffer management
   {"n", "gj", "<S-j>", { desc = "Join" }},
 
+  -- Sometimes spelling is nice
+    {"n", "<leader>cs", function()
+    vim.g.spell = not(vim.g.spell)
+    vim.opt.spell = vim.g.spell
+    print("spell: " .. tostring(vim.g.spell))
+  end, { desc = "Spell checker toggle" }},
+
 }
 for i,v in ipairs(config_keymap) do
   keymap.set(unpack(v))

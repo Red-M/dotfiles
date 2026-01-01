@@ -97,7 +97,7 @@
 
     activationScripts.report-changes = ''
       if [ -d /nix/store ]; then
-      PATH=$PATH:${lib.makeBinPath [ pkgs.nvd pkgs.nix ]}
+      PATH=$PATH:${lib.makeBinPath [ pkgs.nvd pkgs.lixPackageSets.stable.lix ]}
       echo " ---  Changes since boot  ---"
       nvd diff /run/booted-system $(ls -dv /nix/var/nix/profiles/system-*-link | tail -1) || true
       echo " --- Changes from rebuild ---"
@@ -112,12 +112,6 @@
 
   environment.systemPackages = with pkgs; [
     nvd
-    dconf2nix
-    nix-index
-    nixfmt-rfc-style
-    nvfetcher
-
-    nixos-anywhere
   ];
 }
 

@@ -23,7 +23,6 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-alt.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-xr.url = "github:nix-community/nixpkgs-xr";
-    # nixpkgs-xr.url = "github:nix-community/nixpkgs-xr/58aeae5249afc3cbfe690768392fcd504e1e914a";
 
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
 
@@ -58,9 +57,9 @@
     nixos-raspberrypi = {
       # url = "github:Red-M/nixos-raspberrypi/develop"; # https://github.com/nvmd/nixos-raspberrypi/issues/90
       # url = "github:nvmd/nixos-raspberrypi/develop"; # https://github.com/nvmd/nixos-raspberrypi/issues/90
-      url = "github:nvmd/nixos-raspberrypi/update-nixos-25.11"; # https://github.com/nvmd/nixos-raspberrypi/issues/90
+      url = "github:nvmd/nixos-raspberrypi/main"; # https://github.com/nvmd/nixos-raspberrypi/issues/90
       # inputs.nixpkgs.follows = "nixpkgs"; # https://github.com/NixOS/nixpkgs/pull/398456
-      # inputs.nixpkgs.url = "github:nvmd/nixpkgs/modules-with-keys-unstable"; # https://github.com/NixOS/nixpkgs/pull/398456
+      inputs.nixpkgs.url = "github:nvmd/nixpkgs/modules-with-keys-unstable"; # https://github.com/NixOS/nixpkgs/pull/398456
     };
     nixos-images = {
       url = "github:nvmd/nixos-images/sdimage-installer";
@@ -89,75 +88,54 @@
   outputs = { self, nixpkgs, nixpkgs-alt, nixpkgs-unstable, home-manager, nixos-hardware, nixos-raspberrypi, nixos-images, nur, fenix, lanzaboote, outoftree, ... }@inputs:
     let inherit (self);
 
-    mkNixOS = {host_modules, system, ...}: nixpkgs.lib.nixosSystem rec {
+    unstable = {system, ...}: import nixpkgs-unstable {
+      inherit inputs system;
+      config.allowUnfree = true;
+    };
+    nixalt = {system, ...}: import nixpkgs-alt {
+      inherit inputs system;
+      config.allowUnfree = true;
+    };
+    nur = {system, ...}: import inputs.nur {
+      inherit inputs system;
+      config.allowUnfree = true;
+    };
+
+    mkNixOS = {host_modules, system, ...}: nixpkgs.lib.nixosSystem {
       inherit system;
       modules = [
         # lix-module.nixosModules.default
       ] ++ host_modules;
       specialArgs = {
         inherit inputs system nixos-hardware outoftree;
-        nixalt = import nixpkgs-alt {
-          inherit inputs system;
-          config.allowUnfree = true;
-        };
-        unstable = import nixpkgs-unstable {
-          inherit inputs system;
-          config.allowUnfree = true;
-        };
-        nur = import inputs.nur {
-          inherit inputs system;
-          config.allowUnfree = true;
-        };
+        unstable = unstable {inherit system;};
+        nixalt = nixalt {inherit system;};
+        nur = nur {inherit system;};
       };
 
     };
 
-    mkNixOSrpi = {host_modules, system, ...}: nixos-raspberrypi.lib.nixosSystem rec {
-      system = "aarch64-linux";
+    mkNixOSrpi = {host_modules, system, ...}: nixos-raspberrypi.lib.nixosSystem {
+      inherit system;
       modules = [
         # lix-module.nixosModules.default
       ] ++ host_modules;
       specialArgs = {
-        inherit inputs nixos-hardware nixos-raspberrypi outoftree;
-        system = "aarch64-linux";
-        nixalt = import nixpkgs-alt {
-          inherit inputs;
-          system = "aarch64-linux";
-          config.allowUnfree = true;
-        };
-        unstable = import nixpkgs-unstable {
-          inherit inputs;
-          system = "aarch64-linux";
-          config.allowUnfree = true;
-        };
-        nur = import inputs.nur {
-          inherit inputs;
-          system = "aarch64-linux";
-          config.allowUnfree = true;
-        };
+        inherit inputs system nixos-hardware nixos-raspberrypi outoftree;
+        unstable = unstable {inherit system;};
+        nixalt = nixalt {inherit system;};
+        nur = nur {inherit system;};
       };
 
     };
 
-    mkRPiImage = modules: nixos-raspberrypi.lib.nixosInstaller {
+    mkRPiInstaller = {host_modules, system, ...}: nixos-raspberrypi.lib.nixosInstaller {
+      inherit system;
       specialArgs = {
-        inherit inputs nixos-hardware nixos-raspberrypi outoftree;
-        system = "aarch64-linux";
-        nixalt = import nixpkgs-alt {
-          inherit inputs;
-          system = "aarch64-linux";
-          config.allowUnfree = true;
-        };
-        unstable = import nixpkgs-unstable {
-          inherit inputs;
-          system = "aarch64-linux";
-          config.allowUnfree = true;
-        };
-        nur = import inputs.nur {
-          inherit inputs;
-          system = "aarch64-linux";
-          config.allowUnfree = true;
-        };
+        inherit inputs system nixos-hardware nixos-raspberrypi outoftree;
+        unstable = unstable {inherit system;};
+        nixalt = nixalt {inherit system;};
+        nur = nur {inherit system;};
       };
       modules = [
         nixos-images.nixosModules.sdimage-installer
@@ -168,30 +146,30 @@
           ];
           # nixos-images sets this with `mkForce`, thus `mkOverride 40`
           image.baseName = let
-            cfg = config.boot.loader.nixosRaspberryPi;
+            cfg = config.boot.loader.raspberryPi;
           in lib.mkOverride 40 "nixos-installer-rpi${cfg.variant}-${cfg.bootloader}";
         })
-      ] ++ modules;
+      ] ++ host_modules;
     };
 
     forAllSys = nixpkgs.lib.genAttrs nixpkgs.lib.platforms.all;
   in {
     nixosConfigurations = {
-      potato = mkNixOS rec {
+      potato = mkNixOS {
         system = "x86_64-linux";
         host_modules = [
           ./hosts/potato
         ];
       };
 
-      redm = mkNixOS rec {
+      redm = mkNixOS {
         system = "x86_64-linux";
         host_modules = [
           ./hosts/redm
         ];
       };
 
-      redbox = mkNixOS rec {
+      redbox = mkNixOS {
         system = "x86_64-linux";
         host_modules = [
           ./hosts/redbox
@@ -199,13 +177,13 @@
       };
 
 
-      gir = mkNixOS rec {
+      gir = mkNixOS {
         system = "x86_64-linux";
         host_modules = [
           ./hosts/servers/gir
         ];
       };
-      gir3 = mkNixOS rec {
+      gir3 = mkNixOS {
         system = "x86_64-linux";
         host_modules = [
           ./hosts/servers/gir3
@@ -217,75 +195,81 @@
           ./hosts/servers/gir5
         ];
       };
-      gir6 = mkNixOS rec {
+      gir6 = mkNixOS {
         system = "x86_64-linux";
         host_modules = [
           ./hosts/servers/gir6
         ];
       };
-      gir7 = mkNixOS rec {
+      gir7 = mkNixOS {
         system = "x86_64-linux";
         host_modules = [
           ./hosts/servers/gir7
         ];
       };
-      gir8 = mkNixOS rec {
+      gir8 = mkNixOS {
         system = "x86_64-linux";
         host_modules = [
           ./hosts/servers/gir8
         ];
       };
 
-      gitlab = mkNixOS rec {
+      gitlab = mkNixOS {
         system = "x86_64-linux";
         host_modules = [
           ./hosts/homelab/gitlab
         ];
       };
-      mqtt = mkNixOS rec {
+      mqtt = mkNixOS {
         system = "x86_64-linux";
         host_modules = [
           ./hosts/homelab/mqtt
         ];
       };
-      hass-hardware = mkNixOS rec {
+      hass-hardware = mkNixOS {
         system = "x86_64-linux";
         host_modules = [
           ./hosts/homelab/hass-hardware
         ];
       };
 
-      rpi3-0 = mkNixOSrpi rec {
+      rpi3-0 = mkNixOSrpi {
         system = "aarch64-linux";
         host_modules = [
           ./hosts/homelab/rpi/3/0
         ];
       };
-      rpi4-0 = mkNixOSrpi rec {
+      rpi4-0 = mkNixOSrpi {
         system = "aarch64-linux";
         host_modules = [
           ./hosts/homelab/rpi/4/0
         ];
       };
-      rpi5-0 = mkNixOSrpi rec {
+      rpi4-1 = mkNixOSrpi {
+        system = "aarch64-linux";
+        host_modules = [
+          ./hosts/homelab/rpi/4/1
+        ];
+      };
+      rpi5-0 = mkNixOSrpi {
         system = "aarch64-linux";
         host_modules = [
           ./hosts/homelab/rpi/5/0
         ];
       };
-      rpi5-1 = mkNixOSrpi rec {
+      rpi5-1 = mkNixOSrpi {
         system = "aarch64-linux";
         host_modules = [
           ./hosts/homelab/rpi/5/1
         ];
       };
-      rpi5-2 = mkNixOSrpi rec {
+      rpi5-2 = mkNixOSrpi {
         system = "aarch64-linux";
         host_modules = [
           ./hosts/homelab/rpi/5/2
         ];
       };
-      rpi5-3 = mkNixOSrpi rec {
+      rpi5-3 = mkNixOSrpi {
         system = "aarch64-linux";
         host_modules = [
           ./hosts/homelab/rpi/5/3
@@ -293,15 +277,24 @@
       };
 
 
-      rpi3-installer = mkRPiImage [
-        ./hosts/homelab/rpi/3/installer
-      ];
-      rpi4-installer = mkRPiImage [
-        ./hosts/homelab/rpi/4/installer
-      ];
-      rpi5-installer = mkRPiImage [
-        ./hosts/homelab/rpi/5/installer
-      ];
+      rpi3-installer = mkRPiInstaller {
+        system = "aarch64-linux";
+        host_modules = [
+          ./hosts/homelab/rpi/3/installer
+        ];
+      };
+      rpi4-installer = mkRPiInstaller {
+        system = "aarch64-linux";
+        host_modules = [
+          ./hosts/homelab/rpi/4/installer
+        ];
+      };
+      rpi5-installer = mkRPiInstaller {
+        system = "aarch64-linux";
+        host_modules = [
+          ./hosts/homelab/rpi/5/installer
+        ];
+      };
 
     };
 
@@ -340,6 +333,10 @@
       argbColors = outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.argbColors;
       resolute = outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.resolute;
       xrbinder = outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.xrbinder;
+      xrizer = outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.xrizer;
+      xrizer_multiarch = outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.xrizer_multiarch;
+      monado = outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.monado;
+      monado_multiarch = outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.monado_multiarch;
     });
 
     devShell = forAllSys (system: let
