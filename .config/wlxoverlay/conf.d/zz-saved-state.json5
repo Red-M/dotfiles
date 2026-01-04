@@ -3,28 +3,6 @@
     {
       "name": "",
       "overlays": {
-        "kbd": {
-          "alpha": 1.0,
-          "grabbable": true,
-          "interactable": true,
-          "positioning": "Anchored",
-          "curvature": 0.14999999,
-          "additive": false,
-          "saved_transform": [
-            1.1489238,
-            -0.0015341081,
-            -0.0498029,
-            -0.022951618,
-            1.0039558,
-            -0.56040543,
-            0.044225663,
-            0.56087315,
-            1.0029824,
-            -0.04510054,
-            -0.56313586,
-            0.03374815
-          ]
-        },
         "DP-2": {
           "alpha": 1.0,
           "grabbable": true,
@@ -45,6 +23,28 @@
             -0.7136177,
             0.083734155,
             0.32929182
+          ]
+        },
+        "kbd": {
+          "alpha": 1.0,
+          "grabbable": true,
+          "interactable": true,
+          "positioning": "Anchored",
+          "curvature": 0.14999999,
+          "additive": false,
+          "saved_transform": [
+            1.1489238,
+            -0.0015341081,
+            -0.0498029,
+            -0.022951618,
+            1.0039558,
+            -0.56040543,
+            0.044225663,
+            0.56087315,
+            1.0029824,
+            -0.04510054,
+            -0.56313586,
+            0.03374815
           ]
         },
         "DP-1": {
@@ -74,7 +74,7 @@
     {
       "name": "",
       "overlays": {
-        "DP-1": {
+        "kbd": {
           "alpha": 1.0,
           "grabbable": true,
           "interactable": true,
@@ -83,7 +83,7 @@
           "additive": false,
           "saved_transform": null
         },
-        "kbd": {
+        "DP-1": {
           "alpha": 1.0,
           "grabbable": true,
           "interactable": true,

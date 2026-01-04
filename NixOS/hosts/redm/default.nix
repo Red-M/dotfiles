@@ -32,7 +32,7 @@
     ../../modules/nix.nix
     ../../modules/nix_utils.nix
     ../../modules/obs.nix
-    ../../modules/reverse_engineering.nix
+    # ../../modules/reverse_engineering.nix
     ../../modules/hardware/serial_devices.nix
     ../../modules/hardware/sound.nix
     ../../modules/ssh_server.nix

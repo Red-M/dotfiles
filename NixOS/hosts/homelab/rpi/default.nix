@@ -10,6 +10,7 @@
     ../../../modules/locale.nix
     ../../../modules/my_user.nix
     ../../../modules/nix.nix
+    ../../../modules/nix_rpi_builds.nix
     ../../../modules/zram.nix
 
     ../../../modules/ssh_server.nix
