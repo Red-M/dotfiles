@@ -5,6 +5,7 @@ return {
     -- branch = "chore/backup_master",
     -- "Red-M/monokai-pro.nvim",
     "loctvl842/monokai-pro.nvim",
+    tag = "v1.26.1",
     enabled = true,
     lazy = false,
     priority = 2000,

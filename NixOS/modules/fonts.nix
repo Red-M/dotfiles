@@ -12,11 +12,8 @@
       subpixel.rgba = "rgb";
       includeUserConf =  true;
       defaultFonts.monospace = [
-        "Cozette Vector NFM"
-        "Cozette Vector NF"
-        "Noto Color Emoji"
-        "Noto Emoji"
-        "DejaVu Sans Mono"
+        "CozetteVector NFM"
+        "CozetteVector NF"
       ];
     };
     packages = with pkgs; [

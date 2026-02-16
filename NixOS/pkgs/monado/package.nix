@@ -66,13 +66,17 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "monado";
-  version = "072cdeb7d67cff0ce51789fd38c76e74499ad67e";
+  version = "0b5795bb8d92386755efd4a5d03f4824f3105da6";
   src = fetchFromGitLab {
     domain = "gitlab.freedesktop.org";
     owner = "monado";
     repo = "monado";
     rev = finalAttrs.version;
-    sha256 = "sha256-eZroKOTXrTzSSQYGCkNC3hYV493Yks1pO6773Ka623Y=";
+    sha256 = "sha256-pFPh0HQpbw/TpoIpOaXNxD2PVyeeU5/nesFrrWl/Bgs=";
+    # owner = "coolGi";
+    # repo = "monado";
+    # rev = "b3a7cbefdaf61b331dc6c29ca0937ce48b630ba2";
+    # sha256 = "sha256-5O/FPAzC/4rJQSafkL7dxTYLLGGpqq9nrjrabeQf4XY=";
   };
 
   nativeBuildInputs = [
@@ -149,6 +153,7 @@ stdenv.mkDerivation (finalAttrs: {
   ]
   ++ lib.optionals clientLibOnly [
     (lib.cmakeBool "XRT_FEATURE_CLIENT_WITHOUT_SERVICE" true)
+    (lib.cmakeBool "XRT_FEATURE_STEAMVR_PLUGIN" false)
     (lib.cmakeBool "XRT_HAVE_LIBUVC" false)
     (lib.cmakeBool "XRT_HAVE_LIBUSB" false)
     (lib.cmakeBool "XRT_HAVE_JPEG" false)
@@ -173,15 +178,7 @@ stdenv.mkDerivation (finalAttrs: {
   # This may not be correct on every CPU architecture as per, https://registry.khronos.org/OpenXR/specs/1.1/loader.html#architecture-identifiers
   postInstall = ''
     cp "$out/share/openxr/1/openxr_monado.json" "$out/share/openxr/1/openxr_monado.${stdenv.hostPlatform.parsed.cpu.name}.json"
-  ''
-  + (
-    if (clientLibOnly == true) then
-      ''
-        rm -rf "$out/share/steamvr-monado/resources/*"
-      ''
-    else
-      ""
-  );
+  ''; # Do not change this from using `cp` as this will break the multiarch build because it will be pointing to openxr_monado.json for both the 32 bit json and the 64 bit json.
 
   passthru = {
     updateScript = nix-update-script { };

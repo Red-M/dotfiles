@@ -2,6 +2,7 @@
   description = "Out Of Tree";
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-25.11";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-xr.url = "github:nix-community/nixpkgs-xr";
     flake-compat.url = "https://flakehub.com/f/edolstra/flake-compat/1.tar.gz";
@@ -12,6 +13,11 @@
   in {
     pkgs = forAllSys (system: let
       pkgs = import nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+        config.rocmSupport = true;
+      };
+      stable_pkgs = import inputs.nixpkgs-stable {
         inherit system;
         config.allowUnfree = true;
         config.rocmSupport = true;
@@ -53,6 +59,7 @@
 
       ## VR
       wayvr-dashboard = pkgs.callPackage ./wayvr-dashboard {};
+      wayvr = pkgs.callPackage ./wayvr { wayvr = self.wayvr; };
       lovr = pkgs.callPackage ./lovr {};
       lovr-playspace = pkgs.callPackage ./lovr-playspace { lovr = self.pkgs.${system}.lovr; };
       vrcadvert = pkgs.callPackage ./vrcadvert {};
@@ -71,7 +78,7 @@
       resolute = pkgs.callPackage ./resolute {};
       xrbinder = pkgs.callPackage ./xrbinder {};
       go-bsb-cams = pkgs.callPackage ./go-bsb-cams {};
-      baballonia = pkgs.callPackage ./baballonia {};
+      baballonia = pkgs.callPackage ./baballonia {opencv = stable_pkgs.opencv;};
 
 
     });

@@ -9,7 +9,8 @@
   qtmultimedia,
   qtwebsockets,
   pulseaudio,
-  xorg,
+  libxt,
+  libxtst,
   wrapQtAppsHook,
 }:
 
@@ -28,8 +29,8 @@ stdenv.mkDerivation rec {
     qtmultimedia
     qtwebsockets
     pulseaudio
-    xorg.libXt
-    xorg.libXtst
+    libxt
+    libxtst
   ];
   nativeBuildInputs = [
     wrapQtAppsHook

@@ -11,7 +11,13 @@
   openxr-loader,
   vulkan-loader,
   ode,
-  xorg,
+  libx11,
+  libxrandr,
+  libxinerama,
+  libxcursor,
+  xinput,
+  libxi,
+  libxcb,
   python3,
   curl,
   wayland,
@@ -55,13 +61,13 @@ stdenv.mkDerivation rec {
     openxr-loader
     vulkan-loader
     ode
-    xorg.libX11
-    xorg.libXrandr
-    xorg.libXinerama
-    xorg.libXcursor
-    xorg.xinput
-    xorg.libXi
-    xorg.libxcb.dev
+    libx11
+    libxrandr
+    libxinerama
+    libxcursor
+    xinput
+    libxi
+    libxcb.dev
     python3
     curl
     git

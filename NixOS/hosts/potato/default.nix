@@ -44,7 +44,6 @@
     ../../modules/my_user.nix
     ../../modules/my_user_extras.nix
     ../../modules/nix.nix
-    ../../modules/nix_rpi_builds.nix
     ../../modules/nix_utils.nix
     ../../modules/obs.nix
     # ../../modules/reverse_engineering.nix
@@ -77,11 +76,6 @@
   boot = {
     # kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
     kernelParams = [];
-    # kernelParams = [
-    #   # "nvme_core.default_ps_max_latency_us=0"
-    #   # "pcie_aspm=off"
-    #   # "pcie_pm=off"
-    # ];
     extraModulePackages = with config.boot.kernelPackages; [
     ];
   };

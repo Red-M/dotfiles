@@ -328,8 +328,7 @@
       lovr-playspace = outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.lovr-playspace;
       vrcadvert = outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.vrcadvert;
       oscavmgr = outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.oscavmgr;
-      wayvr-dashboard = outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.wayvr-dashboard;
-      wlx-overlay-s = outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.wlx-overlay-s;
+      wayvr = outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.wayvr;
       argbColors = outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.argbColors;
       resolute = outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.resolute;
       xrbinder = outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.xrbinder;

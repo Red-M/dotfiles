@@ -2,11 +2,16 @@
 { config, lib, pkgs, nixalt, unstable, outoftree, inputs, ... }:
 
 {
-  services.hardware.openrgb.enable = true;
+  imports = [
+    ../patching/openrgb.nix
+  ];
+  # services.hardware.openrgb = {
+  #   enable = true;
+  #   # package = pkgs.openrgb-with-all-plugins;
+  # };
   users.users.redm = {
     packages = with pkgs; [
-      openrgb-with-all-plugins
-      outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.argbColors # https://gitlab.com/CalcProgrammer1/OpenRGB/-/issues/4306
+      # outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.argbColors # https://gitlab.com/CalcProgrammer1/OpenRGB/-/issues/4306
     ];
   };
 
@@ -14,7 +19,11 @@
     "i2c-dev"
   ];
   environment.systemPackages = with pkgs; [
+    openrgb_1_0
     i2c-tools
+  ];
+  services.udev.packages = with pkgs; [
+    openrgb_1_0
   ];
 
   # ASUS AURA

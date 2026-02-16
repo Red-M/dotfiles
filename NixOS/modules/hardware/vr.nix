@@ -13,20 +13,21 @@
     packages = with pkgs; [
       v4l-utils # cameras
       xrgears # testing, just in case
-      lighthouse-steamvr
+      # lighthouse-steamvr
       # opencomposite
       # xrizer
       # xrizer-patched
       # xrizer-patched2
-      outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.xrizer_multiarch
-      motoc
+      # outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.xrizer_multiarch
+      xrizer_multiarch_oot
+      # motoc
       # index_camera_passthrough
       # wlx-overlay-s
       # wlx-overlay-s_patched
-      outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.wlx-overlay-s
+      # outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.wlx-overlay-s
       libsurvive
-      wayvr-dashboard
-      # outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.wayvr-dashboard
+      # wayvr
+      outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.wayvr
       # lovr-playspace
       outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.lovr-playspace
       outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.vrcadvert
@@ -67,7 +68,8 @@
     monado = {
       environment = let log_level = "info"; in {
         XRT_LOG = log_level;
-        XRT_COMPOSITOR_LOG = log_level;
+        # XRT_COMPOSITOR_LOG = log_level;
+        XRT_COMPOSITOR_LOG = "debug";
         IPC_LOG = log_level;
         PROBER_LOG = log_level;
         LIGHTHOUSE_LOG = log_level;
@@ -80,9 +82,10 @@
         STEAMVR_LH_ENABLE = "on";
         LH_HANDTRACKING = "on";
         VIT_SYSTEM_LIBRARY_PATH = "${pkgs.basalt-monado}/lib/libbasalt.so";
-        XRT_COMPOSITOR_SCALE_PERCENTAGE="120";
-        # XRT_COMPOSITOR_SCALE_PERCENTAGE="160";
-        U_PACING_COMP_MIN_TIME_MS = "2";
+        XRT_COMPOSITOR_SCALE_PERCENTAGE = "120";
+        XRT_COMPOSITOR_DESIRED_MODE = "0";
+        # XRT_COMPOSITOR_SCALE_PERCENTAGE = "160";
+        # U_PACING_COMP_MIN_TIME_MS = "2";
         # U_PACING_COMP_TIME_FRACTION_PERCENT = "80";
         # U_PACING_APP_IMMEDIATE_WAIT_FRAME_RETURN = "on";
         # U_PACING_APP_ALIGN_PREDICTED_DISPLAY_TIME_TO_APP_PERIOD = "1";
@@ -93,20 +96,17 @@
         IPC_EXIT_WHEN_IDLE_DELAY_MS = "300"; # This will only work if you have the following services enabled, otherwise monado will instantly shutdown
       };
       serviceConfig = {
-        TimeoutStopSec = "2";
+        TimeoutStopSec = "6";
         # Nice = -20;
       };
     };
 
-    wlx-overlay-s = {
-      description = "VR wlx-overlay-s";
-      path = [ pkgs.wayvr-dashboard ];
+    wayvr = {
+      description = "VR wayvr";
       serviceConfig = {
-        ExecStart = "${outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.wlx-overlay-s}/bin/wlx-overlay-s";
+        # ExecStart = "${pkgs.wayvr}/bin/wayvr";
+        ExecStart = "${outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.wayvr}/bin/wayvr";
         Restart = "on-abnormal";
-      };
-      environment = {
-        OXR_DEBUG_IPD_MM="67";
       };
       bindsTo = [ "monado.service" ];
       partOf = [ "monado.service" ];
@@ -117,12 +117,9 @@
     lovr-playspace = {
       description = "VR lovr-playspace";
       serviceConfig = {
-        # ExecStart = "${pkgs.lovr-playspace}/bin/lovr-playspace";
-        ExecStart = "${outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.lovr-playspace}/bin/lovr-playspace";
+        ExecStart = "${pkgs.lovr-playspace}/bin/lovr-playspace";
+        # ExecStart = "${outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.lovr-playspace}/bin/lovr-playspace";
         Restart = "on-abnormal";
-      };
-      environment = {
-        OXR_DEBUG_IPD_MM="67";
       };
       bindsTo = [ "monado.service" ];
       partOf = [ "monado.service" ];
@@ -149,9 +146,6 @@
     #   serviceConfig = {
     #     ExecStart = "${pkgs.index_camera_passthrough}/bin/index_camera_passthrough";
     #     Restart = "on-abnormal";
-    #   };
-    #   environment = {
-    #     OXR_DEBUG_IPD_MM="67";
     #   };
     #   bindsTo = [ "monado.service" ];
     #   partOf = [ "monado.service" ];
@@ -186,6 +180,7 @@
     KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="35bd", ATTRS{idProduct}=="0105", MODE="0660", TAG+="uaccess", GROUP="video"
     # Bigscreen Beyond Firmware Mode?
     KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="35bd", ATTRS{idProduct}=="4004", MODE="0660", TAG+="uaccess", GROUP="video"
+    KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="35bd", ATTRS{idProduct}=="0282", MODE="0660", TAG+="uaccess", GROUP="video"
   '';
   boot.kernelPatches = [
     {

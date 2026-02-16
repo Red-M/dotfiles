@@ -6,7 +6,9 @@
   libGL,
   pkg-config,
   fontconfig,
-  xorg,
+  libx11,
+  libsm,
+  libice,
   callPackage,
   lib,
   buildDotnetModule,
@@ -24,9 +26,9 @@ buildDotnetModule rec {
     openssl
     icu
     krb5
-    xorg.libX11
-    xorg.libSM
-    xorg.libICE
+    libx11
+    libsm
+    libice
     (pkgs.callPackage ./simpleosc.nix { })
   ];
   runtimeDependencies = [

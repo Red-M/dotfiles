@@ -15,9 +15,8 @@
       open-in-mpv
       # play-with-mpv
       libplacebo
-      (mpv-unwrapped.wrapper {
-        mpv = mpv-unwrapped;
-        scripts = [
+      (mpv.override {
+        scripts = with pkgs; [
           mpvScripts.uosc
           mpvScripts.thumbfast
           mpvScripts.sponsorblock
@@ -35,7 +34,7 @@
 
       krita
       unstable.gimp-with-plugins
-      kdePackages.kdenlive
+      # kdePackages.kdenlive
       kdePackages.partitionmanager
       gsmartcontrol
       unstable.blender

@@ -25,28 +25,6 @@
             0.32929182
           ]
         },
-        "kbd": {
-          "alpha": 1.0,
-          "grabbable": true,
-          "interactable": true,
-          "positioning": "Anchored",
-          "curvature": 0.14999999,
-          "additive": false,
-          "saved_transform": [
-            1.1489238,
-            -0.0015341081,
-            -0.0498029,
-            -0.022951618,
-            1.0039558,
-            -0.56040543,
-            0.044225663,
-            0.56087315,
-            1.0029824,
-            -0.04510054,
-            -0.56313586,
-            0.03374815
-          ]
-        },
         "DP-1": {
           "alpha": 1.0,
           "grabbable": true,
@@ -68,13 +46,35 @@
             0.07733226,
             0.30363405
           ]
+        },
+        "kbd": {
+          "alpha": 1.0,
+          "grabbable": true,
+          "interactable": true,
+          "positioning": "Anchored",
+          "curvature": 0.14999999,
+          "additive": false,
+          "saved_transform": [
+            1.1489238,
+            -0.0015341081,
+            -0.0498029,
+            -0.022951618,
+            1.0039558,
+            -0.56040543,
+            0.044225663,
+            0.56087315,
+            1.0029824,
+            -0.04510054,
+            -0.56313586,
+            0.03374815
+          ]
         }
       }
     },
     {
       "name": "",
       "overlays": {
-        "kbd": {
+        "DP-1": {
           "alpha": 1.0,
           "grabbable": true,
           "interactable": true,
@@ -83,7 +83,7 @@
           "additive": false,
           "saved_transform": null
         },
-        "DP-1": {
+        "kbd": {
           "alpha": 1.0,
           "grabbable": true,
           "interactable": true,
@@ -97,13 +97,14 @@
   ],
   "global_set": {
     "watch": {
-      "alpha": 0.0,
+      "alpha": 0.21514843,
       "grabbable": false,
       "interactable": true,
       "positioning": {
         "FollowHand": {
           "hand": "Left",
-          "lerp": 1.0
+          "lerp": 1.0,
+          "align_to_hmd": false
         }
       },
       "curvature": null,
@@ -111,5 +112,49 @@
       "saved_transform": null
     }
   },
-  "last_set": 0
+  "last_set": 0,
+  "attribs": [
+    [
+      "WVR-_DASHBOARD",
+      []
+    ],
+    [
+      "DP-2",
+      [
+        {
+          "Stereo": "None"
+        },
+        {
+          "MouseTransform": "Default"
+        }
+      ]
+    ],
+    [
+      "DP-1",
+      [
+        {
+          "Stereo": "None"
+        },
+        {
+          "MouseTransform": "Default"
+        }
+      ]
+    ],
+    [
+      "kbd",
+      []
+    ],
+    [
+      "anchor",
+      []
+    ],
+    [
+      "watch",
+      []
+    ],
+    [
+      "grab-help",
+      []
+    ]
+  ]
 }

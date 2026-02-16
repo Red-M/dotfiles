@@ -133,7 +133,7 @@
   users.users.redm = {
     packages = with pkgs; [
       neofetch
-      xorg.xwininfo
+      xwininfo
       xdotool
       xclip
       google-chrome

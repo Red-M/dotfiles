@@ -7,7 +7,8 @@
   pkg-config,
   SDL2,
   imgui,
-  xorg,
+  libx11,
+  libxft,
 }:
 
 stdenv.mkDerivation rec {
@@ -31,8 +32,8 @@ stdenv.mkDerivation rec {
     cmake
     makeWrapper
     pkg-config
-    xorg.libX11.dev
-    xorg.libXft
+    libx11.dev
+    libxft
   ];
 
   installPhase = ''

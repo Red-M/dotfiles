@@ -5,7 +5,7 @@
   environment.systemPackages = with pkgs; [
     dconf2nix
     nix-index
-    nixfmt-rfc-style
+    nixfmt
     nvfetcher
 
     nixos-anywhere

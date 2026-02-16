@@ -44,6 +44,7 @@
 **/logs/
 
 .config/wlxoverlay/conf.d/pw_tokens.yaml
+.config/wayvr/conf.d/*_tokens.yaml
 
 .config/fontconfig/conf.d/*-hm-*.conf
 .local/share/nix/repl-history

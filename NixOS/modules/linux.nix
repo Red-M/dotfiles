@@ -54,8 +54,8 @@
     envfs.enable = true;
     scx = { # experimental
       enable = lib.mkDefault true;
-      # scheduler = "scx_bpfland";
-      scheduler = "scx_lavd";
+      scheduler = "scx_bpfland";
+      # scheduler = "scx_lavd";
       package = pkgs.scx.rustscheds;
     };
     gnome.gnome-keyring.enable = true;

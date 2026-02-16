@@ -149,6 +149,7 @@ maintain_path .config/yamlfmt
 maintain_path .config/alacritty
 maintain_path .config/steamtinkerlaunch
 maintain_path .config/wlxoverlay
+maintain_path .config/wayvr
 
 maintain_path_optional .ssh
 maintain_path_optional .config/gtk-*/*

@@ -12,6 +12,7 @@
     gnutar
     arj
     unar
+    lz4
   ];
 
 }

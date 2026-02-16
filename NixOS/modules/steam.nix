@@ -75,11 +75,11 @@
       protontricks.enable = true;
       # package = unstable.steam;
       extraPackages = with pkgs; [
-        xorg.libXcursor
-        xorg.libXi
-        xorg.libXinerama
-        xorg.libXScrnSaver
-        xorg.libxcb
+        libxcursor
+        libxi
+        libxinerama
+        libxscrnsaver
+        libxcb
         libpng
         libpulseaudio
         libvorbis
