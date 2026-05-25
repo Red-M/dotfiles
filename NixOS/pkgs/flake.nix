@@ -67,9 +67,7 @@
       wlx-overlay-s = pkgs.callPackage ./wlx-overlay-s { unstable = unstable_pkgs; };
       xrizer = pkgs.callPackage ./xrizer/package.nix {};
       xrizer_multiarch = pkgs.callPackage ./xrizer/multiarch.nix {xrizer = self.pkgs.${system}.xrizer;};
-      monado = pkgs.callPackage ./monado/package.nix {
-        inherit (pkgs.gst_all_1) gstreamer gst-plugins-base;
-      };
+      monado = pkgs.callPackage ./monado/package.nix {};
       monado_multiarch = pkgs.callPackage ./monado/multiarch.nix {monado = self.pkgs.${system}.monado;};
       eepyxr = pkgs.callPackage ./eepyxr {
         zig = unstable_pkgs.zig;
@@ -78,7 +76,10 @@
       resolute = pkgs.callPackage ./resolute {};
       xrbinder = pkgs.callPackage ./xrbinder {};
       go-bsb-cams = pkgs.callPackage ./go-bsb-cams {};
-      baballonia = pkgs.callPackage ./baballonia {opencv = stable_pkgs.opencv;};
+      # baballonia = pkgs.callPackage ./baballonia {opencv = stable_pkgs.opencv;};
+      baballonia = pkgs.callPackage ./baballonia {};
+      xr-chaperone = pkgs.callPackage ./xr-chaperone {};
+      vr-lighthouse = pkgs.callPackage ./vr-lighthouse {};
 
 
     });

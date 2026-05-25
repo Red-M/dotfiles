@@ -7,6 +7,7 @@
 
     ../../5
     ../../../rpi
+    ../../../../../modules/servers/rpi_ntp_gpsd.nix
   ];
 
   networking.hostName = "rpi5-1";

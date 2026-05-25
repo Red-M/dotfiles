@@ -26,6 +26,8 @@
     ipset
   ];
 
+  time.timeZone = "Etc/UTC";
+
   boot = {
     loader = {
       grub = {
@@ -60,8 +62,6 @@
 
   boot.tmp.cleanOnBoot = true;
   zramSwap.enable = true;
-
-  system.autoUpgrade.enable = true;
 
   networking = {
     firewall = {

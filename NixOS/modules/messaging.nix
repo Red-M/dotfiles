@@ -2,29 +2,32 @@
 { config, lib, pkgs, nixalt, unstable, outoftree, inputs, ... }:
 
 {
+  nixpkgs.config.permittedInsecurePackages = [ # https://github.com/NixOS/nixpkgs/issues/513122
+    "openssl-1.1.1w"
+  ];
   users.users.redm = {
     packages = with pkgs; [
-      (unstable.discord.override {
+      (discord.override {
         withOpenASAR = false;
         withVencord = true;
       })
-      (unstable.discord-ptb.override {
+      (discord-ptb.override {
         withOpenASAR = false;
         withVencord = true;
       })
-      (unstable.discord-canary.override {
+      (discord-canary.override {
         withOpenASAR = false;
         withVencord = true;
       })
       betterdiscordctl
-      unstable.telegram-desktop
+      telegram-desktop
       # teamspeak_client
     ];
   };
 
-  nixpkgs.config.permittedInsecurePackages = [
-    "olm-3.2.16"
-  ]; # For the bitlbee libpurple matrix plugin
+  # nixpkgs.config.permittedInsecurePackages = [
+  #   "olm-3.2.16"
+  # ]; # For the bitlbee libpurple matrix plugin
 
   services.bitlbee = {
     # enable = true;
@@ -33,7 +36,7 @@
       bitlbee-mastodon
     ];
     libpurple_plugins = with pkgs; [
-      pidginPackages.purple-matrix
+      #pidginPackages.purple-matrix
       # pidginPackages.purple-signald
     ];
   };

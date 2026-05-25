@@ -91,7 +91,7 @@
     tree
     xxd
 
-    mise
+    # mise
     usage
 
     # gnome.gnome-keyring

@@ -20,10 +20,12 @@ export LANG=en_AU.UTF-8
 # export SciTE_HOME=$(readlink -f "${HOME}/.scite" || echo "${HOME}/.scite")
 
 if [ -f "${HOME}/ssh_keys.sh" ]; then
-  if [ -S ${XDG_RUNTIME_DIR}/keyring/ssh ]; then
-    export SSH_AUTH_SOCK=${XDG_RUNTIME_DIR}/keyring/ssh
-  elif [[ -S ${XDG_RUNTIME_DIR}/gcr/ssh || -n ${DISPLAY} ]]; then
-    export SSH_AUTH_SOCK=${XDG_RUNTIME_DIR}/gcr/ssh
+  if [[ -S "/run/user/$(id -u)/ssh-agent-switcher.sock" && -n "${SSH_CLIENT}" ]]; then
+    export SSH_AUTH_SOCK="/run/user/$(id -u)/ssh-agent-switcher.sock"
+  elif [[ -S "${XDG_RUNTIME_DIR}/gcr/ssh" ]]; then
+    export "SSH_AUTH_SOCK=${XDG_RUNTIME_DIR}/gcr/ssh"
+  elif [ -S "${XDG_RUNTIME_DIR}/keyring/ssh" ]; then
+    export SSH_AUTH_SOCK="${XDG_RUNTIME_DIR}/keyring/ssh"
   fi
 fi
 

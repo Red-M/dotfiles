@@ -55,11 +55,9 @@
       url = "github:NixOS/nixos-hardware/master";
     };
     nixos-raspberrypi = {
-      # url = "github:Red-M/nixos-raspberrypi/develop"; # https://github.com/nvmd/nixos-raspberrypi/issues/90
-      # url = "github:nvmd/nixos-raspberrypi/develop"; # https://github.com/nvmd/nixos-raspberrypi/issues/90
-      url = "github:nvmd/nixos-raspberrypi/main"; # https://github.com/nvmd/nixos-raspberrypi/issues/90
-      # inputs.nixpkgs.follows = "nixpkgs"; # https://github.com/NixOS/nixpkgs/pull/398456
-      inputs.nixpkgs.url = "github:nvmd/nixpkgs/modules-with-keys-unstable"; # https://github.com/NixOS/nixpkgs/pull/398456
+      url = "github:nvmd/nixos-raspberrypi/develop"; # https://github.com/nvmd/nixos-raspberrypi/issues/90
+      # url = "github:nvmd/nixos-raspberrypi/main"; # https://github.com/nvmd/nixos-raspberrypi/issues/90
+      inputs.nixpkgs.follows = "nixpkgs"; # https://github.com/NixOS/nixpkgs/pull/398456
     };
     nixos-images = {
       url = "github:nvmd/nixos-images/sdimage-installer";
@@ -144,9 +142,15 @@
             # disable the sd-image module that nixos-images uses
             (modulesPath + "/installer/sd-card/sd-image-aarch64-installer.nix")
           ];
+
+          # https://github.com/nix-community/nixos-images/blob/38fbcb0f3db4b2cc7f18145e1c9cee5c143cab2c/nix/image-installer/wifi.nix#L5
+          # https://github.com/NixOS/nixpkgs/blob/a2d5cbaaef52a4498ea0de36816f23d2be4de4e0/nixos/modules/services/networking/networkmanager.nix#L17
+          # dumb bug between a rock and a hard place....
+          networking.networkmanager.wifi.backend = "iwd";
+
           # nixos-images sets this with `mkForce`, thus `mkOverride 40`
           image.baseName = let
-            cfg = config.boot.loader.raspberryPi;
+            cfg = config.boot.loader.raspberry-pi;
           in lib.mkOverride 40 "nixos-installer-rpi${cfg.variant}-${cfg.bootloader}";
         })
       ] ++ host_modules;
@@ -336,6 +340,9 @@
       xrizer_multiarch = outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.xrizer_multiarch;
       monado = outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.monado;
       monado_multiarch = outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.monado_multiarch;
+      baballonia = outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.baballonia;
+      xr-chaperone = outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.xr-chaperone;
+      vr-lighthouse = outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.vr-lighthouse;
     });
 
     devShell = forAllSys (system: let

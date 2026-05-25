@@ -1,0 +1,23 @@
+diff --git a/onnxscript/values.py b/onnxscript/values.py
+index 1897ae14..e3165a83 100644
+--- a/onnxscript/values.py
++++ b/onnxscript/values.py
+@@ -644,6 +644,8 @@ class TracedOnnxFunction(Op):
+             source=src,
+         )
+ 
++        print(module)
++        print(self.func)
+         return converter.translate_function_signature(func_ast)
+ 
+     @property
+@@ -742,6 +744,9 @@ class AttrRef(SymbolValue):
+         super().__init__(info)
+         self.value = attr_name
+         self.typeinfo = typeinfo
++        print(attr_name)
++        print(typeinfo)
++        print('----')
+         if not isinstance(typeinfo, (type, _GenericAlias)):
+             # typing._GenericAlias for List[int] and List[str], etc.
+             raise TypeError(f"Expecting a type not f{type(typeinfo)} for typeinfo.")

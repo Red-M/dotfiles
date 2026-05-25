@@ -6,8 +6,14 @@
     raspberry-pi-5.base
     raspberry-pi-5.page-size-16k
     raspberry-pi-5.display-vc4
-    raspberry-pi-5.bluetooth
   ];
 
+  hardware.bluetooth.enable = true;
+  environment.systemPackages = with pkgs; [
+    bluez
+    bluez-tools
+  ];
+
+  services.gpsd.devices = [ "/dev/ttyAMA0" ];
 }
 

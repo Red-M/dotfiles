@@ -6,5 +6,6 @@
     raspberry-pi-4.base
   ];
 
+  services.gpsd.devices = [ "/dev/ttyS0" ];
 }
 

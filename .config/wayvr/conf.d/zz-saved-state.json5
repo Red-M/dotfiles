@@ -3,6 +3,30 @@
     {
       "name": "",
       "overlays": {
+        "DP-1": {
+          "alpha": 1.0,
+          "grabbable": true,
+          "interactable": true,
+          "positioning": "Anchored",
+          "curvature": null,
+          "additive": false,
+          "saved_transform": [
+            0.75112295,
+            -0.04650966,
+            0.36327356,
+            -0.012467082,
+            0.82516015,
+            0.13142225,
+            -0.36602652,
+            -0.12354791,
+            0.7409972,
+            0.3232904,
+            0.047113657,
+            0.34751815
+          ],
+          "block_input": true,
+          "angle_fade": false
+        },
         "kbd": {
           "alpha": 1.0,
           "grabbable": true,
@@ -23,7 +47,9 @@
             0.0042241737,
             -0.40406877,
             0.30112612
-          ]
+          ],
+          "block_input": true,
+          "angle_fade": false
         },
         "DP-2": {
           "alpha": 1.0,
@@ -45,29 +71,9 @@
             -0.36172745,
             -0.01822567,
             0.29824638
-          ]
-        },
-        "DP-1": {
-          "alpha": 1.0,
-          "grabbable": true,
-          "interactable": true,
-          "positioning": "Anchored",
-          "curvature": null,
-          "additive": false,
-          "saved_transform": [
-            0.75112295,
-            -0.04650966,
-            0.36327356,
-            -0.012467082,
-            0.82516015,
-            0.13142225,
-            -0.36602652,
-            -0.12354791,
-            0.7409972,
-            0.3232904,
-            0.047113657,
-            0.34751815
-          ]
+          ],
+          "block_input": true,
+          "angle_fade": false
         }
       },
       "hidden_overlays": {
@@ -78,22 +84,15 @@
           "positioning": "Anchored",
           "curvature": 0.15,
           "additive": false,
-          "saved_transform": null
+          "saved_transform": null,
+          "block_input": true,
+          "angle_fade": false
         }
       }
     },
     {
       "name": "",
       "overlays": {
-        "DP-1": {
-          "alpha": 1.0,
-          "grabbable": true,
-          "interactable": true,
-          "positioning": "Anchored",
-          "curvature": 0.15,
-          "additive": false,
-          "saved_transform": null
-        },
         "kbd": {
           "alpha": 1.0,
           "grabbable": true,
@@ -101,7 +100,20 @@
           "positioning": "Anchored",
           "curvature": 0.15,
           "additive": false,
-          "saved_transform": null
+          "saved_transform": null,
+          "block_input": true,
+          "angle_fade": false
+        },
+        "DP-1": {
+          "alpha": 1.0,
+          "grabbable": true,
+          "interactable": true,
+          "positioning": "Anchored",
+          "curvature": 0.15,
+          "additive": false,
+          "saved_transform": null,
+          "block_input": true,
+          "angle_fade": false
         }
       },
       "hidden_overlays": {
@@ -125,7 +137,9 @@
             -0.28897882,
             1.029748,
             -0.47345895
-          ]
+          ],
+          "block_input": true,
+          "angle_fade": false
         },
         "DP-1": {
           "alpha": 1.0,
@@ -147,14 +161,16 @@
             0.2693426,
             1.0412654,
             -0.3102047
-          ]
+          ],
+          "block_input": true,
+          "angle_fade": false
         }
       }
     }
   ],
   "global_set": {
     "watch": {
-      "alpha": 0.0,
+      "alpha": 1.0,
       "grabbable": false,
       "interactable": true,
       "positioning": {
@@ -179,38 +195,24 @@
         -0.017865658,
         -0.038398743,
         0.11160308
-      ]
+      ],
+      "block_input": true,
+      "angle_fade": true
     }
   },
   "last_set": 0,
   "attribs": [
     [
+      "toast",
+      []
+    ],
+    [
       "DP-2",
-      [
-        {
-          "Stereo": "None"
-        },
-        {
-          "StereoFullFrame": false
-        },
-        {
-          "MouseTransform": "Default"
-        }
-      ]
+      []
     ],
     [
       "DP-1",
-      [
-        {
-          "Stereo": "None"
-        },
-        {
-          "StereoFullFrame": false
-        },
-        {
-          "MouseTransform": "Default"
-        }
-      ]
+      []
     ],
     [
       "kbd",

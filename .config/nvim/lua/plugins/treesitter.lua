@@ -1,13 +1,34 @@
+local function refresh_filetypes()
+  -- Enable treesitter only for filetypes supported by installed parsers
+  vim.api.nvim_create_autocmd("FileType", {
+    pattern = vim .iter(require("nvim-treesitter").get_installed()):map(vim.treesitter.language.get_filetypes):flatten():totable(),
+    group = vim.api.nvim_create_augroup("treesitter_support", { clear = true }),
+    callback = function()
+      vim.wo.foldexpr = "v:lua.require'nvim-treesitter'.foldexpr()"
+      vim.treesitter.start()
+    end,
+  })
+end
+
 return {
 {
   "nvim-treesitter/nvim-treesitter",
-  -- branch = "main",
-  branch = "master", -- a rewrite is happening, check the main branch if this disappears
+  branch = "main",
+  commit = vim.fn.has("nvim-0.12") == 0 and "7caec274fd19c12b55902a5b795100d21531391f" or nil,
+  version = false, -- last release is way too old and doesn't work on Windows
+  build = function()
+    local TS = require("nvim-treesitter")
+    if not TS.get_installed then
+      vim.health.error("Please restart Neovim and run `:TSUpdate` to use the `nvim-treesitter` **main** branch.")
+      return
+    end
+    -- LazyVim.treesitter.build(function()
+    TS.update(nil, { summary = true })
+    -- end)
+  end,
+  cmd = { "TSUpdate", "TSInstall", "TSLog", "TSUninstall" },
   lazy = false,
-  --priority = 500,
   build = ":TSUpdate",
---   event = { "LazyFile", "VeryLazy" },
-  event = { "VeryLazy" },
   lazy = vim.fn.argc(-1) == 0, -- load treesitter early when opening a file from the cmdline
   init = function(plugin)
     -- PERF: add nvim-treesitter queries to the rtp and it's custom query predicates early
@@ -16,10 +37,12 @@ return {
     -- Luckily, the only things that those plugins need are the custom queries, which we make available
     -- during startup.
     require("lazy.core.loader").add_to_rtp(plugin)
-    require("nvim-treesitter.query_predicates")
+    -- require("nvim-treesitter.query_predicates")
     require("nvim-treesitter.install").prefer_git = true
   end,
+  opts_extend = { "ensure_installed" },
   opts = {
+    -- sync_install = false,
     ensure_installed = {
       "arduino",
       "bash",
@@ -39,7 +62,7 @@ return {
       "jq",
       "json",
       "json5",
-      "jsonc",
+      -- "jsonc",
       "kconfig",
       "lua",
       "luadoc",
@@ -64,61 +87,43 @@ return {
       "vimdoc",
       "yaml",
     },
-    sync_install = false,
-    highlight = { enable = true, use_languagetree = true, },
+    -- highlight = { enable = true, use_languagetree = true, },
     -- indent = { enable = true },
-    context_commentstring = { enable = true },
-    incremental_selection = {
-        enable = true,
-        keymaps = {
-          init_selection = "<C-space>",
-          node_incremental = "<C-space>",
-          scope_incremental = false,
-          node_decremental = "<bs>",
-        },
-      },
-      textobjects = {
-        move = {
-          enable = true,
-          goto_next_start = { ["]f"] = "@function.outer", ["]c"] = "@class.outer", ["]a"] = "@parameter.inner" },
-          goto_next_end = { ["]F"] = "@function.outer", ["]C"] = "@class.outer", ["]A"] = "@parameter.inner" },
-          goto_previous_start = { ["[f"] = "@function.outer", ["[c"] = "@class.outer", ["[a"] = "@parameter.inner" },
-          goto_previous_end = { ["[F"] = "@function.outer", ["[C"] = "@class.outer", ["[A"] = "@parameter.inner" },
-        },
-      },
+    -- context_commentstring = { enable = true },
+    -- incremental_selection = {
+    --     enable = true,
+    --     keymaps = {
+    --       init_selection = "<C-space>",
+    --       node_incremental = "<C-space>",
+    --       scope_incremental = false,
+    --       node_decremental = "<bs>",
+    --     },
+    --   },
+      -- textobjects = {
+      --   move = {
+      --     enable = true,
+      --     goto_next_start = { ["]f"] = "@function.outer", ["]c"] = "@class.outer", ["]a"] = "@parameter.inner" },
+      --     goto_next_end = { ["]F"] = "@function.outer", ["]C"] = "@class.outer", ["]A"] = "@parameter.inner" },
+      --     goto_previous_start = { ["[f"] = "@function.outer", ["[c"] = "@class.outer", ["[a"] = "@parameter.inner" },
+      --     goto_previous_end = { ["[F"] = "@function.outer", ["[C"] = "@class.outer", ["[A"] = "@parameter.inner" },
+      --   },
+      -- },
     --parser_install_dir = vim.fn.stdpath("config") .. "/treesitter_parsers",
   },
   config = function (plugin, opts)
-    local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
+    local treesitter = require("nvim-treesitter")
 
-    -- parser_config.gotmpl = {
-    --   install_info = {
-    --     url = "https://github.com/ngalaiko/tree-sitter-go-template",
-    --     -- url = "https://github.com/qvalentin/tree-sitter-go-template",
-    --     files = { "src/parser.c" },
-    --     -- branch = { "feat/helm-lang" },
-    --   },
-    --   filetype = "gotmpl",
-    --   used_by = {"gohtmltmpl", "gotexttmpl", "gotmpl", "yaml"},
-    -- }
-    -- parser_config.helm = {
-    --   install_info = {
-    --     -- url = "https://github.com/ngalaiko/tree-sitter-go-template",
-    --     url = "https://github.com/qvalentin/tree-sitter-go-template",
-    --     files = { "src/parser.c" },
-    --     branch = { "feat/helm-lang" },
-    --   },
-    --   filetype = "gotmpl",
-    --   used_by = {"gohtmltmpl", "gotexttmpl", "gotmpl", "yaml"},
-    -- }
-
-    require("nvim-treesitter.configs").setup(opts)
-  end
+    treesitter.install(opts.ensure_installed):await(function(err, success)
+      if not err and success then
+        refresh_filetypes()
+      end
+    end)
+  end,
 },
 {
   "nvim-treesitter/nvim-treesitter-textobjects",
-  event = "VeryLazy",
-  enabled = true,
+  -- event = "VeryLazy",
+  enabled = false,
   config = function()
     -- If treesitter is already loaded, we need to run config again for textobjects
     -- if LazyVim.is_loaded("nvim-treesitter") then
@@ -149,3 +154,4 @@ return {
   end,
 },
 }
+

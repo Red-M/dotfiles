@@ -1,3 +1,4 @@
+vim.opt.modelines = 0 -- Disables comments from setting options or running commands
 vim.opt.number = true
 vim.opt.relativenumber = false
 vim.opt.pumheight = 12

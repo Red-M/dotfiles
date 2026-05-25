@@ -28,7 +28,7 @@
       noto-fonts-cjk-sans
       # emojione
       noto-fonts-color-emoji
-      openmoji-color
+      # openmoji-color
       liberation_ttf
       fira-code
       fira-code-symbols

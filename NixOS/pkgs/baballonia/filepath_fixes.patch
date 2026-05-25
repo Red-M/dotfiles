@@ -1,0 +1,2376 @@
+diff --git a/data.py b/data.py
+index 4a9d342..5546027 100644
+--- a/data.py
++++ b/data.py
+@@ -15,13 +15,13 @@ import time
+ def calculate_row_pattern_consistency(image):
+     """
+     Calculate row pattern consistency metric for corruption detection.
+-    
++
+     This is the fastest and most discriminative metric based on benchmark analysis.
+     Detects horizontal striping corruption patterns.
+-    
++
+     Args:
+         image: OpenCV image (BGR or grayscale)
+-        
++
+     Returns:
+         float: Row pattern consistency value (higher = more likely corrupted)
+     """
+@@ -30,13 +30,13 @@ def calculate_row_pattern_consistency(image):
+         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+     else:
+         gray = image
+-    
++
+     # Normalize to 0-1 range
+     gray_norm = gray.astype(np.float32) / 255.0
+-    
++
+     # Calculate row means
+     row_means = np.mean(gray_norm, axis=1)
+-    
++
+     # Calculate consistency (standard deviation of row differences)
+     if len(row_means) > 1:
+         return np.std(np.diff(row_means))
+@@ -47,7 +47,7 @@ class FastCorruptionDetector:
+     def __init__(self, threshold=0.022669, use_adaptive=True, adaptation_window=100):
+         """
+         Initialize fast corruption detector using row pattern consistency.
+-        
++
+         Args:
+             threshold: Base threshold for corruption detection (from analysis of good/bad samples)
+             use_adaptive: Whether to use adaptive threshold based on frame history
+@@ -57,77 +57,77 @@ class FastCorruptionDetector:
+         self.current_threshold = threshold
+         self.use_adaptive = use_adaptive
+         self.adaptation_window = adaptation_window
+-        
++
+         # Rolling window for adaptive threshold calculation
+         self.recent_values = deque(maxlen=adaptation_window)
+-        
++
+         # Statistics
+         self.total_frames = 0
+         self.detected_corrupted_left = 0
+         self.detected_corrupted_right = 0
+         self.threshold_updates = 0
+-        
++
+     def update_adaptive_threshold(self, value):
+         """Update adaptive threshold based on recent frame values."""
+         if not self.use_adaptive:
+             return
+-            
++
+         # Add current value to history
+         self.recent_values.append(value)
+-        
++
+         # Need enough history to compute adaptive threshold
+         if len(self.recent_values) < 20:
+             return
+-        
++
+         # Use robust statistics (median + k*MAD) to set threshold
+         # Assumes most frames are clean, so this gives threshold for outliers
+         values = np.array(self.recent_values)
+         median = np.median(values)
+         mad = np.median(np.abs(values - median))  # Median Absolute Deviation
+-        
++
+         # Set threshold as median + 3*MAD (robust outlier detection)
+         adaptive_threshold = median + 3.0 * mad
+-        
++
+         # Don't let adaptive threshold go too far from base threshold
+         min_threshold = self.base_threshold * 0.5
+         max_threshold = self.base_threshold * 3.0
+-        
++
+         self.current_threshold = np.clip(adaptive_threshold, min_threshold, max_threshold)
+         self.threshold_updates += 1
+-    
++
+     def is_corrupted(self, frame):
+         """
+         Determine if frame is corrupted based on row pattern consistency.
+-        
++
+         Returns:
+             tuple: (is_corrupted, metric_value, threshold_used)
+         """
+-        
++
+         metric_value = calculate_row_pattern_consistency(frame)
+         #print("Took: %f" % (time.time()-start))
+-        
++
+         # Update adaptive threshold
+         self.update_adaptive_threshold(metric_value)
+-        
++
+         # Check if corrupted
+         is_corrupted = metric_value > self.current_threshold
+ 
+         #print("Corrupted: %f %f" % (metric_value, self.current_threshold))
+-        
++
+         return is_corrupted, metric_value, self.current_threshold
+-    
++
+     def process_frame_pair(self, left_frame, right_frame):
+         """Process both left and right frames."""
+         self.total_frames += 1
+-        
++
+         left_corrupted, left_value, left_threshold = self.is_corrupted(left_frame)
+         right_corrupted, right_value, right_threshold = self.is_corrupted(right_frame)
+-        
++
+         if left_corrupted:
+             self.detected_corrupted_left += 1
+         if right_corrupted:
+             self.detected_corrupted_right += 1
+-            
++
+         return {
+             'left_corrupted': left_corrupted,
+             'right_corrupted': right_corrupted,
+@@ -136,7 +136,7 @@ class FastCorruptionDetector:
+             'left_threshold': left_threshold,
+             'right_threshold': right_threshold
+         }
+-    
++
+     def get_stats(self):
+         """Get detection statistics"""
+         return {
+@@ -156,47 +156,47 @@ def find_best_unused_neighbor(timestamps, center_idx, target_ts, used_set, windo
+     n = len(timestamps)
+     best_idx = None
+     best_dev = float('inf')
+-    
++
+     # Apply global window size multiplier for perfect accuracy
+     window_size = int(window_size * WIN_SIZE_MUL)
+-    
++
+     # Check a window around the binary search result
+     start = max(0, center_idx - window_size)
+     end = min(n, center_idx + window_size)
+-    
++
+     for i in range(start, end):
+         if i not in used_set:
+             dev = abs(timestamps[i] - target_ts)
+             if dev < best_dev:
+                 best_dev = dev
+                 best_idx = i
+-    
++
+     return best_idx, best_dev
+ 
+ def find_pattern_based_offset(label_timestamps, eye_timestamps):
+     """Find offset using interval pattern matching for robust alignment"""
+     if len(label_timestamps) < 10 or len(eye_timestamps) < 10:
+         return find_global_time_offset(label_timestamps, eye_timestamps, sample_size=len(label_timestamps))
+-    
++
+     # Calculate interval patterns with extended sampling
+     label_intervals = [label_timestamps[i+1] - label_timestamps[i] for i in range(len(label_timestamps)-1)]
+     eye_intervals = [eye_timestamps[i+1] - eye_timestamps[i] for i in range(len(eye_timestamps)-1)]
+-    
++
+     if not label_intervals or not eye_intervals:
+         return 0
+-    
++
+     # Find the best matching subsequence using sliding window correlation
+     best_offset = 0
+     best_correlation = -1
+-    
++
+     # Try different starting positions in the eye interval sequence
+     for start_pos in range(0, max(1, len(eye_intervals) - len(label_intervals)), 5):
+         end_pos = start_pos + len(label_intervals)
+         if end_pos > len(eye_intervals):
+             break
+-            
++
+         eye_subset = eye_intervals[start_pos:end_pos]
+-        
++
+         # Calculate correlation between interval patterns
+         if len(eye_subset) == len(label_intervals):
+             correlation = np.corrcoef(label_intervals, eye_subset)[0, 1]
+@@ -206,7 +206,7 @@ def find_pattern_based_offset(label_timestamps, eye_timestamps):
+                 label_start_time = label_timestamps[0]
+                 eye_start_time = eye_timestamps[start_pos]
+                 best_offset = eye_start_time - label_start_time
+-    
++
+     #print(f"Pattern correlation: {best_correlation:.3f}", flush=True)
+     return best_offset
+ 
+@@ -214,56 +214,56 @@ def find_global_time_offset(label_timestamps, eye_timestamps, sample_size=100):
+     """Find global time offset using correlation analysis"""
+     if not label_timestamps or not eye_timestamps:
+         return 0
+-    
++
+     # Sample evenly distributed timestamps
+-    label_sample = [label_timestamps[i] for i in range(0, len(label_timestamps), 
++    label_sample = [label_timestamps[i] for i in range(0, len(label_timestamps),
+                                                     max(1, len(label_timestamps) // sample_size))]
+-    
++
+     # Try different offsets and find the one with minimum total deviation
+     min_label = min(label_sample)
+     max_label = max(label_sample)
+     min_eye = min(eye_timestamps)
+     max_eye = max(eye_timestamps)
+-    
++
+     # Estimate potential offset range
+     potential_offset_range = max_eye - min_label, min_eye - max_label
+     offset_start = min(potential_offset_range) - 10000  # Add 10s buffer
+     offset_end = max(potential_offset_range) + 10000    # Add 10s buffer
+-    
++
+     # Test offsets at 1 second intervals
+     best_offset = 0
+     best_score = float('inf')
+-    
++
+     step_size = 1000  # 1 second steps
+     for offset in range(int(offset_start), int(offset_end), step_size):
+         total_deviation = 0
+         matches = 0
+-        
++
+         for label_ts in label_sample[:20]:  # Use first 20 samples for speed
+             adjusted_label_ts = label_ts + offset
+-            
++
+             # Find closest eye timestamp using binary search
+             idx = bisect.bisect_left(eye_timestamps, adjusted_label_ts)
+-            
++
+             # Check both neighbors
+             candidates = []
+             if idx > 0:
+                 candidates.append(eye_timestamps[idx - 1])
+             if idx < len(eye_timestamps):
+                 candidates.append(eye_timestamps[idx])
+-            
++
+             if candidates:
+                 closest_eye_ts = min(candidates, key=lambda x: abs(x - adjusted_label_ts))
+                 deviation = abs(closest_eye_ts - adjusted_label_ts)
+                 total_deviation += deviation
+                 matches += 1
+-        
++
+         if matches > 0:
+             avg_deviation = total_deviation / matches
+             if avg_deviation < best_score:
+                 best_score = avg_deviation
+                 best_offset = offset
+-    
++
+     return best_offset
+ 
+ def apply_spatial_transformations(image, max_shift=10, max_rotation=5, max_scale=0.1):
+@@ -271,21 +271,21 @@ def apply_spatial_transformations(image, max_shift=10, max_rotation=5, max_scale
+     # Convert to tensor if needed
+     if not isinstance(image, torch.Tensor):
+         image = torch.from_numpy(image).float()
+-    
++
+     # Store original shape and device
+     original_shape = image.shape
+     device = image.device
+-    
++
+     # Handle different input dimensions
+     if len(original_shape) == 3:  # [C, H, W]
+         image = image.unsqueeze(0)  # [1, C, H, W]
+-    
++
+     # Get dimensions
+     batch_size, channels, height, width = image.shape
+-    
++
+     # Create output tensor
+     transformed = torch.zeros_like(image)
+-    
++
+     # Apply transformation to each image in batch
+     for b in range(batch_size):
+         # Generate random transformation parameters
+@@ -293,18 +293,18 @@ def apply_spatial_transformations(image, max_shift=10, max_rotation=5, max_scale
+         shift_y = np.random.randint(-max_shift, max_shift+1)
+         angle = np.random.uniform(-max_rotation, max_rotation)
+         scale = 1.0 + np.random.uniform(-max_scale, max_scale)
+-        
++
+         # Create transformation matrix
+         M = cv2.getRotationMatrix2D((width/2, height/2), angle, scale)
+         M[0, 2] += shift_x
+         M[1, 2] += shift_y
+-        
++
+         # Apply to each channel
+         for c in range(channels):
+             img = image[b, c].cpu().detach().numpy()
+             transformed_img = cv2.warpAffine(img, M, (width, height), borderMode=cv2.BORDER_REFLECT)
+             transformed[b, c] = torch.from_numpy(transformed_img).to(device)
+-    
++
+     # Return in original shape
+     if len(original_shape) == 3:
+         return transformed.squeeze(0)
+@@ -315,31 +315,31 @@ def apply_intensity_transformations(image, brightness_range=0.2, contrast_range=
+     # Convert to tensor if needed
+     if not isinstance(image, torch.Tensor):
+         image = torch.from_numpy(image).float()
+-    
++
+     # Store original shape
+     original_shape = image.shape
+-    
++
+     # Handle different input dimensions
+     if len(original_shape) == 3:  # [C, H, W]
+         image = image.unsqueeze(0)  # [1, C, H, W]
+-    
++
+     # Random brightness and contrast for each image in batch
+     batch_size = image.shape[0]
+     transformed = []
+-    
++
+     for b in range(batch_size):
+         # Brightness should be a small offset, not added to 1.0
+         brightness = np.random.uniform(-brightness_range, brightness_range)
+-        
++
+         # Contrast is still a scaling factor centered around 1.0
+         contrast = 1.0 + np.random.uniform(-contrast_range, contrast_range)
+-        
++
+         # Apply transformations: new_pixel = pixel * contrast + brightness
+         img_transformed = image[b] * contrast + brightness
+         img_transformed /= img_transformed.amax()
+         #img_transformed = torch.clamp(img_transformed, 0, 1)
+         transformed.append(img_transformed)
+-    
++
+     # Stack and return in original shape
+     transformed = torch.stack(transformed)
+     if len(original_shape) == 3:
+@@ -351,27 +351,27 @@ def apply_blur(image, max_kernel_size=5):
+     # Convert to tensor if needed
+     if not isinstance(image, torch.Tensor):
+         image = torch.from_numpy(image).float()
+-    
++
+     # Store original shape and device
+     original_shape = image.shape
+     device = image.device
+-    
++
+     # Handle different input dimensions
+     if len(original_shape) == 3:  # [C, H, W]
+         image = image.unsqueeze(0)  # [1, C, H, W]
+-    
++
+     # Get dimensions
+     batch_size, channels, height, width = image.shape
+-    
++
+     # Create output tensor
+     transformed = torch.zeros_like(image)
+-    
++
+     # Apply blur with 50% probability
+     if np.random.random() < 0.5:
+         # Generate random kernel size (must be odd)
+         kernel_size = 2 * np.random.randint(1, max_kernel_size//2 + 1) + 1
+         sigma = np.random.uniform(0.1, 2.0)
+-        
++
+         for b in range(batch_size):
+             for c in range(channels):
+                 img = image[b, c].cpu().detach().numpy()
+@@ -379,7 +379,7 @@ def apply_blur(image, max_kernel_size=5):
+                 transformed[b, c] = torch.from_numpy(blurred).to(device)
+     else:
+         transformed = image.clone()
+-    
++
+     # Return in original shape
+     if len(original_shape) == 3:
+         return transformed.squeeze(0)
+@@ -393,10 +393,10 @@ def decode_jpeg(jpeg_data):
+     Decode JPEG data to an OpenCV image with robust error handling.
+     Crops 15 pixels from left/right and 4 pixels from top/bottom,
+     then resizes back to the original resolution.
+-    
++
+     Args:
+         jpeg_data: Raw JPEG binary data
+-        
++
+     Returns:
+         OpenCV image (BGR format) or a red error image if decoding fails
+     """
+@@ -406,37 +406,37 @@ def decode_jpeg(jpeg_data):
+         try:
+             pil_img = Image.open(io.BytesIO(jpeg_data))
+             np_img = np.array(pil_img)
+-            
++
+             # Convert RGB to BGR for OpenCV
+             if len(np_img.shape) == 3 and np_img.shape[2] == 3:
+                 img = cv2.cvtColor(np_img, cv2.COLOR_RGB2BGR)
+             else:
+                 # If grayscale, convert to 3-channel
+                 img = cv2.cvtColor(np_img, cv2.COLOR_GRAY2BGR)
+-                
++
+         except Exception as e:
+             # Method 2: If PIL fails, try OpenCV directly
+             img_array = np.frombuffer(jpeg_data, dtype=np.uint8)
+             img = cv2.imdecode(img_array, cv2.IMREAD_COLOR)
+-            
++
+             if img is None:
+-                with open("./bad_Data.jpg", "wb") as w:
++                with open("/tmp/bad_Data.jpg", "wb") as w:
+                     w.write(jpeg_data)
+                     quit()
+                 raise Exception("OpenCV decoding failed")
+-        
++
+         return img
+-                
++
+     except Exception as e:
+         print(f"Error decoding image: {str(e)}", flush=True)
+         # Return a red "error" image of 128x128 pixels
+         error_img = np.zeros((128, 128, 3), dtype=np.uint8)
+         error_img[:, :, 2] = 255  # Red color in BGR
+-        
++
+         # Add error text
+-        cv2.putText(error_img, "Decode Error", (10, 64), 
++        cv2.putText(error_img, "Decode Error", (10, 64),
+                 cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1)
+-        
++
+         return error_img
+ 
+ def read_capture_file(filename, exclude_after=0, exclude_before=0):
+@@ -448,11 +448,11 @@ def read_capture_file(filename, exclude_after=0, exclude_before=0):
+     all_eye_frames_left = {}   # video_timestamp_left -> image_data
+     all_eye_frames_right = {}  # video_timestamp_right -> image_data
+     all_label_frames = {}      # timestamp -> label_data
+-    
++
+     raw_frames = 0
+ 
+     skip_frames = exclude_before
+-    
++
+     total_bad = 0
+ 
+     det = FastCorruptionDetector()
+@@ -471,7 +471,7 @@ def read_capture_file(filename, exclude_after=0, exclude_before=0):
+             if not frame_data or len(frame_data) < struct_size:
+                 #print("Breaking - end of file or incomplete frame metadata", flush=True)
+                 break
+-                
++
+             # Unpack the frame metadata including new lid/brow parameters
+             try:
+                 (routine_pitch, routine_yaw, routine_distance, routine_convergence, fov_adjust_distance,
+@@ -488,18 +488,18 @@ def read_capture_file(filename, exclude_after=0, exclude_before=0):
+             if jpeg_data_left_length < 0 or jpeg_data_right_length < 0:
+                 print(f"Invalid JPEG data lengths: left={jpeg_data_left_length}, right={jpeg_data_right_length}", flush=True)
+                 break
+-            
++
+             if jpeg_data_left_length > 10*1024*1024 or jpeg_data_right_length > 10*1024*1024:  # 10MB sanity check
+                 print(f"JPEG data lengths too large: left={jpeg_data_left_length}, right={jpeg_data_right_length}", flush=True)
+                 break
+-            
++
+             # Read the image data
+             try:
+                 image_left_data = f.read(jpeg_data_left_length)
+                 if len(image_left_data) != jpeg_data_left_length:
+                     print(f"Failed to read complete left JPEG data: expected {jpeg_data_left_length}, got {len(image_left_data)}", flush=True)
+                     break
+-                    
++
+                 image_right_data = f.read(jpeg_data_right_length)
+                 if len(image_right_data) != jpeg_data_right_length:
+                     print(f"Failed to read complete right JPEG data: expected {jpeg_data_right_length}, got {len(image_right_data)}", flush=True)
+@@ -512,8 +512,8 @@ def read_capture_file(filename, exclude_after=0, exclude_before=0):
+     #print("Detecting corrupted BSB frames...", flush=True)
+     last_was_safe = False
+     ibl_db = {}
+-    if os.path.exists("./ibl_db_%d.pt" % crc):
+-        ibl_db = torch.load("./ibl_db_%d.pt" % crc, weights_only=False)
++    if os.path.exists("/tmp/ibl_db_%d.pt" % crc):
++        ibl_db = torch.load("/tmp/ibl_db_%d.pt" % crc, weights_only=False)
+     with open(filename, 'rb') as f:
+         progress = range(total_frames)
+         for e in progress:
+@@ -524,7 +524,7 @@ def read_capture_file(filename, exclude_after=0, exclude_before=0):
+             if not frame_data or len(frame_data) < struct_size:
+                 print("Breaking - end of file or incomplete frame metadata", flush=True)
+                 break
+-                
++
+             # Unpack the frame metadata including new lid/brow parameters
+             try:
+                 (routine_pitch, routine_yaw, routine_distance, routine_convergence, fov_adjust_distance,
+@@ -541,23 +541,23 @@ def read_capture_file(filename, exclude_after=0, exclude_before=0):
+             last_was_safe = routine_state == 67108864
+             #if p_last_was_safe:
+             #    routine_state = 0 # hack: only include single frame examples of safe frames
+-            
++
+             # Validate JPEG data lengths
+             if jpeg_data_left_length < 0 or jpeg_data_right_length < 0:
+                 print(f"Invalid JPEG data lengths: left={jpeg_data_left_length}, right={jpeg_data_right_length}", flush=True)
+                 break
+-            
++
+             if jpeg_data_left_length > 10*1024*1024 or jpeg_data_right_length > 10*1024*1024:  # 10MB sanity check
+                 print(f"JPEG data lengths too large: left={jpeg_data_left_length}, right={jpeg_data_right_length}", flush=True)
+                 break
+-            
++
+             # Read the image data
+             try:
+                 image_left_data = f.read(jpeg_data_left_length)
+                 if len(image_left_data) != jpeg_data_left_length:
+                     print(f"Failed to read complete left JPEG data: expected {jpeg_data_left_length}, got {len(image_left_data)}", flush=True)
+                     break
+-                    
++
+                 image_right_data = f.read(jpeg_data_right_length)
+                 if len(image_right_data) != jpeg_data_right_length:
+                     print(f"Failed to read complete right JPEG data: expected {jpeg_data_right_length}, got {len(image_right_data)}", flush=True)
+@@ -579,7 +579,7 @@ def read_capture_file(filename, exclude_after=0, exclude_before=0):
+             #if routine_left_lid > 0.5 and random.random() < 0.75:
+             #    print("Excluding!")
+             #     bad = True
+-            
++
+             if bad:
+                 total_bad = total_bad + 1
+                 #progress.set_description("Corrupted frames: %d (%.2f%%)" % (total_bad, (total_bad / e) * 100.0))
+@@ -594,66 +594,66 @@ def read_capture_file(filename, exclude_after=0, exclude_before=0):
+                                             left_eye_pitch, left_eye_yaw, right_eye_pitch, right_eye_yaw,
+                                             routine_left_lid, routine_right_lid, routine_brow_raise, routine_brow_angry,
+                                             routine_widen, routine_squint, routine_dilate, routine_state)
+-            
++
+             #print(f"Read frame: Pitch={routine_pitch}, Yaw={routine_yaw}, sizeRight={len(image_right_data)}, sizeLeft={len(image_left_data)}, timeData={timestamp}, timeLeft={video_timestamp_left}, timeRight={video_timestamp_right}")
+-    if not os.path.exists("./ibl_db_%d.pt" % crc):
+-        torch.save(ibl_db, "./ibl_db_%d.pt" % crc)
++    if not os.path.exists("/tmp/ibl_db_%d.pt" % crc):
++        torch.save(ibl_db, "/tmp/ibl_db_%d.pt" % crc)
+ 
+     # Convert to sorted lists for processing
+     left_frames = sorted([(ts, img) for ts, img in all_eye_frames_left.items()])
+     right_frames = sorted([(ts, img) for ts, img in all_eye_frames_right.items()])
+     label_frames = sorted([(ts, data) for ts, data in all_label_frames.items()])
+-    
++
+     # Extract timestamps for analysis
+     left_timestamps = [ts for ts, _ in left_frames]
+     right_timestamps = [ts for ts, _ in right_frames]
+     label_timestamps = [ts for ts, _ in label_frames]
+-    
++
+     #print("Advanced Phase 1: Cross-correlation offset detection...", flush=True)
+-    
++
+     # Use frame rate analysis for better offset detection with extended sampling
+     def estimate_frame_intervals(timestamps):
+         if len(timestamps) < 2:
+             return []
+         intervals = [timestamps[i+1] - timestamps[i] for i in range(len(timestamps)-1)]
+         return intervals
+-    
++
+     # Extended sampling for better correlation (key optimization)
+     label_intervals = estimate_frame_intervals(label_timestamps[:3000])
+     left_intervals = estimate_frame_intervals(left_timestamps[:3000])
+     right_intervals = estimate_frame_intervals(right_timestamps[:3000])
+-    
++
+     if label_intervals and left_intervals:
+         avg_label_fps = 1000.0 / np.mean(label_intervals) if label_intervals else 30
+         avg_left_fps = 1000.0 / np.mean(left_intervals) if left_intervals else 30
+-    
++
+     # Sophisticated offset detection using pattern matching
+     left_offset = find_pattern_based_offset(label_timestamps, left_timestamps)
+     right_offset = find_pattern_based_offset(label_timestamps, right_timestamps)
+-    
++
+     # Phase 2: Fine-grained local alignment with optimized windows
+     potential_matches = []
+-    
++
+     for label_ts, label_data in label_frames:
+         adjusted_left_target = label_ts + left_offset
+         adjusted_right_target = label_ts + right_offset
+-        
++
+         # Binary search for closest left frame with offset (optimized window)
+         left_idx = bisect.bisect_left(left_timestamps, adjusted_left_target)
+         best_left_idx, best_left_dev = find_best_unused_neighbor(
+             left_timestamps, left_idx, adjusted_left_target, set(), window_size=5
+         )
+-        
++
+         # Binary search for closest right frame with offset (optimized window)
+         right_idx = bisect.bisect_left(right_timestamps, adjusted_right_target)
+         best_right_idx, best_right_dev = find_best_unused_neighbor(
+             right_timestamps, right_idx, adjusted_right_target, set(), window_size=5
+         )
+-        
++
+         if best_left_idx is not None and best_right_idx is not None:
+             actual_left_dev = abs(left_timestamps[best_left_idx] - label_ts)
+             actual_right_dev = abs(right_timestamps[best_right_idx] - label_ts)
+-            
++
+             potential_matches.append({
+                 'label_ts': label_ts,
+                 'label_data': label_data,
+@@ -661,19 +661,19 @@ def read_capture_file(filename, exclude_after=0, exclude_before=0):
+                 'right_idx': best_right_idx,
+                 'quality': actual_left_dev + actual_right_dev
+             })
+-    
++
+     # Final selection - sort by quality and select non-conflicting matches
+     potential_matches.sort(key=lambda x: x['quality'])
+-    
++
+     final_matches = []
+     used_left = set()
+     used_right = set()
+-    
++
+     for match in potential_matches:
+         if match['left_idx'] not in used_left and match['right_idx'] not in used_right:
+             used_left.add(match['left_idx'])
+             used_right.add(match['right_idx'])
+-            
++
+             final_matches.append((
+                 match['label_data'],
+                 left_frames[match['left_idx']][1],  # left image
+@@ -681,23 +681,23 @@ def read_capture_file(filename, exclude_after=0, exclude_before=0):
+                 match['label_ts'],
+                 (None, None, None)  # previous_data placeholder
+             ))
+-    
++
+     # Sort final frames by label timestamp
+     final_matches.sort(key=lambda x: x[3])
+-    
++
+     # Add previous frames context (EXACTLY matching original algorithm)
+     final_frames = final_matches  # Start with the sorted matches
+-    
++
+     # Add previous frames to each frame starting from index 3
+     for e in range(len(final_frames) - 3):
+         final_frames[e + 3] = (
+             final_frames[e + 3][0],  # label_data
+-            final_frames[e + 3][1],  # left image  
++            final_frames[e + 3][1],  # left image
+             final_frames[e + 3][2],  # right image
+             final_frames[e + 3][3],  # label_ts
+             (final_frames[e], final_frames[e + 1], final_frames[e + 2])  # previous 3 frames
+         )
+-    
++
+     # Remove first 3 frames (which don't have complete previous frame context)
+     final_frames = final_frames[3:] if len(final_frames) > 3 else []
+ 
+@@ -708,33 +708,33 @@ class CaptureFrame:
+     def __init__(self, data):
+         # Unpack the binary data
+         offset = 0
+-        
++
+         # Extract image data for left and right eyes (128x128 pixels each)
+         self.image_data_left = np.frombuffer(data[offset:offset + 128*128*4], dtype=np.uint32).reshape(128, 128)
+         offset += 128*128*4
+-        
++
+         self.image_data_right = np.frombuffer(data[offset:offset + 128*128*4], dtype=np.uint32).reshape(128, 128)
+         offset += 128*128*4
+-        
++
+         # Extract other fields
+         self.routinePitch = struct.unpack('f', data[offset:offset+4])[0] / FLOAT_TO_INT_CONSTANT
+         offset += 4
+-        
++
+         self.routineYaw = struct.unpack('f', data[offset:offset+4])[0] / FLOAT_TO_INT_CONSTANT
+         offset += 4
+-        
++
+         self.routineDistance = struct.unpack('f', data[offset:offset+4])[0] / FLOAT_TO_INT_CONSTANT
+         offset += 4
+-        
++
+         self.fovAdjustDistance = struct.unpack('f', data[offset:offset+4])[0]
+         offset += 4
+-        
++
+         self.timestampLow = struct.unpack('I', data[offset:offset+4])[0]
+         offset += 4
+-        
++
+         self.timestampHigh = struct.unpack('I', data[offset:offset+4])[0]
+         offset += 4
+-        
++
+         self.routineState = struct.unpack('I', data[offset:offset+4])[0]
+ 
+         self.isSafeFrame = False
+@@ -743,7 +743,7 @@ class CaptureFrame:
+ class CaptureDataset(Dataset):
+     def __init__(self, capture_file_path, transform=None, skip=0, all_frames=True, force_zero=False, exclude_after=0, exclude_before=0, side='left'):
+         self.transform = transform
+-        
++
+         # Use the new read_capture_file function to load frames
+         self.aligned_frames = read_capture_file(capture_file_path, exclude_after=exclude_after, exclude_before=exclude_before)
+ 
+@@ -766,7 +766,7 @@ class CaptureDataset(Dataset):
+ 
+                 #self.aligned_frames[e][0][0] = 0.0
+                 #self.aligned_frames[e][0][1] = 0.0
+-        
++
+         # Apply skip if needed
+         if skip > 0:
+             self.aligned_frames = self.aligned_frames[skip:]
+@@ -775,7 +775,7 @@ class CaptureDataset(Dataset):
+         if not all_frames:
+             # Use FLAG_GOOD_DATA filtering like trainer.cpp does
+             self.aligned_frames = [
+-                frame for frame in self.aligned_frames 
++                frame for frame in self.aligned_frames
+                 if frame[0][16] & FLAG_GOOD_DATA  # routine_state is at index 16, check if FLAG_GOOD_DATA is set
+             ]
+         pitchesL, yawsL = [], []
+@@ -847,7 +847,7 @@ class CaptureDataset(Dataset):
+         self.yaw_rangeR = self.yaw_maxR   - self.yaw_minR   or 1e-6
+ 
+         self.max_convergence = c_max
+-        self.reset_use_counts()    
++        self.reset_use_counts()
+ 
+     def reset_use_counts(self):
+         self.use_count_gaze = np.zeros((len(self.aligned_frames_gaze),), dtype=np.int64)
+@@ -858,13 +858,13 @@ class CaptureDataset(Dataset):
+ 
+     def __len__(self):
+         return len(self.aligned_frames)
+-    
++
+     def get_next_gaze(self):
+         min_val = np.min(self.use_count_gaze)
+         target = random.choice(np.where(self.use_count_gaze == min_val)[0])
+         self.use_count_gaze[target] += 1
+         return self.__getitem__(self.aligned_frames_gaze[target])
+-    
++
+     def get_next_squint(self):
+         min_val = np.min(self.use_count_squint)
+         target = random.choice(np.where(self.use_count_squint == min_val)[0])
+@@ -876,26 +876,26 @@ class CaptureDataset(Dataset):
+         target = random.choice(np.where(self.use_count_closed == min_val)[0])
+         self.use_count_closed[target] += 1
+         return self.__getitem__(self.aligned_frames_eyes_closed[target])
+-    
++
+     def get_next_wide(self):
+         min_val = np.min(self.use_count_wide)
+         target = random.choice(np.where(self.use_count_wide == min_val)[0])
+         self.use_count_wide[target] += 1
+         return self.__getitem__(self.aligned_frames_eyes_wide[target])
+-    
++
+     def get_next_angry(self):
+         min_val = np.min(self.use_count_angry)
+         target = random.choice(np.where(self.use_count_angry == min_val)[0])
+         self.use_count_angry[target] += 1
+         return self.__getitem__(self.aligned_frames_brow_lowered[target])
+-    
++
+     def __getitem__(self, idx):
+         # Extract data from the aligned frame
+         label_data, left_eye_jpeg, right_eye_jpeg, label_timestamp, previous_data = self.aligned_frames[idx]
+-        
++
+         # Decode JPEG data for current frame
+         left_eye = decode_jpeg(left_eye_jpeg)
+-    
++
+         right_eye = decode_jpeg(right_eye_jpeg)
+         # Convert to grayscale if needed
+         if len(left_eye.shape) == 3:
+@@ -914,14 +914,14 @@ class CaptureDataset(Dataset):
+ 
+         current_frame_left = np.stack([left_eye,], axis=0)
+         current_frame_right = np.stack([right_eye,], axis=0)
+-        
++
+         # Process previous frames
+         prev_frames_left = []
+         prev_frames_right = []
+         for prev_frame_data in previous_data:
+             if prev_frame_data is not None:
+                 prev_label_data, prev_left_jpeg, prev_right_jpeg, prev_timestamp, _ = prev_frame_data
+-                
++
+                 # Decode previous frame JPEG data
+                 prev_left_eye = decode_jpeg(prev_left_jpeg)
+                 prev_right_eye = decode_jpeg(prev_right_jpeg)
+@@ -940,10 +940,10 @@ class CaptureDataset(Dataset):
+                 prev_right_eye = prev_right_eye.astype(np.float32)
+ 
+                 #print(prev_left_eye, prev_right_eye)
+-                
++
+                 prev_left_eye /= 255.
+                 prev_right_eye /= 255.
+-                
++
+                 # Stack previous frame channels
+                 #if self.side == 'left':
+                 prev_frame_left = np.stack([prev_left_eye,], axis=0)
+@@ -955,18 +955,18 @@ class CaptureDataset(Dataset):
+                 # If previous frame is None, use zeros
+                 prev_frames_left.append(np.zeros_like(current_frame_left))
+                 prev_frames_right.append(np.zeros_like(current_frame_right))
+-        
++
+         # Combine current frame with previous frames (total 8 channels)
+         all_frames_left = [current_frame_left]
+         all_frames_left.extend(prev_frames_left)
+ 
+         all_frames_right = [current_frame_right]
+         all_frames_right.extend(prev_frames_right)
+-        
++
+         # Stack all frames into a single 8-channel input
+         image_left = np.concatenate(all_frames_left, axis=0)
+         image_right = np.concatenate(all_frames_right, axis=0)
+-        
++
+         # Convert to tensor for augmentations
+         image_lefto = torch.from_numpy(image_left).float()
+         image_righto = torch.from_numpy(image_right).float()
+@@ -978,7 +978,7 @@ class CaptureDataset(Dataset):
+             if np.random.random() < 0.3:
+                 image_left = apply_spatial_transformations(image_left, max_shift=22, max_rotation=12, max_scale=0.1)
+                 image_right = apply_spatial_transformations(image_right, max_shift=22, max_rotation=12, max_scale=0.1)
+-        
++
+             # Apply intensity transformations (30% chance)
+             if np.random.random() < 0.4:
+                 image_left = apply_intensity_transformations(image_left, brightness_range=0.2, contrast_range=0.6)
+@@ -1003,7 +1003,7 @@ class CaptureDataset(Dataset):
+ 
+         left_lid = routine_left_lid
+         right_lid = routine_right_lid
+-        
++
+         norm_pitchR = (right_eye_pitch - self.pitch_minR) / self.pitch_rangeR
+         norm_yawR   = (right_eye_yaw   - self.yaw_minR)   / self.yaw_rangeR
+ 
+@@ -1034,7 +1034,7 @@ class CaptureDataset(Dataset):
+ 
+ 
+         # invert lid labels
+-        if left_lid == 0.5: 
++        if left_lid == 0.5:
+             pass
+         if left_lid < 0.5:
+             norm_pitchL = 0.5
+@@ -1061,7 +1061,7 @@ class CaptureDataset(Dataset):
+             left_lid = 0
+             right_lid = 0
+ 
+-    
++
+         label_left = np.array([norm_pitchL, norm_yawL, left_lid, routine_widen, routine_squint, routine_brow_angry], dtype=np.float32)
+         #else:
+         label_right = np.array([norm_pitchR, norm_yawR, right_lid, routine_widen, routine_squint, routine_brow_angry], dtype=np.float32)
+@@ -1076,31 +1076,31 @@ class CaptureDataset(Dataset):
+         gaze_states = np.array([is_gaze_frame, ], dtype=np.float32)
+ 
+         is_safe_frame = (routine_state == 67108864) or self.force_zero
+-        
++
+         # Apply any additional transforms if provided
+         if self.transform:
+             image = self.transform(image)
+-        
++
+         return image_left, image_right, torch.from_numpy(label_left), torch.from_numpy(label_right), torch.from_numpy(gaze_states), is_safe_frame
+-    
++
+     def get_raw_frame(self, idx):
+         """Return the raw frame for video rendering"""
+         # Create a compatible structure to match the original API
+         frame_data = self.aligned_frames[idx]
+-        
++
+         # Create a simple object with the necessary attributes
+         class CompatFrame:
+             pass
+-        
++
+         frame = CompatFrame()
+-        
++
+         # Unpack the data
+         label_data, left_eye_jpeg, right_eye_jpeg, label_timestamp, _ = frame_data
+         (routine_pitch, routine_yaw, routine_distance, routine_convergence, fov_adjust_distance,
+         left_eye_pitch, left_eye_yaw, right_eye_pitch, right_eye_yaw,
+         routine_left_lid, routine_right_lid, routine_brow_raise, routine_brow_angry,
+         routine_widen, routine_squint, routine_dilate, routine_state) = label_data
+-        
++
+         # Set attributes to match the original CaptureFrame
+         frame.image_data_left = decode_jpeg(left_eye_jpeg)
+         frame.image_data_right = decode_jpeg(right_eye_jpeg)
+@@ -1112,7 +1112,7 @@ class CaptureDataset(Dataset):
+         frame.isSafeFrame = (routine_state == 67108864)
+         frame.timestampLow = label_timestamp & 0xFFFFFFFF
+         frame.timestampHigh = (label_timestamp >> 32) & 0xFFFFFFFF
+-        
++
+         return frame
+ 
+ 
+diff --git a/main.py b/main.py
+index a51fe32..94d73fa 100755
+--- a/main.py
++++ b/main.py
+@@ -8,7 +8,7 @@ import cv2
+ import torch.nn as nn
+ 
+ import multiprocessing
+-multiprocessing.freeze_support() 
++multiprocessing.freeze_support()
+ import torch
+ import torch.optim as optim
+ from torch.utils.data import Dataset, DataLoader
+@@ -30,7 +30,7 @@ import tempfile
+ 
+ # We want to store the temporary '.pth'-files somewhere before we can
+ # merge them later. Usually it's fine to put it next to the binary but
+-# some setups may want to overwrite this. E.g. the binary is stored 
++# some setups may want to overwrite this. E.g. the binary is stored
+ # in a immutable location such as system installs.
+ tmp_dir = tempfile.TemporaryDirectory(prefix="babble-trainer")
+ 
+@@ -47,13 +47,24 @@ elif sys.platform == "darwin":
+         device = torch.device("mps")
+ elif sys.platform.startswith("linux"):
+     # Linux. Assume no DirectML, just use whatever is available.
+-    if torch.cuda.is_available():
+-        # This also may include ROCm, it's just opaque.
+-        device = torch.device("cuda")
++    device = torch.device("cuda")
++    if torch.cuda.is_available() and torch.version.hip:
++        torch.backends.miopen.immediate = True
++    # elif torch.cuda.is_available() and torch.version.cuda:
++    #     device = torch.device("cuda")
++
+ # Fall back to CPU
+ if device is None:
+     device = torch.device("cpu")
+ 
++print(device)
++print(torch.cuda.device_count())
++print(torch.cuda.get_device_name(device))
++print(torch.cuda.get_arch_list())
++print(torch.cuda.get_device_properties(device))
++print(torch.cuda.get_device_properties(device).gcnArchName)
++print(torch.backends.miopen.immediate)
++
+ print("Preparing dataset...")
+ raw_jpeg_data_left = []
+ raw_jpeg_data_right = []
+@@ -87,9 +98,9 @@ def select_brow(side):
+     all_labels = np.empty((2, len(cap), 17), dtype=np.float32)
+     for frame in cap:
+         _, _, routine_distance, routine_convergence, fov_adjust_distance, left_eye_pitch, left_eye_yaw, right_eye_pitch, right_eye_yaw, routine_left_lid, routine_right_lid, routine_brow_raise, routine_brow_angry, routine_widen, routine_squint, routine_dilate, routine_state = frame[0]
+-        
++
+         labels = list(frame[0])
+-        
++
+         if routine_state & FLAG_GOOD_DATA and routine_brow_angry > 0.5:
+             raw_jpeg_data_squint.append([frame[1],frame[4][2][1],frame[4][1][1],frame[4][0][1]] if side == 'left' else [frame[2],frame[4][2][2],frame[4][1][2],frame[4][0][2]])
+             all_labels[0][i] = labels
+@@ -133,7 +144,7 @@ def select_squint_wide_blink(side):
+             labels[9] = 1.0
+             labels[10] = 1.0
+             routine_left_lid = routine_right_lid = 1.0
+-        
++
+         if routine_state & FLAG_GOOD_DATA and (routine_squint > 0.5 or routine_widen > 0.5 or o_lid < 0.5):
+             raw_jpeg_data_squint.append([frame[1],frame[4][2][1],frame[4][1][1],frame[4][0][1]] if side == 'left' else [frame[2],frame[4][2][2],frame[4][1][2],frame[4][0][2]])
+ 
+@@ -174,9 +185,9 @@ def select_squint_wide_brow(side):
+     all_labels = np.empty((2, len(cap), 17), dtype=np.float32)
+     for frame in cap:
+         _, _, routine_distance, routine_convergence, fov_adjust_distance, left_eye_pitch, left_eye_yaw, right_eye_pitch, right_eye_yaw, routine_left_lid, routine_right_lid, routine_brow_raise, routine_brow_angry, routine_widen, routine_squint, routine_dilate, routine_state = frame[0]
+-        
++
+         labels = list(frame[0])
+-        
++
+         if routine_state & FLAG_GOOD_DATA and (routine_squint > 0.5 or routine_widen > 0.5 or routine_brow_angry > 0.5 or (routine_left_lid < 0.5 and side == 'left') or (routine_right_lid < 0.5 and side == 'right')):
+             raw_jpeg_data_squint.append([frame[1],frame[4][2][1],frame[4][1][1],frame[4][0][1]] if side == 'left' else [frame[2],frame[4][2][2],frame[4][1][2],frame[4][0][2]])
+             all_labels[0][i] = labels
+@@ -255,7 +266,7 @@ def merge_models(names, sizes, output_names):
+ 
+         left.load_state_dict(sdL)
+         right.load_state_dict(sdR)
+-        
++
+         modelsL.append(left)
+         modelsR.append(right)
+ 
+@@ -327,7 +338,7 @@ def train_model(kind, label_idx, class_count, steps, enable_gaze_correction=Fals
+ 
+     def warmed_up_fn(step):
+         return 1.0
+-    
++
+     def cooldown_fn(step):
+         x = step / steps
+         return min(1.0, -np.arctanh(x / 1.4) + 1)
+@@ -339,8 +350,7 @@ def train_model(kind, label_idx, class_count, steps, enable_gaze_correction=Fals
+     all_L = 0
+     total_images = 0
+     tsteps = 0
+-    
+-    counts = np.zeros((2, ), dtype=np.int64)
++
+     for i in range(steps):#for i in progress:
+ 
+         # simulate old style printing
+@@ -377,10 +387,10 @@ def train_model(kind, label_idx, class_count, steps, enable_gaze_correction=Fals
+                 else:
+                     labels += torch.randn_like(labels) * 0.1
+                     inputs += torch.randn_like(inputs) * 0.1
+-                    
++
+ 
+                     is_rand_batch = False
+-                    
++
+             else:
+                 is_rand_batch = False
+             tsteps+=1
+@@ -401,73 +411,73 @@ def train_model(kind, label_idx, class_count, steps, enable_gaze_correction=Fals
+         if i % 100 == 0 and False:  # Update the preview window every 100 steps
+             GRID_SIZE = 4
+             PREVIEW_COUNT = GRID_SIZE * GRID_SIZE
+-            
++
+             # Select the first PREVIEW_COUNT images and labels
+             # Use inputs.cpu().numpy() to get the images, as batch_np might not be the final input if is_rand_batch was True
+             preview_images_np = inputs[:PREVIEW_COUNT].cpu().numpy() # Shape (16, 4, 128, 128)
+             preview_labels = labels[:PREVIEW_COUNT].cpu().numpy()
+-            
++
+             rows = []
+-            
++
+             for r in range(GRID_SIZE):
+                 row_images = []
+                 for c in range(GRID_SIZE):
+                     idx = r * GRID_SIZE + c
+-                    
++
+                     # Get image and label
+                     img = preview_images_np[idx] # (4, 128, 128)
+                     label_val = preview_labels[idx]
+-                    
++
+                     # Convert from C, H, W to H, W, C, select first 3 channels, scale to 0-255, and convert to uint8
+                     # Assumes input images in inputs are in the 0.0 to 1.0 range (like the labels clip)
+                     display_img = img[:3] # (3, 128, 128)
+                     display_img = np.transpose(display_img, (1, 2, 0)) # (128, 128, 3)
+-                    
++
+                     # Scale float (0.0 to 1.0) to uint8 (0 to 255)
+-                    display_img = (np.clip(display_img * 255, 0, 255)).astype(np.uint8) 
+-                    
++                    display_img = (np.clip(display_img * 255, 0, 255)).astype(np.uint8)
++
+                     # Convert RGB (assumed) to BGR for cv2 display
+                     display_img = cv2.cvtColor(display_img, cv2.COLOR_RGB2BGR)
+ 
+                     # Draw label text. Format label as a string with 4 decimal places.
+                     label_text = f"{label_val.item():.4f}" # .item() for scalar numpy/torch tensor
+-                    
++
+                     # Draw text on the image
+                     # Position (5, 20) is near top-left. Color is bright green (0, 255, 0) BGR.
+                     cv2.putText(
+-                        display_img, 
+-                        label_text, 
+-                        (5, 20), 
+-                        cv2.FONT_HERSHEY_SIMPLEX, 
+-                        0.5, 
+-                        (0, 255, 0), 
+-                        2, 
++                        display_img,
++                        label_text,
++                        (5, 20),
++                        cv2.FONT_HERSHEY_SIMPLEX,
++                        0.5,
++                        (0, 255, 0),
++                        2,
+                         cv2.LINE_AA
+                     )
+-                    
++
+                     row_images.append(display_img)
+-                    
++
+                 # Concatenate images in the row horizontally
+                 rows.append(cv2.hconcat(row_images))
+-                
++
+             # Concatenate rows vertically to form the final grid
+             grid_image = cv2.vconcat(rows)
+-            
++
+             # Display the grid
+             cv2.imshow("Training Input & Target Label Preview (4x4 Grid)", grid_image)
+             # cv2.waitKey(1) allows the window to update and keeps the program responsive
+-            cv2.waitKey(1) 
++            cv2.waitKey(1)
+         # ----------------------------------------------------------------------
+-        
++
+         if tsteps % 50 == 49:
+             #progress.set_description("loss:%.4f image:%d epoch:%d lr:%.5f" % (all_L / 50, total_images, total_images / dataset_count, warmup_scheduler.get_last_lr()[0]))
+             all_L = 0
+ 
+     loader.stop()
+     torch.save(model.state_dict(), tmp_dir.name + "/model_" + kind + "_" + side+".pth")
+-    
++
+     del loader
+-    
++
+     # NEW: Close the OpenCV window when training is finished
+     cv2.destroyAllWindows()
+ 
+diff --git a/trainer_distsampler.py b/trainer_distsampler.py
+index 2305d72..f2523af 100644
+--- a/trainer_distsampler.py
++++ b/trainer_distsampler.py
+@@ -15,13 +15,13 @@ import time
+ def calculate_row_pattern_consistency(image):
+     """
+     Calculate row pattern consistency metric for corruption detection.
+-    
++
+     This is the fastest and most discriminative metric based on benchmark analysis.
+     Detects horizontal striping corruption patterns.
+-    
++
+     Args:
+         image: OpenCV image (BGR or grayscale)
+-        
++
+     Returns:
+         float: Row pattern consistency value (higher = more likely corrupted)
+     """
+@@ -30,13 +30,13 @@ def calculate_row_pattern_consistency(image):
+         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+     else:
+         gray = image
+-    
++
+     # Normalize to 0-1 range
+     gray_norm = gray.astype(np.float32) / 255.0
+-    
++
+     # Calculate row means
+     row_means = np.mean(gray_norm, axis=1)
+-    
++
+     # Calculate consistency (standard deviation of row differences)
+     if len(row_means) > 1:
+         return np.std(np.diff(row_means))
+@@ -47,7 +47,7 @@ class FastCorruptionDetector:
+     def __init__(self, threshold=0.022669, use_adaptive=True, adaptation_window=100):
+         """
+         Initialize fast corruption detector using row pattern consistency.
+-        
++
+         Args:
+             threshold: Base threshold for corruption detection (from analysis of good/bad samples)
+             use_adaptive: Whether to use adaptive threshold based on frame history
+@@ -57,77 +57,77 @@ class FastCorruptionDetector:
+         self.current_threshold = threshold
+         self.use_adaptive = use_adaptive
+         self.adaptation_window = adaptation_window
+-        
++
+         # Rolling window for adaptive threshold calculation
+         self.recent_values = deque(maxlen=adaptation_window)
+-        
++
+         # Statistics
+         self.total_frames = 0
+         self.detected_corrupted_left = 0
+         self.detected_corrupted_right = 0
+         self.threshold_updates = 0
+-        
++
+     def update_adaptive_threshold(self, value):
+         """Update adaptive threshold based on recent frame values."""
+         if not self.use_adaptive:
+             return
+-            
++
+         # Add current value to history
+         self.recent_values.append(value)
+-        
++
+         # Need enough history to compute adaptive threshold
+         if len(self.recent_values) < 20:
+             return
+-        
++
+         # Use robust statistics (median + k*MAD) to set threshold
+         # Assumes most frames are clean, so this gives threshold for outliers
+         values = np.array(self.recent_values)
+         median = np.median(values)
+         mad = np.median(np.abs(values - median))  # Median Absolute Deviation
+-        
++
+         # Set threshold as median + 3*MAD (robust outlier detection)
+         adaptive_threshold = median + 3.0 * mad
+-        
++
+         # Don't let adaptive threshold go too far from base threshold
+         min_threshold = self.base_threshold * 0.5
+         max_threshold = self.base_threshold * 3.0
+-        
++
+         self.current_threshold = np.clip(adaptive_threshold, min_threshold, max_threshold)
+         self.threshold_updates += 1
+-    
++
+     def is_corrupted(self, frame):
+         """
+         Determine if frame is corrupted based on row pattern consistency.
+-        
++
+         Returns:
+             tuple: (is_corrupted, metric_value, threshold_used)
+         """
+-        
++
+         metric_value = calculate_row_pattern_consistency(frame)
+         #print("Took: %f" % (time.time()-start))
+-        
++
+         # Update adaptive threshold
+         self.update_adaptive_threshold(metric_value)
+-        
++
+         # Check if corrupted
+         is_corrupted = metric_value > self.current_threshold
+ 
+         #print("Corrupted: %f %f" % (metric_value, self.current_threshold))
+-        
++
+         return is_corrupted, metric_value, self.current_threshold
+-    
++
+     def process_frame_pair(self, left_frame, right_frame):
+         """Process both left and right frames."""
+         self.total_frames += 1
+-        
++
+         left_corrupted, left_value, left_threshold = self.is_corrupted(left_frame)
+         right_corrupted, right_value, right_threshold = self.is_corrupted(right_frame)
+-        
++
+         if left_corrupted:
+             self.detected_corrupted_left += 1
+         if right_corrupted:
+             self.detected_corrupted_right += 1
+-            
++
+         return {
+             'left_corrupted': left_corrupted,
+             'right_corrupted': right_corrupted,
+@@ -136,7 +136,7 @@ class FastCorruptionDetector:
+             'left_threshold': left_threshold,
+             'right_threshold': right_threshold
+         }
+-    
++
+     def get_stats(self):
+         """Get detection statistics"""
+         return {
+@@ -156,47 +156,47 @@ def find_best_unused_neighbor(timestamps, center_idx, target_ts, used_set, windo
+     n = len(timestamps)
+     best_idx = None
+     best_dev = float('inf')
+-    
++
+     # Apply global window size multiplier for perfect accuracy
+     window_size = int(window_size * WIN_SIZE_MUL)
+-    
++
+     # Check a window around the binary search result
+     start = max(0, center_idx - window_size)
+     end = min(n, center_idx + window_size)
+-    
++
+     for i in range(start, end):
+         if i not in used_set:
+             dev = abs(timestamps[i] - target_ts)
+             if dev < best_dev:
+                 best_dev = dev
+                 best_idx = i
+-    
++
+     return best_idx, best_dev
+ 
+ def find_pattern_based_offset(label_timestamps, eye_timestamps):
+     """Find offset using interval pattern matching for robust alignment"""
+     if len(label_timestamps) < 10 or len(eye_timestamps) < 10:
+         return find_global_time_offset(label_timestamps, eye_timestamps, sample_size=len(label_timestamps))
+-    
++
+     # Calculate interval patterns with extended sampling
+     label_intervals = [label_timestamps[i+1] - label_timestamps[i] for i in range(len(label_timestamps)-1)]
+     eye_intervals = [eye_timestamps[i+1] - eye_timestamps[i] for i in range(len(eye_timestamps)-1)]
+-    
++
+     if not label_intervals or not eye_intervals:
+         return 0
+-    
++
+     # Find the best matching subsequence using sliding window correlation
+     best_offset = 0
+     best_correlation = -1
+-    
++
+     # Try different starting positions in the eye interval sequence
+     for start_pos in range(0, max(1, len(eye_intervals) - len(label_intervals)), 5):
+         end_pos = start_pos + len(label_intervals)
+         if end_pos > len(eye_intervals):
+             break
+-            
++
+         eye_subset = eye_intervals[start_pos:end_pos]
+-        
++
+         # Calculate correlation between interval patterns
+         if len(eye_subset) == len(label_intervals):
+             correlation = np.corrcoef(label_intervals, eye_subset)[0, 1]
+@@ -206,7 +206,7 @@ def find_pattern_based_offset(label_timestamps, eye_timestamps):
+                 label_start_time = label_timestamps[0]
+                 eye_start_time = eye_timestamps[start_pos]
+                 best_offset = eye_start_time - label_start_time
+-    
++
+     #print(f"Pattern correlation: {best_correlation:.3f}", flush=True)
+     return best_offset
+ 
+@@ -214,56 +214,56 @@ def find_global_time_offset(label_timestamps, eye_timestamps, sample_size=100):
+     """Find global time offset using correlation analysis"""
+     if not label_timestamps or not eye_timestamps:
+         return 0
+-    
++
+     # Sample evenly distributed timestamps
+-    label_sample = [label_timestamps[i] for i in range(0, len(label_timestamps), 
++    label_sample = [label_timestamps[i] for i in range(0, len(label_timestamps),
+                                                     max(1, len(label_timestamps) // sample_size))]
+-    
++
+     # Try different offsets and find the one with minimum total deviation
+     min_label = min(label_sample)
+     max_label = max(label_sample)
+     min_eye = min(eye_timestamps)
+     max_eye = max(eye_timestamps)
+-    
++
+     # Estimate potential offset range
+     potential_offset_range = max_eye - min_label, min_eye - max_label
+     offset_start = min(potential_offset_range) - 10000  # Add 10s buffer
+     offset_end = max(potential_offset_range) + 10000    # Add 10s buffer
+-    
++
+     # Test offsets at 1 second intervals
+     best_offset = 0
+     best_score = float('inf')
+-    
++
+     step_size = 1000  # 1 second steps
+     for offset in range(int(offset_start), int(offset_end), step_size):
+         total_deviation = 0
+         matches = 0
+-        
++
+         for label_ts in label_sample[:20]:  # Use first 20 samples for speed
+             adjusted_label_ts = label_ts + offset
+-            
++
+             # Find closest eye timestamp using binary search
+             idx = bisect.bisect_left(eye_timestamps, adjusted_label_ts)
+-            
++
+             # Check both neighbors
+             candidates = []
+             if idx > 0:
+                 candidates.append(eye_timestamps[idx - 1])
+             if idx < len(eye_timestamps):
+                 candidates.append(eye_timestamps[idx])
+-            
++
+             if candidates:
+                 closest_eye_ts = min(candidates, key=lambda x: abs(x - adjusted_label_ts))
+                 deviation = abs(closest_eye_ts - adjusted_label_ts)
+                 total_deviation += deviation
+                 matches += 1
+-        
++
+         if matches > 0:
+             avg_deviation = total_deviation / matches
+             if avg_deviation < best_score:
+                 best_score = avg_deviation
+                 best_offset = offset
+-    
++
+     return best_offset
+ 
+ def apply_spatial_transformations(image, max_shift=10, max_rotation=5, max_scale=0.1):
+@@ -271,21 +271,21 @@ def apply_spatial_transformations(image, max_shift=10, max_rotation=5, max_scale
+     # Convert to tensor if needed
+     if not isinstance(image, torch.Tensor):
+         image = torch.from_numpy(image).float()
+-    
++
+     # Store original shape and device
+     original_shape = image.shape
+     device = image.device
+-    
++
+     # Handle different input dimensions
+     if len(original_shape) == 3:  # [C, H, W]
+         image = image.unsqueeze(0)  # [1, C, H, W]
+-    
++
+     # Get dimensions
+     batch_size, channels, height, width = image.shape
+-    
++
+     # Create output tensor
+     transformed = torch.zeros_like(image)
+-    
++
+     # Apply transformation to each image in batch
+     for b in range(batch_size):
+         # Generate random transformation parameters
+@@ -293,18 +293,18 @@ def apply_spatial_transformations(image, max_shift=10, max_rotation=5, max_scale
+         shift_y = np.random.randint(-max_shift, max_shift+1)
+         angle = np.random.uniform(-max_rotation, max_rotation)
+         scale = 1.0 + np.random.uniform(-max_scale, max_scale)
+-        
++
+         # Create transformation matrix
+         M = cv2.getRotationMatrix2D((width/2, height/2), angle, scale)
+         M[0, 2] += shift_x
+         M[1, 2] += shift_y
+-        
++
+         # Apply to each channel
+         for c in range(channels):
+             img = image[b, c].cpu().detach().numpy()
+             transformed_img = cv2.warpAffine(img, M, (width, height), borderMode=cv2.BORDER_REFLECT)
+             transformed[b, c] = torch.from_numpy(transformed_img).to(device)
+-    
++
+     # Return in original shape
+     if len(original_shape) == 3:
+         return transformed.squeeze(0)
+@@ -315,31 +315,31 @@ def apply_intensity_transformations(image, brightness_range=0.2, contrast_range=
+     # Convert to tensor if needed
+     if not isinstance(image, torch.Tensor):
+         image = torch.from_numpy(image).float()
+-    
++
+     # Store original shape
+     original_shape = image.shape
+-    
++
+     # Handle different input dimensions
+     if len(original_shape) == 3:  # [C, H, W]
+         image = image.unsqueeze(0)  # [1, C, H, W]
+-    
++
+     # Random brightness and contrast for each image in batch
+     batch_size = image.shape[0]
+     transformed = []
+-    
++
+     for b in range(batch_size):
+         # Brightness should be a small offset, not added to 1.0
+         brightness = np.random.uniform(-brightness_range, brightness_range)
+-        
++
+         # Contrast is still a scaling factor centered around 1.0
+         contrast = 1.0 + np.random.uniform(-contrast_range, contrast_range)
+-        
++
+         # Apply transformations: new_pixel = pixel * contrast + brightness
+         img_transformed = image[b] * contrast + brightness
+         img_transformed /= img_transformed.amax()
+         #img_transformed = torch.clamp(img_transformed, 0, 1)
+         transformed.append(img_transformed)
+-    
++
+     # Stack and return in original shape
+     transformed = torch.stack(transformed)
+     if len(original_shape) == 3:
+@@ -351,27 +351,27 @@ def apply_blur(image, max_kernel_size=5):
+     # Convert to tensor if needed
+     if not isinstance(image, torch.Tensor):
+         image = torch.from_numpy(image).float()
+-    
++
+     # Store original shape and device
+     original_shape = image.shape
+     device = image.device
+-    
++
+     # Handle different input dimensions
+     if len(original_shape) == 3:  # [C, H, W]
+         image = image.unsqueeze(0)  # [1, C, H, W]
+-    
++
+     # Get dimensions
+     batch_size, channels, height, width = image.shape
+-    
++
+     # Create output tensor
+     transformed = torch.zeros_like(image)
+-    
++
+     # Apply blur with 50% probability
+     if np.random.random() < 0.5:
+         # Generate random kernel size (must be odd)
+         kernel_size = 2 * np.random.randint(1, max_kernel_size//2 + 1) + 1
+         sigma = np.random.uniform(0.1, 2.0)
+-        
++
+         for b in range(batch_size):
+             for c in range(channels):
+                 img = image[b, c].cpu().detach().numpy()
+@@ -379,7 +379,7 @@ def apply_blur(image, max_kernel_size=5):
+                 transformed[b, c] = torch.from_numpy(blurred).to(device)
+     else:
+         transformed = image.clone()
+-    
++
+     # Return in original shape
+     if len(original_shape) == 3:
+         return transformed.squeeze(0)
+@@ -393,10 +393,10 @@ def decode_jpeg(jpeg_data):
+     Decode JPEG data to an OpenCV image with robust error handling.
+     Crops 15 pixels from left/right and 4 pixels from top/bottom,
+     then resizes back to the original resolution.
+-    
++
+     Args:
+         jpeg_data: Raw JPEG binary data
+-        
++
+     Returns:
+         OpenCV image (BGR format) or a red error image if decoding fails
+     """
+@@ -406,37 +406,37 @@ def decode_jpeg(jpeg_data):
+         try:
+             pil_img = Image.open(io.BytesIO(jpeg_data))
+             np_img = np.array(pil_img)
+-            
++
+             # Convert RGB to BGR for OpenCV
+             if len(np_img.shape) == 3 and np_img.shape[2] == 3:
+                 img = cv2.cvtColor(np_img, cv2.COLOR_RGB2BGR)
+             else:
+                 # If grayscale, convert to 3-channel
+                 img = cv2.cvtColor(np_img, cv2.COLOR_GRAY2BGR)
+-                
++
+         except Exception as e:
+             # Method 2: If PIL fails, try OpenCV directly
+             img_array = np.frombuffer(jpeg_data, dtype=np.uint8)
+             img = cv2.imdecode(img_array, cv2.IMREAD_COLOR)
+-            
++
+             if img is None:
+-                with open("./bad_Data.jpg", "wb") as w:
++                with open("/tmp/bad_Data.jpg", "wb") as w:
+                     w.write(jpeg_data)
+                     quit()
+                 raise Exception("OpenCV decoding failed")
+-        
++
+         return img
+-                
++
+     except Exception as e:
+         print(f"Error decoding image: {str(e)}", flush=True)
+         # Return a red "error" image of 128x128 pixels
+         error_img = np.zeros((128, 128, 3), dtype=np.uint8)
+         error_img[:, :, 2] = 255  # Red color in BGR
+-        
++
+         # Add error text
+-        cv2.putText(error_img, "Decode Error", (10, 64), 
++        cv2.putText(error_img, "Decode Error", (10, 64),
+                 cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1)
+-        
++
+         return error_img
+ 
+ def read_capture_file(filename, exclude_after=0, exclude_before=0):
+@@ -448,11 +448,11 @@ def read_capture_file(filename, exclude_after=0, exclude_before=0):
+     all_eye_frames_left = {}   # video_timestamp_left -> image_data
+     all_eye_frames_right = {}  # video_timestamp_right -> image_data
+     all_label_frames = {}      # timestamp -> label_data
+-    
++
+     raw_frames = 0
+ 
+     skip_frames = exclude_before
+-    
++
+     total_bad = 0
+ 
+     det = FastCorruptionDetector()
+@@ -471,7 +471,7 @@ def read_capture_file(filename, exclude_after=0, exclude_before=0):
+             if not frame_data or len(frame_data) < struct_size:
+                 #print("Breaking - end of file or incomplete frame metadata", flush=True)
+                 break
+-                
++
+             # Unpack the frame metadata including new lid/brow parameters
+             try:
+                 (routine_pitch, routine_yaw, routine_distance, routine_convergence, fov_adjust_distance,
+@@ -488,18 +488,18 @@ def read_capture_file(filename, exclude_after=0, exclude_before=0):
+             if jpeg_data_left_length < 0 or jpeg_data_right_length < 0:
+                 print(f"Invalid JPEG data lengths: left={jpeg_data_left_length}, right={jpeg_data_right_length}", flush=True)
+                 break
+-            
++
+             if jpeg_data_left_length > 10*1024*1024 or jpeg_data_right_length > 10*1024*1024:  # 10MB sanity check
+                 print(f"JPEG data lengths too large: left={jpeg_data_left_length}, right={jpeg_data_right_length}", flush=True)
+                 break
+-            
++
+             # Read the image data
+             try:
+                 image_left_data = f.read(jpeg_data_left_length)
+                 if len(image_left_data) != jpeg_data_left_length:
+                     print(f"Failed to read complete left JPEG data: expected {jpeg_data_left_length}, got {len(image_left_data)}", flush=True)
+                     break
+-                    
++
+                 image_right_data = f.read(jpeg_data_right_length)
+                 if len(image_right_data) != jpeg_data_right_length:
+                     print(f"Failed to read complete right JPEG data: expected {jpeg_data_right_length}, got {len(image_right_data)}", flush=True)
+@@ -512,8 +512,8 @@ def read_capture_file(filename, exclude_after=0, exclude_before=0):
+     #print("Detecting corrupted BSB frames...", flush=True)
+     last_was_safe = False
+     ibl_db = {}
+-    if os.path.exists("./ibl_db_%d.pt" % crc):
+-        ibl_db = torch.load("./ibl_db_%d.pt" % crc, weights_only=False)
++    if os.path.exists("/tmp/ibl_db_%d.pt" % crc):
++        ibl_db = torch.load("/tmp/ibl_db_%d.pt" % crc, weights_only=False)
+     with open(filename, 'rb') as f:
+         progress = range(total_frames)
+         for e in progress:
+@@ -524,7 +524,7 @@ def read_capture_file(filename, exclude_after=0, exclude_before=0):
+             if not frame_data or len(frame_data) < struct_size:
+                 print("Breaking - end of file or incomplete frame metadata", flush=True)
+                 break
+-                
++
+             # Unpack the frame metadata including new lid/brow parameters
+             try:
+                 (routine_pitch, routine_yaw, routine_distance, routine_convergence, fov_adjust_distance,
+@@ -541,23 +541,23 @@ def read_capture_file(filename, exclude_after=0, exclude_before=0):
+             last_was_safe = routine_state == 67108864
+             #if p_last_was_safe:
+             #    routine_state = 0 # hack: only include single frame examples of safe frames
+-            
++
+             # Validate JPEG data lengths
+             if jpeg_data_left_length < 0 or jpeg_data_right_length < 0:
+                 print(f"Invalid JPEG data lengths: left={jpeg_data_left_length}, right={jpeg_data_right_length}", flush=True)
+                 break
+-            
++
+             if jpeg_data_left_length > 10*1024*1024 or jpeg_data_right_length > 10*1024*1024:  # 10MB sanity check
+                 print(f"JPEG data lengths too large: left={jpeg_data_left_length}, right={jpeg_data_right_length}", flush=True)
+                 break
+-            
++
+             # Read the image data
+             try:
+                 image_left_data = f.read(jpeg_data_left_length)
+                 if len(image_left_data) != jpeg_data_left_length:
+                     print(f"Failed to read complete left JPEG data: expected {jpeg_data_left_length}, got {len(image_left_data)}", flush=True)
+                     break
+-                    
++
+                 image_right_data = f.read(jpeg_data_right_length)
+                 if len(image_right_data) != jpeg_data_right_length:
+                     print(f"Failed to read complete right JPEG data: expected {jpeg_data_right_length}, got {len(image_right_data)}", flush=True)
+@@ -579,7 +579,7 @@ def read_capture_file(filename, exclude_after=0, exclude_before=0):
+             #if routine_left_lid > 0.5 and random.random() < 0.75:
+             #    print("Excluding!")
+             #     bad = True
+-            
++
+             if bad:
+                 total_bad = total_bad + 1
+                 #progress.set_description("Corrupted frames: %d (%.2f%%)" % (total_bad, (total_bad / e) * 100.0))
+@@ -594,66 +594,66 @@ def read_capture_file(filename, exclude_after=0, exclude_before=0):
+                                             left_eye_pitch, left_eye_yaw, right_eye_pitch, right_eye_yaw,
+                                             routine_left_lid, routine_right_lid, routine_brow_raise, routine_brow_angry,
+                                             routine_widen, routine_squint, routine_dilate, routine_state)
+-            
++
+             #print(f"Read frame: Pitch={routine_pitch}, Yaw={routine_yaw}, sizeRight={len(image_right_data)}, sizeLeft={len(image_left_data)}, timeData={timestamp}, timeLeft={video_timestamp_left}, timeRight={video_timestamp_right}")
+-    if not os.path.exists("./ibl_db_%d.pt" % crc):
+-        torch.save(ibl_db, "./ibl_db_%d.pt" % crc)
++    if not os.path.exists("/tmp/ibl_db_%d.pt" % crc):
++        torch.save(ibl_db, "/tmp/ibl_db_%d.pt" % crc)
+ 
+     # Convert to sorted lists for processing
+     left_frames = sorted([(ts, img) for ts, img in all_eye_frames_left.items()])
+     right_frames = sorted([(ts, img) for ts, img in all_eye_frames_right.items()])
+     label_frames = sorted([(ts, data) for ts, data in all_label_frames.items()])
+-    
++
+     # Extract timestamps for analysis
+     left_timestamps = [ts for ts, _ in left_frames]
+     right_timestamps = [ts for ts, _ in right_frames]
+     label_timestamps = [ts for ts, _ in label_frames]
+-    
++
+     #print("Advanced Phase 1: Cross-correlation offset detection...", flush=True)
+-    
++
+     # Use frame rate analysis for better offset detection with extended sampling
+     def estimate_frame_intervals(timestamps):
+         if len(timestamps) < 2:
+             return []
+         intervals = [timestamps[i+1] - timestamps[i] for i in range(len(timestamps)-1)]
+         return intervals
+-    
++
+     # Extended sampling for better correlation (key optimization)
+     label_intervals = estimate_frame_intervals(label_timestamps[:3000])
+     left_intervals = estimate_frame_intervals(left_timestamps[:3000])
+     right_intervals = estimate_frame_intervals(right_timestamps[:3000])
+-    
++
+     if label_intervals and left_intervals:
+         avg_label_fps = 1000.0 / np.mean(label_intervals) if label_intervals else 30
+         avg_left_fps = 1000.0 / np.mean(left_intervals) if left_intervals else 30
+-    
++
+     # Sophisticated offset detection using pattern matching
+     left_offset = find_pattern_based_offset(label_timestamps, left_timestamps)
+     right_offset = find_pattern_based_offset(label_timestamps, right_timestamps)
+-    
++
+     # Phase 2: Fine-grained local alignment with optimized windows
+     potential_matches = []
+-    
++
+     for label_ts, label_data in label_frames:
+         adjusted_left_target = label_ts + left_offset
+         adjusted_right_target = label_ts + right_offset
+-        
++
+         # Binary search for closest left frame with offset (optimized window)
+         left_idx = bisect.bisect_left(left_timestamps, adjusted_left_target)
+         best_left_idx, best_left_dev = find_best_unused_neighbor(
+             left_timestamps, left_idx, adjusted_left_target, set(), window_size=5
+         )
+-        
++
+         # Binary search for closest right frame with offset (optimized window)
+         right_idx = bisect.bisect_left(right_timestamps, adjusted_right_target)
+         best_right_idx, best_right_dev = find_best_unused_neighbor(
+             right_timestamps, right_idx, adjusted_right_target, set(), window_size=5
+         )
+-        
++
+         if best_left_idx is not None and best_right_idx is not None:
+             actual_left_dev = abs(left_timestamps[best_left_idx] - label_ts)
+             actual_right_dev = abs(right_timestamps[best_right_idx] - label_ts)
+-            
++
+             potential_matches.append({
+                 'label_ts': label_ts,
+                 'label_data': label_data,
+@@ -661,19 +661,19 @@ def read_capture_file(filename, exclude_after=0, exclude_before=0):
+                 'right_idx': best_right_idx,
+                 'quality': actual_left_dev + actual_right_dev
+             })
+-    
++
+     # Final selection - sort by quality and select non-conflicting matches
+     potential_matches.sort(key=lambda x: x['quality'])
+-    
++
+     final_matches = []
+     used_left = set()
+     used_right = set()
+-    
++
+     for match in potential_matches:
+         if match['left_idx'] not in used_left and match['right_idx'] not in used_right:
+             used_left.add(match['left_idx'])
+             used_right.add(match['right_idx'])
+-            
++
+             final_matches.append((
+                 match['label_data'],
+                 left_frames[match['left_idx']][1],  # left image
+@@ -681,23 +681,23 @@ def read_capture_file(filename, exclude_after=0, exclude_before=0):
+                 match['label_ts'],
+                 (None, None, None)  # previous_data placeholder
+             ))
+-    
++
+     # Sort final frames by label timestamp
+     final_matches.sort(key=lambda x: x[3])
+-    
++
+     # Add previous frames context (EXACTLY matching original algorithm)
+     final_frames = final_matches  # Start with the sorted matches
+-    
++
+     # Add previous frames to each frame starting from index 3
+     for e in range(len(final_frames) - 3):
+         final_frames[e + 3] = (
+             final_frames[e + 3][0],  # label_data
+-            final_frames[e + 3][1],  # left image  
++            final_frames[e + 3][1],  # left image
+             final_frames[e + 3][2],  # right image
+             final_frames[e + 3][3],  # label_ts
+             (final_frames[e], final_frames[e + 1], final_frames[e + 2])  # previous 3 frames
+         )
+-    
++
+     # Remove first 3 frames (which don't have complete previous frame context)
+     final_frames = final_frames[3:] if len(final_frames) > 3 else []
+ 
+@@ -708,33 +708,33 @@ class CaptureFrame:
+     def __init__(self, data):
+         # Unpack the binary data
+         offset = 0
+-        
++
+         # Extract image data for left and right eyes (128x128 pixels each)
+         self.image_data_left = np.frombuffer(data[offset:offset + 128*128*4], dtype=np.uint32).reshape(128, 128)
+         offset += 128*128*4
+-        
++
+         self.image_data_right = np.frombuffer(data[offset:offset + 128*128*4], dtype=np.uint32).reshape(128, 128)
+         offset += 128*128*4
+-        
++
+         # Extract other fields
+         self.routinePitch = struct.unpack('f', data[offset:offset+4])[0] / FLOAT_TO_INT_CONSTANT
+         offset += 4
+-        
++
+         self.routineYaw = struct.unpack('f', data[offset:offset+4])[0] / FLOAT_TO_INT_CONSTANT
+         offset += 4
+-        
++
+         self.routineDistance = struct.unpack('f', data[offset:offset+4])[0] / FLOAT_TO_INT_CONSTANT
+         offset += 4
+-        
++
+         self.fovAdjustDistance = struct.unpack('f', data[offset:offset+4])[0]
+         offset += 4
+-        
++
+         self.timestampLow = struct.unpack('I', data[offset:offset+4])[0]
+         offset += 4
+-        
++
+         self.timestampHigh = struct.unpack('I', data[offset:offset+4])[0]
+         offset += 4
+-        
++
+         self.routineState = struct.unpack('I', data[offset:offset+4])[0]
+ 
+         self.isSafeFrame = False
+@@ -743,7 +743,7 @@ class CaptureFrame:
+ class CaptureDataset(Dataset):
+     def __init__(self, capture_file_path, transform=None, skip=0, all_frames=True, force_zero=False, exclude_after=0, exclude_before=0, side='left'):
+         self.transform = transform
+-        
++
+         # Use the new read_capture_file function to load frames
+         self.aligned_frames = read_capture_file(capture_file_path, exclude_after=exclude_after, exclude_before=exclude_before)
+ 
+@@ -766,7 +766,7 @@ class CaptureDataset(Dataset):
+ 
+                 #self.aligned_frames[e][0][0] = 0.0
+                 #self.aligned_frames[e][0][1] = 0.0
+-        
++
+         # Apply skip if needed
+         if skip > 0:
+             self.aligned_frames = self.aligned_frames[skip:]
+@@ -775,7 +775,7 @@ class CaptureDataset(Dataset):
+         if not all_frames:
+             # Use FLAG_GOOD_DATA filtering like trainer.cpp does
+             self.aligned_frames = [
+-                frame for frame in self.aligned_frames 
++                frame for frame in self.aligned_frames
+                 if frame[0][16] & FLAG_GOOD_DATA  # routine_state is at index 16, check if FLAG_GOOD_DATA is set
+             ]
+         pitchesL, yawsL = [], []
+@@ -847,7 +847,7 @@ class CaptureDataset(Dataset):
+         self.yaw_rangeR = self.yaw_maxR   - self.yaw_minR   or 1e-6
+ 
+         self.max_convergence = c_max
+-        self.reset_use_counts()    
++        self.reset_use_counts()
+ 
+     def reset_use_counts(self):
+         self.use_count_gaze = np.zeros((len(self.aligned_frames_gaze),), dtype=np.int64)
+@@ -858,12 +858,12 @@ class CaptureDataset(Dataset):
+ 
+     def __len__(self):
+         return len(self.aligned_frames)
+-    
++
+     def get_next_gaze(self):
+         target = np.argmin(self.use_count_gaze)
+         self.use_count_gaze[target] += 1
+         return self.__getitem__(target)
+-    
++
+     def get_next_squint(self):
+         target = np.argmin(self.use_count_squint)
+         self.use_count_squint[target] += 1
+@@ -873,24 +873,24 @@ class CaptureDataset(Dataset):
+         target = np.argmin(self.use_count_closed)
+         self.use_count_closed[target] += 1
+         return self.__getitem__(target)
+-    
++
+     def get_next_wide(self):
+         target = np.argmin(self.use_count_wide)
+         self.use_count_wide[target] += 1
+         return self.__getitem__(target)
+-    
++
+     def get_next_angry(self):
+         target = np.argmin(self.use_count_angry)
+         self.use_count_angry[target] += 1
+         return self.__getitem__(target)
+-    
++
+     def __getitem__(self, idx):
+         # Extract data from the aligned frame
+         label_data, left_eye_jpeg, right_eye_jpeg, label_timestamp, previous_data = self.aligned_frames[idx]
+-        
++
+         # Decode JPEG data for current frame
+         left_eye = decode_jpeg(left_eye_jpeg)
+-    
++
+         right_eye = decode_jpeg(right_eye_jpeg)
+         # Convert to grayscale if needed
+         if len(left_eye.shape) == 3:
+@@ -909,14 +909,14 @@ class CaptureDataset(Dataset):
+ 
+         current_frame_left = np.stack([left_eye,], axis=0)
+         current_frame_right = np.stack([right_eye,], axis=0)
+-        
++
+         # Process previous frames
+         prev_frames_left = []
+         prev_frames_right = []
+         for prev_frame_data in previous_data:
+             if prev_frame_data is not None:
+                 prev_label_data, prev_left_jpeg, prev_right_jpeg, prev_timestamp, _ = prev_frame_data
+-                
++
+                 # Decode previous frame JPEG data
+                 prev_left_eye = decode_jpeg(prev_left_jpeg)
+                 prev_right_eye = decode_jpeg(prev_right_jpeg)
+@@ -935,10 +935,10 @@ class CaptureDataset(Dataset):
+                 prev_right_eye = prev_right_eye.astype(np.float32)
+ 
+                 #print(prev_left_eye, prev_right_eye)
+-                
++
+                 prev_left_eye /= 255.
+                 prev_right_eye /= 255.
+-                
++
+                 # Stack previous frame channels
+                 #if self.side == 'left':
+                 prev_frame_left = np.stack([prev_left_eye,], axis=0)
+@@ -950,18 +950,18 @@ class CaptureDataset(Dataset):
+                 # If previous frame is None, use zeros
+                 prev_frames_left.append(np.zeros_like(current_frame_left))
+                 prev_frames_right.append(np.zeros_like(current_frame_right))
+-        
++
+         # Combine current frame with previous frames (total 8 channels)
+         all_frames_left = [current_frame_left]
+         all_frames_left.extend(prev_frames_left)
+ 
+         all_frames_right = [current_frame_right]
+         all_frames_right.extend(prev_frames_right)
+-        
++
+         # Stack all frames into a single 8-channel input
+         image_left = np.concatenate(all_frames_left, axis=0)
+         image_right = np.concatenate(all_frames_right, axis=0)
+-        
++
+         # Convert to tensor for augmentations
+         image_lefto = torch.from_numpy(image_left).float()
+         image_righto = torch.from_numpy(image_right).float()
+@@ -973,7 +973,7 @@ class CaptureDataset(Dataset):
+             if np.random.random() < 0.3:
+                 image_left = apply_spatial_transformations(image_left, max_shift=22, max_rotation=12, max_scale=0.1)
+                 image_right = apply_spatial_transformations(image_right, max_shift=22, max_rotation=12, max_scale=0.1)
+-        
++
+             # Apply intensity transformations (30% chance)
+             if np.random.random() < 0.4:
+                 image_left = apply_intensity_transformations(image_left, brightness_range=0.2, contrast_range=0.6)
+@@ -998,7 +998,7 @@ class CaptureDataset(Dataset):
+ 
+         left_lid = routine_left_lid
+         right_lid = routine_right_lid
+-        
++
+         norm_pitchR = (right_eye_pitch - self.pitch_minR) / self.pitch_rangeR
+         norm_yawR   = (right_eye_yaw   - self.yaw_minR)   / self.yaw_rangeR
+ 
+@@ -1029,7 +1029,7 @@ class CaptureDataset(Dataset):
+ 
+ 
+         # invert lid labels
+-        if left_lid == 0.5: 
++        if left_lid == 0.5:
+             pass
+         if left_lid < 0.5:
+             norm_pitchL = 0.5
+@@ -1056,7 +1056,7 @@ class CaptureDataset(Dataset):
+             left_lid = 0
+             right_lid = 0
+ 
+-    
++
+         label_left = np.array([norm_pitchL, norm_yawL, left_lid, routine_widen, routine_squint, routine_brow_angry], dtype=np.float32)
+         #else:
+         label_right = np.array([norm_pitchR, norm_yawR, right_lid, routine_widen, routine_squint, routine_brow_angry], dtype=np.float32)
+@@ -1071,31 +1071,31 @@ class CaptureDataset(Dataset):
+         gaze_states = np.array([is_gaze_frame, ], dtype=np.float32)
+ 
+         is_safe_frame = (routine_state == 67108864) or self.force_zero
+-        
++
+         # Apply any additional transforms if provided
+         if self.transform:
+             image = self.transform(image)
+-        
++
+         return image_left, image_right, torch.from_numpy(label_left), torch.from_numpy(label_right), torch.from_numpy(gaze_states), is_safe_frame
+-    
++
+     def get_raw_frame(self, idx):
+         """Return the raw frame for video rendering"""
+         # Create a compatible structure to match the original API
+         frame_data = self.aligned_frames[idx]
+-        
++
+         # Create a simple object with the necessary attributes
+         class CompatFrame:
+             pass
+-        
++
+         frame = CompatFrame()
+-        
++
+         # Unpack the data
+         label_data, left_eye_jpeg, right_eye_jpeg, label_timestamp, _ = frame_data
+         (routine_pitch, routine_yaw, routine_distance, routine_convergence, fov_adjust_distance,
+         left_eye_pitch, left_eye_yaw, right_eye_pitch, right_eye_yaw,
+         routine_left_lid, routine_right_lid, routine_brow_raise, routine_brow_angry,
+         routine_widen, routine_squint, routine_dilate, routine_state) = label_data
+-        
++
+         # Set attributes to match the original CaptureFrame
+         frame.image_data_left = decode_jpeg(left_eye_jpeg)
+         frame.image_data_right = decode_jpeg(right_eye_jpeg)
+@@ -1107,7 +1107,7 @@ class CaptureDataset(Dataset):
+         frame.isSafeFrame = (routine_state == 67108864)
+         frame.timestampLow = label_timestamp & 0xFFFFFFFF
+         frame.timestampHigh = (label_timestamp >> 32) & 0xFFFFFFFF
+-        
++
+         return frame
+ 
+ 
+@@ -1124,7 +1124,7 @@ class DatasetWrapper(Dataset):
+ 
+     def __getitem__(self, index):
+         return self.batcher_fn(self.train_loader) #self.batcher_fn()
+-    
++
+ def worker_init(worker_id):
+     worker_info = torch.utils.data.get_worker_info()
+     dataset = worker_info.dataset
+@@ -1163,7 +1163,7 @@ def batcher_wide_squeeze(train_loader):
+         return train_loader.get_next_wide()
+     else:
+         return train_loader.get_next_squint()
+-    
++
+ def batcher_brow(train_loader):
+     f = random.random()
+     if f > 0.5:
+@@ -1216,7 +1216,7 @@ if __name__ == "__main__":
+             super(GlobalMaxPool2d, self).__init__()
+ 
+         def forward(self, x):
+-            return nn.functional.max_pool2d(x, kernel_size=x.size()[2:]) 
++            return nn.functional.max_pool2d(x, kernel_size=x.size()[2:])
+ 
+     class MicroChad(nn.Module):
+         def __init__(self, out_count=2):
+@@ -1268,7 +1268,7 @@ if __name__ == "__main__":
+ 
+             #if not return_blends:
+             #    return x
+-            
++
+             x = self.fc_gaze(x)
+             x = self.sigmoid(x)
+ 
+@@ -1305,19 +1305,19 @@ if __name__ == "__main__":
+ 
+         def _create_merged_conv_layers(self, left_models, right_models):
+             """Merges conv layers, with special handling for conv1 to route inputs."""
+-            
++
+             conv_layer_names = [name for name, module in self.original_model_ref.named_modules() if isinstance(module, nn.Conv2d)]
+ 
+             for i, layer_name in enumerate(conv_layer_names):
+                 # Get layers from all models for merging
+                 all_original_layers = [getattr(model, layer_name) for model in self.all_models]
+                 out_c, in_c, k_h, k_w = all_original_layers[0].weight.shape
+-                
++
+                 if i == 0:
+                     # --- SPECIAL HANDLING FOR THE FIRST CONV LAYER ---
+                     # This layer will perform the input routing.
+                     groups = 1 # It's a single, custom-built convolution
+-                    
++
+                     # The merged layer will take all input channels (e.g., 4+4=8)
+                     new_in_c = in_c * 2 # Assuming two input streams (left, right)
+                     # The output channels are the sum of all model outputs
+@@ -1325,7 +1325,7 @@ if __name__ == "__main__":
+ 
+                     # Build the block-diagonal weight matrix for input routing
+                     merged_weight = torch.zeros(new_out_c, new_in_c, k_h, k_w)
+-                    
++
+                     # Get weights for left and right models separately
+                     left_conv1_layers = [model.conv1 for model in left_models]
+                     right_conv1_layers = [model.conv1 for model in right_models]
+@@ -1333,7 +1333,7 @@ if __name__ == "__main__":
+                     # Concatenate weights for each stream
+                     left_weights = torch.cat([layer.weight.data for layer in left_conv1_layers], dim=0)
+                     right_weights = torch.cat([layer.weight.data for layer in right_conv1_layers], dim=0)
+-                    
++
+                     # Place left weights in the top-left block of the matrix
+                     # It will process the first 4 input channels (0:in_c)
+                     merged_weight[0:self.num_left*out_c, 0:in_c, :, :] = left_weights
+@@ -1351,7 +1351,7 @@ if __name__ == "__main__":
+                     groups = self.num_models
+                     new_in_c = in_c * self.num_models
+                     new_out_c = out_c * self.num_models
+-                    
++
+                     merged_weight = torch.cat([layer.weight.data for layer in all_original_layers], dim=0)
+                     merged_bias = torch.cat([layer.bias.data for layer in all_original_layers], dim=0)
+ 
+@@ -1360,7 +1360,7 @@ if __name__ == "__main__":
+                                         stride=all_original_layers[0].stride,
+                                         padding=all_original_layers[0].padding,
+                                         groups=groups)
+-                
++
+                 merged_layer.weight.data = merged_weight
+                 merged_layer.bias.data = merged_bias
+                 setattr(self, layer_name, merged_layer)
+@@ -1375,7 +1375,7 @@ if __name__ == "__main__":
+ 
+             x = self.act(self.conv3(x))
+             x = self.pool(x)
+-            
++
+             x = self.act(self.conv4(x))
+             x = self.pool(x)
+ 
+@@ -1383,7 +1383,7 @@ if __name__ == "__main__":
+             x = self.pool(x)
+ 
+             x = self.act(self.conv6(x))
+-            
++
+             x = self.adaptive(x)
+             x = torch.flatten(x, 1)
+ 
+@@ -1391,23 +1391,23 @@ if __name__ == "__main__":
+             outputs = []
+             chunk_size = self.original_model_ref.conv6.out_channels
+             feature_chunks = torch.split(x, split_size_or_sections=chunk_size, dim=1)
+-            
++
+             for i, head in enumerate(self.final_layers):
+                 output = head(feature_chunks[i])
+                 output = self.sigmoid(output)
+                 outputs.append(output)
+-                
++
+             return outputs
+ 
+     def train_model(models_left, models_right, decoder, train_loader, num_epochs=10, lr=5e-5, class_step=False, e_add = 0, e_total = 0, exp_stage=False, lrs=[], label_sizes=[], aug_levels=[]):
+ 
+         device = DEVICE#torch.device("cuda:0")
+         print(f"Using device: {device}", flush=True)
+-        
++
+         #model = model.to(device)
+         criterion = nn.MSELoss()
+-        
+-        
++
++
+         # For tracking progress
+         epoch_losses = []
+         batch_losses = []
+@@ -1448,12 +1448,12 @@ if __name__ == "__main__":
+                 labels_left.append(label_left)
+                 labels_right.append(label_right)
+                 gaze_states.append(gaze_state)
+-            
++
+             return torch.stack(inputs_left, dim=0), torch.stack(inputs_right, dim=0), torch.stack(labels_left, dim=0), torch.stack(labels_right, dim=0), torch.stack(gaze_states, dim=0)
+ 
+         def train_one_model(num_epochs, steps_per_epoch, model_idx, batcher_fn):
+             dataloader = DataLoader(DatasetWrapper(batcher_fn, num_epochs, 32, steps_per_epoch), batch_size=32, shuffle=True, num_workers=8, worker_init_fn=worker_init, pin_memory=True)
+-            
++
+             print("\nTraining %s:" % (MODEL_NAMES[model_idx]))
+             optim_left = optimizersL[model_idx]
+             optim_right = optimizersR[model_idx]
+@@ -1478,7 +1478,7 @@ if __name__ == "__main__":
+                 start_time = time.time()
+                 for step in range(steps_per_epoch):
+                     inputs_left, inputs_right, labels_left, labels_right, gaze_states, sample_states = next(dataloader_iterator)
+-                    
++
+                     optim_left.zero_grad()
+                     optim_right.zero_grad()
+ 
+@@ -1524,7 +1524,7 @@ if __name__ == "__main__":
+         torch.manual_seed(42)
+         np.random.seed(42)
+         random.seed(42)
+-        
++
+         model_L=[MicroChad(out_count=2),MicroChad(out_count=1),MicroChad(out_count=2),MicroChad(out_count=1)]
+         model_R=[MicroChad(out_count=2),MicroChad(out_count=1),MicroChad(out_count=2),MicroChad(out_count=1)]
+ 
+@@ -1542,10 +1542,10 @@ if __name__ == "__main__":
+             trained_model_L,
+             trained_model_R,
+             None,
+-            dataset, 
++            dataset,
+             num_epochs=EPOCHS,
+             lr=0.001,
+-            class_step=True, 
++            class_step=True,
+             exp_stage=False,
+             e_add = 0,
+             e_total = EPOCHS,
+@@ -1565,7 +1565,7 @@ if __name__ == "__main__":
+ 
+         device = torch.device("cpu")
+         multi = multi.to(device)
+-        
++
+         dummy_input = torch.randn(1, 8, 128, 128, device=device)  # Updated to 8 channels
+         torch.onnx.export(
+             multi,

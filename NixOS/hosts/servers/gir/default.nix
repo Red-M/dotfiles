@@ -4,6 +4,7 @@
 {
   imports = [
     ./hardware-configuration.nix
+    ./networking.nix # generated at runtime by nixos-infect
 
     ../../servers
     ../../../modules/servers/znc.nix

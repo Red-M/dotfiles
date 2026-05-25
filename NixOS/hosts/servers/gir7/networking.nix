@@ -10,10 +10,9 @@
       "67.207.67.2"
     ];
     defaultGateway = "104.248.240.1";
-    defaultGateway6 = {
-      address = "";
-      interface = "eth0";
-    };
+    # defaultGateway6 = {
+    #   interface = "eth0";
+    # };
     dhcpcd.enable = false;
     usePredictableInterfaceNames = lib.mkForce false;
     interfaces = {

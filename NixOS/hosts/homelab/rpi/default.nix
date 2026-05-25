@@ -13,7 +13,7 @@
     ../../../modules/nix_rpi_builds.nix
     ../../../modules/zram.nix
 
-    ../../../modules/ssh_server.nix
+    ../../../modules/servers/ssh_server.nix
     ../../../modules/decrypt_over_network.nix
     ../../../modules/servers/mail_relay_out.nix
   ];
@@ -29,11 +29,11 @@
     };
     loader = {
       grub.enable = lib.mkForce false;
-      raspberryPi.bootloader = "kernel";
+      raspberry-pi.bootloader = "kernel";
     };
   };
   system.nixos.tags = let
-    cfg = config.boot.loader.raspberryPi;
+    cfg = config.boot.loader.raspberry-pi;
   in [
     "raspberry-pi-${cfg.variant}"
     cfg.bootloader
@@ -60,8 +60,6 @@
   boot.tmp.cleanOnBoot = true;
   zramSwap.enable = true;
 
-  system.autoUpgrade.enable = true;
-
   networking = {
     firewall = {
       allowedTCPPorts = [
@@ -77,9 +75,11 @@
     };
   };
 
+  nix.settings.system-features = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
+
   disko.devices = let
     firmwarePartition = lib.recursiveUpdate {
-      # label = "FIRMWARE";
+      label = "FIRMWARE";
       priority = 1;
 
       type = "0700";  # Microsoft basic data
@@ -94,9 +94,9 @@
         # mountpoint = "/boot/firmware";
         mountOptions = [
           "noatime"
-          "noauto"
-          "x-systemd.automount"
-          "x-systemd.idle-timeout=1min"
+          # "noauto"
+          # "x-systemd.automount"
+          # "x-systemd.idle-timeout=1min"
         ];
       };
     };

@@ -3,7 +3,7 @@
 
 {
   # Set your time zone.
-  time.timeZone = "Australia/Brisbane";
+  time.timeZone = lib.mkDefault "Australia/Brisbane";
 
   # Select internationalisation properties.
   i18n = {

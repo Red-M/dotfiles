@@ -4,6 +4,13 @@
 {
 
   nixpkgs.overlays = [
+
+    (final: prev: {
+      openldap = prev.openldap.overrideAttrs { # https://github.com/NixOS/nixpkgs/issues/513245
+        doCheck = !prev.stdenv.hostPlatform.isi686;
+      };
+    })
+
     (final: prev: {
       python3Optimized.pkgs = lib.trivial.mergeAttrs prev.python3Optimized.pkgs {
         watchdog = prev.python3Optimized.pkgs.watchdog.override rec {
@@ -89,21 +96,21 @@
 
   system = {
     autoUpgrade = {
-      enable = true;
+      enable = false;
       dates = "02:00";
       randomizedDelaySec = "45min";
-      persistent = true;
+      persistent = false;
     };
 
     activationScripts.report-changes = ''
       if [ -d /nix/store ]; then
-      PATH=$PATH:${lib.makeBinPath [ pkgs.nvd pkgs.lixPackageSets.stable.lix ]}
-      echo " ---  Changes since boot  ---"
-      nvd diff /run/booted-system $(ls -dv /nix/var/nix/profiles/system-*-link | tail -1) || true
-      echo " --- Changes from rebuild ---"
-      nix --extra-experimental-features 'nix-command' store diff-closures /run/current-system "$systemConfig" || true
-      nvd diff /run/current-system $(ls -dv /nix/var/nix/profiles/system-*-link | tail -1) || true
-      echo " ____________________________"
+        PATH=$PATH:${lib.makeBinPath [ pkgs.nvd pkgs.lixPackageSets.stable.lix ]}
+        echo " ---  Changes since boot  ---"
+        nvd --color=always diff /run/booted-system $(ls -dv /nix/var/nix/profiles/system-*-link | tail -1) || true
+        echo " --- Changes from rebuild ---"
+        nix --extra-experimental-features 'nix-command' store diff-closures /run/current-system "$systemConfig" || true
+        nvd --color=always diff /run/current-system $(ls -dv /nix/var/nix/profiles/system-*-link | tail -1) || true
+        echo " ____________________________"
       fi
     '';
   };

@@ -5,6 +5,9 @@
   # nixpkgs.overlays = [(final: prev: {
   #   mesa = unstable.mesa;
   # })];
+  imports = [
+    ../../patching/mesa.nix
+  ];
 
   nixpkgs.config.rocmSupport = true;
 

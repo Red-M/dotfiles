@@ -4,12 +4,13 @@
 {
   imports = [
     ./extractors.nix
+    ./patching/tmuxp.nix
   ];
 
   users.users.redm = {
     packages = with pkgs; [
       irssi_plugins
-      mise
+      # mise
       proxychains
       rclone
       tmuxp

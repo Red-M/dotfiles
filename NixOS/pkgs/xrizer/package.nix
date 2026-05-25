@@ -1,7 +1,7 @@
 {
   lib,
   stdenv,
-  fetchFromGitHub,
+  fetchgit,
   nix-update-script,
   libxkbcommon,
   openxr-loader,
@@ -14,15 +14,18 @@
 
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "xrizer";
-  version = "01ab72809f2bd5c6494fa77fb08e4229c886da7a";
-  src = fetchFromGitHub {
-    owner = "Supreeeme";
-    repo = "xrizer";
+  version = "fc9b0cc2a1047adc9b7edffd68fa0c288965090a";
+  src = fetchgit {
+    url = "https://github.com/Supreeeme/xrizer.git";
+    fetchSubmodules = false;
+    deepClone = false;
+    leaveDotGit = false;
+    sparseCheckout = [ ];
     rev = finalAttrs.version;
-    sha256 = "sha256-IRhLWlGHywp0kZe5aGmMHAF1zZwva3sGg68eG1E2K9A=";
+    sha256 = "sha256-gBHMIocIIa5u2kJyxZ+h0xgoY3MRERHYpoQ+E82EEBU=";
   };
 
-  cargoHash = "sha256-orfK5pwWv91hA7Ra3Kk+isFTR+qMHSZ0EYZTVbf0fO0=";
+  cargoHash = "sha256-QPS5r4r8el2Rm0VVeuy6gtcQFpDmAqzf70+Ww2pXeoA=";
 
   nativeBuildInputs = [
     pkg-config

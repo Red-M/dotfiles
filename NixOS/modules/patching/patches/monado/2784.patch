@@ -1,0 +1,233 @@
+From eb6e9d621f4af67c0d9e21edb2e5050e51e9ed87 Mon Sep 17 00:00:00 2001
+From: Matt Coffin <mcoffin13@gmail.com>
+Date: Fri, 13 Mar 2026 00:27:45 -0600
+Subject: [PATCH 1/2] c/peek: Fix usage of 8bit color formats
+
+previously we were ignoring these due to mismatches with the `_UNORM`
+formats allocated by comp_scratch, but this will fix the single-eye peek
+use case
+
+still broken will be the "both" eye use case, where the image **is**
+actually allocated as SRGB, so we leave that to fix for the future
+---
+ src/xrt/compositor/main/comp_window_peek.c | 24 ++++++++++++++++++----
+ 1 file changed, 20 insertions(+), 4 deletions(-)
+
+diff --git a/src/xrt/compositor/main/comp_window_peek.c b/src/xrt/compositor/main/comp_window_peek.c
+index 3437f24ed6..27ac8f3512 100644
+--- a/src/xrt/compositor/main/comp_window_peek.c
++++ b/src/xrt/compositor/main/comp_window_peek.c
+@@ -28,6 +28,23 @@ DEBUG_GET_ONCE_OPTION(window_peek, "XRT_WINDOW_PEEK", NULL)
+ 
+ #define PEEK_IMAGE_USAGE (VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT | VK_IMAGE_USAGE_TRANSFER_DST_BIT)
+ 
++/*!
++ * Convert SRGB formats to their UNORM equivalents.
++ *
++ * The peek window blits an already-rendered image, so using SRGB swapchain
++ * formats would apply the sRGB transfer function a second time.
++ */
++static VkFormat
++srgb_to_unorm(VkFormat format)
++{
++	switch (format) {
++	case VK_FORMAT_B8G8R8A8_SRGB: return VK_FORMAT_B8G8R8A8_UNORM;
++	case VK_FORMAT_R8G8B8A8_SRGB: return VK_FORMAT_R8G8B8A8_UNORM;
++	case VK_FORMAT_A8B8G8R8_SRGB_PACK32: return VK_FORMAT_A8B8G8R8_UNORM_PACK32;
++	default: return format;
++	}
++}
++
+ struct comp_window_peek
+ {
+ 	struct comp_target_swapchain base;
+@@ -66,10 +83,10 @@ create_images(struct comp_window_peek *w)
+ 
+ 	static_assert(ARRAY_SIZE(info.formats) == ARRAY_SIZE(w->c->settings.formats), "Miss-match format array sizes");
+ 	for (uint32_t i = 0; i < w->c->settings.format_count; i++) {
+-		info.formats[info.format_count++] = w->c->settings.formats[i];
++		info.formats[info.format_count++] = srgb_to_unorm(w->c->settings.formats[i]);
+ 	}
+ 
+-	comp_target_create_images(&w->base.base, &info, vk->main_queue);
++	comp_target_create_images(&w->base.base, &info, vk->graphics_queue);
+ }
+ 
+ static void *
+@@ -122,8 +139,7 @@ window_peek_run_thread(void *ptr)
+ struct comp_window_peek *
+ comp_window_peek_create(struct comp_compositor *c)
+ {
+-	const char *compute = getenv("XRT_COMPOSITOR_COMPUTE");
+-	if (compute) {
++	if (c->settings.use_compute) {
+ 		COMP_WARN(c, "Peek window cannot be enabled on compute compositor");
+ 		return NULL;
+ 	}
+-- 
+GitLab
+
+
+From 9f5f751d38510e479fdd0e3e4f8488d344cb730f Mon Sep 17 00:00:00 2001
+From: Matt Coffin <mcoffin13@gmail.com>
+Date: Fri, 13 Mar 2026 00:47:50 -0600
+Subject: [PATCH 2/2] c/peek: Handle both SRGB and UNORM source formats in blit
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+In the "both" case for peeking, the source image comes from the main
+compositor, not the scratch images, and is therefore allocated
+differently. We need to allocate differently in `comp_window_peek` to
+account for this since vkCmdBlitImage isn't VkImageView-aware.
+
+Pass the source image's VkFormat into comp_window_peek_blit so the peek
+swapchain format can match the source's sRGB-ness. When blitting from
+UNORM scratch images (left/right eye), the swapchain uses UNORM to avoid
+format conversion. When blitting from the SRGB main target (both eyes),
+the swapchain keeps SRGB so vkCmdBlitImage's SRGB→SRGB path is a no-op
+on the transfer function, fixing the washed-out colors in "both" mode.
+---
+ src/xrt/compositor/main/comp_renderer.c    | 10 ++++-
+ src/xrt/compositor/main/comp_window_peek.c | 49 +++++++++++++++++++---
+ src/xrt/compositor/main/comp_window_peek.h |  2 +-
+ 3 files changed, 52 insertions(+), 9 deletions(-)
+
+diff --git a/src/xrt/compositor/main/comp_renderer.c b/src/xrt/compositor/main/comp_renderer.c
+index f6c4030158..1628b26ca9 100644
+--- a/src/xrt/compositor/main/comp_renderer.c
++++ b/src/xrt/compositor/main/comp_renderer.c
+@@ -1104,6 +1104,7 @@ comp_renderer_draw(struct comp_renderer *r)
+ 			comp_window_peek_blit(                 //
+ 			    c->peek,                           //
+ 			    view->images[scratch_index].image, //
++			    (VkFormat)view->info.format,       //
+ 			    view->info.width,                  //
+ 			    view->info.height);                //
+ 		} break;
+@@ -1114,13 +1115,18 @@ comp_renderer_draw(struct comp_renderer *r)
+ 			comp_window_peek_blit(                 //
+ 			    c->peek,                           //
+ 			    view->images[scratch_index].image, //
++			    (VkFormat)view->info.format,       //
+ 			    view->info.width,                  //
+ 			    view->info.height);                //
+ 		} break;
+ 		case COMP_WINDOW_PEEK_EYE_BOTH:
+ 			/* TODO: display the undistorted image */
+-			comp_window_peek_blit(c->peek, c->target->images[r->acquired_buffer].handle, c->target->width,
+-			                      c->target->height);
++			comp_window_peek_blit(                                    //
++			    c->peek,                                              //
++			    c->target->images[r->acquired_buffer].handle,         //
++			    c->target->format,                                    //
++			    c->target->width,                                     //
++			    c->target->height);                                   //
+ 			break;
+ 		}
+ 	}
+diff --git a/src/xrt/compositor/main/comp_window_peek.c b/src/xrt/compositor/main/comp_window_peek.c
+index 27ac8f3512..841eba818a 100644
+--- a/src/xrt/compositor/main/comp_window_peek.c
++++ b/src/xrt/compositor/main/comp_window_peek.c
+@@ -28,11 +28,25 @@ DEBUG_GET_ONCE_OPTION(window_peek, "XRT_WINDOW_PEEK", NULL)
+ 
+ #define PEEK_IMAGE_USAGE (VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT | VK_IMAGE_USAGE_TRANSFER_DST_BIT)
+ 
++/*!
++ * Returns true if the given format is an sRGB format.
++ */
++static bool
++is_format_srgb(VkFormat format)
++{
++	switch (format) {
++	case VK_FORMAT_B8G8R8A8_SRGB:
++	case VK_FORMAT_R8G8B8A8_SRGB:
++	case VK_FORMAT_A8B8G8R8_SRGB_PACK32: return true;
++	default: return false;
++	}
++}
++
+ /*!
+  * Convert SRGB formats to their UNORM equivalents.
+  *
+- * The peek window blits an already-rendered image, so using SRGB swapchain
+- * formats would apply the sRGB transfer function a second time.
++ * Used when the blit source image is UNORM — we need the peek swapchain to
++ * also be UNORM so that vkCmdBlitImage does not apply any format conversion.
+  */
+ static VkFormat
+ srgb_to_unorm(VkFormat format)
+@@ -55,6 +69,7 @@ struct comp_window_peek
+ 	uint32_t width, height;
+ 	bool running;
+ 	bool hidden;
++	bool src_is_srgb;
+ 
+ 	struct vk_cmd_pool pool;
+ 	VkCommandBuffer cmd;
+@@ -83,7 +98,20 @@ create_images(struct comp_window_peek *w)
+ 
+ 	static_assert(ARRAY_SIZE(info.formats) == ARRAY_SIZE(w->c->settings.formats), "Miss-match format array sizes");
+ 	for (uint32_t i = 0; i < w->c->settings.format_count; i++) {
+-		info.formats[info.format_count++] = srgb_to_unorm(w->c->settings.formats[i]);
++		VkFormat format = w->c->settings.formats[i];
++
++		/*
++		 * When the blit source is UNORM, we need the peek swapchain
++		 * to also be UNORM so that vkCmdBlitImage does not apply any
++		 * sRGB format conversion. When the source is SRGB, keep the
++		 * swapchain formats as-is so the blit's SRGB→SRGB path is a
++		 * no-op on the transfer function.
++		 */
++		if (!w->src_is_srgb) {
++			format = srgb_to_unorm(format);
++		}
++
++		info.formats[info.format_count++] = format;
+ 	}
+ 
+ 	comp_target_create_images(&w->base.base, &info, vk->graphics_queue);
+@@ -305,14 +333,23 @@ comp_window_peek_destroy(struct comp_window_peek **w_ptr)
+ }
+ 
+ void
+-comp_window_peek_blit(struct comp_window_peek *w, VkImage src, int32_t width, int32_t height)
++comp_window_peek_blit(struct comp_window_peek *w, VkImage src, VkFormat src_format, int32_t width, int32_t height)
+ {
+ 	if (w->hidden || !w->running) {
+ 		return;
+ 	}
+ 
+-	if (w->width != w->base.base.width || w->height != w->base.base.height) {
+-		COMP_DEBUG(w->c, "Resizing swapchain");
++	bool src_is_srgb = is_format_srgb(src_format);
++	bool need_recreate = (w->width != w->base.base.width || w->height != w->base.base.height);
++
++	if (src_is_srgb != w->src_is_srgb) {
++		COMP_DEBUG(w->c, "Source format sRGB-ness changed, recreating swapchain");
++		w->src_is_srgb = src_is_srgb;
++		need_recreate = true;
++	}
++
++	if (need_recreate) {
++		COMP_DEBUG(w->c, "Recreating swapchain");
+ 		create_images(w);
+ 	}
+ 
+diff --git a/src/xrt/compositor/main/comp_window_peek.h b/src/xrt/compositor/main/comp_window_peek.h
+index 15ef432639..c849822403 100644
+--- a/src/xrt/compositor/main/comp_window_peek.h
++++ b/src/xrt/compositor/main/comp_window_peek.h
+@@ -40,7 +40,7 @@ void
+ comp_window_peek_destroy(struct comp_window_peek **w_ptr);
+ 
+ void
+-comp_window_peek_blit(struct comp_window_peek *w, VkImage src, int32_t width, int32_t height);
++comp_window_peek_blit(struct comp_window_peek *w, VkImage src, VkFormat src_format, int32_t width, int32_t height);
+ 
+ /*!
+  *
+-- 
+GitLab
+

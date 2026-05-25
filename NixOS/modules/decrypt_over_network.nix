@@ -15,8 +15,10 @@
             "/etc/ssh/initrd_ssh_host_rsa_key"
             "/etc/ssh/initrd_ssh_host_ed25519_key"
           ];
-          shell = "/bin/cryptsetup-askpass";
         };
+      };
+      systemd = {
+        users.root.shell = "/bin/systemd-tty-ask-password-agent";
       };
     };
   };

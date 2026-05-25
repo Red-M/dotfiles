@@ -14,6 +14,7 @@
     libglibutil
     libsecret
     libva-utils
+    patchutils
   ];
 
 }

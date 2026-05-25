@@ -10,10 +10,9 @@
       "67.207.67.2"
     ];
     defaultGateway = "104.236.192.1";
-    defaultGateway6 = {
-      address = "";
-      interface = "eth0";
-    };
+    # defaultGateway6 = {
+    #   interface = "eth0";
+    # };
     dhcpcd.enable = false;
     usePredictableInterfaceNames = lib.mkForce false;
     interfaces = {
@@ -26,16 +25,16 @@
           { address="fe80::10c9:5ff:fea0:5414"; prefixLength=64; }
         ];
         ipv4.routes = [ { address = "104.236.192.1"; prefixLength = 32; } ];
-        ipv6.routes = [ { address = ""; prefixLength = 128; } ];
+        # ipv6.routes = [ { address = ""; prefixLength = 128; } ];
       };
-            eth1 = {
+      eth1 = {
         ipv4.addresses = [
           { address="10.108.0.2"; prefixLength=20; }
         ];
         ipv6.addresses = [
           { address="fe80::3489:21ff:fef0:3e29"; prefixLength=64; }
         ];
-        };
+      };
     };
   };
   services.udev.extraRules = ''

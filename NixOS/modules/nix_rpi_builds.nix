@@ -8,31 +8,37 @@
         hostName = "rpi4-0";
         system = "aarch64-linux";
         protocol = "ssh";
+        supportedFeatures = [ "big-parallel" ];
       })
       (lib.mkIf (config.networking.hostName != "rpi4-1") {
         hostName = "rpi4-1";
         system = "aarch64-linux";
         protocol = "ssh";
+        supportedFeatures = [ "big-parallel" ];
       })
       (lib.mkIf (config.networking.hostName != "rpi5-0") {
         hostName = "rpi5-0";
         system = "aarch64-linux";
         protocol = "ssh";
+        supportedFeatures = [ "big-parallel" ];
       })
       (lib.mkIf (config.networking.hostName != "rpi5-1") {
         hostName = "rpi5-1";
         system = "aarch64-linux";
         protocol = "ssh";
+        supportedFeatures = [ "big-parallel" ];
       })
       (lib.mkIf (config.networking.hostName != "rpi5-2") {
         hostName = "rpi5-2";
         system = "aarch64-linux";
         protocol = "ssh";
+        supportedFeatures = [ "big-parallel" ];
       })
       (lib.mkIf (config.networking.hostName != "rpi5-3") {
         hostName = "rpi5-3";
         system = "aarch64-linux";
         protocol = "ssh";
+        supportedFeatures = [ "big-parallel" ];
       })
     ];
     distributedBuilds = true;

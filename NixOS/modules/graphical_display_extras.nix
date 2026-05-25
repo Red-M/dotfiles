@@ -21,7 +21,7 @@
           mpvScripts.thumbfast
           mpvScripts.sponsorblock
           mpvScripts.quality-menu
-          mpvScripts.mpv-cheatsheet
+          # mpvScripts.mpv-cheatsheet-ng
           mpvScripts.reload
           mpvScripts.modernx
           mpvScripts.autoload
@@ -32,7 +32,7 @@
       })
       mpvpaper
 
-      krita
+      # krita
       unstable.gimp-with-plugins
       # kdePackages.kdenlive
       kdePackages.partitionmanager

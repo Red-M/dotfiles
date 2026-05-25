@@ -2,6 +2,7 @@
   lib,
   stdenv,
   fetchFromGitLab,
+  fetchpatch,
   writeText,
   bluez,
   cjson,
@@ -12,8 +13,7 @@
   eigen,
   elfutils,
   glslang,
-  gst-plugins-base,
-  gstreamer,
+  gst_all_1,
   hidapi,
   libbsd,
   libdrm,
@@ -27,11 +27,11 @@
   libuv,
   libuvc,
   libv4l,
-  libXau,
+  libxau,
   libxcb,
-  libXdmcp,
-  libXext,
-  libXrandr,
+  libxdmcp,
+  libxext,
+  libxrandr,
   nix-update-script,
   onnxruntime,
   opencv4,
@@ -60,24 +60,34 @@
   # https://gitlab.freedesktop.org/monado/monado/-/blob/master/doc/targets.md#xrt_feature_service-disabled
   serviceSupport ? true,
   tracingSupport ? false,
-  # Only build client libraries eg, for 32 bit games/applications on a 64 bit host
+  # Only build client libraries to allow applications/games to connect to the monado IPC socket for VR eg, for 32 bit applications/games on a 64 bit host
   clientLibOnly ? false,
 }:
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "monado";
-  version = "0b5795bb8d92386755efd4a5d03f4824f3105da6";
+  version = "44c36d89f3997841a9e9d12eaaebf87086d96b3f";
   src = fetchFromGitLab {
     domain = "gitlab.freedesktop.org";
     owner = "monado";
     repo = "monado";
     rev = finalAttrs.version;
-    sha256 = "sha256-pFPh0HQpbw/TpoIpOaXNxD2PVyeeU5/nesFrrWl/Bgs=";
+    sha256 = "sha256-l/yJpLovmxCS1fx0SBWfT4qFR/pUWyhUNODs/cZViy0=";
     # owner = "coolGi";
     # repo = "monado";
     # rev = "b3a7cbefdaf61b331dc6c29ca0937ce48b630ba2";
     # sha256 = "sha256-5O/FPAzC/4rJQSafkL7dxTYLLGGpqq9nrjrabeQf4XY=";
   };
+
+  patches = [
+    # Resolves issues with wayvr
+    # See https://github.com/NixOS/nixpkgs/pull/489154#issuecomment-4018732528
+    (fetchpatch {
+      name = "monado-cylinder-aspectRatio.patch";
+      url = "https://gitlab.freedesktop.org/monado/monado/-/commit/69834fe93b84640170f8efa54b4700e5e0dc03c1.diff";
+      hash = "sha256-6lD4j7CMQk52btfxD8hOm0GWZaOxSgc1jel9hyXqktA=";
+    })
+  ];
 
   nativeBuildInputs = [
     cmake
@@ -99,8 +109,8 @@ stdenv.mkDerivation (finalAttrs: {
     dbus
     eigen
     elfutils
-    gst-plugins-base
-    gstreamer
+    gst_all_1.gst-plugins-base
+    gst_all_1.gstreamer
     hidapi
     libbsd
     libdrm
@@ -114,12 +124,19 @@ stdenv.mkDerivation (finalAttrs: {
     libuv
     libuvc
     libv4l
-    libXau
+    libxau
     libxcb
-    libXdmcp
-    libXext
-    libXrandr
-    openvr
+    libxdmcp
+    libxext
+    libxrandr
+    # openvr
+    (openvr.overrideAttrs { # https://github.com/NixOS/nixpkgs/pull/513244
+      postPatch = ''
+        # Fix jsoncpp ABI for downstream packages
+        substituteInPlace CMakeLists.txt \
+        --replace-fail "-std=c++11" "-std=c++17"
+      '';
+    })
     orc
     pcre2
     SDL2
@@ -140,7 +157,7 @@ stdenv.mkDerivation (finalAttrs: {
   ++ lib.optionals tracingSupport [
     tracy
   ]
-  ++ lib.optionals (enableCuda && (!clientLibOnly)) [
+  ++ lib.optionals enableCuda [
     cudaPackages.cuda_nvcc
     cudaPackages.cuda_cudart
   ];
@@ -190,7 +207,25 @@ stdenv.mkDerivation (finalAttrs: {
     homepage = "https://monado.freedesktop.org/";
     license = lib.licenses.boost;
     maintainers = with lib.maintainers; [ Scrumplex ];
-    platforms = lib.platforms.linux;
+    platforms = [
+      "x86_64-linux"
+      "i686-linux"
+      "aarch64-linux"
+      "armv7a-vfp-linux"
+      "armv5te-linux"
+      "mips64-linux"
+      "mips-linux"
+      "ppc64-linux"
+      "ppc64el-linux"
+      "s390x-linux"
+      "hppa-linux"
+      "alpha-linux"
+      "ia64-linux"
+      "m68k-linux"
+      "riscv64-linux"
+      "sparc64-linux"
+      "loongarch64-linux"
+    ];
     mainProgram = "monado-cli";
   };
 })

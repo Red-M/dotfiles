@@ -46,9 +46,11 @@ return {
     version = false,
     opts = {
       rocks = {enabled = false}, -- This is a lazy.nvim household
-      use_lsp = false,
+      -- use_lsp = false,
       scope_chdir = 'win',
-      historysize = 0,
+      history = {
+        size = 0,
+      },
     },
   },
   {

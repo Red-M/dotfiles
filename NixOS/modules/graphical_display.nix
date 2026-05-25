@@ -29,7 +29,7 @@
   # services.xserver.libinput.enable = true;
 
   # Install firefox.
-  programs.firefox.enable = true;
+  # programs.firefox.enable = true;
 
   xdg.portal = {
     enable = true;
@@ -132,7 +132,7 @@
 
   users.users.redm = {
     packages = with pkgs; [
-      neofetch
+      fastfetch
       xwininfo
       xdotool
       xclip

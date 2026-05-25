@@ -9,7 +9,7 @@
   users.users.redm = {
     extraGroups = [ "gamemode" ];
     packages = with pkgs; [
-      unstable.lutris
+      lutris
       mangohud
       gamemode
       unstable.gamescope
@@ -17,7 +17,7 @@
       yad
       winetricks
       wineWow64Packages.waylandFull
-      wineWowPackages.waylandFull
+      # wineWowPackages.waylandFull
       evtest
       evtest-qt
 
@@ -31,7 +31,7 @@
       r2mod_cli
       # unstable.nexusmods-app-unfree # I'm sick of building this, wait for a while
 
-      bottles
+      # bottles
 
       # xboxdrv
     ];
@@ -133,7 +133,7 @@
       xpadneo
     ];
     extraModprobeConfig = ''
-      options hid_xpadneo disable_deadzones=0 rumble_attenuation=0 trigger_rumble_mode=0 ff_connect_notify=1 disable_shift_mode=1
+      options hid_xpadneo disable_deadzones=0 rumble_attenuation=0 trigger_rumble_mode=0 ff_connect_notify=1
 
       alias hid:b0005g*v0000045Ep000002E0 hid_xpadneo
       alias hid:b0005g*v0000045Ep000002FD hid_xpadneo

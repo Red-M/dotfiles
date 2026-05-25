@@ -13,7 +13,16 @@
       jack.enable = true;
 
       # This allows automatic noise reduction from microphones
-      extraLv2Packages = [ pkgs.lsp-plugins ];
+      extraLv2Packages = with pkgs; [
+        lsp-plugins
+        rnnoise-plugin
+        ladspaPlugins
+      ];
+      extraLadspaPackages = with pkgs; [
+        lsp-plugins
+        rnnoise-plugin
+        ladspaPlugins
+      ];
     };
   };
 
@@ -201,7 +210,8 @@
             "nodes" = [{
               "type" = "ladspa";
               "name" = "rnnoise";
-              "plugin" = "${pkgs.rnnoise-plugin}/lib/ladspa/librnnoise_ladspa.so";
+              # "plugin" = "${pkgs.rnnoise-plugin}/lib/ladspa/librnnoise_ladspa.so";
+              "plugin" = "librnnoise_ladspa";
               "label" = "noise_suppressor_mono";
               "control" = {
                 "VAD Threshold (%)" = 90.0;
@@ -222,7 +232,7 @@
             "node.name" = "noise_cancel.playback";
             "node.description" = "Noise Cancel Playback";
             "media.class" = "Audio/Source";
-            "node.autoconnect" = false;
+            # "node.autoconnect" = false;
           };
         };
       }];
@@ -238,7 +248,8 @@
             "nodes" = [{
               "type" = "ladspa";
               "name" = "module-ladspa-sink";
-              "plugin" = "${pkgs.ladspaPlugins}/lib/ladspa/sc4m_1916.so";
+              # "plugin" = "${pkgs.ladspaPlugins}/lib/ladspa/sc4m_1916.so";
+              "plugin" = "sc4m_1916";
               "label" = "sc4m";
               "control" = { # https://github.com/swh/ladspa/blob/master/sc4m_1916.xml
                 "RMS/peak" = 1;
@@ -295,6 +306,18 @@
         actions = {
           update-props = {
             "audio.rate" = 384000;
+          };
+        };
+      }];
+    };
+    "99-disable-suspend" = {
+      "monitor.alsa.rules" = [{
+        matches = [
+          { "node.name" = "alsa_output.*"; }
+        ];
+        actions = {
+          update-props = {
+            "session.suspend-timeout-seconds" = 0;
           };
         };
       }];

@@ -13,6 +13,9 @@
     settings = {
       X11Forwarding = true;
       PermitRootLogin = "prohibit-password";
+      ClientAliveInterval = 60;
+      ClientAliveCountMax = 2;
+      TCPKeepAlive = true;
     };
   };
   security.pam = {
@@ -23,6 +26,8 @@
       # ];
     };
   };
+
+  services.ssh-agent-switcher.enable = true;
 
   users.users.root.openssh.authorizedKeys.keys = [
 

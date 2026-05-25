@@ -18,7 +18,6 @@ symlinkJoin rec {
     hostArchPkg
     (
       (pkgsi686Linux.callPackage hostArchPkg.override {
-        inherit (pkgsi686Linux.gst_all_1) gstreamer gst-plugins-base;
         clientLibOnly = true;
       }).overrideAttrs
       multiarchOverrideAttrs

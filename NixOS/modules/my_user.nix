@@ -16,6 +16,7 @@
     packages = with pkgs; [
       unstable.neovim
       unstable.nvimpager
+      unstable.tree-sitter
 
       complete-alias
       curl

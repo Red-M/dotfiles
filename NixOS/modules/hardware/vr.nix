@@ -26,23 +26,25 @@
       # wlx-overlay-s_patched
       # outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.wlx-overlay-s
       libsurvive
-      # wayvr
-      outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.wayvr
+      wayvr
+      # outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.wayvr
       # lovr-playspace
       outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.lovr-playspace
       outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.vrcadvert
-      oscavmgr
+      # oscavmgr
       # outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.oscavmgr
       outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.resolute
+      outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.xr-chaperone
+      outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.vr-lighthouse
       # outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.monado-vulkan-layers
-      outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.xrbinder
+      # outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.xrbinder
 
       steamcmd # For BSB
       # BSB2e
       # outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.go-bsb-cams
       go-bsb-cams
       cameractrls
-      outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.baballonia
+      # outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.baballonia
     ];
   };
 
@@ -79,17 +81,20 @@
 
         AMD_VULKAN_ICD = "RADV";
         XRT_COMPOSITOR_COMPUTE = "on";
+        # SURVIVE_ENABLE = "off";
+        # QWERTY_ENABLE = "on";
         STEAMVR_LH_ENABLE = "on";
         LH_HANDTRACKING = "on";
+        # LH_STANDBY_ON_EXIT = "on";
         VIT_SYSTEM_LIBRARY_PATH = "${pkgs.basalt-monado}/lib/libbasalt.so";
         XRT_COMPOSITOR_SCALE_PERCENTAGE = "120";
         XRT_COMPOSITOR_DESIRED_MODE = "0";
+        U_PACING_APP_USE_MIN_FRAME_PERIOD = "1";
         # XRT_COMPOSITOR_SCALE_PERCENTAGE = "160";
         # U_PACING_COMP_MIN_TIME_MS = "2";
         # U_PACING_COMP_TIME_FRACTION_PERCENT = "80";
         # U_PACING_APP_IMMEDIATE_WAIT_FRAME_RETURN = "on";
         # U_PACING_APP_ALIGN_PREDICTED_DISPLAY_TIME_TO_APP_PERIOD = "1";
-        # U_PACING_APP_USE_MIN_FRAME_PERIOD = "1";
         # U_PACING_COMP_MIN_TIME_MS = "8";
         # IPC_EXIT_ON_DISCONNECT = "on"; # kill when a client disconnects
         IPC_EXIT_WHEN_IDLE = "on"; # kill on idle! :)
@@ -104,8 +109,8 @@
     wayvr = {
       description = "VR wayvr";
       serviceConfig = {
-        # ExecStart = "${pkgs.wayvr}/bin/wayvr";
-        ExecStart = "${outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.wayvr}/bin/wayvr";
+        ExecStart = "${pkgs.wayvr}/bin/wayvr";
+        # ExecStart = "${outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.wayvr}/bin/wayvr";
         Restart = "on-abnormal";
       };
       bindsTo = [ "monado.service" ];
@@ -114,11 +119,10 @@
       upheldBy = [ "monado.service" ];
       unitConfig.ConditionUser = "!root";
     };
-    lovr-playspace = {
-      description = "VR lovr-playspace";
+    xr-chaperone = {
+      description = "VR xr-chaperone";
       serviceConfig = {
-        ExecStart = "${pkgs.lovr-playspace}/bin/lovr-playspace";
-        # ExecStart = "${outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.lovr-playspace}/bin/lovr-playspace";
+        ExecStart = "${outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.xr-chaperone}/bin/xr-chaperone -s";
         Restart = "on-abnormal";
       };
       bindsTo = [ "monado.service" ];
@@ -127,6 +131,32 @@
       upheldBy = [ "monado.service" ];
       unitConfig.ConditionUser = "!root";
     };
+    # vr-lighthouse = {
+    #   description = "VR vr-lighthouse";
+    #   serviceConfig = {
+    #     ExecStart = "${outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.vr-lighthouse}/bin/lighthouse -vv --state on";
+    #     ExecStop = "${outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.vr-lighthouse}/bin/lighthouse -vv --state off";
+    #     Restart = "on-failure";
+    #     StartLimitBurst = 5;
+    #     RemainAfterExit = true;
+    #   };
+    #   upheldBy = [ "monado.service" ];
+    #   partOf = [ "monado.service" ];
+    #   unitConfig.ConditionUser = "!root";
+    # };
+    # lovr-playspace = {
+    #   description = "VR lovr-playspace";
+    #   serviceConfig = {
+    #     ExecStart = "${pkgs.lovr-playspace}/bin/lovr-playspace";
+    #     # ExecStart = "${outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.lovr-playspace}/bin/lovr-playspace";
+    #     Restart = "on-abnormal";
+    #   };
+    #   bindsTo = [ "monado.service" ];
+    #   partOf = [ "monado.service" ];
+    #   after = [ "monado.service" ];
+    #   upheldBy = [ "monado.service" ];
+    #   unitConfig.ConditionUser = "!root";
+    # };
     # oscavmgr = {
     #   description = "VR oscavmgr";
     #   serviceConfig = {
@@ -185,11 +215,19 @@
   boot.kernelPatches = [
     {
       name = "BSB_part1";
-      patch = ../patching/patches/amdgpu_kernel_module/BSB_drm-amd-use-fixed-dsc-bits-per-pixel-from-edid.patch;
+      patch = ../patching/patches/amdgpu_kernel_module/BSB.patch;
     }
+    # {
+    #   name = "BSB_part1";
+    #   patch = ../patching/patches/amdgpu_kernel_module/BSB_drm-amd-use-fixed-dsc-bits-per-pixel-from-edid.patch;
+    # }
+    # {
+    #   name = "BSB_part2";
+    #   patch = ../patching/patches/amdgpu_kernel_module/BSB_drm-edid-parse-DRM-VESA-dsc-bpp-target.patch;
+    # }
     {
-      name = "BSB_part2";
-      patch = ../patching/patches/amdgpu_kernel_module/BSB_drm-edid-parse-DRM-VESA-dsc-bpp-target.patch;
+      name = "BSB_part3";
+      patch = ../patching/patches/amdgpu_kernel_module/BSB_fix_dsc.patch;
     }
   ];
   #networking.firewall.allowedTCPPorts = [ 8080 ]; # For go-bsb-cams to allow other hosts to connect to it
