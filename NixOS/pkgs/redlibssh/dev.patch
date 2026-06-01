@@ -1,0 +1,15 @@
+diff --git a/ssh/libssh_enums.pyx b/ssh/libssh_enums.pyx
+index 4eded40..86570d5 100644
+--- a/ssh/libssh_enums.pyx
++++ b/ssh/libssh_enums.pyx
+@@ -248,8 +248,8 @@ class SSH2_Msg(enum.IntEnum):
+     SERVICE_ACCEPT = c_ssh2.SSH2_MSG_SERVICE_ACCEPT
+     KEXINIT = c_ssh2.SSH2_MSG_KEXINIT
+     NEWKEYS = c_ssh2.SSH2_MSG_NEWKEYS
+-    ECMQV_INIT = c_ssh2.SSH2_MSG_ECMQV_INIT
+-    ECMQV_REPLY = c_ssh2.SSH2_MSG_ECMQV_REPLY
++    #ECMQV_INIT = c_ssh2.SSH2_MSG_ECMQV_INIT
++    #ECMQV_REPLY = c_ssh2.SSH2_MSG_ECMQV_REPLY
+     KEXDH_INIT = c_ssh2.SSH2_MSG_KEXDH_INIT
+     KEXDH_REPLY = c_ssh2.SSH2_MSG_KEXDH_REPLY
+ class SSH2_Msg_Kex(enum.IntEnum):

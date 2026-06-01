@@ -16,6 +16,10 @@
       after = [ "network.target" "serial_portal.service" ];
       upheldBy = [ "serial_portal.service" ];
       preStart = lib.mkForce '''';
+      serviceConfig = {
+        ExecStartPre = lib.mkForce '''';
+        ExecStartPreEx = lib.mkForce '''';
+      };
     };
     serial_portal = {
       enable = true;
@@ -49,6 +53,36 @@
 
     zigbee2mqtt = {
       enable = true;
+      # settings = {
+      #   groups = "groups.yaml";
+      #   devices = "devices.yaml";
+      #   device_options = {
+      #     retain = true;
+      #   };
+      #   frontend = {
+      #     enabled = true;
+      #     port = 8099;
+      #   };
+      #   homeassistant = {
+      #     enabled = true;
+      #     discovery_topic = "homeassistant";
+      #   };
+      #   mqtt = {
+      #     server = "mqtt://192.168.0.172:1883";
+      #     keepalive = 10;
+      #     reject_unauthorized = true;
+      #     version = 4;
+      #     include_device_information = true;
+      #     client_id = "zigbee2mqtt";
+      #   };
+      #   serial = {
+      #     port = "tcp://127.0.0.1:6667";
+      #     adapter = "zstack";
+      #     # baudrate = 115200;
+      #     disable_led = false;
+      #     rtscts = false;
+      #   };
+      # };
     };
 
     nginx = {

@@ -20,6 +20,7 @@ buildPythonPackage rec {
     hash = "sha256-evXIsmCYQiGDdOFPvvuxOfxXbKZr4OX3O92xV8P5jYw=";
   };
 
+  patches = [ ./dev.patch ];
   build-system = [ setuptools ];
   pyproject = true;
   nativeBuildInputs = [

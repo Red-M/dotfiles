@@ -37,8 +37,6 @@
   boot.tmp.cleanOnBoot = true;
   zramSwap.enable = true;
 
-  system.autoUpgrade.enable = true;
-
   networking = {
     firewall = {
       allowedTCPPorts = [

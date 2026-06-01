@@ -3,6 +3,30 @@
     {
       "name": "",
       "overlays": {
+        "DP-2": {
+          "alpha": 1.0,
+          "grabbable": true,
+          "interactable": true,
+          "positioning": "Anchored",
+          "curvature": null,
+          "additive": false,
+          "saved_transform": [
+            0.59118044,
+            -0.019521859,
+            -0.27567536,
+            0.011580754,
+            0.652137,
+            -0.02134615,
+            0.27612302,
+            0.014445392,
+            0.59111744,
+            -0.36172745,
+            -0.01822567,
+            0.29824638
+          ],
+          "block_input": true,
+          "angle_fade": false
+        },
         "DP-1": {
           "alpha": 1.0,
           "grabbable": true,
@@ -47,30 +71,6 @@
             0.0042241737,
             -0.40406877,
             0.30112612
-          ],
-          "block_input": true,
-          "angle_fade": false
-        },
-        "DP-2": {
-          "alpha": 1.0,
-          "grabbable": true,
-          "interactable": true,
-          "positioning": "Anchored",
-          "curvature": null,
-          "additive": false,
-          "saved_transform": [
-            0.59118044,
-            -0.019521859,
-            -0.27567536,
-            0.011580754,
-            0.652137,
-            -0.02134615,
-            0.27612302,
-            0.014445392,
-            0.59111744,
-            -0.36172745,
-            -0.01822567,
-            0.29824638
           ],
           "block_input": true,
           "angle_fade": false
@@ -170,7 +170,7 @@
   ],
   "global_set": {
     "watch": {
-      "alpha": 1.0,
+      "alpha": 0.02,
       "grabbable": false,
       "interactable": true,
       "positioning": {

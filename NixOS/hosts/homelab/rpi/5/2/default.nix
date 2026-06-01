@@ -7,6 +7,7 @@
 
     ../../5
     ../../../rpi
+    ../../../../../modules/servers/rpi_zigbee.nix
   ];
 
   networking.hostName = "rpi5-2";
