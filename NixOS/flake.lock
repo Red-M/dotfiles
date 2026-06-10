@@ -275,11 +275,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1780943742,
-        "narHash": "sha256-01bTMR9ZPG+uxPaZBeOwagg5uxIaFYs2/3YIrOX+bCA=",
+        "lastModified": 1781064232,
+        "narHash": "sha256-+7cIaqM6ucKf5fDyMnkwehxG8tBdaU51TZOMtxacXmI=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "df39142474950e42d5fc3bf2fef9d6c62abbe8d7",
+        "rev": "1ffdc28076a1809ee7c0cf08f06af18f31c480cd",
         "type": "github"
       },
       "original": {
@@ -320,11 +320,11 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1780310866,
-        "narHash": "sha256-fPBRVf6A5xlACYcOI59shGrjURuvwu0lRsDoSCEXt/I=",
+        "lastModified": 1781020964,
+        "narHash": "sha256-fS7xTi2j2iso5Hj7RNZLv/acDlCT+fgMVkVk40A7Uco=",
         "owner": "NixOS",
         "repo": "nixos-hardware",
-        "rev": "4ed851c979641e28597a05086332d75cdc9e395f",
+        "rev": "32c2cd9e46286c4eced3dc6b613c659126bf3cca",
         "type": "github"
       },
       "original": {
@@ -511,11 +511,11 @@
         "treefmt-nix": "treefmt-nix"
       },
       "locked": {
-        "lastModified": 1780975679,
-        "narHash": "sha256-2r9Fs60xSCc2epOu10FMIT5D/6VoOVapxp1yxmlS6SA=",
+        "lastModified": 1781062898,
+        "narHash": "sha256-7u5I/bzYop78OJOJqZqQZZQ9FpSPCuooShYk1e6cyJo=",
         "owner": "nix-community",
         "repo": "nixpkgs-xr",
-        "rev": "6b1d56718d20f71c6ab82db0ccdea3735b2f52d0",
+        "rev": "09ea620eb625c4e33b63330fdcf203aa4f7091bd",
         "type": "github"
       },
       "original": {
@@ -603,11 +603,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1781001864,
-        "narHash": "sha256-Uhwm9nQ4avjmiadOf/Xx6kyYdMrxK9fEDYAS6MRFeYY=",
+        "lastModified": 1781071305,
+        "narHash": "sha256-fsv4xvgSNgxhzUVhaqJH8uvsWklnQvrwGYMYxXmMomc=",
         "owner": "nix-community",
         "repo": "NUR",
-        "rev": "29f32d6c695262eb9107b2e996832971f8077912",
+        "rev": "ace0777779cafa7c9640bb14767a0d4177782376",
         "type": "github"
       },
       "original": {
@@ -691,7 +691,7 @@
       },
       "locked": {
         "lastModified": 1,
-        "narHash": "sha256-2wNFeWbU+HXXkUDjd40j8DDvHCI24tHCUd+nYpU6J0U=",
+        "narHash": "sha256-pE80Hx9xyyWZHCETdYGH/pxOXuOAXzt+hqbX8DDDZdQ=",
         "path": "./pkgs",
         "type": "path"
       },
