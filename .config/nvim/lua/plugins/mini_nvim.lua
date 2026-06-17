@@ -34,6 +34,9 @@ local opts = {
       options = { try_as_border = false },
     }
   end,
+  ["colors"] = function(plugin)
+    return { }
+  end,
 }
 
 return {
