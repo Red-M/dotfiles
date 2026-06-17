@@ -1,7 +1,7 @@
 
 vim.g.nvimpager = type(nvimpager) == "table"
 
-vim.opt.rtp:prepend(vim.fn.stdpath("config") .. "/lazy/base46")
+-- vim.opt.rtp:prepend(vim.fn.stdpath("config") .. "/lazy/base46")
 
 local lazypath = vim.fn.stdpath("config") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
@@ -18,35 +18,6 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
   end
 end
 vim.opt.rtp:prepend(lazypath)
-
--- Core configs loaded from ./lua/core/
---require("core.options")
-
---package.loaded["lazyvim.config.options"] = true
-
--- vim.api.nvim_create_autocmd({ "UIEnter", "TabNewEntered" }, {
---   group = vim.api.nvim_create_augroup("always_show_neotree", { clear = true }),
---   -- once = true,
---   callback = function(data)
---     if not vim.g.neotree_opened then
---       require("neo-tree.command").execute({ action = "show" })
---       vim.g.neotree_opened = true
---     end
---   end,
--- })
-
--- vim.api.nvim_create_autocmd({ "BufRead" }, {
---   group = vim.api.nvim_create_augroup("always_show_neotree2", { clear = true }),
---   -- once = true,
---   callback = function(data)
---     -- vim.print(data)
---     -- This needs to ignore checkhealth tab changes, otherwise checkhealth will crash
---     -- if not vim.g.neotree_opened then
---     require("neo-tree.command").execute({ action = "show" })
---     vim.g.neotree_opened = true
---     -- end
---   end,
--- })
 
 require("config.options")
 require("config.keymaps")
@@ -71,11 +42,11 @@ require("lazy").setup({
     version = false, -- always use the latest git commit
     -- version = "*", -- try installing the latest stable version for plugins that support semver
   },
-  install = { colorscheme = { "monokai-pro", "habamax" } },
+  install = { colorscheme = { "midnightokai", "habamax" } },
   checker = { enabled = true }, -- automatically check for plugin updates
   root = vim.fn.stdpath("config") .. "/lazy/plugins",
   state = vim.fn.stdpath("config") .. "/lazy/state.json",
-  install = { colorscheme = { colorscheme = { "monokai-pro", "habamax" } } },
+  install = { colorscheme = { colorscheme = { "midnightokai", "habamax" } } },
   dev = { path = vim.fn.stdpath("config") .. "/local_plugins" },
   performance = {
     rtp = {
