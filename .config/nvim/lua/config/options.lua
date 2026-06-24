@@ -167,6 +167,6 @@ command! IndentAuto call Indent()
 ]])
 
 if vim.g.nvimpager == true then
-  nvimpager.maps = false
+  -- nvimpager.maps = false
 end
 

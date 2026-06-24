@@ -68,8 +68,8 @@ return {
       { "<S-h>", "<cmd>BufferLineCyclePrev<cr>", desc = "Previous buffer" },
       { "<S-k>", "<cmd>BufferLineMoveNext<cr>", desc = "Move buffer right" },
       { "<S-j>", "<cmd>BufferLineMovePrev<cr>", desc = "Move buffer left" },
-      { "<A-l>", "gt", desc = "Next tab" },
-      { "<A-h>", "gT", desc = "Previous tab" },
+      -- { "<A-l>", "gt", desc = "Next tab" },
+      -- { "<A-h>", "gT", desc = "Previous tab" },
     },
   },
 }

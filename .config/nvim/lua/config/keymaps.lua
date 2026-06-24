@@ -204,6 +204,8 @@ local config_keymap = {
   {"n", "<leader><tab>]", "<cmd>tabnext<cr>", { desc = "Next Tab" }},
   {"n", "<leader><tab>d", "<cmd>tabclose<cr>", { desc = "Close Tab" }},
   {"n", "<leader><tab>[", "<cmd>tabprevious<cr>", { desc = "Previous Tab" }},
+  {"n", "<A-l>", "<cmd>tabnext<cr>", { desc = "Next tab"}},
+  {"n", "<A-h>", "<cmd>tabprevious<cr>", { desc = "Previous tab"}},
 
   -- because I'm not sure why you'd want a gj and I use S-j for buffer management
   {"n", "gj", "<S-j>", { desc = "Join" }},
