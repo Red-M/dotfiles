@@ -36,3 +36,5 @@
 /home/redm/.config/steamtinkerlaunch/proton/custom/GE-Proton10-32/proton
 /home/redm/.config/steamtinkerlaunch/proton/custom/GE-Proton10-33/proton
 /home/redm/.config/steamtinkerlaunch/proton/custom/GE-Proton10-34/proton
+/home/redm/.config/steamtinkerlaunch/proton/custom/GE-Proton10-33-rtsp24-1/proton
+/home/redm/.config/steamtinkerlaunch/proton/custom/GE-Proton11-1-aarch64/proton

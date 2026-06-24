@@ -20,6 +20,7 @@ stdenv.mkDerivation rec {
 
   patches = [
     ./rel_path.patch
+    ./site_logs.patch
   ];
 
   nativeBuildInputs = [

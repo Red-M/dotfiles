@@ -96,24 +96,22 @@
   # xdg.dataFile."openxr/1/api_layers/implicit.d/XR_APILAYER_NOVENDOR_xr_binder.json".source = "${outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.xrbinder}/manifest.json";
   # xdg.dataFile."openxr/1/api_layers/implicit.d/libxrBinder_module.so".source = "${outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.xrbinder}/libxrBinder_module.so";
 
-  xdg.configFile."openvr/openvrpaths.vrpath".text = ''
-    {
-      "config": [
-        "${config.xdg.dataHome}/Steam/config"
-      ],
-      "power": {"autoLaunchSteamVROnButtonPress": false},
-      "external_drivers": null,
-      "jsonid": "vrpathreg",
-      "log": [
-        "${config.xdg.dataHome}/Steam/logs"
-      ],
-      "runtime": [
-        "${config.xdg.configHome}/openxr/xrizer/lib/xrizer",
-        "${config.home.homeDirectory}/.local/share/Steam/steamapps/common/SteamVR"
-      ],
-      "version": 1
-    }
-  '';
+  xdg.configFile."openvr/openvrpaths.vrpath".text = let
+    steam = "${config.xdg.dataHome}/Steam";
+  in builtins.toJSON {
+    version = 1;
+    jsonid = "vrpathreg";
+
+    external_drivers = null;
+    config = [ "${steam}/config" ];
+
+    log = [ "${steam}/logs" ];
+
+    runtime = [
+      "${config.xdg.configHome}/openxr/xrizer/lib/xrizer"
+      "${config.home.homeDirectory}/.local/share/Steam/steamapps/common/SteamVR"
+    ];
+  };
 
 }
 

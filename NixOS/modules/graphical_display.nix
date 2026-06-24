@@ -29,7 +29,7 @@
   # services.xserver.libinput.enable = true;
 
   # Install firefox.
-  programs.firefox.enable = true;
+  # programs.firefox.enable = true;
 
   xdg.portal = {
     enable = true;
@@ -60,7 +60,7 @@
     ntfs3g
     # ventoy-full # upstream marked as insecure
     xwayland
-    libsForQt5.qt5.qtwayland
+    qt5.qtwayland
     mono
 
     firmware-updater
@@ -123,7 +123,7 @@
         icu.dev
         unstable.kdePackages.qt5compat
         unstable.kdePackages.qtwayland
-        unstable.libsForQt5.qt5.qtwayland
+        unstable.qt5.qtwayland
         wayland
         xwayland
       ];

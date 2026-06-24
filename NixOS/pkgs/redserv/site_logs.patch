@@ -1,0 +1,32 @@
+diff --git a/webserver3.py b/webserver3.py
+index 202958f..c8eba57 100644
+--- a/webserver3.py
++++ b/webserver3.py
+@@ -683,7 +683,8 @@ def get_config_default():
+         'page_request_timeout': 30,
+         'logs_to_screen':False,
+         'cherrypy_access_logs':'',
+-        'log': True
++        'log': True,
++        'log_site': True
+     }
+     config_file_data['HTTP'] = {
+         'reverse_proxied':False,
+@@ -1120,6 +1121,8 @@ def conf_reload(conf):
+         }}
+         if not (os.path.join(current_dir,conf['cherrypy_access_logs'])==current_dir or conf['cherrypy_access_logs']==''):
+             global_conf['global']['log.access_file'] = os.path.join(current_dir,conf['cherrypy_access_logs'])
++        if conf['log_site'] == False:
++            del global_conf['global']['log.error_file']
+         cherrypy.config.update(global_conf)
+ 
+ 
+@@ -1559,6 +1562,8 @@ def web_init(watchdogs):
+     }}
+     if not (os.path.join(current_dir,conf['cherrypy_access_logs'])==current_dir or conf['cherrypy_access_logs']==''):
+         global_conf['global']['log.access_file'] = os.path.join(current_dir,conf['cherrypy_access_logs'])
++    if conf['log_site'] == False:
++        del global_conf['global']['log.error_file']
+     cherrypy.config.update(global_conf)
+     web_interface = WebInterface()
+     tree_mount = cherrypy.tree.mount(web_interface, '/')

@@ -1,0 +1,824 @@
+{
+    "controllers": [
+        {
+            "active_mode": 0,
+            "colors": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
+            "configuration": null,
+            "description": "ASUS Aura USB Mainboard Device",
+            "flags": 1,
+            "leds": [
+                {
+                    "name": "Addressable RGB Header 1, LED 1",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 2",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 3",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 4",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 5",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 6",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 7",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 8",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 9",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 10",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 11",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 12",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 13",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 14",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 15",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 16",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 17",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 18",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 19",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 20",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 21",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 22",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 23",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 24",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 25",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 26",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 27",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 28",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 29",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 30",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 31",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 32",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 33",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 34",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 35",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 36",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 37",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 38",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 39",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 40",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 41",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 42",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 43",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 44",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 45",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 46",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 47",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 48",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 49",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 50",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 51",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 52",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 53",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 54",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 55",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 56",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 57",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 58",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 59",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 60",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 61",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 62",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 63",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 64",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 65",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 66",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 67",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 68",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 69",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 70",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 71",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 72",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 73",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 74",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 75",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 76",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 77",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 78",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 79",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 80",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 81",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 82",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 83",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 84",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 85",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 86",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 87",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 88",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 89",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 90",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 91",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 92",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 93",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 94",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 95",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 96",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 97",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 98",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 99",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 100",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 101",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 102",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 103",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 104",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 105",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 106",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 107",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 108",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 109",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 110",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 111",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 112",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 113",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 114",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 115",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 116",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 117",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 118",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 119",
+                    "value": 0
+                },
+                {
+                    "name": "Addressable RGB Header 1, LED 120",
+                    "value": 0
+                }
+            ],
+            "location": "HID: /dev/hidraw23",
+            "modes": [
+                {
+                    "brightness": 0,
+                    "brightness_max": 0,
+                    "brightness_min": 0,
+                    "color_mode": 1,
+                    "colors_max": 0,
+                    "colors_min": 0,
+                    "direction": 0,
+                    "flags": 32,
+                    "name": "Direct",
+                    "speed": 0,
+                    "speed_max": 0,
+                    "speed_min": 0,
+                    "value": 255
+                },
+                {
+                    "brightness": 0,
+                    "brightness_max": 0,
+                    "brightness_min": 0,
+                    "color_mode": 0,
+                    "colors_max": 0,
+                    "colors_min": 0,
+                    "direction": 0,
+                    "flags": 256,
+                    "name": "Off",
+                    "speed": 0,
+                    "speed_max": 0,
+                    "speed_min": 0,
+                    "value": 0
+                },
+                {
+                    "brightness": 0,
+                    "brightness_max": 0,
+                    "brightness_min": 0,
+                    "color_mode": 2,
+                    "colors": [
+                        255
+                    ],
+                    "colors_max": 1,
+                    "colors_min": 1,
+                    "direction": 0,
+                    "flags": 320,
+                    "name": "Static",
+                    "speed": 0,
+                    "speed_max": 0,
+                    "speed_min": 0,
+                    "value": 1
+                },
+                {
+                    "brightness": 0,
+                    "brightness_max": 0,
+                    "brightness_min": 0,
+                    "color_mode": 2,
+                    "colors": [
+                        0
+                    ],
+                    "colors_max": 1,
+                    "colors_min": 1,
+                    "direction": 0,
+                    "flags": 320,
+                    "name": "Breathing",
+                    "speed": 0,
+                    "speed_max": 0,
+                    "speed_min": 0,
+                    "value": 2
+                },
+                {
+                    "brightness": 0,
+                    "brightness_max": 0,
+                    "brightness_min": 0,
+                    "color_mode": 2,
+                    "colors": [
+                        0
+                    ],
+                    "colors_max": 1,
+                    "colors_min": 1,
+                    "direction": 0,
+                    "flags": 320,
+                    "name": "Flashing",
+                    "speed": 0,
+                    "speed_max": 0,
+                    "speed_min": 0,
+                    "value": 3
+                },
+                {
+                    "brightness": 0,
+                    "brightness_max": 0,
+                    "brightness_min": 0,
+                    "color_mode": 0,
+                    "colors_max": 0,
+                    "colors_min": 0,
+                    "direction": 0,
+                    "flags": 256,
+                    "name": "Spectrum Cycle",
+                    "speed": 0,
+                    "speed_max": 0,
+                    "speed_min": 0,
+                    "value": 4
+                },
+                {
+                    "brightness": 0,
+                    "brightness_max": 0,
+                    "brightness_min": 0,
+                    "color_mode": 0,
+                    "colors_max": 0,
+                    "colors_min": 0,
+                    "direction": 0,
+                    "flags": 256,
+                    "name": "Rainbow",
+                    "speed": 0,
+                    "speed_max": 0,
+                    "speed_min": 0,
+                    "value": 5
+                },
+                {
+                    "brightness": 0,
+                    "brightness_max": 0,
+                    "brightness_min": 0,
+                    "color_mode": 2,
+                    "colors": [
+                        0
+                    ],
+                    "colors_max": 1,
+                    "colors_min": 1,
+                    "direction": 0,
+                    "flags": 320,
+                    "name": "Chase Fade",
+                    "speed": 0,
+                    "speed_max": 0,
+                    "speed_min": 0,
+                    "value": 7
+                },
+                {
+                    "brightness": 0,
+                    "brightness_max": 0,
+                    "brightness_min": 0,
+                    "color_mode": 2,
+                    "colors": [
+                        0
+                    ],
+                    "colors_max": 1,
+                    "colors_min": 1,
+                    "direction": 0,
+                    "flags": 320,
+                    "name": "Chase",
+                    "speed": 0,
+                    "speed_max": 0,
+                    "speed_min": 0,
+                    "value": 9
+                }
+            ],
+            "name": "ASUS ROG STRIX X870E-E GAMING WIFI",
+            "serial": "9876543210",
+            "type": 0,
+            "vendor": "ASUS",
+            "version": "AULA3-AR60-0112",
+            "zones": [
+                {
+                    "flags": 4158,
+                    "leds_count": 120,
+                    "leds_max": 120,
+                    "leds_min": 0,
+                    "matrix_map": {
+                        "height": 0,
+                        "width": 0
+                    },
+                    "name": "Addressable RGB Header 1",
+                    "type": 1
+                },
+                {
+                    "flags": 62,
+                    "leds_count": 0,
+                    "leds_max": 120,
+                    "leds_min": 0,
+                    "matrix_map": {
+                        "height": 0,
+                        "width": 0
+                    },
+                    "name": "Addressable RGB Header 2",
+                    "type": 1
+                },
+                {
+                    "flags": 62,
+                    "leds_count": 0,
+                    "leds_max": 120,
+                    "leds_min": 0,
+                    "matrix_map": {
+                        "height": 0,
+                        "width": 0
+                    },
+                    "name": "Addressable RGB Header 3",
+                    "type": 1
+                },
+                {
+                    "flags": 62,
+                    "leds_count": 0,
+                    "leds_max": 120,
+                    "leds_min": 0,
+                    "matrix_map": {
+                        "height": 0,
+                        "width": 0
+                    },
+                    "name": "Addressable RGB Header 4",
+                    "type": 1
+                }
+            ]
+        }
+    ],
+    "profile_name": "Controller Configuration",
+    "profile_version": 6
+}

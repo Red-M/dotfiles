@@ -4,6 +4,7 @@
 {
   fonts = {
     fontDir.enable = true;
+    # enableDefaultPackages = true;
     fontconfig = {
       cache32Bit = true;
       antialias = true;

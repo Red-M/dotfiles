@@ -44,7 +44,7 @@
     extraRules = [
       {
         "name" = "gamescope";
-        "nice" = -20;
+        "nice" = -10;
       }
     ];
   };
@@ -98,10 +98,11 @@
         gst-libav
         # hardware acceleration
         gst-vaapi
-      ]) ++ config.fonts.packages;
+      ]);
       extraCompatPackages = with pkgs; [
         steamtinkerlaunch
       ];
+      extest.enable = true;
       remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
       dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
       localNetworkGameTransfers.openFirewall = true; # Open ports in the firewall for Steam Local Network Game Transfers

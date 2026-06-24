@@ -20,13 +20,13 @@
       ];
     });
     mesa = final.mesa_patched.overrideAttrs (old : {
-      src = pkgs.fetchFromGitLab {
-        domain = "gitlab.freedesktop.org";
-        owner = "mesa";
-        repo = "mesa";
-        rev = "mesa-26.0.6";
-        hash = "sha256-rSX+dVcquTIdITfTy+heipeq6xktOaA3psn6vXm1S34=";
-      };
+      # src = pkgs.fetchFromGitLab {
+      #   domain = "gitlab.freedesktop.org";
+      #   owner = "mesa";
+      #   repo = "mesa";
+      #   rev = "mesa-26.0.6";
+      #   hash = "sha256-rSX+dVcquTIdITfTy+heipeq6xktOaA3psn6vXm1S34=";
+      # };
       # version = "25.3.5";
       # src = pkgs.fetchFromGitLab {
       #   domain = "gitlab.freedesktop.org";

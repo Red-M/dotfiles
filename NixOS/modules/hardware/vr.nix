@@ -213,10 +213,6 @@
     KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="35bd", ATTRS{idProduct}=="0282", MODE="0660", TAG+="uaccess", GROUP="video"
   '';
   boot.kernelPatches = [
-    {
-      name = "BSB_part1";
-      patch = ../patching/patches/amdgpu_kernel_module/BSB.patch;
-    }
     # {
     #   name = "BSB_part1";
     #   patch = ../patching/patches/amdgpu_kernel_module/BSB_drm-amd-use-fixed-dsc-bits-per-pixel-from-edid.patch;
@@ -226,8 +222,19 @@
     #   patch = ../patching/patches/amdgpu_kernel_module/BSB_drm-edid-parse-DRM-VESA-dsc-bpp-target.patch;
     # }
     {
+      name = "BSB_part1";
+      patch = ../patching/patches/amdgpu_kernel_module/BSB.patch;
+    }
+    {
       name = "BSB_part3";
       patch = ../patching/patches/amdgpu_kernel_module/BSB_fix_dsc.patch;
+    }
+    {
+      # This is for steamvr
+      # https://github.com/NixOS/nixpkgs/issues/217119
+      # https://github.com/Frogging-Family/community-patches/blob/master/linux61-tkg/cap_sys_nice_begone.mypatch
+      name = "steamvr";
+      patch = ../patching/patches/amdgpu_kernel_module/cap_sys_nice_begone.patch;
     }
   ];
   #networking.firewall.allowedTCPPorts = [ 8080 ]; # For go-bsb-cams to allow other hosts to connect to it
@@ -241,17 +248,37 @@
 
   # At this current point in time, I was able to get steamvr to run in the flatpak version of steam due to segfaults in nixpkgs unstable
   services.flatpak.enable = true;
-  # This is for steamvr
-  # https://github.com/NixOS/nixpkgs/issues/217119
-  # https://github.com/Frogging-Family/community-patches/blob/master/linux61-tkg/cap_sys_nice_begone.mypatch
-  # boot.extraModulePackages = [
-  #   (outoftree.pkgs.${pkgs.stdenv.hostPlatform.system}.amdgpu-kernel-module.overrideAttrs (_: {
-  #     kernel = config.boot.kernelPackages.kernel;
-  #     patches = [ ../patching/patches/amdgpu_kernel_module/cap_sys_nice_begone.patch ];
-  #   }))
-  # ];
 
-
+  services.ananicy = {
+    extraRules = [
+      {
+        name = "vrmonitor";
+        type = "Steamvr";
+      }
+      {
+        name = "vrwebhelper";
+        type = "Steamvr";
+      }
+      {
+        name = "vrcompositor";
+        type = "Steamvr";
+      }
+      {
+        name = "vrserver";
+        type = "Steamvr";
+      }
+      {
+        name = "srt-bwrap";
+        type = "Steamvr";
+      }
+    ];
+    extraTypes = [
+      {
+        nice = -15;
+        type = "Steamvr";
+      }
+    ];
+  };
 
 
 
